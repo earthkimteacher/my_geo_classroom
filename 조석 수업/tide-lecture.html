@@ -702,11 +702,11 @@ html.student #notes{display:none!important}
 </section>
 
 <!-- ═══ s13 한 달 동안의 조석 ═══ -->
-<section class="slide" id="s13" data-tile="light" data-title="한 달 동안의 조석 변동" data-notes="그림 Ⅱ-28 인천 앞바다의 한 달 조석 변동을 단순화한 모식 그래프입니다. 1단계: 해수면이 하루 두 번씩 오르내립니다. 조석 주기는 12시간보다 약간 길고, 연속된 만조(또는 간조)의 높이가 서로 다릅니다(혼합조). 2단계: 망과 삭 무렵에 조차가 가장 큰 사리. 3단계: 상현과 하현 무렵에 조차가 가장 작은 조금. 4단계: 약 15일 주기로 사리와 조금이 반복됩니다. 참고: 달의 공전 궤도가 타원이라 음력 15일에 항상 보름달이 뜨지는 않으며, 바닷물과 마찰 등으로 실제 조차와 달의 위상이 정확히 일치하지 않는 경우도 있습니다(사리가 망·삭보다 1~2일 늦게 나타나기도 함).">
+<section class="slide" id="s13" data-tile="light" data-title="한 달 동안의 조석 변동" data-notes="그림 Ⅱ-28 인천 앞바다의 한 달 조석 변동을 단순화한 모식 그래프입니다. 1단계: 해수면이 하루 두 번씩 오르내립니다. 2단계: 그래프의 뾰족한 꼭대기 하나하나가 만조(▲), 바닥 하나하나가 간조(▼)입니다. 만조와 간조는 사리 때든 조금 때든 매일 하루 두 번씩 나타납니다. 연속된 만조(또는 간조)의 높이가 서로 다른 혼합조이고, 조석 주기는 12시간보다 약간 깁니다. 3단계: 망과 삭 무렵, 만조는 더 높고 간조는 더 낮아져 조차가 가장 큰 사리. 4단계: 상현과 하현 무렵, 조차가 가장 작은 조금. 5단계: 약 15일 주기로 사리와 조금이 반복됩니다. 만조·간조는 하루 중의 순간이고, 사리·조금은 한 달 중의 시기라는 점을 구분하게 합니다(다음 장에서 비교). 참고: 달의 공전 궤도가 타원이라 음력 15일에 항상 보름달이 뜨지는 않으며, 바닷물과 마찰 등으로 실제 조차와 달의 위상이 정확히 일치하지 않는 경우도 있습니다(사리가 망·삭보다 1~2일 늦게 나타나기도 함).">
   <div class="hd" data-in><div class="eb"><b>4</b>사리와 조금</div><h2>한 달 동안의 조석</h2></div>
   <svg class="full-svg" viewBox="0 0 1920 1080">
-    <g data-step="2" data-fx="fade"><rect x="422" y="410" width="148" height="450" fill="var(--c1)" fill-opacity=".12"/><rect x="1151" y="410" width="148" height="450" fill="var(--c1)" fill-opacity=".12"/></g>
-    <g data-step="3" data-fx="fade"><rect x="786.6" y="410" width="148" height="450" fill="var(--c3)" fill-opacity=".1"/><rect x="1515.5" y="410" width="148" height="450" fill="var(--c3)" fill-opacity=".1"/></g>
+    <g data-step="3" data-fx="fade"><rect x="422" y="410" width="148" height="450" fill="var(--c1)" fill-opacity=".12"/><rect x="1151" y="410" width="148" height="450" fill="var(--c1)" fill-opacity=".12"/></g>
+    <g data-step="4" data-fx="fade"><rect x="786.6" y="410" width="148" height="450" fill="var(--c3)" fill-opacity=".1"/><rect x="1515.5" y="410" width="148" height="450" fill="var(--c3)" fill-opacity=".1"/></g>
     <g data-in="200" data-fx="fade">
       <g stroke="#e8e8ed" stroke-width="2"><path d="M200 770H1740M200 680H1740M200 590H1740M200 500H1740M200 410H1740" fill="none"/></g>
       <path d="M200 860H1750M200 860V400" stroke="#1d1d1f" stroke-width="3" fill="none" stroke-linecap="round"/>
@@ -723,12 +723,34 @@ html.student #notes{display:none!important}
       <g><circle cx="1508" cy="300" r="20" fill="#4a4a4f"/><path d="M1508 280A20 20 0 0 1 1508 320Z" fill="#e9c85a"/><circle cx="1508" cy="300" r="20" fill="none" stroke="#9A7400" stroke-width="2"/></g>
       <path d="M422 326V400M767.5 326V400M1113 326V400M1508 326V400" stroke="#c7c7cc" stroke-width="2" stroke-dasharray="4 6"/>
     </g>
+    <g id="s13-hl" data-step="2" data-fx="fade"></g>
     <path id="s13-curve" stroke="var(--c1)" stroke-width="2.4" fill="none" data-step="1" data-fx="draw" data-dur="2600"/>
-    <g data-step="2" data-fx="fade" font-size="30" font-weight="700" text-anchor="middle" fill="var(--c1)"><text x="496" y="396">사리</text><text x="1225" y="396">사리</text></g>
-    <g data-step="3" data-fx="fade" font-size="30" font-weight="700" text-anchor="middle" fill="var(--c3)"><text x="860.6" y="396">조금</text><text x="1589.5" y="396">조금</text></g>
+    <g data-step="3" data-fx="fade" font-size="30" font-weight="700" text-anchor="middle" fill="var(--c1)"><text x="496" y="396">사리</text><text x="1225" y="396">사리</text></g>
+    <g data-step="4" data-fx="fade" font-size="30" font-weight="700" text-anchor="middle" fill="var(--c3)"><text x="860.6" y="396">조금</text><text x="1589.5" y="396">조금</text></g>
   </svg>
-  <div class="say-line" style="top:950px;font-size:38px" data-step="4">약 <span class="act">15일</span>마다 사리와 조금이 반복 — 한 달에 두 번씩</div>
+  <div class="say-line" style="top:950px;font-size:38px" data-step="5">약 <span class="act">15일</span>마다 사리와 조금이 반복 — 한 달에 두 번씩</div>
   <div class="fine" style="font-size:22px;bottom:30px">모식 그래프: 2023년 5월 인천 앞바다 조석(국립해양조사원)의 특징을 단순화함 · 실제 사리는 망·삭보다 1~2일 늦기도 한다</div>
+</section>
+
+<!-- ═══ s13v 사리·조금 vs 만조·간조 ═══ -->
+<section class="slide" id="s13v" data-tile="light" data-title="만조·간조 vs 사리·조금" data-notes="학생들이 자주 헷갈리는 두 쌍을 구분합니다. 1단계 만조·간조: 하루 중 해수면이 가장 높아진 순간과 가장 낮아진 순간으로, 지구가 자전하면서 해수면 부풂을 지나기 때문에 약 12시간 25분마다(하루 보통 두 번씩) 나타납니다. 2단계 사리·조금: 한 달 중 조차가 가장 큰 시기와 가장 작은 시기로, 달의 위상(태양·지구·달의 배치)에 따라 약 15일마다 나타납니다. 삭·망일 때 사리, 상현·하현일 때 조금. 3단계 흔한 오개념: '사리 = 바닷물이 가장 높은 때', '조금 = 바닷물이 빠진 때'는 틀립니다. 사리 때도 조금 때도 만조와 간조는 하루 두 번씩 있고, 사리에는 만조가 더 높고 간조가 더 낮아 조차가 클 뿐입니다. 그래프는 모식 그래프입니다.">
+  <div class="hd" data-in><div class="eb"><b>4</b>사리와 조금</div><h2>헷갈리지 말자: 만조·간조 vs 사리·조금</h2></div>
+  <div class="ws-card" style="left:120px;top:250px;width:800px;padding:24px 36px" data-step="1">
+    <div class="ws-h"><b>만조 <span class="mute" style="font-size:32px">vs</span> 간조</b><span>하루 동안의 '순간'</span></div>
+    <svg viewBox="0 0 728 190" width="728" height="190" style="display:block;margin:6px 0 4px"><g id="s13v-day"></g></svg>
+    <div class="ws-row" style="grid-template-columns:96px 1fr;font-size:27px;line-height:1.45;padding:9px 0"><span class="tm">뜻</span><span><b class="c2">만조</b>: 해수면이 가장 높아졌을 때<br><b class="c4">간조</b>: 해수면이 가장 낮아졌을 때</span></div>
+    <div class="ws-row" style="grid-template-columns:96px 1fr;font-size:27px;line-height:1.45;padding:9px 0"><span class="tm">주기</span><span>약 <b>12시간 25분</b>마다 → 하루에 보통 <b>두 번씩</b></span></div>
+    <div class="ws-row" style="grid-template-columns:96px 1fr;font-size:27px;line-height:1.45;padding:9px 0"><span class="tm">원인</span><span><b>지구의 자전</b>: 해수면 부풂을 지날 때 만조, 벗어날 때 간조</span></div>
+  </div>
+  <div class="ws-card" style="left:1000px;top:250px;width:800px;padding:24px 36px" data-step="2">
+    <div class="ws-h"><b>사리 <span class="mute" style="font-size:32px">vs</span> 조금</b><span>한 달 동안의 '시기'</span></div>
+    <svg viewBox="0 0 728 190" width="728" height="190" style="display:block;margin:6px 0 4px"><g id="s13v-month"></g></svg>
+    <div class="ws-row" style="grid-template-columns:96px 1fr;font-size:27px;line-height:1.45;padding:9px 0"><span class="tm">뜻</span><span><b class="c1">사리</b>: 조차(만조−간조)가 가장 큰 시기<br><b class="c3">조금</b>: 조차가 가장 작은 시기</span></div>
+    <div class="ws-row" style="grid-template-columns:96px 1fr;font-size:27px;line-height:1.45;padding:9px 0"><span class="tm">주기</span><span>약 <b>15일</b>마다 → 한 달에 <b>두 번씩</b></span></div>
+    <div class="ws-row" style="grid-template-columns:96px 1fr;font-size:27px;line-height:1.45;padding:9px 0"><span class="tm">원인</span><span><b>달의 위상</b>: 삭·망일 때 사리, 상현·하현일 때 조금</span></div>
+  </div>
+  <div class="say-line" style="top:905px;font-size:34px;line-height:1.5" data-step="3"><span class="mute">✗ 사리 = 바닷물이 가장 높은 때</span>&nbsp;&nbsp;→&nbsp;&nbsp;<b>✓ 사리 때도 조금 때도 만조·간조는 하루 두 번씩</b><br><span style="font-size:30px">사리에는 만조가 <b class="c2">더 높고</b> 간조가 <b class="c4">더 낮아</b> 조차가 클 뿐이다</span></div>
+  <div class="fine">모식 그래프 · 실제 조석은 지역에 따라 다르다</div>
 </section>
 
 <!-- ═══ s14 확인 문제 1 ═══ -->
@@ -772,16 +794,6 @@ html.student #notes{display:none!important}
       <div class="qz-why-t">ㄱ. 망일 때 태양·지구·달이 일직선 → <b>사리</b>(옳음). ㄴ. 상현일 때 두 기조력은 <b>직각</b> 방향이라 상쇄 → 조금(틀림). ㄷ. 태양의 기조력은 달의 <b>약 ½</b>(틀림).</div>
     </div>
   </div>
-</section>
-
-<!-- ═══ s16 정리 ═══ -->
-<section class="slide" id="s16" data-tile="parchment" data-title="오늘의 정리" data-notes="네 장의 카드를 학생이 먼저 말해 보게 한 뒤 클릭해서 확인합니다. 다음 활동: 실시간 조석 자료를 이용해 조석 현상의 양상을 추론해 봅니다. 바다 갈라짐 현상(진도 바닷길 등)은 국립해양조사원 누리집(www.khoa.go.kr) > 해양 정보 > 해양 생활 > 생활 해양 예보 지수 > 바다 갈라짐 체험에서 지역별 바다 갈라짐 체험 지수를 확인하고 여행 계획을 세워 보는 활동으로 연결할 수 있습니다.">
-  <div class="hd" data-in><div class="eb">정리</div><h2>오늘 배운 것</h2></div>
-  <div class="rc rc4" style="left:120px" data-step="1"><div class="no">1 · 조석</div><h3>만조와 간조</h3><p>해수면이 주기적으로 높아졌다 낮아진다. 만조와 간조의 높이 차가 조차.</p><div class="big c1">하루 2번</div></div>
-  <div class="rc rc4" style="left:540px" data-step="2"><div class="no">2 · 기조력</div><h3>인력 + 원심력</h3><p>달에 가까운 쪽과 먼 쪽 두 곳에서 해수면이 높아진다.</p><div class="big c1">태양 = 달의 ½</div></div>
-  <div class="rc rc4" style="left:960px" data-step="3"><div class="no">3 · 조석 주기와 양상</div><h3>12시간 25분</h3><p>달의 공전 때문에 12시간보다 약 25분 길다. 위도에 따라 일주조·혼합조·반일주조.</p><div class="big c1">+ 25분</div></div>
-  <div class="rc rc4" style="left:1380px" data-step="4"><div class="no">4 · 사리와 조금</div><h3>달의 위상</h3><p>삭·망일 때 사리(조차 최대), 상현·하현일 때 조금(조차 최소).</p><div class="big c1">약 15일 주기</div></div>
-  <div class="say-line" style="top:920px;font-size:40px" data-step="5"><span class="act">기조력</span> + <span class="act">지구의 자전</span> + <span class="act">달의 공전</span> → 조석의 주기와 변화</div>
 </section>
 
 <div id="kwbar-host"></div>
@@ -1122,7 +1134,7 @@ Deck.start=function(){
 <script>
 /* ═══ 장면: 키워드와 장면별 움직임 ═══ */
 const {U}=Deck;
-window.KW={items:['조석','기조력','조석 주기와 양상','사리와 조금'],at:[-1,-1,0,0,0,1,1,1,1,2,2,2,2,2,2,3,3,-1,-1,-1]};
+window.KW={items:['조석','기조력','조석 주기와 양상','사리와 조금'],at:[-1,-1,0,0,0,1,1,1,1,2,2,2,2,2,2,3,3,3,-1,-1]};
 const $id=id=>document.getElementById(id);
 const TAU=Math.PI*2, D2R=Math.PI/180;
 const P2=x=>(3*x*x-1)/2;                      // 평형 조석의 해수면 모양(르장드르 2차)
@@ -1339,6 +1351,48 @@ S11L.ids.forEach((P,i)=>{
   $id('s13-curve').setAttribute('d','M'+p.join(' L'));
   const xt=$id('s13-xt');
   for(let d=1;d<=31;d++){const t=U.el('text',{x:X(d-.5).toFixed(1),y:892},xt);t.textContent=d;}
+  // 만조(▲)·간조(▼): 곡선의 꼭대기와 바닥마다
+  const H=tau=>4.6+3.0*Math.cos(TAU*(tau-t0)/12.4206)+1.2*Math.cos(TAU*(tau-t0)/12)+0.35*Math.cos(TAU*tau/23.9345);
+  const hl=$id('s13-hl'),pair=[];
+  for(let tau=.1;tau<31*24;tau+=.1){
+    const h0=H(tau-.1),h1=H(tau),h2=H(tau+.1),x=X(tau/24),y=Y(h1);
+    if(h1>h0&&h1>=h2){U.el('polygon',{points:x.toFixed(1)+','+(y-22).toFixed(1)+' '+(x-6).toFixed(1)+','+(y-11).toFixed(1)+' '+(x+6).toFixed(1)+','+(y-11).toFixed(1),fill:'var(--c2)'},hl);if(tau>36&&pair.length===0)pair.push({x,y,hi:1});}
+    if(h1<h0&&h1<=h2){U.el('polygon',{points:x.toFixed(1)+','+(y+22).toFixed(1)+' '+(x-6).toFixed(1)+','+(y+11).toFixed(1)+' '+(x+6).toFixed(1)+','+(y+11).toFixed(1),fill:'var(--c4)'},hl);if(pair.length===1)pair.push({x,y,hi:0});}
+  }
+  // 한 쌍에 이름표
+  const [p1,p2]=pair,g=U.el('g',{'font-size':26,'font-weight':700,'text-anchor':'middle'},hl);
+  const t1=U.el('text',{x:p1.x.toFixed(1),y:(p1.y-32).toFixed(1),fill:'var(--c2)'},g);t1.textContent='만조';
+  const t2=U.el('text',{x:p2.x.toFixed(1),y:(p2.y+50).toFixed(1),fill:'var(--c4)'},g);t2.textContent='간조';
+  const lg=U.el('g',{'font-size':26,'font-weight':700,'text-anchor':'end'},hl);
+  const l1=U.el('text',{x:1590,y:936},lg);l1.innerHTML='<tspan fill="var(--c2)">▲ 만조</tspan><tspan dx="20" fill="var(--c4)">▼ 간조</tspan><tspan dx="20" fill="#6e6e73" font-weight="600">— 매일 두 번씩</tspan>';
+})();
+
+/* s13v 작은 그래프: 하루(만조·간조), 한 달(사리·조금) */
+(function(){
+  // 하루: 0~24시
+  const gd=$id('s13v-day'),Xd=t=>40+28*t,Yd=v=>95-62*v,pd=[];
+  for(let t=0;t<=24;t+=.1)pd.push(Xd(t).toFixed(1)+' '+Yd(Math.cos(TAU*(t-2)/12.42)).toFixed(1));
+  U.el('path',{d:'M40 170H716M40 170V20',stroke:'#1d1d1f','stroke-width':2,fill:'none'},gd);
+  U.el('path',{d:'M'+pd.join(' L'),stroke:'var(--c1)','stroke-width':4,fill:'none'},gd);
+  [[2,1,'만조'],[14.42,1,'만조'],[8.21,-1,'간조'],[20.63,-1,'간조']].forEach(([t,v,lb])=>{
+    const x=Xd(t),y=Yd(v),col=v>0?'var(--c2)':'var(--c4)';
+    U.el('circle',{cx:x.toFixed(1),cy:y.toFixed(1),r:8,fill:col},gd);
+    const tx=U.el('text',{x:x.toFixed(1),y:(v>0?y-16:y+32).toFixed(1),'text-anchor':'middle','font-size':24,'font-weight':700,fill:col},gd);tx.textContent=lb;
+  });
+  U.el('path',{d:'M'+(Xd(2)+40)+' '+Yd(1)+'V'+Yd(-1),stroke:'#6e6e73','stroke-width':2,'stroke-dasharray':'4 5'},gd);
+  const tz=U.el('text',{x:Xd(2)+50,y:100,'font-size':22,fill:'#6e6e73'},gd);tz.textContent='조차';
+  [0,12,24].forEach(h=>{const t=U.el('text',{x:Xd(h),y:190,'text-anchor':h?(h===24?'end':'middle'):'start','font-size':22,fill:'#6e6e73'},gd);t.textContent=h+'시';});
+  // 한 달: 0~30일, 조차가 약 15일 주기로 커졌다 작아졌다
+  const gm=$id('s13v-month'),Xm=d=>40+22.5*d,A=d=>.55+.45*Math.cos(TAU*d/14.77),pm=[],up=[],dn=[];
+  for(let d=0;d<=30;d+=.02){const v=A(d)*Math.cos(TAU*d*24/12.42);pm.push(Xm(d).toFixed(1)+' '+(95-62*v).toFixed(1));}
+  for(let d=0;d<=30;d+=.1){up.push(Xm(d).toFixed(1)+' '+(95-62*A(d)).toFixed(1));dn.push(Xm(d).toFixed(1)+' '+(95+62*A(d)).toFixed(1));}
+  U.el('path',{d:'M40 170H716M40 170V20',stroke:'#1d1d1f','stroke-width':2,fill:'none'},gm);
+  U.el('path',{d:'M'+pm.join(' L'),stroke:'var(--c1)','stroke-width':1.6,fill:'none','stroke-opacity':.8},gm);
+  U.el('path',{d:'M'+up.join(' L')+'M'+dn.join(' L'),stroke:'#1d1d1f','stroke-width':2,'stroke-dasharray':'5 5',fill:'none'},gm);
+  [[0,'사리','var(--c1)'],[7.385,'조금','var(--c3)'],[14.77,'사리','var(--c1)'],[22.155,'조금','var(--c3)'],[29.54,'사리','var(--c1)']].forEach(([d,lb,col])=>{
+    const t=U.el('text',{x:Math.min(700,Math.max(62,Xm(d))).toFixed(1),y:18,'text-anchor':'middle','font-size':24,'font-weight':700,fill:col},gm);t.textContent=lb;
+  });
+  [0,15,30].forEach(d=>{const t=U.el('text',{x:Xm(d),y:190,'text-anchor':d?(d===30?'end':'middle'):'start','font-size':22,fill:'#6e6e73'},gm);t.textContent=d+'일';});
 })();
 
 /* ── 움직이는 장면 ── */
