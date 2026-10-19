@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지구 외적 요인(밀란코비치 주기)에 의한 기후 변화 시뮬레이터</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --panel-bg: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(255, 255, 255, 0.15);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.5);
+            --nh-color: #f43f5e;
+            --sh-color: #8b5cf6;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.08), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(244, 63, 94, 0.08), transparent 25%);
+            color: var(--text-main);
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #appScaleWrapper {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform-origin: center center;
+            width: 1400px;
+            height: 920px;
+            background-color: transparent;
+            box-sizing: border-box;
+            padding: 16px 24px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+            letter-spacing: -0.5px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            flex: 1;
+            min-height: 0;
+        }
+
+        @media(min-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 15px 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .canvas-container {
+            width: 100%;
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        canvas {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .control-group {
+            margin-bottom: 12px;
+        }
+
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+
+        .control-value {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--accent-glow);
+            transition: transform 0.1s;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .data-header {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .data-header::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 18px;
+            background: var(--accent);
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+            margin-bottom: 12px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 8px 6px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        th {
+            color: var(--text-muted);
+            font-weight: 600;
+            background: rgba(0, 0, 0, 0.2);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tag-summer {
+            color: #f43f5e;
+            font-weight: 700;
+        }
+
+        .tag-winter {
+            color: #38bdf8;
+            font-weight: 700;
+        }
+
+        .val-highlight {
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .radio-btn {
+            flex: 1;
+            padding: 8px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .radio-btn.active {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: var(--accent);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 4px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .tab-btn.active {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent);
+        }
+
+        .panel.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .mode-toggle {
+            display: flex;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 12px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 8px;
+            text-align: center;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .mode-btn.active {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .btn-small {
+            background: rgba(56, 189, 248, 0.2);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            font-weight: 600;
+        }
+
+        .btn-small:hover {
+            background: var(--accent);
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="appScaleWrapper">
+        <div
+            style="display: flex; align-items: flex-end; justify-content: center; position: relative; margin-bottom: 14px; width: 100%;">
+            <h1 style="margin: 0; font-size: 1.4rem;">🌎 지구 외적 요인(밀란코비치 주기)에 의한 기후 변화 시뮬레이터</h1>
+            <div
+                style="position: absolute; right: 0; bottom: 0; color: var(--text-muted); font-size: 0.85rem; font-weight: 500; letter-spacing: 0.5px;">
+                2026 진광고등학교 지구과학 교사 김덕영 제작</div>
+        </div>
+
+        <div class="container">
+            <!-- 오쪽 패널: 시각화 및 컨트롤 -->
+            <div class="panel">
+                <div class="mode-toggle" id="modeSwitch">
+                    <button class="mode-btn active" data-mode="manual">수동 조작 모드</button>
+                    <button class="mode-btn" data-mode="master">밀란코비치 종합 모드</button>
+                </div>
+
+                <div class="canvas-container">
+                    <canvas id="orbitCanvas" width="600" height="430"></canvas>
+                </div>
+
+                <!-- 수동 컨트롤들 -->
+                <div id="manualControls">
+                    <div class="control-group">
+                        <div class="control-label" style="align-items: center;">
+                            <span>자전축 기울기 <span style="font-size: 0.8em; color: var(--text-muted); font-weight: 400;">(약
+                                    4만 년 주기)</span>
+                                <span style="margin-left: 10px; font-size: 0.85em; color: var(--text-muted);">
+                                    <label style="margin-right: 5px; cursor:pointer;"><input type="radio"
+                                            name="tiltToggle" value="on" checked> 형태 과장</label>
+                                    <label style="cursor:pointer;"><input type="radio" name="tiltToggle" value="off"> 실제
+                                        비율</label>
+                                </span>
+                            </span>
+                            <div>
+                                <button class="btn-small" id="btnResetTilt">현재</button>
+                                <span class="control-value" id="tiltVal"
+                                    style="margin-left:8px; display:inline-block; width:45px; text-align:right;">23.5°</span>
+                            </div>
+                        </div>
+                        <input type="range" id="tilt" class="slider" min="21.5" max="24.5" step="0.1" value="23.5">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label" style="align-items: center;">
+                            <span>공전 궤도 이심률 <span
+                                    style="font-size: 0.8em; color: var(--text-muted); font-weight: 400;">(약 10만 년
+                                    주기)</span>
+                                <span style="margin-left: 10px; font-size: 0.85em; color: var(--text-muted);">
+                                    <label style="margin-right: 5px; cursor:pointer;"><input type="radio"
+                                            name="eccToggle" value="on" checked> 형태 과장</label>
+                                    <label style="cursor:pointer;"><input type="radio" name="eccToggle" value="off"> 실제
+                                        비율</label>
+                                </span>
+                            </span>
+                            <div>
+                                <button class="btn-small" id="btnResetEcc">현재</button>
+                                <span class="control-value" id="eccVal"
+                                    style="margin-left:8px; display:inline-block; width:45px; text-align:right;">0.017</span>
+                            </div>
+                        </div>
+                        <input type="range" id="eccentricity" class="slider" min="0" max="0.06" step="0.001"
+                            value="0.017">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>세차 운동 <span style="font-size: 0.8em; color: var(--text-muted); font-weight: 400;">(자전축
+                                    회전 주기)</span></span>
+                            <span class="control-value" id="precessVal">현재 (약 0년)</span>
+                        </div>
+                        <input type="range" id="precession" class="slider" min="0" max="26000" step="1000" value="0">
+                        <div class="radio-group" id="precessPresets">
+                            <div class="radio-btn active" data-val="0">현재 상태<br><span
+                                    style="font-size:0.75em;color:var(--text-muted)">원일점에서 북반구 여름</span></div>
+                            <div class="radio-btn" data-val="13000">13,000년 후<br><span
+                                    style="font-size:0.75em;color:var(--text-muted)">근일점에서 북반구 여름</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 밀란코비치 종합 슬라이더 (기본 숨김) -->
+                <div id="masterControl" style="display:none;">
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>시간 궤적 <span style="font-size: 0.8em; color: var(--text-muted); font-weight: 400;">(과거
+                                    40만 년 ~ 현재)</span></span>
+                            <span class="control-value" id="masterTimeVal">0 년 전</span>
+                        </div>
+                        <input type="range" id="masterTime" class="slider" min="-400000" max="0" step="1000" value="0">
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 왼쪽 패널: 데이터 대시보드 -->
+            <div class="panel">
+                <div class="data-header">위치별 기후 데이터 분석</div>
+
+                <div class="tabs" id="hemiTabs">
+                    <button class="tab-btn active" data-hemi="NH">🌍 북반구 (위도 37°N)</button>
+                    <button class="tab-btn" data-hemi="SH">🌏 남반구 (위도 37°S)</button>
+                </div>
+
+                <table id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>위치</th>
+                            <th>계절</th>
+                            <th>남중 고도</th>
+                            <th>입사량 지수</th>
+                            <th>평균 기온 추정</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- JS generated rows -->
+                    </tbody>
+                </table>
+
+                <div class="data-header">기온 변화 시각화</div>
+                <div id="rangeInfo" style="margin-bottom:12px; font-weight:600; text-align:center; font-size:1.1rem;">
+                </div>
+                <div class="chart-container" id="rangeChartContainer">
+                    <canvas id="rangeChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 신설: 40만년 히스토리 시계열 그래프 영역 -->
+        <div id="historyContainer"
+            style="display:none; width: 100%; height: 260px; margin-top: 10px; flex: none; box-sizing: border-box;">
+            <div class="panel" id="historyPanel"
+                style="padding: 10px 20px; box-sizing: border-box; width: 100%; height: 100%; display: block; overflow: hidden;">
+                <div class="data-header"
+                    style="margin-bottom:8px; padding-bottom:6px; height: 30px; box-sizing: border-box;">밀란코비치 변동 주기 시계열
+                    (과거 40만 년)</div>
+                <div style="position: relative; width: 100%; height: 190px;">
+                    <canvas id="historyChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- end of appScaleWrapper -->
+
+    <script>
+        // DOM Elements
+        const canvas = document.getElementById('orbitCanvas');
+        const ctx = canvas.getContext('2d');
+        const tiltSlider = document.getElementById('tilt');
+        const eccSlider = document.getElementById('eccentricity');
+        const precessSlider = document.getElementById('precession');
+        const precessBtns = document.querySelectorAll('#precessPresets .radio-btn');
+
+        const tiltVal = document.getElementById('tiltVal');
+        const eccVal = document.getElementById('eccVal');
+        const precessVal = document.getElementById('precessVal');
+        const tableBody = document.getElementById('tableBody');
+        const hemiTabs = document.querySelectorAll('.tab-btn');
+
+        const masterTimeSlider = document.getElementById('masterTime');
+        const masterTimeVal = document.getElementById('masterTimeVal');
+        const modeBtns = document.querySelectorAll('#modeSwitch .mode-btn');
+        const manualControls = document.getElementById('manualControls');
+        const masterControl = document.getElementById('masterControl');
+
+        // Dynamic Resize Logic
+        const appWrapper = document.getElementById('appScaleWrapper');
+        function resizeApp() {
+            const scaleX = window.innerWidth / 1400;
+            const scaleY = window.innerHeight / 920;
+            const scale = Math.min(scaleX, scaleY);
+            appWrapper.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        }
+
+        // 브라우저 최초 로드 시 한 번만 스케일링 (핀치 줌 시 실시간 재계산 방지)
+        resizeApp();
+
+        // Initial Values
+        let currentHemi = 'NH';
+        let C = {
+            tilt: 23.5,
+            ecc: 0.017,
+            phase: 0, // 0 to 26000
+            eccExaggerate: true,
+            tiltExaggerate: true,
+            isMasterMode: false,
+            masterTime: 0
+        };
+
+        // Chart.js Setup
+        let rangeChart = null;
+
+        function initChart() {
+            const ctxChart = document.getElementById('rangeChart').getContext('2d');
+            Chart.defaults.color = '#94a3b8';
+            Chart.defaults.font.family = "'Inter', sans-serif";
+
+            rangeChart = new Chart(ctxChart, {
+                type: 'bar',
+                data: {
+                    labels: ['근일점 기온 (°C)', '원일점 기온 (°C)'],
+                    datasets: [{
+                        label: '위치별 평균 기온',
+                        data: [0, 0],
+                        backgroundColor: [
+                            'rgba(244, 63, 94, 0.7)',
+                            'rgba(56, 189, 248, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgb(244, 63, 94)',
+                            'rgb(56, 189, 248)'
+                        ],
+                        borderWidth: 1,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            min: -10,
+                            max: 30,
+                            grid: { color: 'rgba(255,255,255,0.05)' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        let historyChart = null;
+
+        // Math Models for History (Empirical approximation for highs school sim)
+        function getHistoricalTilt(t) {
+            // t is positive years ago. Evaluated approx 23.5 at t=0.
+            return 23.0 + 1.5 * Math.cos(2 * Math.PI * t / 41000 - 1.231);
+        }
+        function getHistoricalEcc(t) {
+            // Evaluated approx 0.017 at t=0. Range approx 0.01 - 0.06
+            return 0.035 + 0.02 * Math.cos(2 * Math.PI * t / 100000 - 3.4) + 0.005 * Math.cos(2 * Math.PI * t / 413000 - 1.0);
+        }
+        function getHistoricalPrecess(t) {
+            // 세차 운동 지수 (1 = 원일점 북반구 여름(현재), -1 = 근일점 북반구 여름)
+            return Math.cos(2 * Math.PI * t / 26000);
+        }
+
+        function initHistoryChart() {
+            const ctxHistory = document.getElementById('historyChart').getContext('2d');
+
+            const labels = [];
+            const tiltData = [];
+            const eccData = [];
+            const precessData = [];
+            for (let t = 400000; t >= 0; t -= 1000) {
+                labels.push(-t);
+                tiltData.push(getHistoricalTilt(t));
+                eccData.push(getHistoricalEcc(t));
+                precessData.push(getHistoricalPrecess(t));
+            }
+
+            historyChart = new Chart(ctxHistory, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: '이심률 (Eccentricity)',
+                            data: eccData,
+                            borderColor: '#38bdf8',
+                            yAxisID: 'yEcc',
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            tension: 0.4
+                        },
+                        {
+                            label: '자전축 기울기 (Tilt)',
+                            data: tiltData,
+                            borderColor: '#f43f5e',
+                            yAxisID: 'yTilt',
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            tension: 0.4
+                        },
+                        {
+                            label: '세차 운동 지수 (Precession)',
+                            data: precessData,
+                            borderColor: '#a855f7',
+                            yAxisID: 'yPrecess',
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            tension: 0.4
+                        },
+                        {
+                            label: '현재 시점 (이심률)',
+                            data: Array(401).fill(null),
+                            borderColor: 'transparent',
+                            pointBackgroundColor: '#fff',
+                            pointBorderColor: '#38bdf8',
+                            pointBorderWidth: 3,
+                            pointRadius: 6,
+                            yAxisID: 'yEcc'
+                        },
+                        {
+                            label: '현재 시점 (기울기)',
+                            data: Array(401).fill(null),
+                            borderColor: 'transparent',
+                            pointBackgroundColor: '#fff',
+                            pointBorderColor: '#f43f5e',
+                            pointBorderWidth: 3,
+                            pointRadius: 6,
+                            yAxisID: 'yTilt'
+                        },
+                        {
+                            label: '현재 시점 (세차 운동)',
+                            data: Array(401).fill(null),
+                            borderColor: 'transparent',
+                            pointBackgroundColor: '#fff',
+                            pointBorderColor: '#a855f7',
+                            pointBorderWidth: 3,
+                            pointRadius: 6,
+                            yAxisID: 'yPrecess'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { labels: { color: '#fff' } },
+                        tooltip: {
+                            callbacks: {
+                                title: function (context) { return Math.abs(context[0].label) + ' 년 전'; }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: {
+                                color: '#fff',
+                                callback: function (val, index) {
+                                    const year = parseInt(this.getLabelForValue(val));
+                                    if (year === 0) return '현재';
+                                    if (Math.abs(year) % 50000 === 0) return Math.abs(year / 10000) + '만년전';
+                                    return '';
+                                }
+                            }
+                        },
+                        yEcc: {
+                            type: 'linear', position: 'left',
+                            title: { display: true, text: '공전 궤도 이심률', color: '#fff' },
+                            ticks: { color: '#fff' },
+                            grid: { color: 'rgba(56, 189, 248, 0.1)' },
+                            min: 0, max: 0.07
+                        },
+                        yTilt: {
+                            type: 'linear', position: 'right',
+                            title: { display: true, text: '자전축 기울기 (°)', color: '#fff' },
+                            ticks: { color: '#fff' },
+                            grid: { drawOnChartArea: false },
+                            min: 21, max: 25
+                        },
+                        yPrecess: {
+                            type: 'linear', position: 'right',
+                            display: false,
+                            min: -1.5, max: 1.5
+                        }
+                    }
+                }
+            });
+        }
+
+        // Logic & Math
+        function calcStats(isAphelion, tilt, phaseYears, ecc) {
+            // phase 0 = 0 years. 26000 = 2 PI
+            const phaseRad = (phaseYears / 26000) * 2 * Math.PI;
+            // alpha is the apparent 2D tilt in the orbit plane projection
+            const alpha = -tilt * Math.cos(phaseRad);
+
+            // At aphelion (right), sun is left. If alpha < 0, north pole points left (-x), which is towards sun = Summer!
+            // Thus delta (sun's apparent angle relative to equator) is -alpha.
+            const delta = isAphelion ? -alpha : alpha;
+
+            const a = 1;
+            const c = a * ecc;
+            const d = isAphelion ? (a + c) : (a - c); // Distance relative to semimajor axis
+
+            // Latitude 37 deg N/S
+            const h_NH = Math.max(0, 90 - Math.abs(37 - delta));
+            const h_SH = Math.max(0, 90 - Math.abs(-37 - delta));
+
+            // Insolation index = 100 * sin(h) / d^2. Max realistic around 100-110
+            const ins_NH = 100 * Math.sin(h_NH * Math.PI / 180) / (d * d);
+            const ins_SH = 100 * Math.sin(h_SH * Math.PI / 180) / (d * d);
+
+            // Season strings
+            const season_NH = delta > 5 ? '여름' : (delta < -5 ? '겨울' : '봄/가을');
+            const season_SH = delta < -5 ? '여름' : (delta > 5 ? '겨울' : '봄/가을');
+
+            // Temp empirical model
+            // temp = 55 * sin(h)/d^2 - 30. Gives ~25C summer, ~ -5C winter
+            const temp_NH = 55 * Math.sin(h_NH * Math.PI / 180) / (d * d) - 30;
+            const temp_SH = 55 * Math.sin(h_SH * Math.PI / 180) / (d * d) - 30;
+
+            return {
+                h_NH, h_SH, ins_NH, ins_SH, season_NH, season_SH, temp_NH, temp_SH
+            };
+        }
+
+        function getSeasonClass(season) {
+            if (season === '여름') return 'tag-summer';
+            if (season === '겨울') return 'tag-winter';
+            return '';
+        }
+
+        function updateData() {
+            // 현재 상태(기준점) 통계
+            const basePeri = calcStats(false, 23.5, 0, 0.017);
+            const baseAphe = calcStats(true, 23.5, 0, 0.017);
+            const pref = '_' + currentHemi;
+
+            const rBasePeriTemp = basePeri['temp' + pref];
+            const rBaseApheTemp = baseAphe['temp' + pref];
+            const baseRangeDiff = Math.abs(rBasePeriTemp - rBaseApheTemp);
+
+            // 항상 더 높은 기온이 여름, 낮은 기온이 겨울
+            const baseSummerTemp = Math.max(rBasePeriTemp, rBaseApheTemp);
+            const baseWinterTemp = Math.min(rBasePeriTemp, rBaseApheTemp);
+
+            // 사용자가 설정한 현재 시뮬레이션 상태
+            const peri = calcStats(false, C.tilt, C.phase, C.ecc);
+            const aphe = calcStats(true, C.tilt, C.phase, C.ecc);
+
+            // Update Table
+            const hemiName = currentHemi === 'NH' ? '북반구' : '남반구';
+
+            const rowsData = [
+                { pos: '근일점', stat: peri },
+                { pos: '원일점', stat: aphe }
+            ];
+
+            let html = '';
+            rowsData.forEach(r => {
+                const s = r.stat['season' + pref];
+                const h = r.stat['h' + pref].toFixed(1) + '°';
+                const ins = r.stat['ins' + pref].toFixed(1);
+                const tempVal = r.stat['temp' + pref];
+                const temp = tempVal.toFixed(1) + ' °C';
+
+                let diffHtml = '';
+                if (s === '여름') {
+                    const diff = tempVal - baseSummerTemp;
+                    if (Math.abs(diff) > 0.05) {
+                        if (diff > 0) diffHtml = `<span style="font-size:0.85em; color:#f43f5e; margin-left:6px; font-weight:600;">(▲ 더 더워짐)</span>`;
+                        else diffHtml = `<span style="font-size:0.85em; color:#38bdf8; margin-left:6px; font-weight:600;">(▼ 덜 더워짐)</span>`;
+                    }
+                } else if (s === '겨울') {
+                    const diff = tempVal - baseWinterTemp;
+                    if (Math.abs(diff) > 0.05) {
+                        if (diff > 0) diffHtml = `<span style="font-size:0.85em; color:#f43f5e; margin-left:6px; font-weight:600;">(▲ 덜 추워짐)</span>`;
+                        else diffHtml = `<span style="font-size:0.85em; color:#38bdf8; margin-left:6px; font-weight:600;">(▼ 더 추워짐)</span>`;
+                    }
+                }
+
+                html += `<tr>
+                    <td>${r.pos}</td>
+                    <td class="${getSeasonClass(s)}">${s}</td>
+                    <td class="val-highlight">${h}</td>
+                    <td>${ins}</td>
+                    <td class="val-highlight" style="white-space: nowrap;">${temp}${diffHtml}</td>
+                </tr>`;
+            });
+            tableBody.innerHTML = html;
+
+            // Update Chart
+            const rPeriTemp = peri['temp' + pref];
+            const rApheTemp = aphe['temp' + pref];
+            const rangeDiff = Math.abs(rPeriTemp - rApheTemp);
+
+            rangeChart.data.datasets[0].data = [rPeriTemp.toFixed(1), rApheTemp.toFixed(1)];
+            rangeChart.update();
+
+            const rangeChange = rangeDiff - baseRangeDiff;
+            let rangeDiffHtml = '';
+            if (Math.abs(rangeChange) > 0.05) {
+                if (rangeChange > 0) rangeDiffHtml = ` <span style="font-size:0.75em; color:#f43f5e; margin-left:8px;">(현재보다 커짐 ▲)</span>`;
+                else rangeDiffHtml = ` <span style="font-size:0.75em; color:#38bdf8; margin-left:8px;">(현재보다 작아짐 ▼)</span>`;
+            } else {
+                rangeDiffHtml = ` <span style="font-size:0.75em; color:var(--text-muted); margin-left:8px;">(현재와 동일)</span>`;
+            }
+
+            document.getElementById('rangeInfo').innerHTML = `${hemiName}의 기온 연교차: <span style="color:var(--accent);">${rangeDiff.toFixed(1)}°C</span>${rangeDiffHtml}`;
+        }
+
+        // Draw Canvas
+        function drawEarth(x, y, label, isAphelion) {
+            const phaseRad = (C.phase / 26000) * 2 * Math.PI;
+            const visualTilt = C.tiltExaggerate ? (C.tilt - 23.0) * 10 + 23.0 : C.tilt;
+            const alpha = -visualTilt * Math.cos(phaseRad);
+
+            ctx.save();
+            ctx.translate(x, y);
+
+            // glow
+            let grad = ctx.createRadialGradient(0, 0, 5, 0, 0, 25);
+            grad.addColorStop(0, '#38bdf8');
+            grad.addColorStop(1, '#0284c7');
+
+            ctx.fillStyle = grad;
+            ctx.beginPath(); ctx.arc(0, 0, 20, 0, 2 * Math.PI); ctx.fill();
+
+            // rotate for axis
+            ctx.rotate(alpha * Math.PI / 180);
+
+            // Axis line
+            ctx.strokeStyle = '#f8fafc';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, -35);
+            ctx.lineTo(0, 35);
+            ctx.stroke();
+
+            // Equator
+            ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([3, 2]);
+            ctx.beginPath(); ctx.moveTo(-22, 0); ctx.lineTo(22, 0); ctx.stroke();
+            ctx.setLineDash([]);
+
+            // N pole label
+            ctx.fillStyle = '#f8fafc'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
+            ctx.fillText('N', 0, -40);
+
+            ctx.restore();
+
+            // Shadow (Night side facing away from sun)
+            ctx.save();
+            ctx.translate(x, y);
+            // Sun is always at center (Cx) minus c.
+            // But from Earth's perspective relative to Sun along X axis:
+            // if Aphelion (Right), Sun is on left -> angle 180 deg
+            // if Perihelion (Left), Sun is on right -> angle 0 deg
+            const angleToSun = isAphelion ? Math.PI : 0;
+            ctx.rotate(-angleToSun);
+            ctx.fillStyle = 'rgba(0,0,0,0.65)';
+            ctx.beginPath();
+            ctx.arc(0, 0, 20.5, Math.PI / 2, 3 * Math.PI / 2);
+            ctx.fill();
+            ctx.restore();
+
+            // Sub label
+            ctx.fillStyle = 'rgba(255,255,255,0.6)';
+            ctx.font = '12px Inter';
+            ctx.textAlign = 'center';
+            const distLabel = isAphelion ? '멀다' : '가깝다';
+            ctx.fillText(`${label} (${distLabel})`, x, y + 45);
+        }
+
+        function drawFrame() {
+            const W = canvas.width;
+            const H = canvas.height;
+            const Cx = W / 2;
+            const Cy = H / 2;
+
+            ctx.clearRect(0, 0, W, H);
+
+            // Orbit params
+            const a = 140; // 캔버스 세로폭에 맞추어 반지름 축소
+            const visualEcc = C.eccExaggerate ? C.ecc * 10 : C.ecc;
+
+            // 타원 궤도 단축 (Minor axis) 계산식 적용
+            const b = a * Math.sqrt(1 - visualEcc * visualEcc);
+            const c = a * visualEcc;
+
+            // The mathematical center of the ellipse is Cx, Cy
+            // The Sun is at focus: Cx - c
+            ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.ellipse(Cx, Cy, a, b, 0, 0, 2 * Math.PI);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Draw Sun at focus
+            const sunX = Cx - c;
+            const sunY = Cy;
+
+            let grad = ctx.createRadialGradient(sunX, sunY, 5, sunX, sunY, 40);
+            grad.addColorStop(0, '#fef08a');
+            grad.addColorStop(0.3, '#eab308');
+            grad.addColorStop(1, 'rgba(234, 179, 8, 0)');
+
+            ctx.fillStyle = grad;
+            ctx.beginPath(); ctx.arc(sunX, sunY, 50, 0, 2 * Math.PI); ctx.fill();
+
+            ctx.fillStyle = '#fef08a'; ctx.font = 'bold 13px Inter'; ctx.textAlign = 'center';
+            ctx.fillText('태양', sunX, sunY - 50);
+
+            // Draw Earths at Apsides
+            // Perihelion (Left)
+            drawEarth(Cx - a, Cy, '근일점', false);
+            // Aphelion (Right)
+            drawEarth(Cx + a, Cy, '원일점', true);
+        }
+
+        // Event Handling
+        function updateUI() {
+            if (C.isMasterMode) {
+                const t_ago = Math.abs(C.masterTime);
+                C.tilt = getHistoricalTilt(t_ago);
+                C.ecc = getHistoricalEcc(t_ago);
+                C.phase = t_ago % 26000;
+
+                masterTimeVal.textContent = t_ago === 0 ? "현재 (0년 전)" : `${t_ago.toLocaleString()} 년 전`;
+
+                if (historyChart) {
+                    const dataIndex = Math.floor((400000 + C.masterTime) / 1000);
+                    const eccArr = Array(401).fill(null);
+                    const tiltArr = Array(401).fill(null);
+                    const precessArr = Array(401).fill(null);
+                    eccArr[dataIndex] = C.ecc;
+                    tiltArr[dataIndex] = C.tilt;
+                    precessArr[dataIndex] = getHistoricalPrecess(t_ago);
+
+                    historyChart.data.datasets[3].data = eccArr;
+                    historyChart.data.datasets[4].data = tiltArr;
+                    historyChart.data.datasets[5].data = precessArr;
+                    historyChart.update('none');
+                }
+
+                tiltSlider.value = C.tilt;
+                eccSlider.value = C.ecc;
+                precessSlider.value = C.phase;
+            }
+
+            tiltVal.textContent = C.tilt.toFixed(1) + '°';
+            eccVal.textContent = C.ecc.toFixed(3);
+
+            if (C.phase === 0) precessVal.textContent = "현재 (약 0년)";
+            else if (C.phase === 13000) precessVal.textContent = "약 13,000년 후";
+            else precessVal.textContent = `약 ${C.phase.toLocaleString()}년 후`;
+
+            // update presets style
+            precessBtns.forEach(btn => {
+                if (parseInt(btn.dataset.val) === C.phase) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+
+            drawFrame();
+            updateData();
+        }
+
+        tiltSlider.addEventListener('input', (e) => {
+            C.tilt = parseFloat(e.target.value);
+            updateUI();
+        });
+
+        eccSlider.addEventListener('input', (e) => {
+            C.ecc = parseFloat(e.target.value);
+            updateUI();
+        });
+
+        precessSlider.addEventListener('input', (e) => {
+            C.phase = parseInt(e.target.value);
+            updateUI();
+        });
+
+        precessBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const targetBtn = e.target.closest('.radio-btn');
+                const val = parseInt(targetBtn.dataset.val);
+                precessSlider.value = val;
+                C.phase = val;
+                updateUI();
+            });
+        });
+
+        hemiTabs.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                hemiTabs.forEach(b => b.classList.remove('active'));
+                const targetBtn = e.target.closest('.tab-btn');
+                targetBtn.classList.add('active');
+                currentHemi = targetBtn.dataset.hemi;
+                updateUI();
+            });
+        });
+
+        const eccRadios = document.querySelectorAll('input[name="eccToggle"]');
+        eccRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    C.eccExaggerate = e.target.value === 'on';
+                    updateUI();
+                }
+            });
+        });
+
+        document.getElementById('btnResetTilt').addEventListener('click', () => {
+            C.tilt = 23.5;
+            tiltSlider.value = 23.5;
+            updateUI();
+        });
+
+        document.getElementById('btnResetEcc').addEventListener('click', () => {
+            C.ecc = 0.017;
+            eccSlider.value = 0.017;
+            updateUI();
+        });
+
+        // Master Mode Toggles & Sliders
+        modeBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                modeBtns.forEach(b => b.classList.remove('active'));
+                const targetBtn = e.target.closest('.mode-btn');
+                targetBtn.classList.add('active');
+
+                C.isMasterMode = targetBtn.dataset.mode === 'master';
+
+                if (C.isMasterMode) {
+                    manualControls.style.display = 'none';
+                    masterControl.style.display = 'block';
+                    document.getElementById('historyContainer').style.display = 'block';
+                    document.getElementById('rangeChartContainer').style.height = '200px';
+                } else {
+                    manualControls.style.display = 'block';
+                    masterControl.style.display = 'none';
+                    document.getElementById('historyContainer').style.display = 'none';
+                    document.getElementById('rangeChartContainer').style.height = '400px';
+                }
+                updateUI();
+            });
+        });
+
+        masterTimeSlider.addEventListener('input', (e) => {
+            C.masterTime = parseInt(e.target.value);
+            updateUI();
+        });
+
+        const tiltRadios = document.querySelectorAll('input[name="tiltToggle"]');
+        tiltRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    C.tiltExaggerate = e.target.value === 'on';
+                    updateUI();
+                }
+            });
+        });
+
+        // Init
+        initChart();
+        initHistoryChart();
+        updateUI();
+
+    </script>
+</body>
+
+</html>
