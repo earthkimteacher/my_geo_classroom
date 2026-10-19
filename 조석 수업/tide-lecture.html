@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>조석 · 수업 슬라이드</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<!--
+═══════════════════════════════════════════════════════════════════
+ 수업 슬라이드 엔진 (단일 파일, 외부 라이브러리 없음 — 글꼴만 CDN)
+
+ [슬라이드 추가 방법]
+ 1) <section class="slide" id="s17" data-tile="dark" data-title="제목" data-notes="발표자 노트"> ... </section> 를 추가
+    data-tile : black | dark | graphite (어두운 면)  /  light | parchment (밝은 면)
+ 2) 등장 효과는 HTML 속성으로:
+    data-in="300"            장면에 들어올 때 저절로 (값 = 지연 ms)
+    data-step="2"            2번째 클릭에서 나타남
+    data-fx="rise|fade|pop|left|up|scale|draw|wipe"   등장 모양 (draw = SVG 선 그리기)
+    data-delay / data-dur    지연·길이(ms)
+ 3) 더 복잡한 움직임은 하단 <script>에서 Deck.scene('s17', { enter(c){}, go(c,k){} }) 로 작성
+    c.reveal / c.a / c.tween / c.count / c.loop / c.wait 사용 (장면을 떠나면 자동 정리)
+ 4) 오른쪽 위 키워드 표시는 window.KW 의 items(이름), at(슬라이드별 키워드 번호, 없으면 -1)
+
+ [단축키]  → Space 다음 · ← 이전 · N 노트 · O 전체 보기 · B/W 검은/흰 화면 · F 전체 화면 · ? 도움말
+ [주소 옵션] ?s=1 학생 모드(노트 숨김) · ?still=1 컨트롤 숨김 정지 화면 · #3 3번 슬라이드 · &k=2 2단계 상태
+═══════════════════════════════════════════════════════════════════
+-->
+<style>
+:root{
+  --white:#fff; --parch:#f5f5f7; --black:#000; --dark:#1d1d1f; --graphite:#272729;
+  --ink:#1d1d1f; --on-dark:#f5f5f7;
+  --c1:#64D2FF; --c2:#FFD60A; --c3:#FF6A3D; --c4:#30D158;
+  --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+  --ease-out:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:#000}
+body{font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word;user-select:none;-webkit-user-select:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+/* 무대 */
+#viewport{position:fixed;inset:0;overflow:hidden;background:#000}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center center;overflow:hidden;background:#000}
+.slide{position:absolute;inset:0;display:none;overflow:hidden;isolation:isolate}
+.slide.is-on{display:block;z-index:2}
+.slide.is-out{display:block;z-index:1}
+
+/* 면(타일) */
+.slide[data-tile="black"]{background:#000;color:var(--on-dark)}
+.slide[data-tile="dark"]{background:var(--dark);color:var(--on-dark)}
+.slide[data-tile="graphite"]{background:var(--graphite);color:var(--on-dark)}
+.slide[data-tile="light"]{background:#fff;color:var(--ink)}
+.slide[data-tile="parchment"]{background:var(--parch);color:var(--ink)}
+.slide[data-tile="black"],.slide[data-tile="dark"],.slide[data-tile="graphite"]{--t2:#a1a1a6;--t3:#6e6e73;--hl:#3a3a3c;--act:#2997ff}
+.slide[data-tile="light"],.slide[data-tile="parchment"]{--c1:#0077B6;--c2:#9A7400;--c3:#C4391B;--c4:#1E8B3E;--t2:#6e6e73;--t3:#86868b;--hl:#e0e0e0;--act:#0066cc}
+
+/* 글자 체계 (무대 px, 최소 24) */
+.t-title{font-size:84px;font-weight:600;line-height:1.1;letter-spacing:-.025em}
+.t-lead{font-size:44px;font-weight:400;line-height:1.3;letter-spacing:-.012em}
+.t-eyebrow{font-size:30px;font-weight:600;line-height:1.2;letter-spacing:.01em;color:var(--t2)}
+.t-cap{font-size:26px;line-height:1.35}
+.num{font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.abs{position:absolute} .center{text-align:center}
+.mute{color:var(--t2)} .mute2{color:var(--t3)}
+.c1{color:var(--c1)} .c2{color:var(--c2)} .c3{color:var(--c3)} .c4{color:var(--c4)} .act{color:var(--act)}
+.full-svg{position:absolute;inset:0;width:1920px;height:1080px;overflow:visible}
+svg text{font-family:var(--font)}
+.f-c1{fill:var(--c1)} .f-c2{fill:var(--c2)} .f-c3{fill:var(--c3)} .f-c4{fill:var(--c4)}
+.s-hl{stroke:var(--hl)} .tb{transform-box:fill-box;transform-origin:center}
+
+/* 선언형 등장 */
+[data-in],[data-step]{opacity:0}
+[data-fx="draw"],[data-fx="draw"] :is(path,line,polyline,polygon,circle,ellipse,rect){stroke-dasharray:1 1;stroke-dashoffset:1}
+[data-fx="draw"]{opacity:1}
+svg [data-in],svg [data-step]{transform-box:fill-box;transform-origin:center}
+
+/* 장면 머리 */
+.hd{position:absolute;left:120px;top:78px;right:120px;z-index:3}
+.hd .eb{font-size:28px;font-weight:600;color:var(--t2);margin-bottom:10px}
+.hd .eb b{color:var(--act);font-weight:700;margin-right:.35em}
+.hd h2{font-size:66px;font-weight:600;line-height:1.1;letter-spacing:-.028em}
+
+/* 학습지 카드와 빈칸 */
+.ws-card{position:absolute;border-radius:18px;padding:30px 44px 26px;background:#f5f5f7;z-index:3}
+.slide[data-tile="parchment"] .ws-card{background:#fff}
+.slide[data-tile="black"] .ws-card,.slide[data-tile="dark"] .ws-card,.slide[data-tile="graphite"] .ws-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+.ws-card .ws-h{display:flex;align-items:baseline;gap:18px;margin-bottom:6px}
+.ws-card .ws-h b{font-size:40px;font-weight:700;letter-spacing:-.02em}
+.ws-card .ws-h span{font-size:28px;color:var(--t2)}
+.ws-row{display:grid;grid-template-columns:130px 1fr;gap:22px;align-items:baseline;font-size:38px;line-height:1.55;padding:12px 0;border-top:1px solid var(--hl)}
+.ws-row:first-of-type{border-top:0}
+.ws-row .tm{font-size:26px;font-weight:600;color:var(--t2)}
+.bk{position:relative;display:inline-block;min-width:3.2em;margin:0 .2em;padding:0 .3em;text-align:center;line-height:1.3;white-space:nowrap;border-bottom:4px solid #c7c7cc}
+.slide[data-tile="black"] .bk,.slide[data-tile="dark"] .bk,.slide[data-tile="graphite"] .bk{border-bottom-color:#48484a}
+.bk .a{display:inline-block;font-weight:700;color:var(--act)}
+.bk .n{position:absolute;left:-.6em;top:-.5em;min-width:1.25em;height:1.25em;padding:0 .2em;border-radius:9999px;background:var(--act);color:#fff;font-size:.46em;font-weight:700;line-height:1.25em;text-align:center}
+.say-line{position:absolute;left:120px;right:120px;text-align:center;font-size:44px;font-weight:600;letter-spacing:-.02em;z-index:3}
+.fine{position:absolute;left:120px;bottom:40px;font-size:24px;color:var(--t3);z-index:3}
+
+/* 수식 */
+.eq-big{font-size:150px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.eq-cap{font-size:38px;color:var(--t2);margin-top:14px}
+.eq-in{font-size:44px;font-weight:600;line-height:1.5}
+
+/* 확인 문제 */
+.qz{position:absolute;left:120px;top:84px;width:1680px;display:flex;flex-direction:column;gap:24px}
+.qz-eb{display:flex;align-items:center;gap:14px;font-size:30px;font-weight:600;color:var(--t2)}
+.qz-eb b{color:var(--act);font-weight:700}
+.qz-lv{display:inline-flex;padding:2px 14px;border-radius:9999px;border:2px solid var(--hl);font-size:26px}
+.qz-stem{font-size:40px;font-weight:600;line-height:1.42;letter-spacing:-.015em}
+.qz-ch{list-style:none;display:flex;flex-direction:column;gap:8px}
+.qz-ch li{position:relative;display:flex;gap:18px;font-size:38px;line-height:1.38;padding:12px 150px 12px 20px;border-radius:14px}
+.qz-n{flex:none;font-weight:700;color:var(--t2)}
+.qz-hl{position:absolute;inset:0;border-radius:14px;border:3px solid var(--act);background:color-mix(in srgb,var(--act) 10%,transparent);pointer-events:none}
+.qz-mark{position:absolute;right:18px;top:50%;margin-top:-.78em;font-size:30px;font-weight:700;color:#fff;background:var(--act);border-radius:9999px;padding:3px 18px}
+.qz-why{border-radius:18px;background:#fff;border-left:6px solid var(--act);padding:22px 30px 24px}
+.qz-why-h{font-size:26px;font-weight:700;color:var(--act);margin-bottom:6px}
+.qz-why-t{font-size:32px;line-height:1.5}
+.qz-why b{color:var(--act)}
+
+/* 정리 카드 */
+.rc{position:absolute;top:290px;width:520px;height:560px;border-radius:18px;background:#fff;padding:34px 34px;display:flex;flex-direction:column;gap:14px}
+.rc .no{font-size:26px;font-weight:700;color:var(--act)}
+.rc h3{font-size:46px;font-weight:600;letter-spacing:-.02em;line-height:1.15}
+.rc p{font-size:30px;line-height:1.5}
+.rc .big{margin-top:auto;font-size:52px;font-weight:700;letter-spacing:-.02em}
+
+/* 키워드 진행 표시 */
+#kwbar{position:absolute;top:34px;right:44px;z-index:30;display:flex;align-items:center;gap:8px;opacity:0;transform:translateY(-8px);pointer-events:none;transition:opacity .45s var(--ease-out),transform .45s var(--ease-out)}
+#kwbar.show{opacity:1;transform:none;pointer-events:auto}
+#kwbar .kw{display:flex;align-items:center;height:46px;min-width:46px;border-radius:9999px;background:rgba(0,0,0,.055);color:#86868b;font-size:24px;font-weight:600;line-height:1;transition:background .45s,color .45s}
+#kwbar .kw b{width:46px;height:46px;flex:none;display:grid;place-items:center;font-weight:700}
+#kwbar .kw span{max-width:0;overflow:hidden;white-space:nowrap;transition:max-width .6s var(--ease-out),padding .6s var(--ease-out)}
+#kwbar .kw.done{background:rgba(0,0,0,.13);color:#3a3a3c}
+#kwbar .kw.cur{background:#0066cc;color:#fff}
+#kwbar .kw.cur span{max-width:460px;padding-right:22px}
+body:not(.on-light) #kwbar .kw{background:rgba(255,255,255,.1);color:#8e8e93}
+body:not(.on-light) #kwbar .kw.done{background:rgba(255,255,255,.24);color:#f5f5f7}
+body:not(.on-light) #kwbar .kw.cur{background:#2997ff;color:#fff}
+
+/* 하단 컨트롤(HUD) */
+#hud{position:fixed;right:22px;bottom:18px;display:flex;align-items:center;gap:8px;z-index:50;opacity:0;transform:translateY(8px);transition:opacity .35s var(--ease-out),transform .35s var(--ease-out);pointer-events:none}
+#hud.show{opacity:1;transform:none;pointer-events:auto}
+#hud button{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(210,210,215,.64);color:#1d1d1f;-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);transition:transform .15s var(--ease-out)}
+#hud button:active{transform:scale(.92)}
+#hud button svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#hud .count{min-width:84px;height:44px;border-radius:9999px;display:grid;place-items:center;padding:0 16px;background:rgba(210,210,215,.64);color:#1d1d1f;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px)}
+#progress{position:fixed;left:0;right:0;bottom:0;height:3px;z-index:40}
+#progress i{display:block;height:100%;width:0;background:rgba(255,255,255,.38);transition:width .5s var(--ease-out),background .4s}
+body.on-light #progress i{background:rgba(0,0,0,.22)}
+#stepdots{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:9px;z-index:40;opacity:0;transition:opacity .35s}
+#stepdots.show{opacity:1}
+#stepdots i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.28);transition:background .3s,transform .3s}
+#stepdots i.on{background:rgba(255,255,255,.9);transform:scale(1.15)}
+body.on-light #stepdots i{background:rgba(0,0,0,.16)} body.on-light #stepdots i.on{background:rgba(0,0,0,.62)}
+
+/* 덮개: 노트·전체 보기·도움말·화면 끄기 */
+.overlay{position:fixed;inset:0;z-index:60;display:none}
+.overlay.show{display:block}
+#notes{position:fixed;left:0;right:0;bottom:0;height:34vh;z-index:55;transform:translateY(102%);transition:transform .45s var(--ease-out);background:rgba(22,22,23,.88);color:#f5f5f7;-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);padding:22px 40px 26px;overflow:auto}
+#notes.show{transform:none}
+#notes .nh{font-size:15px;color:#a1a1a6;font-weight:600;margin-bottom:10px} #notes .nh b{color:#f5f5f7;font-size:18px;margin-right:10px}
+#notes p{font-size:clamp(17px,1.55vw,24px);line-height:1.6;max-width:1500px}
+#overview{background:rgba(0,0,0,.72);-webkit-backdrop-filter:saturate(180%) blur(24px);backdrop-filter:saturate(180%) blur(24px);overflow:auto;padding:56px 5vw}
+#overview h2{color:#f5f5f7;font-size:28px;font-weight:600;margin-bottom:22px}
+#overview .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+#overview .ov{position:relative;aspect-ratio:16/9;border-radius:11px;padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between;text-align:left;border:1px solid rgba(255,255,255,.1)}
+#overview .ov.cur{outline:3px solid #2997ff;outline-offset:3px}
+#overview .ov .n{font-size:14px;font-weight:700;opacity:.6} #overview .ov .tt{font-size:19px;font-weight:600;line-height:1.25}
+#overview .ov[data-tile="black"],#overview .ov[data-tile="dark"],#overview .ov[data-tile="graphite"]{background:#1d1d1f;color:#f5f5f7}
+#overview .ov[data-tile="light"]{background:#fff;color:#1d1d1f} #overview .ov[data-tile="parchment"]{background:#f5f5f7;color:#1d1d1f}
+#help{background:rgba(0,0,0,.6);place-items:center} #help.show{display:grid}
+#help .box{background:#fff;color:#1d1d1f;border-radius:18px;padding:34px 40px;min-width:520px}
+#help h3{font-size:24px;margin-bottom:16px} #help table{border-collapse:collapse;font-size:17px} #help td{padding:7px 18px 7px 0;border-bottom:1px solid #f0f0f0}
+#help kbd{display:inline-block;min-width:30px;padding:3px 9px;border-radius:8px;background:#f5f5f7;border:1px solid #e0e0e0;font:600 15px var(--font);text-align:center}
+#blank{position:fixed;inset:0;z-index:70;display:none} #blank.black{display:block;background:#000} #blank.white{display:block;background:#fff}
+html.still #hud,html.still #progress,html.still #stepdots{display:none!important}
+html.student #notes{display:none!important}
+@media (prefers-reduced-motion: reduce){ .slide *{scroll-behavior:auto} }
+
+/* ── 조석 수업에서 추가한 스타일 ── */
+.kw-n{width:380px;top:690px;font-size:44px;font-weight:700;letter-spacing:-.025em}
+.kw-s{width:380px;top:754px;font-size:28px}
+.pill{display:inline-flex;align-items:center;height:56px;padding:0 26px;border-radius:9999px;font-size:30px;font-weight:700;color:#fff;background:#48484a;transition:background .3s}
+.pill[data-s="만조"]{background:#0a84ff}
+.pill[data-s="간조"]{background:#8e6a3a}
+.pill[data-s="밀물"]{background:#1f8f4a}
+.pill[data-s="썰물"]{background:#c4511b}
+.pill[data-s="대기"]{background:#636366}
+.ws-card.wide .ws-row{grid-template-columns:190px 1fr}
+.frac{display:inline-flex;flex-direction:column;align-items:center;font-size:40px;line-height:1.25;font-weight:700}
+.frac span:first-child{border-bottom:4px solid currentColor;padding:0 12px 4px}
+.frac span:last-child{padding-top:4px}
+.cmp{display:grid;grid-template-columns:80px 340px auto;align-items:center;gap:12px;margin:10px 0;font-size:32px;font-weight:600}
+.cmp i{display:block;height:44px;border-radius:10px}
+.cmp .c1bar{background:var(--c1)} .cmp .c2bar{background:var(--c2)}
+.cmp b{font-size:32px}
+.callout{left:1490px;width:330px;font-size:28px;line-height:1.5}
+.callout .act{font-size:36px}
+.lg{display:flex;align-items:center;gap:10px;margin-top:20px;font-size:24px;color:var(--t2)}
+.lg i{display:inline-block;width:40px}
+.qz-box{border:2px solid var(--hl);border-radius:16px;padding:16px 28px;font-size:34px;line-height:1.6;background:#fff}
+.qz-ch.row{flex-direction:row;flex-wrap:wrap;gap:16px}
+.qz-ch.row li{padding:12px 30px;border:2px solid var(--hl);background:#fff}
+.qz-ch.row .qz-mark{top:-24px;right:-14px;margin-top:0;font-size:22px;padding:2px 14px}
+.rc.rc4{width:400px;padding:30px 30px}
+.rc.rc4 h3{font-size:40px}
+.rc.rc4 p{font-size:28px}
+.rc.rc4 .big{font-size:44px}
+</style>
+</head>
+<body>
+
+<div id="viewport"><div id="stage">
+
+<!-- ═══ s01 표지 ═══ -->
+<section class="slide" id="s01" data-tile="black" data-title="표지" data-notes="달빛 아래 바닷물이 차올랐다 빠지는 장면으로 시작합니다. 바위 아래 갯벌이 드러났다 잠기는 모습을 보며 '바닷물은 왜, 얼마나 자주 차오를까?'를 질문합니다. 13차시: 조석·기조력 / 14차시: 조석 주기와 양상·달의 위상에 따른 조석 변화.">
+  <svg class="full-svg" viewBox="0 0 1920 1080">
+    <defs>
+      <radialGradient id="s01-moon" cx=".4" cy=".35"><stop offset="0" stop-color="#fff"/><stop offset=".6" stop-color="#e6e6ea"/><stop offset="1" stop-color="#9a9aa0"/></radialGradient>
+      <filter id="s01-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="34"/></filter>
+      <linearGradient id="s01-sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d5a8a"/><stop offset="1" stop-color="#05111c"/></linearGradient>
+      <linearGradient id="s01-flat" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a3126"/><stop offset="1" stop-color="#15120e"/></linearGradient>
+    </defs>
+    <circle cx="1460" cy="250" r="130" fill="#fff" opacity=".16" filter="url(#s01-glow)"/>
+    <circle cx="1460" cy="250" r="92" fill="url(#s01-moon)" data-in="200" data-fx="fade" data-dur="1400"/>
+    <path d="M0 862 C 420 846, 900 874, 1920 852 L1920 1080 L0 1080Z" fill="url(#s01-flat)"/>
+    <path d="M1150 862 C1158 790 1196 744 1238 738 C1284 732 1318 792 1330 862Z" fill="#161a1f"/>
+    <path d="M1320 862 C1336 764 1392 704 1450 708 C1512 712 1544 792 1566 860Z" fill="#11151a"/>
+    <path id="s01-water" fill="url(#s01-sea)" opacity=".93"/>
+    <path id="s01-crest" fill="none" stroke="#64D2FF" stroke-opacity=".55" stroke-width="3"/>
+  </svg>
+  <div class="abs t-eyebrow" style="left:160px;top:300px" data-in="900">지구시스템과학 · Ⅱ. 해수의 운동과 순환</div>
+  <div class="abs t-title" style="left:156px;top:350px;font-size:150px;letter-spacing:-.04em" data-in="1100">조석</div>
+  <div class="abs t-lead mute" style="left:160px;top:540px" data-in="1500">바닷물은 왜 하루에 두 번 차오를까?</div>
+</section>
+
+<!-- ═══ s02 오늘의 키워드 ═══ -->
+<section class="slide" id="s02" data-tile="light" data-title="오늘의 키워드" data-notes="두 차시 동안 따라갈 키워드 4개입니다. 1·2는 13차시(조석, 기조력), 3·4는 14차시(조석 주기와 양상, 사리와 조금)입니다. 다음 장부터 오른쪽 위에 지금 배우는 키워드가 표시되고, 칩을 누르면 그 키워드의 첫 장으로 이동합니다.">
+  <div class="hd" data-in><div class="eb">학습 안내</div><h2>오늘의 키워드</h2></div>
+  <svg class="full-svg" viewBox="0 0 1920 1080">
+    <path d="M330 600H1590" stroke="#e8e8ed" stroke-width="12" stroke-linecap="round" fill="none"/>
+    <path d="M330 600H1590" stroke="var(--act)" stroke-width="12" stroke-linecap="round" fill="none" data-in="500" data-fx="draw" data-dur="2000"/>
+    <g data-in="300" data-fx="fade" stroke="#c7c7cc" stroke-width="3" fill="none"><path d="M260 492V470H820V492"/><path d="M1100 492V470H1660V492"/></g>
+    <g data-in="300" data-fx="fade" font-size="28" font-weight="700" fill="#86868b" text-anchor="middle"><text x="540" y="450">13차시</text><text x="1380" y="450">14차시</text></g>
+    <g data-in="500" data-fx="pop"><circle cx="330" cy="600" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="330" y="617" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">1</text></g>
+    <g data-in="1000" data-fx="pop"><circle cx="750" cy="600" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="750" y="617" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">2</text></g>
+    <g data-in="1500" data-fx="pop"><circle cx="1170" cy="600" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="1170" y="617" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">3</text></g>
+    <g data-in="2000" data-fx="pop"><circle cx="1590" cy="600" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="1590" y="617" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">4</text></g>
+  </svg>
+  <div class="abs center kw-n" style="left:140px" data-in="650">조석</div>
+  <div class="abs center mute kw-s" style="left:140px" data-in="750">만조 · 간조 · 조차</div>
+  <div class="abs center kw-n" style="left:560px" data-in="1150">기조력</div>
+  <div class="abs center mute kw-s" style="left:560px" data-in="1250">달의 인력 + 원심력</div>
+  <div class="abs center kw-n" style="left:980px" data-in="1650">조석 주기와 양상</div>
+  <div class="abs center mute kw-s" style="left:980px" data-in="1750">12시간 25분 · 위도</div>
+  <div class="abs center kw-n" style="left:1400px" data-in="2150">사리와 조금</div>
+  <div class="abs center mute kw-s" style="left:1400px" data-in="2250">달의 위상</div>
+  <div class="abs mute" style="left:120px;top:920px;font-size:28px" data-in="2600">지금 배우는 키워드는 오른쪽 위에 계속 표시돼요</div>
+</section>
+
+<!-- ═══ s03 도입: 갯벌은 언제? ═══ -->
+<section class="slide" id="s03" data-tile="dark" data-title="갯벌은 언제 볼 수 있을까?" data-notes="해안 단면에서 해수면이 오르내리는 모습을 계속 보여 줍니다(약 8초 = 12시간 25분). 우리나라 서해안과 남해안의 갯벌은 유네스코 세계 유산으로 등재된 세계 5대 갯벌 중 하나입니다. 예시 답안: 바닷물이 빠져 갯벌이 넓게 드러나는 썰물 시간(간조 무렵)에 잘 관찰할 수 있다. 서·남해안은 밀물과 썰물의 변화가 매우 커서 갯벌을 관찰할 수 있는 시간이 정해져 있음을 생각하게 합니다.">
+  <svg class="full-svg" viewBox="0 0 1920 1080">
+    <rect id="s03-water" x="120" y="750" width="1020" height="210" fill="#1f6fb2" fill-opacity=".72"/>
+    <line id="s03-surf" x1="120" x2="1140" y1="750" y2="750" stroke="#64D2FF" stroke-width="4"/>
+    <path d="M120 960V902L300 886L1000 700L1140 600V960Z" fill="#5b4a37"/>
+    <path d="M300 886L1000 700L1140 600" stroke="#8a7357" stroke-width="5" fill="none" stroke-linejoin="round"/>
+    <g data-in="400" data-fx="fade">
+      <path d="M120 640H1180" stroke="#a1a1a6" stroke-width="2" stroke-dasharray="10 10"/>
+      <path d="M120 860H1180" stroke="#a1a1a6" stroke-width="2" stroke-dasharray="10 10"/>
+      <text x="1190" y="648" font-size="26" fill="#a1a1a6">가장 높을 때</text>
+      <text x="1190" y="868" font-size="26" fill="#a1a1a6">가장 낮을 때</text>
+    </g>
+    <text x="640" y="930" text-anchor="middle" font-size="30" font-weight="600" fill="#e2cfb3" data-in="600" data-fx="fade">갯벌</text>
+  </svg>
+  <div class="hd" data-in><div class="eb">도입</div><h2>갯벌은 언제 볼 수 있을까?</h2></div>
+  <div class="abs" style="left:120px;top:262px;display:flex;align-items:center;gap:26px" data-in="300">
+    <span class="mute" style="font-size:28px;font-weight:600">시각</span><span id="s03-clock" class="num c1" style="font-size:60px;font-weight:700">06:00</span>
+    <span class="mute" style="font-size:28px;font-weight:600;margin-left:20px">해수면 높이</span><span id="s03-h" class="num" style="font-size:44px;font-weight:700">0.0 m</span>
+    <span id="s03-state" class="pill" data-s="썰물">썰물</span>
+  </div>
+  <div class="ws-card" style="left:1400px;top:300px;width:400px;padding:22px 32px">
+    <div class="ws-row" style="grid-template-columns:1fr" data-step="1"><span style="font-size:34px;line-height:1.45"><b class="act">질문</b><br>갯벌을 잘 관찰할 수 있는 시간은 언제일까?</span></div>
+    <div class="ws-row" style="grid-template-columns:1fr" data-step="2"><span style="font-size:30px;line-height:1.5"><b class="c2">생각</b><br>바닷물이 빠져 갯벌이 넓게 드러나는 때</span></div>
+    <div class="ws-row" style="grid-template-columns:1fr" data-step="3"><span style="font-size:28px;line-height:1.5"><b class="c4">왜?</b><br>서·남해안은 해수면 높이 변화가 매우 커서 갯벌을 볼 수 있는 시간이 정해져 있다</span></div>
+  </div>
+  <div class="fine">우리나라 서·남해안 갯벌 — 유네스코 세계 유산, 세계 5대 갯벌</div>
+</section>
+
+<!-- ═══ s04 조석 곡선 읽기 ═══ -->
+<section class="slide" id="s04" data-tile="light" data-title="조석 곡선 읽기" data-notes="그림 Ⅱ-22 조석 주기와 조차. 1단계: 해수면 높이가 주기적으로 오르내리는 곡선(조석). 2단계: 가장 높을 때 만조(고조), 가장 낮을 때 간조(저조). 3단계: 간조→만조는 밀물, 만조→간조는 썰물, 이러한 해수의 흐름이 조류. 4단계: 만조와 간조의 해수면 높이 차가 조차, 만조에서 다음 만조까지가 조석 주기(약 12시간 25분). 보충: 만조나 간조 때 흐름이 멈추는 시기가 정조이며, 이때 조류가 가장 약합니다.">
+  <div class="hd" data-in><div class="eb"><b>1</b>조석</div><h2>해수면은 하루에 어떻게 변할까?</h2></div>
+  <svg class="full-svg" viewBox="0 0 1920 1080">
+    <g data-in="200" data-fx="fade">
+      <g stroke="#e8e8ed" stroke-width="2"><path d="M240 730H1700M240 600H1700M240 470H1700M240 340H1700" fill="none"/></g>
+      <path d="M240 860H1720M240 860V310" stroke="#1d1d1f" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <g fill="#6e6e73" font-size="26" text-anchor="middle"><text x="408" y="900">3</text><text x="576" y="900">6</text><text x="744" y="900">9</text><text x="912" y="900">12</text><text x="1080" y="900">15</text><text x="1248" y="900">18</text><text x="1416" y="900">21</text><text x="1584" y="900">24</text></g>
+      <g fill="#6e6e73" font-size="26" text-anchor="end"><text x="222" y="869">0</text><text x="222" y="739">1</text><text x="222" y="609">2</text><text x="222" y="479">3</text><text x="222" y="349">4</text></g>
+      <text x="252" y="296" font-size="28" font-weight="600" fill="#1d1d1f">해수면 높이 (m)</text>
+      <text x="1720" y="940" text-anchor="end" font-size="28" font-weight="600" fill="#1d1d1f">시간 (시)</text>
+    </g>
+    <path id="s04-curve" d="M240 379" stroke="var(--c1)" stroke-width="7" fill="none" stroke-linecap="round" data-step="1" data-fx="draw" data-dur="2200"/>
+    <g data-step="2" data-fx="fade">
+      <circle cx="935.5" cy="379" r="11" fill="var(--c3)"/><circle cx="1631" cy="379" r="11" fill="var(--c3)"/>
+      <circle cx="587.8" cy="769" r="11" fill="var(--c1)"/><circle cx="1283.3" cy="769" r="11" fill="var(--c1)"/>
+      <g font-size="34" font-weight="700" text-anchor="middle"><text x="935.5" y="352" fill="var(--c3)">만조</text><text x="1631" y="352" fill="var(--c3)">만조</text><text x="587.8" y="822" fill="var(--c1)">간조</text><text x="1283.3" y="822" fill="var(--c1)">간조</text></g>
+    </g>
+    <g data-step="3" data-fx="fade" font-size="32" font-weight="700">
+      <text x="392" y="584" text-anchor="end" fill="var(--c3)">썰물 ↘</text><text x="1088" y="584" text-anchor="end" fill="var(--c3)">썰물 ↘</text>
+      <text x="784" y="584" fill="var(--c4)">↗ 밀물</text><text x="1480" y="584" fill="var(--c4)">↗ 밀물</text>
+    </g>
+    <g data-step="4" data-fx="fade">
+      <path d="M240 379H620" stroke="#86868b" stroke-width="2" stroke-dasharray="8 8"/>
+      <path d="M587.8 392V756" stroke="var(--c2)" stroke-width="5"/>
+      <polygon points="587.8,384 576,408 599.6,408" fill="var(--c2)"/><polygon points="587.8,764 576,740 599.6,740" fill="var(--c2)"/>
+      <text x="606" y="610" font-size="34" font-weight="700" fill="var(--c2)">조차</text>
+      <path d="M935.5 330V310H1631V330" stroke="var(--act)" stroke-width="4" fill="none"/>
+      <rect x="1098" y="285" width="370" height="44" fill="#fff"/>
+      <text x="1283" y="320" text-anchor="middle" font-size="30" font-weight="700" fill="var(--act)">조석 주기 ≈ 12시간 25분</text>
+    </g>
+  </svg>
+  <div class="say-line" style="top:960px;font-size:38px" data-step="4">만조 → 간조 → 만조 … 하루에 <span class="act">두 번씩</span> 반복된다</div>
+</section>
+
+<!-- ═══ s05 조석 용어(빈칸) ═══ -->
+<section class="slide" id="s05" data-tile="parchment" data-title="조석의 용어" data-notes="학습지 빈칸을 채웁니다. ① 주기적 ② 만조(고조) ③ 간조(저조) ④ 밀물 ⑤ 썰물 ⑥ 조류 ⑦ 차(조차) ⑧ 정조. 한자 풀이를 곁들이면 기억에 도움이 됩니다: 조석(조수 潮, 조수 汐), 조류(조수 潮, 흐름 流), 조차(조수 潮, 어그러질 差). 우리나라 서해안의 최대 조차는 약 9 m입니다.">
+  <div class="hd" data-in><div class="eb"><b>1</b>조석</div><h2>조석의 용어</h2></div>
+  <div class="ws-card wide" style="left:120px;top:270px;width:1680px" data-in="300">
+    <div class="ws-row"><span class="tm">조석</span><span>해수면의 높이가 <span class="bk"><span class="a" data-step="1" data-fx="pop">주기적</span><span class="n">1</span></span>으로 높아졌다 낮아지는 현상</span></div>
+    <div class="ws-row"><span class="tm">만조 · 간조</span><span>해수면이 가장 높을 때 <span class="bk"><span class="a" data-step="2" data-fx="pop">만조</span><span class="n">2</span></span><span class="mute" style="font-size:30px">(고조)</span>, 가장 낮을 때 <span class="bk"><span class="a" data-step="2" data-fx="pop" data-delay="250">간조</span><span class="n">3</span></span><span class="mute" style="font-size:30px">(저조)</span></span></div>
+    <div class="ws-row"><span class="tm">밀물 · 썰물</span><span>간조 → 만조 <span class="bk"><span class="a" data-step="3" data-fx="pop">밀물</span><span class="n">4</span></span>, 만조 → 간조 <span class="bk"><span class="a" data-step="3" data-fx="pop" data-delay="250">썰물</span><span class="n">5</span></span>, 이러한 해수의 흐름 <span class="bk"><span class="a" data-step="3" data-fx="pop" data-delay="500">조류</span><span class="n">6</span></span></span></div>
+    <div class="ws-row"><span class="tm">조차</span><span>만조와 간조의 해수면 높이 <span class="bk"><span class="a" data-step="4" data-fx="pop">차</span><span class="n">7</span></span> <span class="mute" style="font-size:30px">— 우리나라 서해안은 최대 약 9 m</span></span></div>
+    <div class="ws-row"><span class="tm">정조</span><span>밀물과 썰물이 바뀌며 흐름이 멈추는 시기 <span class="bk"><span class="a" data-step="5" data-fx="pop">정조</span><span class="n">8</span></span> <span class="mute" style="font-size:30px">— 조류가 가장 약하다</span></span></div>
+  </div>
+  <div class="fine">조석(조수 潮, 조수 汐) · 조류(조수 潮, 흐름 流) · 조차(조수 潮, 어그러질 差)</div>
+</section>
+
+<!-- ═══ s06 공통 질량 중심 ═══ -->
+<section class="slide" id="s06" data-tile="dark" data-title="지구와 달의 공통 질량 중심" data-notes="1단계: 지구의 질량이 달의 약 80배이므로 지구와 달의 공통 질량 중심은 지구 내부에 있습니다. 2단계: 지구와 달은 이 점을 기준으로 함께 돕니다. 지구 중심도 작은 원을 그립니다(자전은 생략). 3단계: 지구 위 어느 지점이든 똑같은 크기의 원을 그리며 움직이므로, 모든 지점에서 크기와 방향이 같은 원심력(달의 반대 방향)을 받습니다. 이것이 다음 장 기조력의 한 성분입니다. 그림의 크기와 거리는 실제 비율과 다릅니다.">
+  <svg class="full-svg" viewBox="0 0 1920 1080">
+    <defs><radialGradient id="s06-e" cx=".38" cy=".32"><stop offset="0" stop-color="#7fd0ff"/><stop offset=".55" stop-color="#1f6fb2"/><stop offset="1" stop-color="#0b2f52"/></radialGradient></defs>
+    <circle cx="640" cy="620" r="360" fill="none" stroke="#6e6e73" stroke-width="2" stroke-dasharray="6 10" data-in="300" data-fx="fade"/>
+    <line id="s06-link" x1="560" y1="620" x2="1000" y2="620" stroke="#6e6e73" stroke-width="2"/>
+    <circle cx="640" cy="620" r="80" fill="none" stroke="var(--c2)" stroke-width="3" stroke-dasharray="8 8" data-step="2" data-fx="fade" data-delay="300"/>
+    <g data-step="3" data-fx="fade" fill="none" stroke="var(--c4)" stroke-width="3" stroke-dasharray="6 8">
+      <circle cx="570" cy="565" r="80"/><circle cx="715" cy="580" r="80"/><circle cx="650" cy="700" r="80"/>
+    </g>
+    <g id="s06-earth" transform="translate(560 620)">
+      <circle r="110" fill="url(#s06-e)"/>
+      <circle r="7" fill="var(--c2)" data-step="2" data-fx="pop"/>
+      <g data-step="3" data-fx="pop"><circle cx="-70" cy="-55" r="9" fill="var(--c4)"/><circle cx="75" cy="-40" r="9" fill="var(--c4)"/><circle cx="10" cy="80" r="9" fill="var(--c4)"/></g>
+      <text y="-130" text-anchor="middle" font-size="30" font-weight="600" fill="#f5f5f7">지구</text>
+    </g>
+    <g id="s06-moon" transform="translate(1000 620)">
+      <circle r="30" fill="#d1d1d6"/>
+      <text y="-48" text-anchor="middle" font-size="30" font-weight="600" fill="#f5f5f7">달</text>
+    </g>
+    <g data-step="1" data-fx="pop">
+      <circle cx="640" cy="620" r="13" fill="#fff" stroke="var(--c3)" stroke-width="5"/>
+    </g>
+    <g data-step="1" data-fx="fade" data-delay="300">
+      <path d="M648 632L720 760" stroke="var(--c3)" stroke-width="3"/>
+      <text x="726" y="796" font-size="30" font-weight="700" fill="var(--c3)">공통 질량 중심</text>
+    </g>
+  </svg>
+  <div class="hd" data-in><div class="eb"><b>2</b>기조력</div><h2>지구와 달은 함께 돈다</h2></div>
+  <div class="ws-card" style="left:1180px;top:280px;width:620px;padding:22px 36px">
+    <div class="ws-row" style="grid-template-columns:1fr" data-step="1"><span style="font-size:32px;line-height:1.5"><b class="c3">공통 질량 중심</b><br>지구 질량이 달의 약 80배 → <b>지구 내부</b>에 있다</span></div>
+    <div class="ws-row" style="grid-template-columns:1fr" data-step="2"><span style="font-size:32px;line-height:1.5"><b class="c2">지구 중심</b><br>공통 질량 중심 둘레를 작은 원을 그리며 돈다</span></div>
+    <div class="ws-row" style="grid-template-columns:1fr" data-step="3"><span style="font-size:32px;line-height:1.5"><b class="c4">지구 위 모든 지점</b><br>같은 크기의 원을 그린다 → 모든 지점에서 <b>크기·방향이 같은 원심력</b> (달의 반대 방향)</span></div>
+  </div>
+  <div class="fine">그림의 크기와 거리는 실제 비율과 다름 · 지구 자전은 생략</div>
+</section>
+
+<!-- ═══ s07 기조력의 성분 ═══ -->
+<section class="slide" id="s07" data-tile="dark" data-title="기조력의 성분" data-notes="그림 Ⅱ-24. 1단계: 달의 인력(초록)은 달에 가까울수록 크고 방향은 달의 중심을 향합니다. 2단계: 원심력(주황)은 모든 지점에서 크기와 방향이 같고, 달의 반대 방향입니다. 지구 중심에서는 원심력과 달의 인력이 같습니다. 3단계: 두 힘의 합력이 기조력(파랑). 달에 가까운 쪽은 인력 > 원심력이라 달 쪽으로, 먼 쪽은 원심력 > 인력이라 달 반대쪽으로 작용합니다. 4단계: 그 결과 해수면이 달에 가장 가까운 쪽과 가장 먼 쪽 두 곳에서 높아집니다. 화살표는 실제 계산값이지만, 달까지의 거리를 실제(지구 반지름의 약 60배)보다 줄여 차이를 과장했습니다.">
+  <svg class="full-svg" viewBox="0 0 1920 1080">
+    <defs>
+      <radialGradient id="s07-e" cx=".38" cy=".32"><stop offset="0" stop-color="#7fd0ff"/><stop offset=".55" stop-color="#1f6fb2"/><stop offset="1" stop-color="#0b2f52"/></radialGradient>
+      <radialGradient id="s07-m" cx=".38" cy=".35"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#8e8e93"/></radialGradient>
+    </defs>
+    <ellipse cx="620" cy="640" rx="292" ry="246" fill="#64D2FF" fill-opacity=".22" stroke="var(--c1)" stroke-width="3" data-step="4" data-fx="scale" data-dur="1000"/>
+    <circle cx="620" cy="640" r="230" fill="url(#s07-e)" data-in="100" data-fx="fade"/>
+    <line x1="620" y1="640" x2="1652" y2="640" stroke="#48484a" stroke-width="2" stroke-dasharray="6 10" data-in="300" data-fx="fade"/>
+    <circle cx="1700" cy="640" r="48" fill="url(#s07-m)" data-in="300" data-fx="fade"/>
+    <text x="1700" y="728" text-anchor="middle" font-size="30" font-weight="600" fill="#f5f5f7" data-in="300" data-fx="fade">달</text>
+    <g id="s07-grav" data-step="1" data-fx="fade"></g>
+    <g id="s07-cent" data-step="2" data-fx="fade"></g>
+    <g id="s07-tide" data-step="3" data-fx="fade"></g>
+    <g id="s07-pts" data-in="400" data-fx="fade"></g>
+    <text x="620" y="700" text-anchor="middle" font-size="24" font-weight="600" fill="#f5f5f7" data-step="2" data-fx="fade" data-delay="300">지구 중심: 인력 = 원심력</text>
+    <g data-step="4" data-fx="fade" data-delay="600" font-size="32" font-weight="700" text-anchor="middle">
+      <text x="955" y="600" fill="var(--c1)">만조</text><text x="285" y="600" fill="var(--c1)">만조</text>
+      <text x="620" y="380" fill="#a1a1a6">간조</text><text x="620" y="924" fill="#a1a1a6">간조</text>
+    </g>
+  </svg>
+  <div class="hd" data-in><div class="eb"><b>2</b>기조력</div><h2>기조력은 어떻게 생길까?</h2></div>
+  <div class="ws-card" style="left:1100px;top:250px;width:700px;padding:18px 34px">
+    <div class="ws-row" style="grid-template-columns:150px 1fr" data-step="1"><span class="tm" style="color:var(--c4)">달의 인력</span><span style="font-size:32px">가까울수록 크다 · 달 중심 방향</span></div>
+    <div class="ws-row" style="grid-template-columns:150px 1fr" data-step="2"><span class="tm" style="color:var(--c3)">원심력</span><span style="font-size:32px">어디서나 크기·방향이 같다</span></div>
+    <div class="ws-row" style="grid-template-columns:150px 1fr" data-step="3"><span class="tm" style="color:var(--c1)">기조력</span><span style="font-size:32px">두 힘의 <b class="c1">합력</b></span></div>
+  </div>
+  <div class="abs" style="left:1000px;top:770px;width:800px;font-size:30px;line-height:1.6" data-step="3" data-delay="400">
+    <div>달에 가까운 쪽: 인력 &gt; 원심력 → <b class="c1">달 쪽</b>으로</div>
+    <div>달에서 먼 쪽: 원심력 &gt; 인력 → <b class="c1">달 반대쪽</b>으로</div>
+  </div>
+  <div class="fine">달까지의 거리를 실제(지구 반지름의 약 60배)보다 줄여 힘의 차이를 과장한 그림</div>
+</section>
+
+<!-- ═══ s08 하루 두 번 만조 ═══ -->
+<section class="slide" id="s08" data-tile="dark" data-title="자전하면 하루 두 번 만조" data-notes="북극 위에서 내려다본 모습입니다. 해수면이 높아진 곳(달 쪽과 그 반대쪽)은 달을 향해 고정되어 있고, 그 아래에서 지구가 자전합니다. 1단계를 누르면 관측 지점(주황 점)이 한 바퀴 도는 동안 그 지점의 해수면 높이를 오른쪽에 그립니다. 2단계: 하루 동안 만조 2번, 간조 2번이 나타납니다. 한 바퀴가 24시간이 아니라 약 24시간 50분인 이유는 다음 장(조석 주기)에서 다룹니다. 해수면 부풂은 크게 과장했습니다.">
+  <svg class="full-svg" viewBox="0 0 1920 1080">
+    <defs><radialGradient id="s08-e" cx=".5" cy=".5"><stop offset="0" stop-color="#5fb8e8"/><stop offset=".7" stop-color="#1f6fb2"/><stop offset="1" stop-color="#0b2f52"/></radialGradient></defs>
+    <ellipse cx="500" cy="600" rx="245" ry="182" fill="#64D2FF" fill-opacity=".2" stroke="var(--c1)" stroke-width="3" data-in="200" data-fx="scale"/>
+    <g id="s08-spin">
+      <circle cx="500" cy="600" r="160" fill="url(#s08-e)"/>
+      <g stroke="#ffffff" stroke-opacity=".18" stroke-width="2"><path d="M340 600H660M500 440V760M387 487L613 713M387 713L613 487"/></g>
+      <line x1="500" y1="600" x2="660" y2="600" stroke="var(--c3)" stroke-width="3" stroke-opacity=".7"/>
+      <circle cx="660" cy="600" r="13" fill="var(--c3)" stroke="#fff" stroke-width="3"/>
+    </g>
+    <text x="500" y="610" text-anchor="middle" font-size="26" font-weight="700" fill="#fff">북극</text>
+    <path d="M430 520A100 100 0 0 1 570 520" stroke="#fff" stroke-opacity=".6" stroke-width="3" fill="none"/>
+    <polygon points="430,520 438,498 452,516" fill="#fff" fill-opacity=".6"/>
+    <circle cx="930" cy="600" r="30" fill="#d1d1d6" data-in="300" data-fx="fade"/>
+    <text x="930" y="664" text-anchor="middle" font-size="28" font-weight="600" fill="#f5f5f7" data-in="300" data-fx="fade">달</text>
+    <g data-in="500" data-fx="fade" font-size="30" font-weight="700">
+      <text x="760" y="570" fill="var(--c1)">만조</text><text x="240" y="570" text-anchor="end" fill="var(--c1)">만조</text>
+      <text x="500" y="400" text-anchor="middle" fill="#a1a1a6">간조</text><text x="500" y="824" text-anchor="middle" fill="#a1a1a6">간조</text>
+    </g>
+    <g data-in="300" data-fx="fade">
+      <path d="M1080 450H1790M1080 750H1790" stroke="#3a3a3c" stroke-width="2" stroke-dasharray="6 8"/>
+      <path d="M1080 800H1800M1080 800V390" stroke="#f5f5f7" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <g fill="#a1a1a6" font-size="26" text-anchor="middle"><text x="1080" y="840">0</text><text x="1248" y="840">6</text><text x="1416" y="840">12</text><text x="1584" y="840">18</text><text x="1752" y="840">24</text></g>
+      <text x="1092" y="378" font-size="28" font-weight="600" fill="#f5f5f7">관측 지점의 해수면 높이</text>
+      <text x="1800" y="880" text-anchor="end" font-size="28" font-weight="600" fill="#f5f5f7">시간 (시)</text>
+    </g>
+    <polyline id="s08-curve" points="" fill="none" stroke="var(--c3)" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle id="s08-dot" cx="1080" cy="450" r="10" fill="var(--c3)"/>
+    <g data-step="2" data-fx="fade" font-size="28" font-weight="700" text-anchor="middle">
+      <text x="1112" y="432" fill="var(--c1)">만조</text><text x="1427.8" y="432" fill="var(--c1)">만조</text><text x="1775" y="432" fill="var(--c1)">만조</text>
+      <text x="1253.9" y="784" fill="#a1a1a6">간조</text><text x="1601.6" y="784" fill="#a1a1a6">간조</text>
+    </g>
+  </svg>
+  <div class="hd" data-in><div class="eb"><b>2</b>기조력</div><h2>지구가 자전하면?</h2></div>
+  <div class="abs num" style="left:1080px;top:250px;font-size:48px;font-weight:700" data-in="300"><span class="mute" style="font-size:28px;font-weight:600;margin-right:14px">경과 시간</span><span id="s08-clock" class="c3">0시간 00분</span></div>
+  <div class="say-line" style="top:930px;font-size:38px" data-step="2">해수면이 높은 곳이 <span class="act">두 군데</span> → 자전하는 동안 만조 2번 · 간조 2번</div>
+  <div class="fine">북극 위에서 본 모습 · 해수면 부풂은 크게 과장</div>
+</section>
+
+<!-- ═══ s09 기조력 정리(빈칸) + 태양 ═══ -->
+<section class="slide" id="s09" data-tile="parchment" data-title="기조력 정리와 태양의 기조력" data-notes="빈칸: ① 원심력 ② 인력 ③ 달 쪽 ④ 달 반대쪽 ⑤ 두 ⑥ ½. 지구의 조석 현상은 태양보다 달의 영향을 더 많이 받습니다. 평형 조석론에서 기조력의 크기는 천체의 질량에 비례하고, 지구에서 천체까지 거리의 세제곱에 반비례합니다. 태양 질량은 달의 약 2700만 배지만 거리가 약 390배(390³ ≈ 5900만) 멀어서 기조력은 달의 약 0.46배, 즉 약 ½입니다. 지도 방안: 기조력은 정성적으로 도입하고, 평형 조석론 정도만 다룹니다.">
+  <div class="hd" data-in><div class="eb"><b>2</b>기조력</div><h2>기조력 정리</h2></div>
+  <div class="ws-card" style="left:120px;top:270px;width:1000px" data-in="300">
+    <div class="ws-h"><b>기조력</b><span>조석을 일으키는 힘</span></div>
+    <div class="ws-row"><span class="tm">정의</span><span style="font-size:36px">공통 질량 중심을 기준으로 공전하며 생긴 <span class="bk"><span class="a" data-step="1" data-fx="pop">원심력</span><span class="n">1</span></span>과 달의 <span class="bk"><span class="a" data-step="1" data-fx="pop" data-delay="250">인력</span><span class="n">2</span></span>의 합력</span></div>
+    <div class="ws-row"><span class="tm">방향</span><span style="font-size:36px">달에 가까운 쪽은 <span class="bk"><span class="a" data-step="2" data-fx="pop">달 쪽</span><span class="n">3</span></span>, 먼 쪽은 <span class="bk"><span class="a" data-step="2" data-fx="pop" data-delay="250">달 반대쪽</span><span class="n">4</span></span> → 해수면이 <span class="bk" style="min-width:1.6em"><span class="a" data-step="2" data-fx="pop" data-delay="500">두</span><span class="n">5</span></span> 곳에서 높아진다</span></div>
+    <div class="ws-row"><span class="tm">태양</span><span style="font-size:36px">태양에 의한 기조력은 달의 약 <span class="bk" style="min-width:1.6em"><span class="a" data-step="3" data-fx="pop">½</span><span class="n">6</span></span> — 질량은 크지만 훨씬 멀다</span></div>
+  </div>
+  <div class="abs" style="left:1200px;top:290px;width:600px" data-step="3" data-delay="300">
+    <div class="mute" style="font-size:28px;font-weight:600">평형 조석론에서 기조력의 크기</div>
+    <div style="display:flex;align-items:center;gap:22px;margin-top:14px;font-size:60px;font-weight:700">기조력 ∝
+      <span class="frac"><span>천체의 질량</span><span>거리³</span></span></div>
+  </div>
+  <div class="abs" style="left:1200px;top:560px;width:600px" data-step="4">
+    <div class="mute" style="font-size:28px;font-weight:600;margin-bottom:14px">기조력 비교</div>
+    <div class="cmp"><span>달</span><i class="c1bar" style="width:340px" data-step="4" data-fx="wipe"></i><b class="num">1</b></div>
+    <div class="cmp"><span>태양</span><i class="c2bar" style="width:156px" data-step="4" data-fx="wipe" data-delay="300"></i><b class="num">약 0.46</b></div>
+    <div style="font-size:26px;line-height:1.55;margin-top:18px" class="mute">태양 질량 ≈ 달의 2700만 배<br>태양까지 거리 ≈ 달의 390배 → 390³ ≈ 5900만</div>
+  </div>
+  <div class="fine">평형 조석론: 지구 표면이 같은 깊이의 바다로 덮여 있다고 가정한 이상적인 설명</div>
+</section>
+
+<!-- ═══ s10 조석 주기 ═══ -->
+<section class="slide" id="s10" data-tile="dark" data-title="조석 주기는 12시간 25분" data-notes="그림 Ⅱ-25. 1단계: 관측 지점(주황 점)이 만조인 상태에서 지구가 반 바퀴 자전하는 12시간 동안 달도 같은 방향으로 약 6.5° 공전합니다(달의 공전 주기 약 27.3일 → 하루 약 13°). 그래서 반 바퀴를 돌아도 아직 만조 위치가 아닙니다. 2단계: 약 6.5° 더 자전해야 다음 만조가 되고, 지구가 6.5° 자전하는 데 약 25분이 걸립니다. 3단계: 조석 주기(만조에서 다음 만조, 또는 간조에서 다음 간조까지)는 약 12시간 25분입니다. 정확히 계산하면 26분이지만 일반적으로 25분을 많이 사용합니다.">
+  <svg class="full-svg" viewBox="0 0 1920 1080">
+    <defs><radialGradient id="s10-e" cx=".5" cy=".5"><stop offset="0" stop-color="#5fb8e8"/><stop offset=".7" stop-color="#1f6fb2"/><stop offset="1" stop-color="#0b2f52"/></radialGradient></defs>
+    <path d="M1123.8 825.2A600 600 0 0 0 1079.6 320" stroke="#6e6e73" stroke-width="2" stroke-dasharray="6 10" fill="none" data-in="200" data-fx="fade"/>
+    <text x="1135" y="330" font-size="26" fill="#a1a1a6" data-in="200" data-fx="fade">달의 공전</text>
+    <line x1="560" y1="620" x2="1160" y2="620" stroke="#6e6e73" stroke-width="2" stroke-dasharray="4 8" data-in="300" data-fx="fade"/>
+    <line x1="560" y1="620" x2="1156.1" y2="552.1" stroke="var(--c2)" stroke-width="2" stroke-dasharray="4 8" data-step="1" data-fx="fade" data-delay="4300"/>
+    <path d="M980 620A420 420 0 0 0 977.3 572.5" stroke="var(--c2)" stroke-width="4" fill="none" data-step="1" data-fx="fade" data-delay="4300"/>
+    <text x="996" y="608" font-size="30" font-weight="700" fill="var(--c2)" data-step="1" data-fx="fade" data-delay="4300">6.5°</text>
+    <ellipse id="s10-water" cx="560" cy="620" rx="215" ry="165" fill="#64D2FF" fill-opacity=".2" stroke="var(--c1)" stroke-width="3"/>
+    <g id="s10-spin">
+      <circle cx="560" cy="620" r="150" fill="url(#s10-e)"/>
+      <g stroke="#ffffff" stroke-opacity=".18" stroke-width="2"><path d="M410 620H710M560 470V770M454 514L666 726M454 726L666 514"/></g>
+      <line x1="560" y1="620" x2="710" y2="620" stroke="var(--c3)" stroke-width="3" stroke-opacity=".7"/>
+      <circle cx="710" cy="620" r="13" fill="var(--c3)" stroke="#fff" stroke-width="3"/>
+    </g>
+    <text x="560" y="630" text-anchor="middle" font-size="26" font-weight="700" fill="#fff">북극</text>
+    <g id="s10-moon" transform="translate(1160 620)"><circle r="30" fill="#d1d1d6"/><text x="44" y="10" font-size="28" font-weight="600" fill="#f5f5f7">달</text></g>
+  </svg>
+  <div class="hd" data-in><div class="eb"><b>3</b>조석 주기와 양상</div><h2>다음 만조까지 얼마나 걸릴까?</h2></div>
+  <div class="abs num" style="left:120px;top:250px;display:flex;align-items:center;gap:20px" data-in="300">
+    <span class="mute" style="font-size:28px;font-weight:600">경과 시간</span><span id="s10-clock" class="c3" style="font-size:52px;font-weight:700">0시간 00분</span>
+    <span id="s10-state" class="pill" data-s="만조">만조</span>
+  </div>
+  <div class="ws-card" style="left:1300px;top:380px;width:500px;padding:20px 32px">
+    <div class="ws-row" style="grid-template-columns:1fr" data-step="1"><span style="font-size:30px;line-height:1.5"><b class="c3">12시간</b> 지구가 반 바퀴 자전하는 동안 달도 같은 방향으로 약 <b class="c2">6.5°</b> 공전</span></div>
+    <div class="ws-row" style="grid-template-columns:1fr" data-step="2"><span style="font-size:30px;line-height:1.5"><b class="c3">+ 25분</b> 6.5° 더 자전해야 다음 만조</span></div>
+    <div class="ws-row" style="grid-template-columns:1fr" data-step="3"><span style="font-size:30px;line-height:1.5"><b class="c1">조석 주기 ≈ 12시간 25분</b><br><span class="mute" style="font-size:26px">달: 360° ÷ 27.3일 ≈ 13°/일<br>→ 12시간에 약 6.5°<br>지구: 15°/시간 → 6.5°에 약 25분</span></span></div>
+  </div>
+  <div class="fine">북극 위에서 본 모습 · 주황 점 = 관측 지점</div>
+</section>
+
+<!-- ═══ s11 조석 양상 ═══ -->
+<section class="slide" id="s11" data-tile="light" data-title="위도에 따른 조석 양상" data-notes="그림 Ⅱ-26. 1단계: 지구의 적도면은 달의 공전 궤도면에 대해 최대 약 28.5° 기울어져 있어서, 해수면이 높아진 부분도 적도에 대해 기울어집니다. 2단계: 고위도 A는 하루 동안 만조와 간조가 한 번씩만 나타납니다(일주조). 3단계: 중위도 B는 하루 두 번씩 나타나지만 조차가 다릅니다(혼합조). 4단계: 저위도 C는 하루 두 번씩, 조차가 비슷합니다(반일주조). 그래프는 평형 조석론으로 계산한 모식 그래프입니다. 실제 조석은 지형과 해저 수심의 영향을 받아 훨씬 복잡하며, 우리나라 동해안과 서해안은 위도가 비슷하지만 조석 양상이 매우 다릅니다.">
+  <svg class="full-svg" viewBox="0 0 1920 1080">
+    <defs><radialGradient id="s11-e" cx=".38" cy=".32"><stop offset="0" stop-color="#9fd8f5"/><stop offset=".6" stop-color="#3a8cc8"/><stop offset="1" stop-color="#1b4f7a"/></radialGradient></defs>
+    <g data-step="1" data-fx="fade"><ellipse cx="470" cy="620" rx="290" ry="225" transform="rotate(-28.5 470 620)" fill="#0077B6" fill-opacity=".14" stroke="var(--c1)" stroke-width="3"/></g>
+    <circle cx="470" cy="620" r="210" fill="url(#s11-e)"/>
+    <line x1="470" y1="370" x2="470" y2="870" stroke="#1d1d1f" stroke-width="3"/>
+    <text x="470" y="355" text-anchor="middle" font-size="30" font-weight="700">N</text><text x="470" y="902" text-anchor="middle" font-size="30" font-weight="700">S</text>
+    <g stroke="#fff" stroke-width="4"><path d="M381.3 429.7H558.7M298 499.6H642M260 620H680"/></g>
+    <g fill="#1d1d1f"><circle cx="558.7" cy="429.7" r="10"/><circle cx="642" cy="499.6" r="10"/><circle cx="680" cy="620" r="10"/></g>
+    <g font-size="28" font-weight="700" text-anchor="end">
+      <text x="366" y="439">고위도 A</text><text x="284" y="509">중위도 B</text><text x="246" y="630">저위도 C</text>
+    </g>
+    <g data-step="1" data-fx="fade" data-delay="300">
+      <path d="M733.6 476.8L790 446.2" stroke="var(--c3)" stroke-width="6" stroke-linecap="round"/>
+      <polygon points="812,434.3 783.7,435.4 795.2,456.5" fill="var(--c3)"/>
+      <text x="800" y="410" text-anchor="end" font-size="28" font-weight="700" fill="var(--c3)">달의 방향</text>
+    </g>
+    <g fill="none" stroke="#d2d2d7" stroke-width="2"><rect x="880" y="250" width="580" height="170" rx="10"/><rect x="880" y="470" width="580" height="170" rx="10"/><rect x="880" y="690" width="580" height="170" rx="10"/></g>
+    <g fill="#6e6e73" font-size="26" font-weight="700" text-anchor="end"><text x="866" y="290">A 지역</text><text x="866" y="510">B 지역</text><text x="866" y="730">C 지역</text></g>
+    <g fill="#6e6e73" font-size="24" text-anchor="middle"><text x="900" y="894">0</text><text x="1035" y="894">6</text><text x="1170" y="894">12</text><text x="1305" y="894">18</text><text x="1440" y="894">24</text></g>
+    <text x="1460" y="934" text-anchor="end" font-size="26" font-weight="600">시간 (시)</text>
+    <path id="s11-g0" stroke="var(--c3)" stroke-width="6" fill="none" stroke-linecap="round" data-step="2" data-fx="draw" data-dur="1400"/>
+    <path id="s11-g1" stroke="var(--c3)" stroke-width="6" fill="none" stroke-linecap="round" data-step="3" data-fx="draw" data-dur="1400"/>
+    <path id="s11-g2" stroke="var(--c3)" stroke-width="6" fill="none" stroke-linecap="round" data-step="4" data-fx="draw" data-dur="1400"/>
+  </svg>
+  <div class="hd" data-in><div class="eb"><b>3</b>조석 주기와 양상</div><h2>위도에 따라 조석이 다르다</h2></div>
+  <div class="abs callout" style="top:282px" data-step="2" data-delay="900">만조·간조가 하루 <b>한 번</b>씩<br><b class="act">일주조</b></div>
+  <div class="abs callout" style="top:502px" data-step="3" data-delay="900">하루 두 번, <b>조차가 다르다</b><br><b class="act">혼합조</b></div>
+  <div class="abs callout" style="top:722px" data-step="4" data-delay="900">하루 두 번, <b>조차가 비슷</b><br><b class="act">반일주조</b></div>
+  <div class="fine">평형 조석론으로 계산한 모식 그래프 · 실제 조석은 지형과 해저 수심의 영향을 받아 지역마다 매우 복잡하다</div>
+</section>
+
+<!-- ═══ s12 사리와 조금 ═══ -->
+<section class="slide" id="s12" data-tile="dark" data-title="사리와 조금" data-notes="그림 Ⅱ-27. 점선은 달에 의한 조석(흰색)과 태양에 의한 조석(노랑), 파란 면은 둘을 합친 해수면입니다. 시작(삭): 태양·달·지구가 일직선이라 두 천체의 기조력이 합쳐져 조차가 가장 큰 사리(대조). 1단계 상현: 두 천체의 기조력이 직각 방향으로 상쇄되어 조차가 가장 작은 조금(소조). 2단계 망: 다시 일직선 → 사리. 3단계 하현 → 조금. 4단계: 달의 위상 변화에 따라 약 15일 주기로 사리와 조금이 한 달에 두 번씩 번갈아 나타납니다. 크기와 거리는 실제 비율과 다릅니다.">
+  <svg class="full-svg" viewBox="0 0 1920 1080">
+    <defs>
+      <radialGradient id="s12-sun" cx=".5" cy=".5"><stop offset="0" stop-color="#fff3b0"/><stop offset=".55" stop-color="#FFD60A"/><stop offset="1" stop-color="#ff8a1f"/></radialGradient>
+      <filter id="s12-glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="30"/></filter>
+      <radialGradient id="s12-e" cx=".5" cy=".5"><stop offset="0" stop-color="#5fb8e8"/><stop offset=".7" stop-color="#1f6fb2"/><stop offset="1" stop-color="#0b2f52"/></radialGradient>
+    </defs>
+    <circle cx="1910" cy="600" r="190" fill="#FFD60A" opacity=".35" filter="url(#s12-glow)"/>
+    <circle cx="1910" cy="600" r="160" fill="url(#s12-sun)"/>
+    <text x="1820" y="820" text-anchor="middle" font-size="30" font-weight="700" fill="var(--c2)">태양</text>
+    <circle cx="620" cy="600" r="290" fill="none" stroke="#6e6e73" stroke-width="2" stroke-dasharray="6 10"/>
+    <path id="s12-water" fill="#64D2FF" fill-opacity=".28" stroke="var(--c1)" stroke-width="3"/>
+    <path id="s12-lun" fill="none" stroke="#f5f5f7" stroke-opacity=".7" stroke-width="2.5" stroke-dasharray="8 8"/>
+    <path id="s12-sol" fill="none" stroke="var(--c2)" stroke-width="2.5" stroke-dasharray="8 8"/>
+    <circle cx="620" cy="600" r="110" fill="url(#s12-e)"/>
+    <text x="620" y="610" text-anchor="middle" font-size="26" font-weight="700" fill="#fff">지구</text>
+    <g id="s12-moon" transform="translate(910 600)">
+      <circle r="26" fill="#3a3a3c" stroke="#8e8e93" stroke-width="1.5"/>
+      <path d="M0 -26A26 26 0 0 1 0 26Z" fill="#f5f5f7"/>
+    </g>
+    <text id="s12-mlab" x="948" y="566" font-size="30" font-weight="700" fill="#f5f5f7">삭</text>
+  </svg>
+  <div class="hd" data-in><div class="eb"><b>4</b>사리와 조금</div><h2>달의 위상에 따라 조차가 변한다</h2></div>
+  <div class="ws-card" style="left:1040px;top:250px;width:620px;padding:24px 36px" data-in="300">
+    <div id="s12-ph" class="t-eyebrow" style="font-size:30px">삭</div>
+    <div id="s12-st" style="font-size:68px;font-weight:700;letter-spacing:-.02em;margin:4px 0 2px">사리 <span class="mute" style="font-size:40px">(대조)</span></div>
+    <div id="s12-desc" class="mute" style="font-size:30px;line-height:1.45;min-height:88px">태양·지구·달이 일직선 → 두 천체의 기조력이 합쳐진다</div>
+    <div class="mute" style="font-size:26px;font-weight:600;margin-top:16px">조차</div>
+    <div style="height:40px;border-radius:10px;background:rgba(255,255,255,.1);margin-top:8px"><div id="s12-bar" style="height:100%;width:100%;border-radius:10px;background:var(--c1)"></div></div>
+    <div class="lg"><i style="border-top:3px dashed #f5f5f7"></i>달에 의한 조석 <i style="border-top:3px dashed var(--c2);margin-left:22px"></i>태양에 의한 조석</div>
+  </div>
+  <div class="say-line" style="top:940px;font-size:38px" data-step="4">삭·망 → <span class="c1">사리</span> · 상현·하현 → <span class="c3">조금</span> — 약 15일마다, 한 달에 두 번씩</div>
+  <div class="fine">크기와 거리는 실제 비율과 다름</div>
+</section>
+
+<!-- ═══ s13 한 달 동안의 조석 ═══ -->
+<section class="slide" id="s13" data-tile="light" data-title="한 달 동안의 조석 변동" data-notes="그림 Ⅱ-28 인천 앞바다의 한 달 조석 변동을 단순화한 모식 그래프입니다. 1단계: 해수면이 하루 두 번씩 오르내립니다. 조석 주기는 12시간보다 약간 길고, 연속된 만조(또는 간조)의 높이가 서로 다릅니다(혼합조). 2단계: 망과 삭 무렵에 조차가 가장 큰 사리. 3단계: 상현과 하현 무렵에 조차가 가장 작은 조금. 4단계: 약 15일 주기로 사리와 조금이 반복됩니다. 참고: 달의 공전 궤도가 타원이라 음력 15일에 항상 보름달이 뜨지는 않으며, 바닷물과 마찰 등으로 실제 조차와 달의 위상이 정확히 일치하지 않는 경우도 있습니다(사리가 망·삭보다 1~2일 늦게 나타나기도 함).">
+  <div class="hd" data-in><div class="eb"><b>4</b>사리와 조금</div><h2>한 달 동안의 조석</h2></div>
+  <svg class="full-svg" viewBox="0 0 1920 1080">
+    <g data-step="2" data-fx="fade"><rect x="422" y="410" width="148" height="450" fill="var(--c1)" fill-opacity=".12"/><rect x="1151" y="410" width="148" height="450" fill="var(--c1)" fill-opacity=".12"/></g>
+    <g data-step="3" data-fx="fade"><rect x="786.6" y="410" width="148" height="450" fill="var(--c3)" fill-opacity=".1"/><rect x="1515.5" y="410" width="148" height="450" fill="var(--c3)" fill-opacity=".1"/></g>
+    <g data-in="200" data-fx="fade">
+      <g stroke="#e8e8ed" stroke-width="2"><path d="M200 770H1740M200 680H1740M200 590H1740M200 500H1740M200 410H1740" fill="none"/></g>
+      <path d="M200 860H1750M200 860V400" stroke="#1d1d1f" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <g id="s13-xt" fill="#6e6e73" font-size="22" text-anchor="middle"></g>
+      <g fill="#6e6e73" font-size="24" text-anchor="end"><text x="186" y="868">0</text><text x="186" y="778">2</text><text x="186" y="688">4</text><text x="186" y="598">6</text><text x="186" y="508">8</text><text x="186" y="418">10</text></g>
+      <text x="120" y="380" font-size="26" font-weight="600" fill="#1d1d1f">해수면 높이 (m)</text>
+      <text x="1750" y="936" text-anchor="end" font-size="26" font-weight="600" fill="#1d1d1f">양력 (일)</text>
+    </g>
+    <g data-in="400" data-fx="fade">
+      <g font-size="26" font-weight="700" text-anchor="middle" fill="#1d1d1f"><text x="422" y="256">망</text><text x="767.5" y="256">하현</text><text x="1113" y="256">삭</text><text x="1508" y="256">상현</text></g>
+      <circle cx="422" cy="300" r="20" fill="#e9c85a" stroke="#9A7400" stroke-width="2"/>
+      <g><circle cx="767.5" cy="300" r="20" fill="#4a4a4f"/><path d="M767.5 280A20 20 0 0 0 767.5 320Z" fill="#e9c85a"/><circle cx="767.5" cy="300" r="20" fill="none" stroke="#9A7400" stroke-width="2"/></g>
+      <circle cx="1113" cy="300" r="20" fill="#fff" stroke="#9A7400" stroke-width="2" stroke-dasharray="4 4"/>
+      <g><circle cx="1508" cy="300" r="20" fill="#4a4a4f"/><path d="M1508 280A20 20 0 0 1 1508 320Z" fill="#e9c85a"/><circle cx="1508" cy="300" r="20" fill="none" stroke="#9A7400" stroke-width="2"/></g>
+      <path d="M422 326V400M767.5 326V400M1113 326V400M1508 326V400" stroke="#c7c7cc" stroke-width="2" stroke-dasharray="4 6"/>
+    </g>
+    <path id="s13-curve" stroke="var(--c1)" stroke-width="2.4" fill="none" data-step="1" data-fx="draw" data-dur="2600"/>
+    <g data-step="2" data-fx="fade" font-size="30" font-weight="700" text-anchor="middle" fill="var(--c1)"><text x="496" y="396">사리</text><text x="1225" y="396">사리</text></g>
+    <g data-step="3" data-fx="fade" font-size="30" font-weight="700" text-anchor="middle" fill="var(--c3)"><text x="860.6" y="396">조금</text><text x="1589.5" y="396">조금</text></g>
+  </svg>
+  <div class="say-line" style="top:950px;font-size:38px" data-step="4">약 <span class="act">15일</span>마다 사리와 조금이 반복 — 한 달에 두 번씩</div>
+  <div class="fine" style="font-size:22px;bottom:30px">모식 그래프: 2023년 5월 인천 앞바다 조석(국립해양조사원)의 특징을 단순화함 · 실제 사리는 망·삭보다 1~2일 늦기도 한다</div>
+</section>
+
+<!-- ═══ s14 확인 문제 1 ═══ -->
+<section class="slide" id="s14" data-tile="parchment" data-title="확인 문제 1" data-notes="학생이 먼저 풀게 한 뒤 클릭하면 정답과 풀이가 나옵니다. ①은 다음 간조 무렵(약 6시간 12분 뒤), ②는 25분을 빠뜨린 값, ④·⑤는 하루에 만조가 한 번인 일주조로 착각한 값입니다.">
+  <div class="qz">
+    <div class="qz-eb" data-in><b>확인 문제 1</b><span class="qz-lv">기본</span></div>
+    <div class="qz-stem" data-in="150">어느 해안에서 오늘 오전 6시 10분에 만조가 나타났다. 이 지역에서 하루에 만조와 간조가 각각 두 번씩 나타난다면, 다음 만조가 나타날 시각으로 가장 적절한 것은?</div>
+    <ol class="qz-ch" data-in="350">
+      <li><span class="qz-n">①</span><span>오후 12시 22분</span></li>
+      <li><span class="qz-n">②</span><span>오후 6시 10분</span></li>
+      <li><span class="qz-hl" data-step="1" data-fx="fade"></span><span class="qz-n">③</span><span>오후 6시 35분</span><span class="qz-mark" data-step="1" data-fx="pop">정답</span></li>
+      <li><span class="qz-n">④</span><span>다음 날 오전 6시 10분</span></li>
+      <li><span class="qz-n">⑤</span><span>다음 날 오전 6시 35분</span></li>
+    </ol>
+    <div class="qz-why" data-step="1" data-fx="up">
+      <div class="qz-why-h">정답 ③ · 풀이</div>
+      <div class="qz-why-t">조석 주기는 약 <b>12시간 25분</b>이므로 6시 10분 + 12시간 25분 = <b>오후 6시 35분</b>입니다. 지구가 반 바퀴 자전하는 동안 달이 약 6.5° 공전해 25분을 더 자전해야 합니다. ①은 간조 무렵, ②는 25분을 빠뜨린 값입니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ s15 확인 문제 2 ═══ -->
+<section class="slide" id="s15" data-tile="parchment" data-title="확인 문제 2" data-notes="ㄱ. 망일 때 태양·지구·달이 일직선이 되어 사리가 나타나므로 옳다. ㄴ. 상현일 때는 두 천체의 기조력이 직각 방향으로 작용해 상쇄되므로 틀리다(조금). ㄷ. 태양은 질량이 크지만 거리가 훨씬 멀어서 기조력이 달의 약 ½이므로 틀리다.">
+  <div class="qz" style="gap:22px">
+    <div class="qz-eb" data-in><b>확인 문제 2</b><span class="qz-lv">중간</span></div>
+    <div class="qz-stem" data-in="150">조석에 대한 설명으로 옳은 것만을 &lt;보기&gt;에서 있는 대로 고른 것은?</div>
+    <div class="qz-box" data-in="300">
+      <div>ㄱ. 달이 망의 위치에 있을 때 조차가 크게 나타난다.</div>
+      <div>ㄴ. 달이 상현일 때 달과 태양의 기조력은 같은 방향으로 작용한다.</div>
+      <div>ㄷ. 태양에 의한 기조력은 달에 의한 기조력보다 크다.</div>
+    </div>
+    <ol class="qz-ch row" data-in="450">
+      <li><span class="qz-hl" data-step="1" data-fx="fade"></span><span class="qz-n">①</span><span>ㄱ</span><span class="qz-mark" data-step="1" data-fx="pop">정답</span></li>
+      <li><span class="qz-n">②</span><span>ㄴ</span></li>
+      <li><span class="qz-n">③</span><span>ㄱ, ㄴ</span></li>
+      <li><span class="qz-n">④</span><span>ㄱ, ㄷ</span></li>
+      <li><span class="qz-n">⑤</span><span>ㄴ, ㄷ</span></li>
+    </ol>
+    <div class="qz-why" data-step="1" data-fx="up">
+      <div class="qz-why-h">정답 ① · 풀이</div>
+      <div class="qz-why-t">ㄱ. 망일 때 태양·지구·달이 일직선 → <b>사리</b>(옳음). ㄴ. 상현일 때 두 기조력은 <b>직각</b> 방향이라 상쇄 → 조금(틀림). ㄷ. 태양의 기조력은 달의 <b>약 ½</b>(틀림).</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ s16 정리 ═══ -->
+<section class="slide" id="s16" data-tile="parchment" data-title="오늘의 정리" data-notes="네 장의 카드를 학생이 먼저 말해 보게 한 뒤 클릭해서 확인합니다. 다음 활동: 실시간 조석 자료를 이용해 조석 현상의 양상을 추론해 봅니다. 바다 갈라짐 현상(진도 바닷길 등)은 국립해양조사원 누리집(www.khoa.go.kr) > 해양 정보 > 해양 생활 > 생활 해양 예보 지수 > 바다 갈라짐 체험에서 지역별 바다 갈라짐 체험 지수를 확인하고 여행 계획을 세워 보는 활동으로 연결할 수 있습니다.">
+  <div class="hd" data-in><div class="eb">정리</div><h2>오늘 배운 것</h2></div>
+  <div class="rc rc4" style="left:120px" data-step="1"><div class="no">1 · 조석</div><h3>만조와 간조</h3><p>해수면이 주기적으로 높아졌다 낮아진다. 만조와 간조의 높이 차가 조차.</p><div class="big c1">하루 2번</div></div>
+  <div class="rc rc4" style="left:540px" data-step="2"><div class="no">2 · 기조력</div><h3>인력 + 원심력</h3><p>달에 가까운 쪽과 먼 쪽 두 곳에서 해수면이 높아진다.</p><div class="big c1">태양 = 달의 ½</div></div>
+  <div class="rc rc4" style="left:960px" data-step="3"><div class="no">3 · 조석 주기와 양상</div><h3>12시간 25분</h3><p>달의 공전 때문에 12시간보다 약 25분 길다. 위도에 따라 일주조·혼합조·반일주조.</p><div class="big c1">+ 25분</div></div>
+  <div class="rc rc4" style="left:1380px" data-step="4"><div class="no">4 · 사리와 조금</div><h3>달의 위상</h3><p>삭·망일 때 사리(조차 최대), 상현·하현일 때 조금(조차 최소).</p><div class="big c1">약 15일 주기</div></div>
+  <div class="say-line" style="top:920px;font-size:40px" data-step="5"><span class="act">기조력</span> + <span class="act">지구의 자전</span> + <span class="act">달의 공전</span> → 조석의 주기와 변화</div>
+</section>
+
+<div id="kwbar-host"></div>
+</div></div>
+
+<!-- 하단 컨트롤 -->
+<div id="progress"><i></i></div>
+<div id="stepdots"></div>
+<div id="hud">
+  <button id="b-prev" aria-label="이전"><svg viewBox="0 0 20 20"><path d="M12.5 4 6.5 10l6 6"/></svg></button>
+  <div class="count" id="count">1 / 1</div>
+  <button id="b-next" aria-label="다음"><svg viewBox="0 0 20 20"><path d="M7.5 4l6 6-6 6"/></svg></button>
+  <button id="b-notes" aria-label="발표자 노트 (N)"><svg viewBox="0 0 20 20"><path d="M4 5h12M4 10h12M4 15h7"/></svg></button>
+  <button id="b-ov" aria-label="전체 보기 (O)"><svg viewBox="0 0 20 20"><rect x="3" y="3" width="5.5" height="5.5" rx="1"/><rect x="11.5" y="3" width="5.5" height="5.5" rx="1"/><rect x="3" y="11.5" width="5.5" height="5.5" rx="1"/><rect x="11.5" y="11.5" width="5.5" height="5.5" rx="1"/></svg></button>
+  <button id="b-fs" aria-label="전체 화면 (F)"><svg viewBox="0 0 20 20"><path d="M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4"/></svg></button>
+</div>
+<div id="notes"><div class="nh"><b id="notes-t"></b>발표자 노트</div><p id="notes-p"></p></div>
+<div class="overlay" id="overview"><h2>전체 보기</h2><div class="grid" id="ov-grid"></div></div>
+<div class="overlay" id="help"><div class="box"><h3>단축키</h3><table>
+  <tr><td><kbd>→</kbd> <kbd>Space</kbd></td><td>다음 (클릭도 가능)</td></tr>
+  <tr><td><kbd>←</kbd></td><td>이전</td></tr>
+  <tr><td><kbd>N</kbd></td><td>발표자 노트</td></tr>
+  <tr><td><kbd>O</kbd></td><td>전체 보기</td></tr>
+  <tr><td><kbd>B</kbd> <kbd>W</kbd></td><td>검은 화면 / 흰 화면</td></tr>
+  <tr><td><kbd>F</kbd></td><td>전체 화면</td></tr>
+  <tr><td><kbd>Esc</kbd></td><td>덮개 닫기</td></tr></table></div></div>
+<div id="blank"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   엔진: 1920×1080 무대 · 장면(enter + 클릭 단계 go) · 선언형 등장 · 복원 후 순간 재생
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+'use strict';
+const SW=1920,SH=1080;
+const Q=new URLSearchParams(location.search);
+const STILL=Q.get('still')==='1', STUDENT=Q.get('s')==='1';
+const rootEl=document.documentElement;
+if(STILL)rootEl.classList.add('still');
+if(STUDENT)rootEl.classList.add('student');
+
+const EASE={out:'cubic-bezier(.2,.8,.2,1)',inOut:'cubic-bezier(.65,0,.35,1)',in:'cubic-bezier(.55,0,.75,.1)',spring:'cubic-bezier(.34,1.56,.64,1)',linear:'linear'};
+const JE={linear:t=>t,out:t=>1-Math.pow(1-t,3),inOut:t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,in:t=>t*t*t,quad:t=>t*t};
+const FX={
+  rise:{k:[{opacity:0,transform:'translateY(28px)'},{opacity:1,transform:'translateY(0px)'}],dur:800},
+  fade:{k:[{opacity:0},{opacity:1}],dur:600},
+  scale:{k:[{opacity:0,transform:'scale(.92)'},{opacity:1,transform:'scale(1)'}],dur:800},
+  pop:{k:[{opacity:0,transform:'scale(.5)'},{opacity:1,transform:'scale(1)'}],dur:700,ease:'spring'},
+  left:{k:[{opacity:0,transform:'translateX(-64px)'},{opacity:1,transform:'translateX(0px)'}],dur:800},
+  up:{k:[{opacity:0,transform:'translateY(72px)'},{opacity:1,transform:'translateY(0px)'}],dur:900},
+  draw:{k:[{opacity:1,strokeDashoffset:1},{opacity:1,strokeDashoffset:0}],dur:1100,ease:'inOut'},
+  wipe:{k:[{opacity:1,clipPath:'inset(0 100% 0 0)'},{opacity:1,clipPath:'inset(0 0% 0 0)'}],dur:900,ease:'inOut'}
+};
+const GEOM='path,line,polyline,polygon,circle,ellipse,rect';
+const STUB={finished:Promise.resolve(),cancel(){},finish(){}};
+const NS='http://www.w3.org/2000/svg';
+const U={el(tag,attrs={},parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}};
+
+/* 장면 도구 상자: 장면을 떠나면 dispose 로 타이머·루프·애니메이션이 한꺼번에 정리된다 */
+class Ctx{
+  constructor(root){this.root=root;this.instant=false;this.alive=true;this._anims=[];this._loops=[];this._timers=[];this._waits=[];this._tweens=[];}
+  $(s){return this.root.querySelector(s);}
+  $$(s){return Array.from(this.root.querySelectorAll(s));}
+  _els(x){if(typeof x==='string')return this.$$(x);if(!x)return [];if(x instanceof Element)return [x];return Array.from(x);}
+  a(el,kf,o={}){
+    if(typeof el==='string')el=this.$(el);
+    if(!el||!this.alive)return STUB;
+    const inst=this.instant&&o.iter!==Infinity;
+    const an=el.animate(kf,{duration:inst?0:(o.dur??700),delay:inst?0:(o.delay??0),easing:EASE[o.ease]||o.ease||EASE.out,fill:o.fill||'both',iterations:o.iter??1,direction:o.dir||'normal'});
+    if(inst){try{an.finish();}catch(e){}}
+    this._anims.push(an);return an;
+  }
+  reveal(el,fx='rise',o={}){
+    let last=STUB;
+    this._els(el).forEach((e,i)=>{
+      const P=FX[fx]||FX.rise;
+      const d=Object.assign({dur:P.dur,ease:P.ease||'out'},o);
+      if(o.stagger)d.delay=(o.delay||0)+i*o.stagger;
+      if(fx==='draw'){
+        const geo=(e.matches&&e.matches(GEOM))?[e]:Array.from(e.querySelectorAll(GEOM));
+        geo.forEach(g=>{g.setAttribute('pathLength','1');g.style.strokeDasharray='1 1';last=this.a(g,P.k,d);});
+      }else last=this.a(e,P.k,d);
+    });
+    return last;
+  }
+  wait(ms){
+    if(this.instant||!this.alive)return Promise.resolve();
+    return new Promise(res=>{const w={res};w.t=setTimeout(()=>{const i=this._waits.indexOf(w);if(i>=0)this._waits.splice(i,1);res();},ms);this._waits.push(w);});
+  }
+  tween(dur,fn,o={}){
+    const ease=typeof o.ease==='function'?o.ease:(JE[o.ease]||JE.out);
+    if(this.instant||!this.alive){if(this.alive)fn(1,1);return Promise.resolve();}
+    return new Promise(res=>{
+      let start=null,done=false,id=0;const tw={};
+      const rm=()=>{const i=this._tweens.indexOf(tw);if(i>=0)this._tweens.splice(i,1);};
+      tw.finish=()=>{if(done)return;done=true;cancelAnimationFrame(id);rm();try{fn(1,1);}catch(e){console.error(e);}res();};
+      tw.kill=()=>{if(done)return;done=true;cancelAnimationFrame(id);rm();res();};
+      this._tweens.push(tw);
+      if(!o.noInit){try{fn(0,0);}catch(e){console.error(e);}}
+      const delay=o.delay||0;
+      const tick=now=>{
+        if(done)return;
+        if(start===null)start=now+delay;
+        const t=(now-start)/dur;
+        if(t<0){id=requestAnimationFrame(tick);return;}
+        if(t>=1){tw.finish();return;}
+        try{fn(ease(t),t);}catch(e){console.error(e);tw.kill();return;}
+        id=requestAnimationFrame(tick);
+      };
+      id=requestAnimationFrame(tick);
+    });
+  }
+  count(el,from,to,o={}){
+    if(typeof el==='string')el=this.$(el);
+    if(!el)return Promise.resolve();
+    const fmt=o.fmt||(v=>String(Math.round(v)));
+    return this.tween(o.dur??1000,p=>{el.textContent=fmt(from+(to-from)*p);},{ease:o.ease||'out',delay:o.delay});
+  }
+  loop(fn){
+    const L={on:true,t:0,last:null,id:0};
+    const tick=now=>{
+      if(!L.on||!this.alive)return;
+      const dt=L.last===null?0:Math.min(.05,(now-L.last)/1000);L.last=now;L.t+=dt;
+      try{fn(L.t,dt);}catch(e){console.error(e);L.on=false;return;}
+      L.id=requestAnimationFrame(tick);
+    };
+    L.stop=()=>{L.on=false;cancelAnimationFrame(L.id);};
+    L.id=requestAnimationFrame(tick);this._loops.push(L);return L;
+  }
+  isBusy(){
+    if(this._waits.length||this._tweens.length)return true;
+    return this._anims.some(a=>{try{if(a.playState!=='running')return false;return a.effect.getComputedTiming().iterations!==Infinity;}catch(e){return false;}});
+  }
+  hurry(){
+    this.instant=true;
+    this._anims.forEach(a=>{try{if(a.effect.getComputedTiming().iterations!==Infinity&&a.playState==='running')a.finish();}catch(e){}});
+    this._tweens.slice().forEach(t=>t.finish());
+    this._waits.splice(0).forEach(w=>{clearTimeout(w.t);w.res();});
+  }
+  dispose(){
+    this.alive=false;
+    this._loops.forEach(l=>l.stop());
+    this._timers.forEach(id=>clearTimeout(id));
+    this._tweens.slice().forEach(t=>t.kill());
+    this._waits.splice(0).forEach(w=>{clearTimeout(w.t);w.res();});
+  }
+}
+
+const scenes={};
+const Deck={scene(id,def){scenes[id]=def;},list:[],i:-1,k:0,ctx:null,token:0,U,STILL};
+window.Deck=Deck;
+
+let stage,viewport,hud,progI,dotsEl,countEl,notesEl,notesT,notesP,ovEl,ovGrid,helpEl,blankEl,kwbar,hudTimer;
+
+function stepsOf(sec){
+  if(sec.__steps!=null)return sec.__steps;
+  let m=+((scenes[sec.id]||{}).steps||0);
+  const tmp=document.createElement('div');tmp.innerHTML=sec.__pristine;
+  tmp.querySelectorAll('[data-step]').forEach(e=>{m=Math.max(m,+e.getAttribute('data-step')||0);});
+  return (sec.__steps=m);
+}
+const safe=async(fn,c)=>{try{await fn();}catch(e){if(c&&c.alive)console.error('[scene '+c.root.id+']',e);}};
+
+function runDecl(c,k){
+  if(k===0){
+    c.$$('[data-in]').forEach(el=>{
+      const v=el.getAttribute('data-in');
+      const delay=+(el.dataset.delay||(v&&!isNaN(+v)?v:0));
+      c.reveal(el,el.dataset.fx||'rise',{delay,dur:el.dataset.dur?+el.dataset.dur:undefined});
+    });
+  }else{
+    c.$$('[data-step="'+k+'"]').forEach(el=>{
+      c.reveal(el,el.dataset.fx||'rise',{delay:+(el.dataset.delay||0),dur:el.dataset.dur?+el.dataset.dur:undefined});
+    });
+  }
+}
+
+async function show(i,k=0,o={}){
+  const n=Deck.list.length;if(!n)return;
+  i=Math.max(0,Math.min(n-1,i));
+  const to=Deck.list[i],from=Deck.i>=0?Deck.list[Deck.i]:null;
+  k=Math.max(0,Math.min(stepsOf(to),k));
+  const instant=!!o.instant||STILL;
+  if(Deck.ctx){Deck.ctx.hurry();Deck.ctx.dispose();}
+  const token=++Deck.token;
+  if(from&&from!==to){
+    from.classList.remove('is-on');
+    if(instant)from.classList.remove('is-out');
+    else{
+      from.classList.add('is-out');
+      const an=from.animate([{opacity:1},{opacity:0}],{duration:450,easing:'ease'});
+      from.__fade=an;an.onfinish=()=>{from.classList.remove('is-out');};
+    }
+  }
+  if(to.__fade){try{to.__fade.cancel();}catch(e){}to.__fade=null;}
+  to.innerHTML=to.__pristine;
+  to.classList.remove('is-out');to.classList.add('is-on');
+  if(from!==to&&!instant)to.__fade=to.animate([{opacity:0},{opacity:1}],{duration:450,easing:'ease'});
+  const c=new Ctx(to);Deck.ctx=c;Deck.i=i;Deck.k=k;
+  document.body.classList.toggle('on-light',/light|parchment/.test(to.dataset.tile));
+  updateChrome();
+  const def=scenes[to.id]||{};
+  c.instant=instant||k>0;
+  await safe(async()=>{runDecl(c,0);if(def.enter)await def.enter(c);},c);
+  for(let j=1;j<=k;j++){
+    if(token!==Deck.token)return;
+    await safe(async()=>{runDecl(c,j);if(def.go)await def.go(c,j);},c);
+  }
+  if(token!==Deck.token)return;
+  c.instant=instant;
+}
+function stepTo(k){
+  const c=Deck.ctx,sec=Deck.list[Deck.i],def=scenes[sec.id]||{};
+  c.instant=false;Deck.k=k;updateChrome();
+  safe(async()=>{runDecl(c,k);if(def.go)await def.go(c,k);},c);
+}
+function next(){
+  const c=Deck.ctx;
+  if(c&&c.isBusy()){c.hurry();return;}
+  const sec=Deck.list[Deck.i];
+  if(Deck.k<stepsOf(sec))stepTo(Deck.k+1);
+  else if(Deck.i<Deck.list.length-1)show(Deck.i+1,0);
+}
+function prev(){
+  if(Deck.k>0)show(Deck.i,Deck.k-1,{instant:true});
+  else if(Deck.i>0){const p=Deck.list[Deck.i-1];show(Deck.i-1,stepsOf(p),{instant:true});}
+}
+
+/* 크롬(컨트롤) */
+function updateChrome(){
+  const n=Deck.list.length,i=Deck.i,sec=Deck.list[i];
+  countEl.textContent=(i+1)+' / '+n;
+  progI.style.width=((i+1)/n*100)+'%';
+  const st=stepsOf(sec);
+  dotsEl.innerHTML='';dotsEl.classList.toggle('show',st>0);
+  for(let j=0;j<st;j++){const d=document.createElement('i');if(j<Deck.k)d.className='on';dotsEl.appendChild(d);}
+  notesT.textContent=(i+1)+'. '+(sec.dataset.title||'');
+  notesP.textContent=sec.dataset.notes||'(이 장면에는 노트가 없어요)';
+  syncKw();
+  try{history.replaceState(null,'','#'+(i+1));}catch(e){}
+}
+function buildKw(){
+  const K=window.KW;if(!K)return;
+  kwbar=document.createElement('div');kwbar.id='kwbar';stage.appendChild(kwbar);
+  K.items.forEach((name,idx)=>{
+    const b=document.createElement('button');b.className='kw';
+    const bb=document.createElement('b');bb.textContent=idx+1;
+    const sp=document.createElement('span');sp.textContent=name;
+    b.appendChild(bb);b.appendChild(sp);
+    b.onclick=e=>{e.stopPropagation();const first=K.at.indexOf(idx);if(first>=0)show(first,0);};
+    kwbar.appendChild(b);
+  });
+}
+function syncKw(){
+  const K=window.KW;if(!K||!kwbar)return;
+  const cur=K.at[Deck.i]!=null?K.at[Deck.i]:-1;
+  kwbar.classList.toggle('show',cur>=0);
+  Array.from(kwbar.children).forEach((b,idx)=>{b.classList.toggle('cur',idx===cur);b.classList.toggle('done',idx<cur);});
+}
+function closeOverlays(){ovEl.classList.remove('show');helpEl.classList.remove('show');}
+function openOverview(){
+  ovGrid.innerHTML='';
+  Deck.list.forEach((s,idx)=>{
+    const b=document.createElement('button');b.className='ov'+(idx===Deck.i?' cur':'');b.dataset.tile=s.dataset.tile;
+    const a=document.createElement('span');a.className='n';a.textContent=idx+1;
+    const t=document.createElement('span');t.className='tt';t.textContent=s.dataset.title||'';
+    b.appendChild(a);b.appendChild(t);
+    b.onclick=()=>{closeOverlays();show(idx,0);};
+    ovGrid.appendChild(b);
+  });
+  ovEl.classList.add('show');
+}
+function toggleBlank(kind){blankEl.className=(blankEl.className===kind)?'':kind;}
+function fit(){
+  const s=Math.min(innerWidth/SW,innerHeight/SH);
+  stage.style.transform='translate(-50%,-50%) scale('+s+')';
+}
+function pokeHud(){
+  hud.classList.add('show');clearTimeout(hudTimer);
+  hudTimer=setTimeout(()=>hud.classList.remove('show'),2500);
+}
+
+Deck.start=function(){
+  stage=document.getElementById('stage');viewport=document.getElementById('viewport');
+  hud=document.getElementById('hud');progI=document.querySelector('#progress i');dotsEl=document.getElementById('stepdots');
+  countEl=document.getElementById('count');notesEl=document.getElementById('notes');notesT=document.getElementById('notes-t');notesP=document.getElementById('notes-p');
+  ovEl=document.getElementById('overview');ovGrid=document.getElementById('ov-grid');helpEl=document.getElementById('help');blankEl=document.getElementById('blank');
+  Deck.list=Array.from(stage.querySelectorAll(':scope > .slide'));
+  Deck.list.forEach(sec=>{
+    sec.querySelectorAll('[data-fx="draw"]').forEach(el=>{
+      (el.matches(GEOM)?[el]:Array.from(el.querySelectorAll(GEOM))).forEach(g=>g.setAttribute('pathLength','1'));
+    });
+    sec.__pristine=sec.innerHTML;
+  });
+  buildKw();
+  fit();addEventListener('resize',fit);
+  document.getElementById('b-prev').onclick=prev;
+  document.getElementById('b-next').onclick=next;
+  document.getElementById('b-notes').onclick=()=>notesEl.classList.toggle('show');
+  document.getElementById('b-ov').onclick=openOverview;
+  document.getElementById('b-fs').onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();else rootEl.requestFullscreen&&rootEl.requestFullscreen();};
+  ovEl.addEventListener('click',e=>{if(e.target===ovEl)closeOverlays();});
+  helpEl.addEventListener('click',e=>{if(e.target===helpEl)closeOverlays();});
+  viewport.addEventListener('click',e=>{
+    if(e.target.closest('#kwbar'))return;
+    (e.clientX/innerWidth<.28)?prev():next();
+  });
+  addEventListener('mousemove',pokeHud);addEventListener('touchstart',pokeHud,{passive:true});
+  let tx=null;
+  addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+  addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>60){dx<0?next():prev();}},{passive:true});
+  addEventListener('keydown',e=>{
+    if(e.metaKey||e.ctrlKey||e.altKey)return;
+    const key=e.key;
+    if(key==='Escape'){closeOverlays();blankEl.className='';return;}
+    if(blankEl.className){blankEl.className='';return;}
+    if(ovEl.classList.contains('show')||helpEl.classList.contains('show'))return;
+    switch(key){
+      case 'ArrowRight':case 'ArrowDown':case ' ':case 'PageDown':case 'Enter':e.preventDefault();next();break;
+      case 'ArrowLeft':case 'ArrowUp':case 'PageUp':case 'Backspace':e.preventDefault();prev();break;
+      case 'Home':show(0,0);break;
+      case 'End':show(Deck.list.length-1,0);break;
+      case 'n':case 'N':notesEl.classList.toggle('show');break;
+      case 'o':case 'O':openOverview();break;
+      case 'b':case 'B':toggleBlank('black');break;
+      case 'w':case 'W':toggleBlank('white');break;
+      case 'f':case 'F':document.getElementById('b-fs').click();break;
+      case '?':helpEl.classList.add('show');break;
+    }
+  });
+  const h=parseInt(location.hash.slice(1))||1,kk=parseInt(Q.get('k'))||0;
+  show(h-1,kk,{instant:kk>0||STILL});
+  pokeHud();
+};
+})();
+</script>
+
+<script>
+/* ═══ 장면: 키워드와 장면별 움직임 ═══ */
+const {U}=Deck;
+window.KW={items:['조석','기조력','조석 주기와 양상','사리와 조금'],at:[-1,-1,0,0,0,1,1,1,1,2,2,3,3,-1,-1,-1]};
+const $id=id=>document.getElementById(id);
+const TAU=Math.PI*2, D2R=Math.PI/180;
+const P2=x=>(3*x*x-1)/2;                      // 평형 조석의 해수면 모양(르장드르 2차)
+const fmtHM=h=>{const m=Math.round(h*60);return Math.floor(m/60)+'시간 '+String(m%60).padStart(2,'0')+'분';};
+
+/* 화살표 하나(선 + 머리)를 그린다 */
+function arrow(parent,x1,y1,x2,y2,color,w){
+  const g=U.el('g',{},parent);
+  const dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy);if(L<3)return g;
+  const ux=dx/L,uy=dy/L,hl=Math.min(w*3.4,L*.6),hw=hl*.55;
+  const bx=x2-ux*hl,by=y2-uy*hl;
+  U.el('line',{x1,y1,x2:bx+ux,y2:by+uy,stroke:color,'stroke-width':w,'stroke-linecap':'round'},g);
+  U.el('polygon',{points:x2+','+y2+' '+(bx-uy*hw)+','+(by+ux*hw)+' '+(bx+uy*hw)+','+(by-ux*hw),fill:color},g);
+  return g;
+}
+
+/* ── 정적 도형: 시작 전에 계산해 넣는다(원본 상태에 포함) ── */
+
+/* s04 조석 곡선 */
+(function(){
+  const X=t=>240+56*t,Y=h=>860-130*h,p=[];
+  for(let i=0;i<=260;i++){const t=i/10;p.push(X(t).toFixed(1)+' '+Y(2.2+1.5*Math.cos(TAU*t/12.42)).toFixed(1));}
+  $id('s04-curve').setAttribute('d','M'+p.join(' L'));
+})();
+
+/* s07 기조력 성분: 달의 인력(초록) + 원심력(주황) = 기조력(파랑) */
+(function(){
+  const E={x:620,y:640},R=230,M={x:1700,y:640},D=M.x-E.x,L0=110;
+  const gG=$id('s07-grav'),gC=$id('s07-cent'),gT=$id('s07-tide'),gP=$id('s07-pts');
+  for(let a=0;a<360;a+=45){
+    const p={x:E.x+R*Math.cos(a*D2R),y:E.y-R*Math.sin(a*D2R)};
+    const dx=M.x-p.x,dy=M.y-p.y,d=Math.hypot(dx,dy),g=L0*Math.pow(D/d,2);
+    const gx=dx/d*g,gy=dy/d*g;
+    arrow(gG,p.x,p.y,p.x+gx,p.y+gy,'var(--c4)',5);
+    arrow(gC,p.x,p.y,p.x-L0,p.y,'var(--c3)',5);
+    arrow(gT,p.x,p.y,p.x+gx-L0,p.y+gy,'var(--c1)',9);
+    U.el('circle',{cx:p.x,cy:p.y,r:8,fill:'#f5f5f7'},gP);
+  }
+  arrow(gG,E.x,E.y,E.x+L0,E.y,'var(--c4)',5);
+  arrow(gC,E.x,E.y,E.x-L0,E.y,'var(--c3)',5);
+  U.el('circle',{cx:E.x,cy:E.y,r:8,fill:'#f5f5f7'},gP);
+})();
+
+/* s11 위도별 조석 곡선(평형 조석, 달의 적위 28.5°) */
+(function(){
+  const del=28.5*D2R,tops=[250,470,690],lats=[65,35,0];
+  lats.forEach((la,i)=>{
+    const f=la*D2R,p=[];
+    for(let j=0;j<=240;j++){
+      const t=j/10,ct=Math.sin(f)*Math.sin(del)+Math.cos(f)*Math.cos(del)*Math.cos(TAU*t/24.84);
+      const h=P2(ct),x=900+22.5*t,y=tops[i]+20+(1-(h+.5)/1.5)*130;
+      p.push(x.toFixed(1)+' '+y.toFixed(1));
+    }
+    $id('s11-g'+i).setAttribute('d','M'+p.join(' L'));
+  });
+})();
+
+/* s13 한 달 조석(모식): 주태음반일주조 + 주태양반일주조 + 일주조 */
+(function(){
+  const X=t=>200+49.35*t,Y=h=>860-45*h,t0=6*24,p=[];
+  for(let i=0;i<=31*24*4;i++){
+    const tau=i/4;
+    const h=4.6+3.0*Math.cos(TAU*(tau-t0)/12.4206)+1.2*Math.cos(TAU*(tau-t0)/12)+0.35*Math.cos(TAU*tau/23.9345);
+    p.push(X(tau/24).toFixed(1)+' '+Y(h).toFixed(1));
+  }
+  $id('s13-curve').setAttribute('d','M'+p.join(' L'));
+  const xt=$id('s13-xt');
+  for(let d=1;d<=31;d++){const t=U.el('text',{x:X(d-.5).toFixed(1),y:892},xt);t.textContent=d;}
+})();
+
+/* ── 움직이는 장면 ── */
+
+/* s01 표지: 밀물과 썰물 */
+Deck.scene('s01',{
+  enter(c){
+    const w=c.$('#s01-water'),cr=c.$('#s01-crest');
+    const draw=t=>{
+      const L=810+90*Math.cos(TAU*t/9),pts=[];
+      for(let x=0;x<=1920;x+=40){const y=L+6*Math.sin(x/90+t*1.6)+3*Math.sin(x/37-t*2.3);pts.push(x+' '+y.toFixed(1));}
+      const line='M'+pts.join(' L');
+      w.setAttribute('d',line+' L1920 1080 L0 1080Z');cr.setAttribute('d',line);
+    };
+    draw(0);c.loop(t=>draw(t));
+  }
+});
+
+/* s03 해안 단면: 8초 = 12시간 25분 */
+Deck.scene('s03',{
+  enter(c){
+    const wr=c.$('#s03-water'),sf=c.$('#s03-surf'),clk=c.$('#s03-clock'),st=c.$('#s03-state'),hv=c.$('#s03-h');
+    const P=12.42,SEC=8;
+    const draw=t=>{
+      const th=P*t/SEC,ph=TAU*(th+3)/P,cs=Math.cos(ph),sn=Math.sin(ph);
+      const y=750-110*cs;
+      wr.setAttribute('y',y.toFixed(1));wr.setAttribute('height',(960-y).toFixed(1));
+      sf.setAttribute('y1',y.toFixed(1));sf.setAttribute('y2',y.toFixed(1));
+      const hm=((6+th)%24+24)%24,H=Math.floor(hm),Mi=Math.floor((hm-H)*60);
+      clk.textContent=String(H).padStart(2,'0')+':'+String(Mi).padStart(2,'0');
+      hv.textContent=(4.5+4*cs).toFixed(1)+' m';
+      const s=cs>.96?'만조':cs<-.96?'간조':(sn>0?'썰물':'밀물');
+      if(st.dataset.s!==s){st.dataset.s=s;st.textContent=s;}
+    };
+    draw(0);c.loop(t=>draw(t));
+  }
+});
+
+/* s06 지구와 달이 공통 질량 중심을 돈다(자전 생략) */
+function s06place(c,th){
+  const B={x:640,y:620},ux=Math.cos(th),uy=-Math.sin(th);
+  const ex=B.x-80*ux,ey=B.y-80*uy,mx=B.x+360*ux,my=B.y+360*uy;
+  c.$('#s06-earth').setAttribute('transform','translate('+ex.toFixed(1)+' '+ey.toFixed(1)+')');
+  c.$('#s06-moon').setAttribute('transform','translate('+mx.toFixed(1)+' '+my.toFixed(1)+')');
+  const l=c.$('#s06-link');l.setAttribute('x1',ex);l.setAttribute('y1',ey);l.setAttribute('x2',mx);l.setAttribute('y2',my);
+}
+Deck.scene('s06',{
+  enter(c){s06place(c,0);},
+  go(c,k){if(k===2)c.loop(t=>s06place(c,t*TAU/9));}
+});
+
+/* s07 합력이 나오면 두 힘을 흐리게 */
+Deck.scene('s07',{
+  go(c,k){
+    if(k!==3)return;
+    const dim=[{opacity:1},{opacity:.18}];
+    c.a('#s07-grav',dim,{dur:700,delay:200});c.a('#s07-cent',dim,{dur:700,delay:200});
+  }
+});
+
+/* s08 자전하는 동안 관측 지점의 해수면 높이 */
+function s08draw(c,t){
+  const ang=360*t/24.84,cv=c.$('#s08-curve'),dot=c.$('#s08-dot');
+  c.$('#s08-spin').setAttribute('transform','rotate('+(-ang).toFixed(2)+' 500 600)');
+  const X=s=>1080+28*s,Y=s=>600-150*Math.cos(2*TAU*s/24.84),p=[];
+  for(let s=0;s<t;s+=.1)p.push(X(s).toFixed(1)+','+Y(s).toFixed(1));
+  p.push(X(t).toFixed(1)+','+Y(t).toFixed(1));
+  cv.setAttribute('points',p.join(' '));
+  dot.setAttribute('cx',X(t));dot.setAttribute('cy',Y(t));
+  c.$('#s08-clock').textContent=fmtHM(t);
+}
+Deck.scene('s08',{
+  enter(c){s08draw(c,0);},
+  async go(c,k){if(k===1)await c.tween(9000,p=>s08draw(c,24.84*p),{ease:'linear'});}
+});
+
+/* s10 반 바퀴 자전 + 6.5° 더 */
+function s10draw(c,mk,mo,hrs){
+  c.$('#s10-spin').setAttribute('transform','rotate('+(-mk).toFixed(2)+' 560 620)');
+  c.$('#s10-water').setAttribute('transform','rotate('+(-mo).toFixed(2)+' 560 620)');
+  const x=560+600*Math.cos(mo*D2R),y=620-600*Math.sin(mo*D2R);
+  c.$('#s10-moon').setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+')');
+  c.$('#s10-clock').textContent=fmtHM(hrs);
+}
+function s10state(c,s,txt){const e=c.$('#s10-state');e.dataset.s=s;e.textContent=txt;}
+Deck.scene('s10',{
+  steps:3,
+  enter(c){s10draw(c,0,0,0);s10state(c,'만조','만조');},
+  async go(c,k){
+    if(k===1){
+      s10state(c,'대기','자전 중…');
+      await c.tween(4200,p=>s10draw(c,180*p,6.5*p,12*p),{ease:'inOut'});
+      s10state(c,'밀물','아직 만조 전');
+    }
+    if(k===2){
+      await c.tween(1600,p=>s10draw(c,180+6.5*p,6.5,12+25/60*p),{ease:'inOut'});
+      s10state(c,'만조','다시 만조!');
+    }
+  }
+});
+
+/* s12 달의 위상에 따른 사리와 조금 */
+const S12={x:620,y:600,R:110,orb:290,Am:42,As:19,base:30};
+const S12PH=[
+  ['삭','사리','(대조)','태양·지구·달이 일직선 → 두 천체의 기조력이 합쳐진다','var(--c1)'],
+  ['상현','조금','(소조)','태양과 달이 직각 방향 → 기조력이 서로 상쇄된다','var(--c3)'],
+  ['망','사리','(대조)','다시 일직선 → 기조력이 합쳐져 조차가 가장 크다','var(--c1)'],
+  ['하현','조금','(소조)','다시 직각 방향 → 조차가 가장 작다','var(--c3)']
+];
+function s12draw(c,deg){
+  const fm=deg*D2R,{x:ex,y:ey,R,Am,As,base}=S12;
+  let mn=1e9,mx=-1e9;
+  const shape=f=>{let d='';for(let a=0;a<=360;a+=3){const r=f(a*D2R);if(f===tot){mn=Math.min(mn,r);mx=Math.max(mx,r);}d+=(a?'L':'M')+(ex+r*Math.cos(a*D2R)).toFixed(1)+' '+(ey-r*Math.sin(a*D2R)).toFixed(1);}return d+'Z';};
+  const lun=a=>R+base+Am*P2(Math.cos(a-fm)),sol=a=>R+base+As*P2(Math.cos(a)),tot=a=>R+base+Am*P2(Math.cos(a-fm))+As*P2(Math.cos(a));
+  c.$('#s12-lun').setAttribute('d',shape(lun));
+  c.$('#s12-sol').setAttribute('d',shape(sol));
+  c.$('#s12-water').setAttribute('d',shape(tot));
+  const mxp=ex+S12.orb*Math.cos(fm),myp=ey-S12.orb*Math.sin(fm);
+  c.$('#s12-moon').setAttribute('transform','translate('+mxp.toFixed(1)+' '+myp.toFixed(1)+')');
+  const lab=c.$('#s12-mlab');
+  lab.setAttribute('x',(mxp+38).toFixed(1));lab.setAttribute('y',(myp-34).toFixed(1));
+  const full=1.5*(Am+As);
+  c.$('#s12-bar').style.width=((mx-mn)/full*100).toFixed(1)+'%';
+}
+function s12label(c,i){
+  const [ph,st,sub,desc,col]=S12PH[i%4];
+  c.$('#s12-ph').textContent=ph;
+  c.$('#s12-st').innerHTML=st+' <span class="mute" style="font-size:40px">'+sub+'</span>';
+  c.$('#s12-desc').textContent=desc;
+  c.$('#s12-bar').style.background=col;
+  c.$('#s12-mlab').textContent=ph;
+}
+Deck.scene('s12',{
+  enter(c){s12draw(c,0);s12label(c,0);},
+  async go(c,k){
+    if(k>=1&&k<=3){
+      const a=(k-1)*90;
+      await c.tween(1800,p=>{s12draw(c,a+90*p);if(p>=.5)s12label(c,k);},{ease:'inOut'});
+      s12label(c,k);
+    }
+  }
+});
+
+Deck.start();
+</script>
+</body>
+</html>
