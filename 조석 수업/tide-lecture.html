@@ -506,36 +506,36 @@ html.student #notes{display:none!important}
 </section>
 
 <!-- ═══ s11 조석 양상 ═══ -->
-<section class="slide" id="s11" data-tile="light" data-title="위도에 따른 조석 양상" data-notes="그림 Ⅱ-26. 1단계: 지구의 적도면은 달의 공전 궤도면에 대해 최대 약 28.5° 기울어져 있어서, 해수면이 높아진 부분도 적도에 대해 기울어집니다. 2단계: 고위도 A는 하루 동안 만조와 간조가 한 번씩만 나타납니다(일주조). 3단계: 중위도 B는 하루 두 번씩 나타나지만 조차가 다릅니다(혼합조). 4단계: 저위도 C는 하루 두 번씩, 조차가 비슷합니다(반일주조). 그래프는 평형 조석론으로 계산한 모식 그래프입니다. 실제 조석은 지형과 해저 수심의 영향을 받아 훨씬 복잡하며, 우리나라 동해안과 서해안은 위도가 비슷하지만 조석 양상이 매우 다릅니다.">
+<section class="slide" id="s11" data-tile="light" data-title="위도에 따른 조석 양상" data-notes="그림 Ⅱ-26. 적도 조금 위에서 비스듬히 내려다본 지구입니다. 1단계: 지구의 적도면은 달의 공전 궤도면에 대해 최대 약 28.5° 기울어져 있어서, 해수면이 높아진 부분(파란 타원)도 적도에 대해 기울어집니다. 2단계: 지구가 자전하면 같은 경도선(주황 선) 위의 세 지점이 함께 돕니다. 고위도 A가 하루 동안 부풂 속을 지나가는 것을 봅니다. 파란 물기둥이 그 지점의 해수면 높이이고, 오른쪽 그래프에 그대로 그려집니다. A는 달 쪽 부풂만 지나고 반대쪽 부풂은 비켜 가므로 만조·간조가 하루 한 번씩(일주조). 3단계: 중위도 B는 두 부풂을 모두 지나지만 달 반대쪽 부풂의 가장자리만 스쳐서 두 만조의 높이가 다릅니다(혼합조). 4단계: 저위도 C(적도)는 두 부풂을 대칭으로 지나서 하루 두 번, 조차가 비슷합니다(반일주조). 뒤쪽으로 돌아간 지점은 흐리게 표시했습니다. 그래프는 평형 조석론으로 계산한 모식 그래프이고 해수면 부풂은 크게 과장했습니다. 실제 조석은 지형과 해저 수심의 영향을 받아 훨씬 복잡하며, 우리나라 동해안과 서해안은 위도가 비슷하지만 조석 양상이 매우 다릅니다.">
   <svg class="full-svg" viewBox="0 0 1920 1080">
     <defs><radialGradient id="s11-e" cx=".38" cy=".32"><stop offset="0" stop-color="#9fd8f5"/><stop offset=".6" stop-color="#3a8cc8"/><stop offset="1" stop-color="#1b4f7a"/></radialGradient></defs>
-    <g data-step="1" data-fx="fade"><ellipse cx="470" cy="620" rx="290" ry="225" transform="rotate(-28.5 470 620)" fill="#0077B6" fill-opacity=".14" stroke="var(--c1)" stroke-width="3"/></g>
-    <circle cx="470" cy="620" r="210" fill="url(#s11-e)"/>
-    <line x1="470" y1="370" x2="470" y2="870" stroke="#1d1d1f" stroke-width="3"/>
-    <text x="470" y="355" text-anchor="middle" font-size="30" font-weight="700">N</text><text x="470" y="902" text-anchor="middle" font-size="30" font-weight="700">S</text>
-    <g stroke="#fff" stroke-width="4"><path d="M381.3 429.7H558.7M298 499.6H642M260 620H680"/></g>
-    <g fill="#1d1d1f"><circle cx="558.7" cy="429.7" r="10"/><circle cx="642" cy="499.6" r="10"/><circle cx="680" cy="620" r="10"/></g>
-    <g font-size="28" font-weight="700" text-anchor="end">
-      <text x="366" y="439">고위도 A</text><text x="284" y="509">중위도 B</text><text x="246" y="630">저위도 C</text>
-    </g>
-    <g data-step="1" data-fx="fade" data-delay="300">
-      <path d="M733.6 476.8L790 446.2" stroke="var(--c3)" stroke-width="6" stroke-linecap="round"/>
-      <polygon points="812,434.3 783.7,435.4 795.2,456.5" fill="var(--c3)"/>
-      <text x="800" y="410" text-anchor="end" font-size="28" font-weight="700" fill="var(--c3)">달의 방향</text>
-    </g>
-    <g fill="none" stroke="#d2d2d7" stroke-width="2"><rect x="880" y="250" width="580" height="170" rx="10"/><rect x="880" y="470" width="580" height="170" rx="10"/><rect x="880" y="690" width="580" height="170" rx="10"/></g>
+    <g data-step="1" data-fx="fade"><ellipse id="s11-water" fill="#0077B6" fill-opacity=".16" stroke="var(--c1)" stroke-width="3"/></g>
+    <circle id="s11-globe" r="170" fill="url(#s11-e)"/>
+    <g id="s11-lats" fill="none" stroke="#fff" stroke-width="2.5"></g>
+    <path id="s11-merb" fill="none" stroke="var(--c3)" stroke-width="3" stroke-opacity=".35" stroke-dasharray="4 8"/>
+    <path id="s11-merf" fill="none" stroke="var(--c3)" stroke-width="4" stroke-opacity=".75" stroke-linecap="round"/>
+    <g id="s11-axis"></g>
+    <line id="s11-col" stroke="var(--c1)" stroke-width="9" stroke-linecap="round" opacity="0"/>
+    <g id="s11-dots" font-size="28" font-weight="700"></g>
+    <g id="s11-moon" data-step="1" data-fx="fade" data-delay="300"></g>
+    <g fill="none" stroke="#d2d2d7" stroke-width="2"><rect id="s11-box0" x="880" y="250" width="580" height="170" rx="10"/><rect id="s11-box1" x="880" y="470" width="580" height="170" rx="10"/><rect id="s11-box2" x="880" y="690" width="580" height="170" rx="10"/></g>
     <g fill="#6e6e73" font-size="26" font-weight="700" text-anchor="end"><text x="866" y="290">A 지역</text><text x="866" y="510">B 지역</text><text x="866" y="730">C 지역</text></g>
     <g fill="#6e6e73" font-size="24" text-anchor="middle"><text x="900" y="894">0</text><text x="1035" y="894">6</text><text x="1170" y="894">12</text><text x="1305" y="894">18</text><text x="1440" y="894">24</text></g>
     <text x="1460" y="934" text-anchor="end" font-size="26" font-weight="600">시간 (시)</text>
-    <path id="s11-g0" stroke="var(--c3)" stroke-width="6" fill="none" stroke-linecap="round" data-step="2" data-fx="draw" data-dur="1400"/>
-    <path id="s11-g1" stroke="var(--c3)" stroke-width="6" fill="none" stroke-linecap="round" data-step="3" data-fx="draw" data-dur="1400"/>
-    <path id="s11-g2" stroke="var(--c3)" stroke-width="6" fill="none" stroke-linecap="round" data-step="4" data-fx="draw" data-dur="1400"/>
+    <path id="s11-g0" stroke="var(--c3)" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path id="s11-g1" stroke="var(--c3)" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path id="s11-g2" stroke="var(--c3)" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle id="s11-gd" r="10" fill="var(--c3)" opacity="0"/>
+    <g font-size="26" fill="#6e6e73" font-weight="600"><text x="120" y="950">A 고위도(65°N) · B 중위도(35°N) · C 적도(0°)</text></g>
   </svg>
   <div class="hd" data-in><div class="eb"><b>3</b>조석 주기와 양상</div><h2>위도에 따라 조석이 다르다</h2></div>
-  <div class="abs callout" style="top:282px" data-step="2" data-delay="900">만조·간조가 하루 <b>한 번</b>씩<br><b class="act">일주조</b></div>
-  <div class="abs callout" style="top:502px" data-step="3" data-delay="900">하루 두 번, <b>조차가 다르다</b><br><b class="act">혼합조</b></div>
-  <div class="abs callout" style="top:722px" data-step="4" data-delay="900">하루 두 번, <b>조차가 비슷</b><br><b class="act">반일주조</b></div>
-  <div class="fine">평형 조석론으로 계산한 모식 그래프 · 실제 조석은 지형과 해저 수심의 영향을 받아 지역마다 매우 복잡하다</div>
+  <div class="abs num" style="left:120px;top:250px;display:flex;align-items:center;gap:20px" data-in="300">
+    <span class="mute" style="font-size:28px;font-weight:600">경과 시간</span><span id="s11-clock" class="c3" style="font-size:44px;font-weight:700">0시간 00분</span>
+  </div>
+  <div class="abs callout" style="top:282px" data-step="2" data-delay="7100">만조·간조가 하루 <b>한 번</b>씩<br><b class="act">일주조</b></div>
+  <div class="abs callout" style="top:502px" data-step="3" data-delay="7100">하루 두 번, <b>조차가 다르다</b><br><b class="act">혼합조</b></div>
+  <div class="abs callout" style="top:722px" data-step="4" data-delay="7100">하루 두 번, <b>조차가 비슷</b><br><b class="act">반일주조</b></div>
+  <div class="fine">평형 조석론으로 계산한 모식 그래프 · 해수면 부풂은 크게 과장 · 실제 조석은 지형과 해저 수심의 영향을 받아 지역마다 매우 복잡하다</div>
 </section>
 
 <!-- ═══ s12 사리와 조금 ═══ -->
@@ -1039,17 +1039,56 @@ function arrow(parent,x1,y1,x2,y2,color,w){
   U.el('circle',{cx:E.x,cy:E.y,r:8,fill:'#f5f5f7'},gP);
 })();
 
-/* s11 위도별 조석 곡선(평형 조석, 달의 적위 28.5°) */
+/* s11 위도별 조석: 비스듬히 내려다본 지구 + 기울어진 해수면 부풂(평형 조석, 달의 적위 28.5°) */
+const S11={cx:470,cy:610,R:170,a:250,b:186,eps:15*D2R,del:28.5*D2R,lats:[65,35,0],P:24.84,tops:[250,470,690],names:['A','B','C']};
+S11.u=[Math.cos(S11.del),Math.sin(S11.del),0];                         // 달의 방향
+const s11n=(f,l)=>[Math.cos(f)*Math.cos(l),Math.sin(f),-Math.cos(f)*Math.sin(l)];   // 위도 f, 경도 l(달 쪽 = 0)
+const s11r=n=>{const c=n[0]*S11.u[0]+n[1]*S11.u[1]+n[2]*S11.u[2];return 1/Math.sqrt(c*c/S11.a**2+(1-c*c)/S11.b**2);};  // 회전 타원체 해수면
+const s11h=n=>(s11r(n)-S11.b)/(S11.a-S11.b);                        // 0(가장 낮음)~1(가장 높음)
+function s11p(n,r){  // 화면 좌표와 앞뒤(d>0 = 앞쪽)
+  const ce=Math.cos(S11.eps),se=Math.sin(S11.eps),x=n[0]*r,y=n[1]*r,z=n[2]*r;
+  return {x:S11.cx+x,y:S11.cy-(y*ce-z*se),d:z*ce+y*se};
+}
+const s11lon=t=>TAU*t/S11.P-Math.PI/2;                                // 0시: 지점이 정면, 약 6시간 뒤 달 쪽
+function s11split(pts){  // 앞·뒤로 나눈 경로 문자열
+  let f='',b='',pf=false,pb=false;
+  pts.forEach(p=>{const q=p.x.toFixed(1)+' '+p.y.toFixed(1);
+    if(p.d>=0){f+=(pf?'L':'M')+q;pf=true;pb=false;}else{b+=(pb?'L':'M')+q;pb=true;pf=false;}});
+  return {f,b};
+}
 (function(){
-  const del=28.5*D2R,tops=[250,470,690],lats=[65,35,0];
-  lats.forEach((la,i)=>{
-    const f=la*D2R,p=[];
-    for(let j=0;j<=240;j++){
-      const t=j/10,ct=Math.sin(f)*Math.sin(del)+Math.cos(f)*Math.cos(del)*Math.cos(TAU*t/24.84);
-      const h=P2(ct),x=900+22.5*t,y=tops[i]+20+(1-(h+.5)/1.5)*130;
-      p.push(x.toFixed(1)+' '+y.toFixed(1));
-    }
-    $id('s11-g'+i).setAttribute('d','M'+p.join(' L'));
+  const {cx,cy,R,a,b,eps,del}=S11;
+  $id('s11-globe').setAttribute('cx',cx);$id('s11-globe').setAttribute('cy',cy);
+  // 해수면 부풂의 윤곽(회전 타원체의 정사영 = 타원)
+  const ud=Math.sin(del)*Math.sin(eps),A=Math.sqrt(b*b+(a*a-b*b)*(1-ud*ud));
+  const al=Math.atan2(Math.sin(del)*Math.cos(eps),Math.cos(del));
+  const w=$id('s11-water');
+  w.setAttribute('cx',cx);w.setAttribute('cy',cy);w.setAttribute('rx',A.toFixed(1));w.setAttribute('ry',b);
+  w.setAttribute('transform','rotate('+(-al/D2R).toFixed(2)+' '+cx+' '+cy+')');
+  // 달의 방향 화살표
+  const ux=Math.cos(al),uy=-Math.sin(al),mg=$id('s11-moon');
+  arrow(mg,cx+(A+16)*ux,cy+(A+16)*uy,cx+(A+96)*ux,cy+(A+96)*uy,'var(--c3)',6);
+  const lt=U.el('text',{x:(cx+(A+20)*ux).toFixed(1),y:(cy+(A+96)*uy-30).toFixed(1),'font-size':28,'font-weight':700,fill:'var(--c3)'},mg);lt.textContent='달의 방향';
+  // 자전축
+  const ax=$id('s11-axis'),N=s11p([0,1,0],R*1.28),S=s11p([0,-1,0],R*1.28),Nf=s11p([0,1,0],R),Sb=s11p([0,-1,0],R);
+  U.el('line',{x1:Nf.x,y1:Nf.y,x2:N.x,y2:N.y,stroke:'#1d1d1f','stroke-width':3},ax);
+  U.el('line',{x1:Sb.x,y1:Sb.y,x2:S.x,y2:S.y,stroke:'#1d1d1f','stroke-width':3},ax);
+  const tn=U.el('text',{x:N.x,y:N.y-14,'text-anchor':'middle','font-size':30,'font-weight':700},ax);tn.textContent='N';
+  const ts=U.el('text',{x:S.x,y:S.y+36,'text-anchor':'middle','font-size':30,'font-weight':700},ax);ts.textContent='S';
+  // 세 위도선(지구 표면) — 앞쪽 실선, 뒤쪽 점선
+  const lg=$id('s11-lats');
+  S11.lats.forEach(la=>{
+    const pts=[];for(let l=0;l<=360;l+=3)pts.push(s11p(s11n(la*D2R,l*D2R),R));
+    const sp=s11split(pts);
+    U.el('path',{d:sp.b,'stroke-opacity':.35,'stroke-dasharray':'4 7'},lg);
+    U.el('path',{d:sp.f,'stroke-opacity':.85},lg);
+  });
+  // 관측 지점
+  const dg=$id('s11-dots');
+  S11.names.forEach((nm,i)=>{
+    const g=U.el('g',{id:'s11-d'+i},dg);
+    U.el('circle',{r:11,fill:'#6e6e73',stroke:'#fff','stroke-width':3},g);
+    const t=U.el('text',{x:-20,y:10,'text-anchor':'end',fill:'#1d1d1f'},g);t.textContent=nm;
   });
 })();
 
@@ -1161,6 +1200,45 @@ Deck.scene('s10',{
     if(k===2){
       await c.tween(1600,p=>s10draw(c,180+6.5*p,6.5,12+25/60*p),{ease:'inOut'});
       s10state(c,'만조','다시 만조!');
+    }
+  }
+});
+
+/* s11 자전하는 동안 각 지점의 해수면 높이 → 그래프 */
+function s11draw(c,t,act){
+  const {R,lats,tops}=S11,l=s11lon(t);
+  // 관측 지점들이 놓인 경도선
+  const mp=[];for(let f=-90;f<=90;f+=3)mp.push(s11p(s11n(f*D2R,l),R));
+  const sp=s11split(mp);
+  c.$('#s11-merf').setAttribute('d',sp.f);c.$('#s11-merb').setAttribute('d',sp.b);
+  lats.forEach((la,i)=>{
+    const n=s11n(la*D2R,l),p=s11p(n,s11r(n)),on=i===act,g=c.$('#s11-d'+i),ci=g.firstChild;
+    g.setAttribute('transform','translate('+p.x.toFixed(1)+' '+p.y.toFixed(1)+')');
+    g.setAttribute('opacity',p.d>=0?1:.35);
+    ci.setAttribute('r',on?15:11);ci.setAttribute('fill',on?'var(--c3)':'#6e6e73');
+    if(on){  // 물기둥: 지구 표면 → 해수면
+      const s=s11p(n,R),col=c.$('#s11-col');
+      col.setAttribute('x1',s.x.toFixed(1));col.setAttribute('y1',s.y.toFixed(1));
+      col.setAttribute('x2',p.x.toFixed(1));col.setAttribute('y2',p.y.toFixed(1));
+      col.setAttribute('opacity',p.d>=0?.9:.3);
+    }
+  });
+  if(act<0)return;
+  // 그래프: 지금까지의 해수면 높이
+  const Y=tt=>tops[act]+20+(1-s11h(s11n(lats[act]*D2R,s11lon(tt))))*130,q=[];
+  for(let s=0;s<t;s+=.1)q.push((900+22.5*s).toFixed(1)+' '+Y(s).toFixed(1));
+  q.push((900+22.5*t).toFixed(1)+' '+Y(t).toFixed(1));
+  c.$('#s11-g'+act).setAttribute('d','M'+q.join(' L'));
+  const gd=c.$('#s11-gd');gd.setAttribute('cx',900+22.5*t);gd.setAttribute('cy',Y(t));gd.setAttribute('opacity',1);
+  c.$('#s11-clock').textContent=fmtHM(t);
+  for(let i=0;i<3;i++)c.$('#s11-box'+i).setAttribute('stroke',i===act?'var(--c3)':'#d2d2d7');
+}
+Deck.scene('s11',{
+  enter(c){s11draw(c,0,-1);},
+  async go(c,k){
+    if(k>=2){
+      const act=k-2;
+      await c.tween(7000,p=>s11draw(c,24*p,act),{ease:'linear'});
     }
   }
 });
