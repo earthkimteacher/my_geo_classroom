@@ -188,6 +188,7 @@ body.on-light #stepdots i{background:rgba(0,0,0,.16)} body.on-light #stepdots i.
 #blank{position:fixed;inset:0;z-index:70;display:none} #blank.black{display:block;background:#000} #blank.white{display:block;background:#fff}
 html.still #hud,html.still #progress,html.still #stepdots{display:none!important}
 html.student #notes{display:none!important}
+html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why{visibility:hidden!important}   /* ?ans=0: 빈칸 정답·문제 풀이 숨김(학생용 인쇄) */
 @media (prefers-reduced-motion: reduce){ .slide *{scroll-behavior:auto} }
 
 /* ── 조석 수업에서 추가한 스타일 ── */
@@ -845,6 +846,7 @@ const STILL=Q.get('still')==='1', STUDENT=Q.get('s')==='1';
 const rootEl=document.documentElement;
 if(STILL)rootEl.classList.add('still');
 if(STUDENT)rootEl.classList.add('student');
+if(Q.get('ans')==='0')rootEl.classList.add('noans');
 
 const EASE={out:'cubic-bezier(.2,.8,.2,1)',inOut:'cubic-bezier(.65,0,.35,1)',in:'cubic-bezier(.55,0,.75,.1)',spring:'cubic-bezier(.34,1.56,.64,1)',linear:'linear'};
 const JE={linear:t=>t,out:t=>1-Math.pow(1-t,3),inOut:t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,in:t=>t*t*t,quad:t=>t*t};
@@ -1552,7 +1554,7 @@ function s11Qdraw(c,t){
   c.$('#s11q-clock').textContent=fmtHM(t);
 }
 Deck.scene('s11q',{
-  enter(c){s11Qdraw(c,24);c.loop(t=>s11Qdraw(c,Math.min(24,(t%9)/8*24)));}
+  enter(c){s11Qdraw(c,24);if(!Deck.STILL)c.loop(t=>s11Qdraw(c,Math.min(24,(t%9)/8*24)));}
 });
 
 /* s11a~c 단면에서 자전하는 지점의 해수면 높이 → 그래프 */
