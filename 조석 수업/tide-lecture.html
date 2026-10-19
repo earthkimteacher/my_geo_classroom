@@ -505,8 +505,122 @@ html.student #notes{display:none!important}
   <div class="fine">북극 위에서 본 모습 · 주황 점 = 관측 지점</div>
 </section>
 
-<!-- ═══ s11 조석 양상 ═══ -->
-<section class="slide" id="s11" data-tile="light" data-title="위도에 따른 조석 양상" data-notes="그림 Ⅱ-26. 적도 조금 위에서 비스듬히 내려다본 지구입니다. 1단계: 지구의 적도면은 달의 공전 궤도면에 대해 최대 약 28.5° 기울어져 있어서, 해수면이 높아진 부분(파란 타원)도 적도에 대해 기울어집니다. 2단계: 지구가 자전하면 같은 경도선(주황 선) 위의 세 지점이 함께 돕니다. 고위도 A가 하루 동안 부풂 속을 지나가는 것을 봅니다. 주황 점은 지표면에 고정된 지점이고, 파란 막대는 그 지점의 해수면입니다. 둘 사이의 물기둥 길이가 해수면 높이이며, 오른쪽 그래프에 그대로 그려지고 만조·간조가 지나갈 때마다 표시됩니다. A는 달 쪽 부풂만 지나고 반대쪽 부풂은 비켜 가므로 만조·간조가 하루 한 번씩(일주조). 3단계: 중위도 B는 두 부풂을 모두 지나지만 달 반대쪽 부풂의 가장자리만 스쳐서 두 만조의 높이가 다릅니다(혼합조). 4단계: 저위도 C(적도)는 두 부풂을 대칭으로 지나서 하루 두 번, 조차가 비슷합니다(반일주조). 뒤쪽으로 돌아간 지점은 흐리게 표시했습니다. 그래프는 평형 조석론으로 계산한 모식 그래프이고 해수면 부풂은 크게 과장했습니다. 실제 조석은 지형과 해저 수심의 영향을 받아 훨씬 복잡하며, 우리나라 동해안과 서해안은 위도가 비슷하지만 조석 양상이 매우 다릅니다.">
+<!-- ═══ s11a 고위도 단면 ═══ -->
+<section class="slide" id="s11a" data-tile="light" data-title="고위도 A 지점의 조석" data-notes="1단계: 고위도 A(65°N)를 지나는 위도선(주황)으로 지구를 가로로 잘라, 북극 위에서 내려다본 단면입니다. 파란 띠는 그 위도에서의 해수면 높이로, 달 쪽만 두껍습니다. 지구의 적도면이 달의 공전 궤도면에 대해 약 28.5° 기울어져 있어서, 해수면 부풂의 중심이 달 쪽은 28.5°N, 반대쪽은 28.5°S에 있습니다. 2단계: 지구가 하루 동안 자전하면서 A가 단면을 따라 한 바퀴 돕니다. 주황 점(지표면의 지점)과 파란 막대(그 지점의 해수면) 사이의 물기둥 길이가 오른쪽 그래프에 그려집니다. 3단계: 달 쪽에서 A는 부풂 중심(28.5°N)과 36.5°밖에 떨어져 있지 않아 부풂 안을 지나며 만조가 됩니다. 4단계: 반대쪽에서는 부풂 중심이 28.5°S에 있어 A와 93.5°나 떨어져 있습니다. A는 부풂을 비켜 가므로 이때는 오히려 간조입니다. 5단계: 하루에 만조와 간조가 한 번씩 나타나는 일주조입니다. 단면 그림은 위도와 관계없이 같은 크기로 그렸고, 해수면 부풂은 크게 과장했습니다.">
+  <svg class="full-svg" viewBox="0 0 1920 1080">
+    <defs><radialGradient id="s11a-e" cx=".38" cy=".32"><stop offset="0" stop-color="#9fd8f5"/><stop offset=".6" stop-color="#3a8cc8"/><stop offset="1" stop-color="#1b4f7a"/></radialGradient></defs>
+    <g id="s11a-side"></g>
+    <g id="s11a-peaks" data-step="1" data-fx="fade"></g>
+    <g id="s11a-slice" data-step="1" data-fx="fade" data-delay="300"></g>
+    <g id="s11a-ang1" data-step="3" data-fx="fade"></g>
+    <g id="s11a-ang2" data-step="4" data-fx="fade"></g>
+    <text x="330" y="880" text-anchor="middle" font-size="26" font-weight="600" fill="#6e6e73">옆에서 본 지구</text>
+    <g data-step="1" data-fx="fade"><path id="s11a-ring" fill="#0077B6" fill-opacity=".16" stroke="var(--c1)" stroke-width="3"/></g>
+    <circle id="s11a-disk" fill="url(#s11a-e)"/>
+    <g id="s11a-spin"></g>
+    <g id="s11a-top"></g>
+    <g data-step="1" data-fx="fade" stroke-linecap="round"><line id="s11a-col" stroke="var(--c1)" stroke-width="6" stroke-opacity=".55"/><line id="s11a-bar" stroke="var(--c1)" stroke-width="8"/></g>
+    <circle id="s11a-dot" r="15" fill="var(--c3)" stroke="#fff" stroke-width="3"/>
+    <text x="900" y="880" text-anchor="middle" font-size="26" font-weight="600" fill="#6e6e73">북극 위에서 내려다본 65°N 단면</text>
+    <text x="1240" y="286" font-size="26" font-weight="700" fill="#6e6e73">A 지점의 해수면 높이</text>
+    <rect x="1240" y="300" width="580" height="180" rx="10" fill="none" stroke="#d2d2d7" stroke-width="2"/>
+    <g fill="#6e6e73" font-size="24" text-anchor="middle"><text x="1260" y="512">0</text><text x="1395" y="512">6</text><text x="1530" y="512">12</text><text x="1665" y="512">18</text><text x="1800" y="512">24시</text></g>
+    <path id="s11a-g" stroke="var(--c3)" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <g id="s11a-mk" font-size="24" font-weight="700" text-anchor="middle"></g>
+    <circle id="s11a-gd" r="10" fill="var(--c3)" opacity="0"/>
+  </svg>
+  <div class="hd" data-in><div class="eb"><b>3</b>조석 주기와 양상</div><h2>고위도 A 지점에서는?</h2></div>
+  <div class="abs num" style="left:120px;top:250px;display:flex;align-items:center;gap:18px" data-in="300">
+    <span class="mute" style="font-size:28px;font-weight:600">경과 시간</span><span id="s11a-clock" class="c3" style="font-size:40px;font-weight:700">0시간 00분</span>
+    <span id="s11a-state" class="pill" data-s="대기" style="opacity:0">—</span>
+  </div>
+  <div class="ws-card" style="left:1220px;top:545px;width:600px;padding:16px 30px">
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="1"><span class="tm">부풂</span><span>적도가 기울어져 부풂의 중심이 달 쪽 <b class="c1">28.5°N</b>, 반대쪽 <b class="c1">28.5°S</b></span></div>
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="3"><span class="tm">달 쪽</span><span>부풂 중심(28.5°N)과 <b class="c2">36.5°</b> 차이 → 부풂 안을 지나 <b class="c3">만조</b></span></div>
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="4"><span class="tm">반대쪽</span><span>부풂 중심(28.5°S)과 <b class="c2">93.5°</b>나 떨어짐 → 부풂을 비켜 가 <b class="c1">간조</b></span></div>
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="5"><span class="tm">결론</span><span>하루에 만조 1번 · 간조 1번 → <b class="act">일주조</b></span></div>
+  </div>
+  <div class="fine">평형 조석론으로 계산한 모식 그림 · 해수면 부풂은 크게 과장 · 단면은 위도와 관계없이 같은 크기로 그림</div>
+</section>
+
+<!-- ═══ s11b 중위도 단면 ═══ -->
+<section class="slide" id="s11b" data-tile="light" data-title="중위도 B 지점의 조석" data-notes="1단계: 중위도 B(35°N)를 지나는 위도선으로 자른 단면입니다. 파란 띠가 달 쪽은 아주 두껍고, 반대쪽은 조금만 두껍습니다. 2단계: 하루 동안 자전하며 B의 해수면 높이를 그래프로 그립니다. 3단계: 달 쪽에서 B는 부풂 중심(28.5°N)과 6.5°밖에 차이 나지 않아 부풂의 거의 꼭대기를 지나므로 매우 높은 만조가 됩니다. 4단계: 반대쪽 부풂의 중심은 28.5°S라서 B와 63.5° 떨어져 있습니다. B는 부풂의 가장자리만 스치므로 조금만 높아지는 낮은 만조가 됩니다. 5단계: 하루에 만조와 간조가 두 번씩 나타나지만 두 만조(그리고 연속된 조차)의 크기가 다른 혼합조입니다. 우리나라처럼 중위도에 있는 지역에서 흔히 나타납니다.">
+  <svg class="full-svg" viewBox="0 0 1920 1080">
+    <defs><radialGradient id="s11b-e" cx=".38" cy=".32"><stop offset="0" stop-color="#9fd8f5"/><stop offset=".6" stop-color="#3a8cc8"/><stop offset="1" stop-color="#1b4f7a"/></radialGradient></defs>
+    <g id="s11b-side"></g>
+    <g id="s11b-peaks" data-step="1" data-fx="fade"></g>
+    <g id="s11b-slice" data-step="1" data-fx="fade" data-delay="300"></g>
+    <g id="s11b-ang1" data-step="3" data-fx="fade"></g>
+    <g id="s11b-ang2" data-step="4" data-fx="fade"></g>
+    <text x="330" y="880" text-anchor="middle" font-size="26" font-weight="600" fill="#6e6e73">옆에서 본 지구</text>
+    <g data-step="1" data-fx="fade"><path id="s11b-ring" fill="#0077B6" fill-opacity=".16" stroke="var(--c1)" stroke-width="3"/></g>
+    <circle id="s11b-disk" fill="url(#s11b-e)"/>
+    <g id="s11b-spin"></g>
+    <g id="s11b-top"></g>
+    <g data-step="1" data-fx="fade" stroke-linecap="round"><line id="s11b-col" stroke="var(--c1)" stroke-width="6" stroke-opacity=".55"/><line id="s11b-bar" stroke="var(--c1)" stroke-width="8"/></g>
+    <circle id="s11b-dot" r="15" fill="var(--c3)" stroke="#fff" stroke-width="3"/>
+    <text x="900" y="880" text-anchor="middle" font-size="26" font-weight="600" fill="#6e6e73">북극 위에서 내려다본 35°N 단면</text>
+    <text x="1240" y="286" font-size="26" font-weight="700" fill="#6e6e73">B 지점의 해수면 높이</text>
+    <rect x="1240" y="300" width="580" height="180" rx="10" fill="none" stroke="#d2d2d7" stroke-width="2"/>
+    <g fill="#6e6e73" font-size="24" text-anchor="middle"><text x="1260" y="512">0</text><text x="1395" y="512">6</text><text x="1530" y="512">12</text><text x="1665" y="512">18</text><text x="1800" y="512">24시</text></g>
+    <path id="s11b-g" stroke="var(--c3)" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <g id="s11b-mk" font-size="24" font-weight="700" text-anchor="middle"></g>
+    <circle id="s11b-gd" r="10" fill="var(--c3)" opacity="0"/>
+  </svg>
+  <div class="hd" data-in><div class="eb"><b>3</b>조석 주기와 양상</div><h2>중위도 B 지점에서는?</h2></div>
+  <div class="abs num" style="left:120px;top:250px;display:flex;align-items:center;gap:18px" data-in="300">
+    <span class="mute" style="font-size:28px;font-weight:600">경과 시간</span><span id="s11b-clock" class="c3" style="font-size:40px;font-weight:700">0시간 00분</span>
+    <span id="s11b-state" class="pill" data-s="대기" style="opacity:0">—</span>
+  </div>
+  <div class="ws-card" style="left:1220px;top:545px;width:600px;padding:16px 30px">
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="1"><span class="tm">부풂</span><span>적도가 기울어져 부풂의 중심이 달 쪽 <b class="c1">28.5°N</b>, 반대쪽 <b class="c1">28.5°S</b></span></div>
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="3"><span class="tm">달 쪽</span><span>부풂 중심(28.5°N)과 <b class="c2">6.5°</b>로 아주 가깝다 → <b class="c3">높은 만조</b></span></div>
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="4"><span class="tm">반대쪽</span><span>부풂 중심(28.5°S)과 <b class="c2">63.5°</b> 떨어짐 → 부풂의 가장자리만 스쳐 <b class="c3">낮은 만조</b></span></div>
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="5"><span class="tm">결론</span><span>하루에 만조 2번, 두 만조의 높이가 다르다 → <b class="act">혼합조</b></span></div>
+  </div>
+  <div class="fine">평형 조석론으로 계산한 모식 그림 · 해수면 부풂은 크게 과장 · 단면은 위도와 관계없이 같은 크기로 그림</div>
+</section>
+
+<!-- ═══ s11c 적도 단면 ═══ -->
+<section class="slide" id="s11c" data-tile="light" data-title="적도 C 지점의 조석" data-notes="1단계: 적도 C(0°)에서 자른 단면입니다. 파란 띠가 달 쪽과 반대쪽에서 똑같은 두께로 부풀어 있습니다. 2단계: 하루 동안 자전하며 C의 해수면 높이를 그래프로 그립니다. 3단계: 달 쪽에서 C는 부풂 중심(28.5°N)과 28.5° 떨어져 있어 만조가 됩니다. 4단계: 반대쪽 부풂의 중심(28.5°S)과도 똑같이 28.5° 떨어져 있어서 같은 높이의 만조가 됩니다. 5단계: 하루에 만조와 간조가 두 번씩, 조차가 거의 같은 반일주조입니다. 부풂의 꼭대기를 지나지 않으므로 만조 높이는 B의 높은 만조보다 낮습니다.">
+  <svg class="full-svg" viewBox="0 0 1920 1080">
+    <defs><radialGradient id="s11c-e" cx=".38" cy=".32"><stop offset="0" stop-color="#9fd8f5"/><stop offset=".6" stop-color="#3a8cc8"/><stop offset="1" stop-color="#1b4f7a"/></radialGradient></defs>
+    <g id="s11c-side"></g>
+    <g id="s11c-peaks" data-step="1" data-fx="fade"></g>
+    <g id="s11c-slice" data-step="1" data-fx="fade" data-delay="300"></g>
+    <g id="s11c-ang1" data-step="3" data-fx="fade"></g>
+    <g id="s11c-ang2" data-step="4" data-fx="fade"></g>
+    <text x="330" y="880" text-anchor="middle" font-size="26" font-weight="600" fill="#6e6e73">옆에서 본 지구</text>
+    <g data-step="1" data-fx="fade"><path id="s11c-ring" fill="#0077B6" fill-opacity=".16" stroke="var(--c1)" stroke-width="3"/></g>
+    <circle id="s11c-disk" fill="url(#s11c-e)"/>
+    <g id="s11c-spin"></g>
+    <g id="s11c-top"></g>
+    <g data-step="1" data-fx="fade" stroke-linecap="round"><line id="s11c-col" stroke="var(--c1)" stroke-width="6" stroke-opacity=".55"/><line id="s11c-bar" stroke="var(--c1)" stroke-width="8"/></g>
+    <circle id="s11c-dot" r="15" fill="var(--c3)" stroke="#fff" stroke-width="3"/>
+    <text x="900" y="880" text-anchor="middle" font-size="26" font-weight="600" fill="#6e6e73">북극 위에서 내려다본 0° 단면</text>
+    <text x="1240" y="286" font-size="26" font-weight="700" fill="#6e6e73">C 지점의 해수면 높이</text>
+    <rect x="1240" y="300" width="580" height="180" rx="10" fill="none" stroke="#d2d2d7" stroke-width="2"/>
+    <g fill="#6e6e73" font-size="24" text-anchor="middle"><text x="1260" y="512">0</text><text x="1395" y="512">6</text><text x="1530" y="512">12</text><text x="1665" y="512">18</text><text x="1800" y="512">24시</text></g>
+    <path id="s11c-g" stroke="var(--c3)" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <g id="s11c-mk" font-size="24" font-weight="700" text-anchor="middle"></g>
+    <circle id="s11c-gd" r="10" fill="var(--c3)" opacity="0"/>
+  </svg>
+  <div class="hd" data-in><div class="eb"><b>3</b>조석 주기와 양상</div><h2>적도 C 지점에서는?</h2></div>
+  <div class="abs num" style="left:120px;top:250px;display:flex;align-items:center;gap:18px" data-in="300">
+    <span class="mute" style="font-size:28px;font-weight:600">경과 시간</span><span id="s11c-clock" class="c3" style="font-size:40px;font-weight:700">0시간 00분</span>
+    <span id="s11c-state" class="pill" data-s="대기" style="opacity:0">—</span>
+  </div>
+  <div class="ws-card" style="left:1220px;top:545px;width:600px;padding:16px 30px">
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="1"><span class="tm">부풂</span><span>적도가 기울어져 부풂의 중심이 달 쪽 <b class="c1">28.5°N</b>, 반대쪽 <b class="c1">28.5°S</b></span></div>
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="3"><span class="tm">달 쪽</span><span>부풂 중심(28.5°N)과 <b class="c2">28.5°</b> 차이 → <b class="c3">만조</b></span></div>
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="4"><span class="tm">반대쪽</span><span>부풂 중심(28.5°S)과도 <b class="c2">28.5°</b>로 똑같다 → <b class="c3">같은 높이의 만조</b></span></div>
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="5"><span class="tm">결론</span><span>하루에 만조 2번, 두 만조의 높이가 비슷 → <b class="act">반일주조</b></span></div>
+  </div>
+  <div class="fine">평형 조석론으로 계산한 모식 그림 · 해수면 부풂은 크게 과장 · 단면은 위도와 관계없이 같은 크기로 그림</div>
+</section>
+
+<!-- ═══ s11 조석 양상(종합) ═══ -->
+<section class="slide" id="s11" data-tile="light" data-title="위도에 따른 조석 양상(종합)" data-notes="그림 Ⅱ-26. 앞의 세 장에서 하나씩 본 A·B·C 지점을 한 지구 위에 함께 놓고 비교합니다. 적도 조금 위에서 비스듬히 내려다본 지구입니다. 1단계: 지구의 적도면은 달의 공전 궤도면에 대해 최대 약 28.5° 기울어져 있어서, 해수면이 높아진 부분(파란 타원)도 적도에 대해 기울어집니다. 2단계: 지구가 하루 동안 자전하면 같은 경도선(주황 선) 위의 세 지점이 함께 돌고, 세 지점의 해수면 높이가 동시에 그래프로 그려집니다. 주황 점은 지표면에 고정된 지점, 파란 막대는 그 지점의 해수면입니다. 3단계: 고위도 A는 달 쪽 부풂만 지나고 반대쪽 부풂은 비켜 가서 만조·간조가 하루 한 번씩(일주조). 4단계: 중위도 B는 반대쪽 부풂의 가장자리만 스쳐서 두 만조의 높이가 다릅니다(혼합조). 5단계: 적도 C는 두 부풂을 똑같이 지나서 하루 두 번, 조차가 비슷합니다(반일주조). 뒤쪽으로 돌아간 지점은 흐리게 표시했습니다. 그래프는 평형 조석론으로 계산한 모식 그래프이고 해수면 부풂은 크게 과장했습니다. 실제 조석은 지형과 해저 수심의 영향을 받아 훨씬 복잡하며, 우리나라 동해안과 서해안은 위도가 비슷하지만 조석 양상이 매우 다릅니다.">
   <svg class="full-svg" viewBox="0 0 1920 1080">
     <defs><radialGradient id="s11-e" cx=".38" cy=".32"><stop offset="0" stop-color="#9fd8f5"/><stop offset=".6" stop-color="#3a8cc8"/><stop offset="1" stop-color="#1b4f7a"/></radialGradient></defs>
     <g data-step="1" data-fx="fade"><ellipse id="s11-water" fill="#0077B6" fill-opacity=".16" stroke="var(--c1)" stroke-width="3"/></g>
@@ -526,21 +640,20 @@ html.student #notes{display:none!important}
     <path id="s11-g1" stroke="var(--c3)" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
     <path id="s11-g2" stroke="var(--c3)" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
     <g id="s11-mk" font-size="24" font-weight="700" text-anchor="middle"></g>
-    <circle id="s11-gd" r="10" fill="var(--c3)" opacity="0"/>
+    <circle id="s11-gd0" r="10" fill="var(--c3)" opacity="0"/><circle id="s11-gd1" r="10" fill="var(--c3)" opacity="0"/><circle id="s11-gd2" r="10" fill="var(--c3)" opacity="0"/>
     <g font-size="26" fill="#6e6e73" font-weight="600"><text x="120" y="950">A 고위도(65°N) · B 중위도(35°N) · C 적도(0°)</text></g>
     <g font-size="26" fill="#6e6e73" font-weight="600" data-step="1" data-fx="fade">
       <circle cx="132" cy="985" r="10" fill="var(--c3)" stroke="#fff" stroke-width="3"/><text x="152" y="994">지표면의 지점</text>
       <line x1="356" y1="985" x2="392" y2="985" stroke="var(--c1)" stroke-width="7" stroke-linecap="round"/><text x="404" y="994">그 지점의 해수면</text>
     </g>
   </svg>
-  <div class="hd" data-in><div class="eb"><b>3</b>조석 주기와 양상</div><h2>위도에 따라 조석이 다르다</h2></div>
+  <div class="hd" data-in><div class="eb"><b>3</b>조석 주기와 양상</div><h2>한눈에 비교: 위도에 따라 조석이 다르다</h2></div>
   <div class="abs num" style="left:120px;top:250px;display:flex;align-items:center;gap:20px" data-in="300">
     <span class="mute" style="font-size:28px;font-weight:600">경과 시간</span><span id="s11-clock" class="c3" style="font-size:44px;font-weight:700">0시간 00분</span>
-    <span id="s11-state" class="pill" data-s="대기" style="opacity:0">—</span>
   </div>
-  <div class="abs callout" style="top:282px" data-step="2" data-delay="7100">만조·간조가 하루 <b>한 번</b>씩<br><b class="act">일주조</b></div>
-  <div class="abs callout" style="top:502px" data-step="3" data-delay="7100">하루 두 번, <b>조차가 다르다</b><br><b class="act">혼합조</b></div>
-  <div class="abs callout" style="top:722px" data-step="4" data-delay="7100">하루 두 번, <b>조차가 비슷</b><br><b class="act">반일주조</b></div>
+  <div class="abs callout" style="top:272px;width:390px" data-step="3"><span class="mute">달 쪽 부풂만 지난다</span><br>만조·간조가 하루 <b>한 번</b>씩<br><b class="act">일주조</b></div>
+  <div class="abs callout" style="top:492px;width:390px" data-step="4"><span class="mute">반대쪽은 부풂 끝만 스친다</span><br>하루 두 번, <b>만조 높이가 다르다</b><br><b class="act">혼합조</b></div>
+  <div class="abs callout" style="top:712px;width:390px" data-step="5"><span class="mute">두 부풂을 똑같이 지난다</span><br>하루 두 번, <b>조차가 비슷</b><br><b class="act">반일주조</b></div>
   <div class="fine">평형 조석론으로 계산한 모식 그래프 · 해수면 부풂은 크게 과장 · 실제 조석은 지형과 해저 수심의 영향을 받아 지역마다 매우 복잡하다</div>
 </section>
 
@@ -1001,7 +1114,7 @@ Deck.start=function(){
 <script>
 /* ═══ 장면: 키워드와 장면별 움직임 ═══ */
 const {U}=Deck;
-window.KW={items:['조석','기조력','조석 주기와 양상','사리와 조금'],at:[-1,-1,0,0,0,1,1,1,1,2,2,3,3,-1,-1,-1]};
+window.KW={items:['조석','기조력','조석 주기와 양상','사리와 조금'],at:[-1,-1,0,0,0,1,1,1,1,2,2,2,2,2,3,3,-1,-1,-1]};
 const $id=id=>document.getElementById(id);
 const TAU=Math.PI*2, D2R=Math.PI/180;
 const P2=x=>(3*x*x-1)/2;                      // 평형 조석의 해수면 모양(르장드르 2차)
@@ -1056,6 +1169,41 @@ function s11p(n,r){  // 화면 좌표와 앞뒤(d>0 = 앞쪽)
   return {x:S11.cx+x,y:S11.cy-(y*ce-z*se),d:z*ce+y*se};
 }
 const s11lon=t=>TAU*t/S11.P-Math.PI/2;                                // 0시: 지점이 정면, 약 6시간 뒤 달 쪽
+/* 그래프 공통: 0~24시의 만조·간조(극값)를 찾고, 표식을 만들고, 곡선을 그린다 */
+function s11ext(la){
+  const H=t=>s11h(s11n(la*D2R,s11lon(t))),ex=[],dt=.01;
+  for(let t=-1;t<=25.5;t+=dt){
+    const h0=H(t-dt),h1=H(t),h2=H(t+dt);
+    if(t>=-.05&&t<=24.05&&((h1>h0&&h1>=h2)||(h1<h0&&h1<=h2)))ex.push({t:Math.min(24,Math.max(0,t)),hi:h1>h0,h:h1});
+  }
+  const hs=ex.filter(e=>e.hi).map(e=>e.h),top=Math.max(...hs);
+  ex.forEach(e=>{e.lab=!e.hi?'간조':(hs.length>1&&top-Math.min(...hs)>.1?(e.h===top?'높은 만조':'낮은 만조'):'만조');});
+  return ex;
+}
+function s11marks(par,ex,G,id){
+  ex.forEach((e,j)=>{
+    const x=G.x0+G.sx*e.t,y=G.y0+(1-e.h)*G.amp,col=e.hi?'var(--c3)':'var(--c1)',m=e.lab.length>2?52:14;
+    const g=U.el('g',{id:id+'-'+j,opacity:0},par);
+    U.el('circle',{cx:x.toFixed(1),cy:y.toFixed(1),r:10,fill:'#fff',stroke:col,'stroke-width':4},g);
+    const tx=U.el('text',{x:Math.min(G.x0+G.sx*24-m+10,Math.max(G.x0+m-10,x)).toFixed(1),y:(e.hi?y-18:y+36).toFixed(1),fill:col},g);
+    tx.textContent=e.lab;
+  });
+}
+function s11trace(c,la,t,G,gSel,dSel,ex,mId,pSel,name){
+  const Y=tt=>G.y0+(1-s11h(s11n(la*D2R,s11lon(tt))))*G.amp,X=tt=>G.x0+G.sx*tt,q=[];
+  for(let s=0;s<t;s+=.1)q.push(X(s).toFixed(1)+' '+Y(s).toFixed(1));
+  q.push(X(t).toFixed(1)+' '+Y(t).toFixed(1));
+  c.$(gSel).setAttribute('d','M'+q.join(' L'));
+  const gd=c.$(dSel);gd.setAttribute('cx',X(t).toFixed(1));gd.setAttribute('cy',Y(t).toFixed(1));gd.setAttribute('opacity',1);
+  let near=null;
+  ex.forEach((e,j)=>{
+    c.$(mId+'-'+j).setAttribute('opacity',t>=e.t-.02?1:0);
+    if(Math.abs(e.t-t)<.5&&(!near||Math.abs(e.t-t)<Math.abs(near.t-t)))near=e;
+  });
+  if(!pSel)return;
+  const pl=c.$(pSel),st=near?(near.hi?'만조':'간조'):(Y(t+.05)<Y(t)?'밀물':'썰물');
+  pl.dataset.s=st;pl.textContent=name+' '+(near?near.lab:st);pl.style.opacity=1;
+}
 function s11split(pts){  // 앞·뒤로 나눈 경로 문자열
   let f='',b='',pf=false,pb=false;
   pts.forEach(p=>{const q=p.x.toFixed(1)+' '+p.y.toFixed(1);
@@ -1098,24 +1246,68 @@ function s11split(pts){  // 앞·뒤로 나눈 경로 문자열
     U.el('circle',{r:11,fill:'#6e6e73',stroke:'#fff','stroke-width':3},g);
     const t=U.el('text',{x:-20,y:10,'text-anchor':'end',fill:'#1d1d1f'},g);t.textContent=nm;
   });
-  // 그래프의 만조·간조(극값) 위치를 미리 계산해 숨겨 둔다
-  const mk=$id('s11-mk');S11.ext=[];
-  S11.lats.forEach((la,i)=>{
-    const H=t=>s11h(s11n(la*D2R,s11lon(t))),ex=[],dt=.01;
-    for(let t=-1;t<=25.5;t+=dt){
-      const h0=H(t-dt),h1=H(t),h2=H(t+dt);
-      if(t>=-.05&&t<=24.05&&((h1>h0&&h1>=h2)||(h1<h0&&h1<=h2)))ex.push({t:Math.min(24,Math.max(0,t)),hi:h1>h0,h:h1});
-    }
-    S11.ext[i]=ex;
-    ex.forEach((e,j)=>{
-      const x=900+22.5*e.t,y=S11.tops[i]+40+(1-e.h)*95,col=e.hi?'var(--c3)':'var(--c1)';
-      const g=U.el('g',{id:'s11-m'+i+'-'+j,opacity:0},mk);
-      U.el('circle',{cx:x.toFixed(1),cy:y.toFixed(1),r:10,fill:'#fff',stroke:col,'stroke-width':4},g);
-      const tx=U.el('text',{x:Math.min(1430,Math.max(912,x)).toFixed(1),y:(e.hi?y-18:y+36).toFixed(1),fill:col},g);
-      tx.textContent=e.hi?'만조':'간조';
-    });
-  });
+  // 그래프의 만조·간조 표식(미리 계산해 숨겨 둔다)
+  S11.G=S11.tops.map(tp=>({x0:900,sx:22.5,y0:tp+40,amp:95}));
+  S11.ext=S11.lats.map((la,i)=>{const ex=s11ext(la);s11marks($id('s11-mk'),ex,S11.G[i],'s11-m'+i);return ex;});
 })();
+
+/* s11a~c 위도별 단면: 옆에서 본 지구(달의 공전 궤도면) + 북극 위에서 본 위도 단면 */
+const S11L={cx:900,cy:610,Rt:150,base:10,amp:75,sx:330,sy:600,sR:140,ids:['s11a','s11b','s11c'],G:{x0:1260,sx:22.5,y0:342,amp:100},ext:[]};
+S11L.ring=(la,l)=>S11L.Rt+S11L.base+S11L.amp*s11h(s11n(la*D2R,l));   // 단면에서 해수면까지의 반지름
+function s11arc(cx,cy,r,a0,a1){  // 각도(°, 반시계) a0→a1 호
+  const n=Math.max(2,Math.ceil(Math.abs(a1-a0)/2));let d='';
+  for(let j=0;j<=n;j++){const a=(a0+(a1-a0)*j/n)*D2R;d+=(j?'L':'M')+(cx+r*Math.cos(a)).toFixed(1)+' '+(cy-r*Math.sin(a)).toFixed(1);}
+  return d;
+}
+S11L.ids.forEach((P,i)=>{
+  const la=S11.lats[i],dl=S11.del/D2R,{sx,sy,sR,cx,cy,Rt}=S11L,k=sR/S11.R,A=S11.a*k;
+  const ux=Math.cos(S11.del),uy=-Math.sin(S11.del);
+  // 옆에서 본 지구: 기울어진 부풂, 자전축, 적도, 달의 방향
+  const sd=$id(P+'-side');
+  U.el('ellipse',{cx:sx,cy:sy,rx:A.toFixed(1),ry:(S11.b*k).toFixed(1),transform:'rotate('+(-dl)+' '+sx+' '+sy+')',fill:'#0077B6','fill-opacity':.16,stroke:'var(--c1)','stroke-width':3},sd);
+  U.el('circle',{cx:sx,cy:sy,r:sR,fill:'url(#'+P+'-e)'},sd);
+  U.el('line',{x1:sx-sR,y1:sy,x2:sx+sR,y2:sy,stroke:'#fff','stroke-opacity':.5,'stroke-width':2,'stroke-dasharray':'6 6'},sd);
+  U.el('line',{x1:sx,y1:sy-sR*1.25,x2:sx,y2:sy+sR*1.25,stroke:'#1d1d1f','stroke-width':3},sd);
+  const tN=U.el('text',{x:sx,y:sy-sR*1.25-12,'text-anchor':'middle','font-size':28,'font-weight':700},sd);tN.textContent='N';
+  const tS=U.el('text',{x:sx,y:sy+sR*1.25+34,'text-anchor':'middle','font-size':28,'font-weight':700},sd);tS.textContent='S';
+  arrow(sd,sx+(A+10)*ux,sy+(A+10)*uy,sx+(A+70)*ux,sy+(A+70)*uy,'var(--c3)',5);
+  const tm=U.el('text',{x:(sx+(A+40)*ux).toFixed(1),y:(sy+(A+70)*uy-14).toFixed(1),'text-anchor':'middle','font-size':26,'font-weight':700,fill:'var(--c3)'},sd);tm.textContent='달';
+  // 1단계: 부풂의 중심(달 쪽 28.5°N, 반대쪽 28.5°S)
+  const pk=$id(P+'-peaks');
+  U.el('line',{x1:sx-(A+6)*ux,y1:sy-(A+6)*uy,x2:sx+(A+6)*ux,y2:sy+(A+6)*uy,stroke:'var(--c1)','stroke-width':2,'stroke-dasharray':'6 6'},pk);
+  [[1,'28.5°N'],[-1,'28.5°S']].forEach(([sg,txt])=>{
+    const px=sx+sg*sR*ux,py=sy+sg*sR*uy;
+    U.el('circle',{cx:px.toFixed(1),cy:py.toFixed(1),r:9,fill:'var(--c1)',stroke:'#fff','stroke-width':3},pk);
+    const tx=U.el('text',{x:(sx+sg*(sR-62)*ux).toFixed(1),y:(sy+sg*(sR-62)*uy+9).toFixed(1),'text-anchor':'middle','font-size':24,'font-weight':700,fill:'#fff'},pk);tx.textContent=txt;
+  });
+  // 1단계: 이 위도에서 자른 면(옆에서 보면 선분)
+  const sl=$id(P+'-slice'),yy=sy-sR*Math.sin(la*D2R),xx=sR*Math.cos(la*D2R);
+  U.el('line',{x1:(sx-xx).toFixed(1),y1:yy.toFixed(1),x2:(sx+xx).toFixed(1),y2:yy.toFixed(1),stroke:'var(--c3)','stroke-width':5},sl);
+  [-1,1].forEach(sg=>U.el('circle',{cx:(sx+sg*xx).toFixed(1),cy:yy.toFixed(1),r:10,fill:'var(--c3)',stroke:'#fff','stroke-width':3},sl));
+  const tl=U.el('text',{x:(sx-xx-18).toFixed(1),y:(yy+9).toFixed(1),'text-anchor':'end','font-size':26,'font-weight':700,fill:'var(--c3)'},sl);tl.textContent=S11.names[i]+' '+(la?la+'°N':'0°');
+  // 3·4단계: 지점과 부풂 중심 사이의 각
+  [[P+'-ang1',la,dl,Math.abs(la-dl)],[P+'-ang2',180-la,180+dl,la+dl]].forEach(([id,a0,a1,v])=>{
+    const g=$id(id),am=(a0+a1)/2*D2R,lr=sR+(v<10?62:46);
+    U.el('path',{d:s11arc(sx,sy,sR+14,a0,a1),stroke:'var(--c2)','stroke-width':6,fill:'none','stroke-linecap':'round'},g);
+    const t=U.el('text',{x:(sx+lr*Math.cos(am)).toFixed(1),y:(sy-lr*Math.sin(am)+9).toFixed(1),'text-anchor':'middle','font-size':28,'font-weight':700,fill:'var(--c2)'},g);
+    t.textContent=(Math.round(v*10)/10)+'°';
+  });
+  // 북극 위에서 본 단면: 해수면 띠, 자전 표시, 달의 방향
+  const ring=[];for(let l=0;l<=360;l+=2){const r=S11L.ring(la,l*D2R),a=l*D2R;ring.push((cx+r*Math.cos(a)).toFixed(1)+' '+(cy-r*Math.sin(a)).toFixed(1));}
+  $id(P+'-ring').setAttribute('d','M'+ring.join(' L')+'Z');
+  const dk=$id(P+'-disk');dk.setAttribute('cx',cx);dk.setAttribute('cy',cy);dk.setAttribute('r',Rt);
+  const q=Rt*.707;
+  U.el('path',{d:'M'+(cx-Rt)+' '+cy+'H'+(cx+Rt)+'M'+cx+' '+(cy-Rt)+'V'+(cy+Rt)+'M'+(cx-q)+' '+(cy-q)+'L'+(cx+q)+' '+(cy+q)+'M'+(cx-q)+' '+(cy+q)+'L'+(cx+q)+' '+(cy-q),stroke:'#fff','stroke-opacity':.18,'stroke-width':2},$id(P+'-spin'));
+  const tp=$id(P+'-top');
+  U.el('path',{d:'M'+(cx-70)+' '+(cy-80)+'A100 100 0 0 1 '+(cx+70)+' '+(cy-80),stroke:'#fff','stroke-opacity':.6,'stroke-width':3,fill:'none'},tp);
+  U.el('polygon',{points:(cx-70)+','+(cy-80)+' '+(cx-62)+','+(cy-102)+' '+(cx-48)+','+(cy-84),fill:'#fff','fill-opacity':.6},tp);
+  const tc=U.el('text',{x:cx,y:cy+10,'text-anchor':'middle','font-size':28,'font-weight':700,fill:'#fff'},tp);tc.textContent=la?la+'°N':'적도';
+  const mx=cx+Rt+S11L.base+S11L.amp+12;
+  arrow(tp,mx,cy,mx+50,cy,'var(--c3)',6);
+  const tmn=U.el('text',{x:mx+25,y:cy-22,'text-anchor':'middle','font-size':26,'font-weight':700,fill:'var(--c3)'},tp);tmn.textContent='달';
+  // 그래프 표식
+  S11L.ext[i]=s11ext(la);s11marks($id(P+'-mk'),S11L.ext[i],S11L.G,P+'-m');
+});
 
 /* s13 한 달 조석(모식): 주태음반일주조 + 주태양반일주조 + 일주조 */
 (function(){
@@ -1229,55 +1421,55 @@ Deck.scene('s10',{
   }
 });
 
-/* s11 자전하는 동안 각 지점의 해수면 높이 → 그래프 */
-function s11draw(c,t,act){
-  const {R,lats,tops}=S11,l=s11lon(t);
+/* s11a~c 단면에서 자전하는 지점의 해수면 높이 → 그래프 */
+function s11Ldraw(c,i,t,tr){
+  const P='#'+S11L.ids[i],la=S11.lats[i],l=s11lon(t),{cx,cy,Rt}=S11L;
+  c.$(P+'-spin').setAttribute('transform','rotate('+(-l/D2R).toFixed(2)+' '+cx+' '+cy+')');
+  const ca=Math.cos(l),sa=Math.sin(l),r=S11L.ring(la,l),gx=cx+Rt*ca,gy=cy-Rt*sa,wx=cx+r*ca,wy=cy-r*sa;
+  const dot=c.$(P+'-dot');dot.setAttribute('cx',gx.toFixed(1));dot.setAttribute('cy',gy.toFixed(1));
+  const cl=c.$(P+'-col'),br=c.$(P+'-bar');
+  cl.setAttribute('x1',gx.toFixed(1));cl.setAttribute('y1',gy.toFixed(1));cl.setAttribute('x2',wx.toFixed(1));cl.setAttribute('y2',wy.toFixed(1));
+  br.setAttribute('x1',(wx-22*sa).toFixed(1));br.setAttribute('y1',(wy-22*ca).toFixed(1));
+  br.setAttribute('x2',(wx+22*sa).toFixed(1));br.setAttribute('y2',(wy+22*ca).toFixed(1));
+  c.$(P+'-clock').textContent=fmtHM(t);
+  if(tr)s11trace(c,la,t,S11L.G,P+'-g',P+'-gd',S11L.ext[i],P+'-m',P+'-state',S11.names[i]);
+}
+S11L.ids.forEach((P,i)=>Deck.scene(P,{
+  enter(c){s11Ldraw(c,i,0,false);},
+  async go(c,k){if(k===2)await c.tween(8000,p=>s11Ldraw(c,i,24*p,true),{ease:'linear'});}
+}));
+
+/* s11 종합: 세 지점이 함께 자전하며 세 그래프를 동시에 그린다 */
+function s11draw(c,t,on){
+  const {R,lats}=S11,l=s11lon(t);
   // 관측 지점들이 놓인 경도선
   const mp=[];for(let f=-90;f<=90;f+=3)mp.push(s11p(s11n(f*D2R,l),R));
   const sp=s11split(mp);
   c.$('#s11-merf').setAttribute('d',sp.f);c.$('#s11-merb').setAttribute('d',sp.b);
   lats.forEach((la,i)=>{
-    const n=s11n(la*D2R,l),g0=s11p(n,R),w=s11p(n,s11r(n)),on=i===act,g=c.$('#s11-d'+i),ci=g.firstChild;
+    const n=s11n(la*D2R,l),g0=s11p(n,R),w=s11p(n,s11r(n)),g=c.$('#s11-d'+i),ci=g.firstChild;
     g.setAttribute('transform','translate('+g0.x.toFixed(1)+' '+g0.y.toFixed(1)+')');
     g.setAttribute('opacity',g0.d>=0?1:.35);
-    ci.setAttribute('r',on?15:11);ci.setAttribute('fill',on?'var(--c3)':'#6e6e73');
+    ci.setAttribute('r',on?14:11);ci.setAttribute('fill',on?'var(--c3)':'#6e6e73');
     // 해수면 표식: 지점에서 바깥(연직) 방향으로 물기둥, 끝에 수면 막대
     const cl=c.$('#s11-c'+i),wb=c.$('#s11-w'+i);
     let dx=w.x-g0.x,dy=w.y-g0.y;const L=Math.hypot(dx,dy);
     if(L>3){dx/=L;dy/=L;}else{dx=0;dy=-1;}
-    const hw=on?22:15,op=(g0.d>=0?1:.3)*(on||act<0?1:.45);
+    const op=g0.d>=0?1:.3;
     cl.setAttribute('x1',g0.x.toFixed(1));cl.setAttribute('y1',g0.y.toFixed(1));
     cl.setAttribute('x2',w.x.toFixed(1));cl.setAttribute('y2',w.y.toFixed(1));
-    wb.setAttribute('x1',(w.x-dy*hw).toFixed(1));wb.setAttribute('y1',(w.y+dx*hw).toFixed(1));
-    wb.setAttribute('x2',(w.x+dy*hw).toFixed(1));wb.setAttribute('y2',(w.y-dx*hw).toFixed(1));
-    wb.setAttribute('stroke-width',on?8:6);
+    wb.setAttribute('x1',(w.x-dy*18).toFixed(1));wb.setAttribute('y1',(w.y+dx*18).toFixed(1));
+    wb.setAttribute('x2',(w.x+dy*18).toFixed(1));wb.setAttribute('y2',(w.y-dx*18).toFixed(1));
     cl.setAttribute('opacity',op);wb.setAttribute('opacity',op);
+    if(on)s11trace(c,la,t,S11.G[i],'#s11-g'+i,'#s11-gd'+i,S11.ext[i],'#s11-m'+i);
   });
-  if(act<0)return;
-  // 그래프: 지금까지의 해수면 높이
-  const Y=tt=>tops[act]+40+(1-s11h(s11n(lats[act]*D2R,s11lon(tt))))*95,q=[];
-  for(let s=0;s<t;s+=.1)q.push((900+22.5*s).toFixed(1)+' '+Y(s).toFixed(1));
-  q.push((900+22.5*t).toFixed(1)+' '+Y(t).toFixed(1));
-  c.$('#s11-g'+act).setAttribute('d','M'+q.join(' L'));
-  const gd=c.$('#s11-gd');gd.setAttribute('cx',900+22.5*t);gd.setAttribute('cy',Y(t));gd.setAttribute('opacity',1);
   c.$('#s11-clock').textContent=fmtHM(t);
-  // 지나간 만조·간조 표시 + 지금 상태
-  const ex=S11.ext[act];let near=null;
-  ex.forEach((e,j)=>{
-    c.$('#s11-m'+act+'-'+j).setAttribute('opacity',t>=e.t-.02?1:0);
-    if(Math.abs(e.t-t)<.5&&(!near||Math.abs(e.t-t)<Math.abs(near.t-t)))near=e;
-  });
-  const up=Y(t+.05)<Y(t),stx=near?(near.hi?'만조':'간조'):(up?'밀물':'썰물'),pl=c.$('#s11-state');
-  pl.dataset.s=stx;pl.textContent=S11.names[act]+' '+stx;pl.style.opacity=1;
-  for(let i=0;i<3;i++)c.$('#s11-box'+i).setAttribute('stroke',i===act?'var(--c3)':'#d2d2d7');
 }
 Deck.scene('s11',{
-  enter(c){s11draw(c,0,-1);},
+  enter(c){s11draw(c,0,false);},
   async go(c,k){
-    if(k>=2){
-      const act=k-2;
-      await c.tween(7000,p=>s11draw(c,24*p,act),{ease:'linear'});
-    }
+    if(k===2)await c.tween(8000,p=>s11draw(c,24*p,true),{ease:'linear'});
+    if(k>=3)for(let i=0;i<3;i++)c.$('#s11-box'+i).setAttribute('stroke',i===k-3?'var(--c3)':'#d2d2d7');
   }
 });
 
