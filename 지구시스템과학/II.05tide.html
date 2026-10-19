@@ -188,6 +188,17 @@ body.on-light #stepdots i{background:rgba(0,0,0,.16)} body.on-light #stepdots i.
 #blank{position:fixed;inset:0;z-index:70;display:none} #blank.black{display:block;background:#000} #blank.white{display:block;background:#fff}
 html.still #hud,html.still #progress,html.still #stepdots{display:none!important}
 html.student #notes{display:none!important}
+/* ?print=1: 어두운 장을 흰 배경으로 인쇄할 때 원래 밝은 글자·선·면을 어둡게(또는 연하게) 바꾼다 */
+html.print .slide{background:#fff!important}
+html.print .was-dark [fill="#f5f5f7"]{fill:#1d1d1f}
+html.print .was-dark [stroke="#f5f5f7"]{stroke:#1d1d1f}
+html.print .was-dark [fill="#1c1c1e"]{fill:#f2f2f7}
+html.print .was-dark [fill="#3a3a3c"]{fill:#8e8e93}
+html.print #s01-water{fill:#cfe6f5;opacity:1}
+html.print #s01 path[fill="#161a1f"],html.print #s01 path[fill="#11151a"]{fill:#c7c7cc}
+html.print #s01 path[fill="url(#s01-flat)"]{fill:#e6dccb}
+html.print #s01 circle[filter]{display:none}
+html.print #s01 .t-lead{color:#6e6e73}
 html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why{visibility:hidden!important}   /* ?ans=0: 빈칸 정답·문제 풀이 숨김(학생용 인쇄) */
 @media (prefers-reduced-motion: reduce){ .slide *{scroll-behavior:auto} }
 
@@ -847,6 +858,7 @@ const rootEl=document.documentElement;
 if(STILL)rootEl.classList.add('still');
 if(STUDENT)rootEl.classList.add('student');
 if(Q.get('ans')==='0')rootEl.classList.add('noans');
+if(Q.get('print')==='1')rootEl.classList.add('print');
 
 const EASE={out:'cubic-bezier(.2,.8,.2,1)',inOut:'cubic-bezier(.65,0,.35,1)',in:'cubic-bezier(.55,0,.75,.1)',spring:'cubic-bezier(.34,1.56,.64,1)',linear:'linear'};
 const JE={linear:t=>t,out:t=>1-Math.pow(1-t,3),inOut:t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,in:t=>t*t*t,quad:t=>t*t};
@@ -1126,6 +1138,10 @@ Deck.start=function(){
   hud=document.getElementById('hud');progI=document.querySelector('#progress i');dotsEl=document.getElementById('stepdots');
   countEl=document.getElementById('count');notesEl=document.getElementById('notes');notesT=document.getElementById('notes-t');notesP=document.getElementById('notes-p');
   ovEl=document.getElementById('overview');ovGrid=document.getElementById('ov-grid');helpEl=document.getElementById('help');blankEl=document.getElementById('blank');
+  // ?print=1: 레이저 인쇄용 — 어두운 장도 흰 배경(light)으로 바꾼다
+  if(rootEl.classList.contains('print'))stage.querySelectorAll(':scope > .slide').forEach(sec=>{
+    if(/black|dark|graphite/.test(sec.dataset.tile)){sec.dataset.tile='light';sec.classList.add('was-dark');}
+  });
   Deck.list=Array.from(stage.querySelectorAll(':scope > .slide'));
   Deck.list.forEach(sec=>{
     sec.querySelectorAll('[data-fx="draw"]').forEach(el=>{
