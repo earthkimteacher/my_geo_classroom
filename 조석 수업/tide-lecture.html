@@ -505,15 +505,27 @@ html.student #notes{display:none!important}
   <div class="fine">북극 위에서 본 모습 · 주황 점 = 관측 지점</div>
 </section>
 
+<!-- ═══ s11q 흥미 유발: 위도마다 다른 조석 ═══ -->
+<section class="slide" id="s11q" data-tile="dark" data-title="만조가 하루에 몇 번?" data-notes="세 지역의 조위계(해수면 높이를 재는 기둥)를 하루씩 반복해서 보여 줍니다(8초 = 하루). 학생들에게 먼저 '하루에 만조가 몇 번 오는지' 세어 보게 합니다. 지금까지는 하루에 만조가 두 번이라고 배웠지만, 고위도 지역은 한 번만 오고, 중위도 지역은 두 번 오지만 높이가 서로 다릅니다. 1단계: 세 지역의 관찰 결과를 정리합니다. 2단계: 같은 달, 같은 지구인데 왜 위도마다 다를지 질문을 던지고, 다음 장부터 A·B·C 지점을 하나씩 살펴봅니다. 그래프는 평형 조석론으로 계산한 모식 그래프입니다.">
+  <svg class="full-svg" viewBox="0 0 1920 1080" id="s11q-svg"></svg>
+  <div class="hd" data-in><div class="eb"><b>3</b>조석 주기와 양상</div><h2>하루에 만조가 두 번… 이 아니라고?</h2></div>
+  <div class="abs num" style="left:120px;top:236px;display:flex;align-items:center;gap:18px" data-in="300">
+    <span class="mute" style="font-size:28px;font-weight:600">하루 중</span><span id="s11q-clock" class="c2" style="font-size:40px;font-weight:700">0시간 00분</span>
+  </div>
+  <div class="abs center" style="left:160px;width:480px;top:800px;font-size:30px;line-height:1.4" data-step="1">만조 <b class="c3">1번</b> · 간조 <b class="c1">1번</b></div>
+  <div class="abs center" style="left:720px;width:480px;top:800px;font-size:30px;line-height:1.4" data-step="1" data-delay="250">만조 <b class="c3">2번</b> · 높이가 <b class="c2">서로 다르다</b></div>
+  <div class="abs center" style="left:1280px;width:480px;top:800px;font-size:30px;line-height:1.4" data-step="1" data-delay="500">만조 <b class="c3">2번</b> · 높이가 <b class="c2">거의 같다</b></div>
+  <div class="say-line" style="top:890px;font-size:42px" data-step="2">같은 달, 같은 지구인데 <span class="c2">왜 위도마다 다를까?</span></div>
+  <div class="fine">평형 조석론으로 계산한 모식 그래프 · 실제 조석은 지형과 해저 수심의 영향을 받아 지역마다 매우 복잡하다</div>
+</section>
+
 <!-- ═══ s11a 고위도 단면 ═══ -->
-<section class="slide" id="s11a" data-tile="light" data-title="고위도 A 지점의 조석" data-notes="1단계: 고위도 A(65°N)를 지나는 위도선(주황)으로 지구를 가로로 잘라, 북극 위에서 내려다본 단면입니다. 파란 띠는 그 위도에서의 해수면 높이로, 달 쪽만 두껍습니다. 지구의 적도면이 달의 공전 궤도면에 대해 약 28.5° 기울어져 있어서, 해수면 부풂의 중심이 달 쪽은 28.5°N, 반대쪽은 28.5°S에 있습니다. 2단계: 지구가 하루 동안 자전하면서 A가 단면을 따라 한 바퀴 돕니다. 주황 점(지표면의 지점)과 파란 막대(그 지점의 해수면) 사이의 물기둥 길이가 오른쪽 그래프에 그려집니다. 3단계: 달 쪽에서 A는 부풂 중심(28.5°N)과 36.5°밖에 떨어져 있지 않아 부풂 안을 지나며 만조가 됩니다. 4단계: 반대쪽에서는 부풂 중심이 28.5°S에 있어 A와 93.5°나 떨어져 있습니다. A는 부풂을 비켜 가므로 이때는 오히려 간조입니다. 5단계: 하루에 만조와 간조가 한 번씩 나타나는 일주조입니다. 단면 그림은 위도와 관계없이 같은 크기로 그렸고, 해수면 부풂은 크게 과장했습니다.">
+<section class="slide" id="s11a" data-tile="light" data-title="고위도 A 지점의 조석" data-notes="1단계: 고위도 A(65°N)를 지나는 위도선(주황)으로 지구를 가로로 잘라, 북극 위에서 내려다본 단면입니다. 파란 띠는 그 위도에서의 해수면 높이로, 달 쪽만 두껍습니다. 지구의 적도면이 달의 공전 궤도면에 대해 기울어져 있어서 해수면 부풂(파란 타원)도 적도에 대해 기울어져 있기 때문입니다. 2단계: 지구가 하루 동안 자전하면서 A가 단면을 따라 한 바퀴 돕니다. 주황 점(지표면의 지점)과 파란 막대(그 지점의 해수면) 사이의 물기둥 길이가 오른쪽 그래프에 그려집니다. 3단계: 달 쪽에서 A는 부풂 안을 지나므로 만조가 됩니다. 4단계: 반대쪽의 부풂은 남쪽으로 치우쳐 있어서 A는 부풂을 비켜 갑니다. 이때는 오히려 간조가 됩니다. 5단계: 일주조의 정의 — 하루에 만조와 간조가 각각 한 번씩 나타나는 조석. 단면 그림은 위도와 관계없이 같은 크기로 그렸고, 해수면 부풂은 크게 과장했습니다.">
   <svg class="full-svg" viewBox="0 0 1920 1080">
     <defs><radialGradient id="s11a-e" cx=".38" cy=".32"><stop offset="0" stop-color="#9fd8f5"/><stop offset=".6" stop-color="#3a8cc8"/><stop offset="1" stop-color="#1b4f7a"/></radialGradient></defs>
     <g id="s11a-side"></g>
     <g id="s11a-peaks" data-step="1" data-fx="fade"></g>
     <g id="s11a-slice" data-step="1" data-fx="fade" data-delay="300"></g>
-    <g id="s11a-ang1" data-step="3" data-fx="fade"></g>
-    <g id="s11a-ang2" data-step="4" data-fx="fade"></g>
     <text x="330" y="880" text-anchor="middle" font-size="26" font-weight="600" fill="#6e6e73">옆에서 본 지구</text>
     <g data-step="1" data-fx="fade"><path id="s11a-ring" fill="#0077B6" fill-opacity=".16" stroke="var(--c1)" stroke-width="3"/></g>
     <circle id="s11a-disk" fill="url(#s11a-e)"/>
@@ -535,23 +547,21 @@ html.student #notes{display:none!important}
     <span id="s11a-state" class="pill" data-s="대기" style="opacity:0">—</span>
   </div>
   <div class="ws-card" style="left:1220px;top:545px;width:600px;padding:16px 30px">
-    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="1"><span class="tm">부풂</span><span>적도가 기울어져 부풂의 중심이 달 쪽 <b class="c1">28.5°N</b>, 반대쪽 <b class="c1">28.5°S</b></span></div>
-    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="3"><span class="tm">달 쪽</span><span>부풂 중심(28.5°N)과 <b class="c2">36.5°</b> 차이 → 부풂 안을 지나 <b class="c3">만조</b></span></div>
-    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="4"><span class="tm">반대쪽</span><span>부풂 중심(28.5°S)과 <b class="c2">93.5°</b>나 떨어짐 → 부풂을 비켜 가 <b class="c1">간조</b></span></div>
-    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="5"><span class="tm">결론</span><span>하루에 만조 1번 · 간조 1번 → <b class="act">일주조</b></span></div>
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="1"><span class="tm">부풂</span><span>적도면이 달의 공전 궤도면에 대해 기울어져 있어, 해수면 부풂도 <b class="c1">적도에 대해 기울어져</b> 있다</span></div>
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="3"><span class="tm">달 쪽</span><span>A는 부풂 안을 지난다 → <b class="c3">만조</b></span></div>
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="4"><span class="tm">반대쪽</span><span>부풂이 남쪽으로 치우쳐 있어 A는 부풂을 비켜 간다 → <b class="c1">간조</b></span></div>
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="5"><span class="tm">정의</span><span><b class="act">일주조</b>: 하루에 만조와 간조가 각각 <b>한 번씩</b> 나타나는 조석</span></div>
   </div>
   <div class="fine">평형 조석론으로 계산한 모식 그림 · 해수면 부풂은 크게 과장 · 단면은 위도와 관계없이 같은 크기로 그림</div>
 </section>
 
 <!-- ═══ s11b 중위도 단면 ═══ -->
-<section class="slide" id="s11b" data-tile="light" data-title="중위도 B 지점의 조석" data-notes="1단계: 중위도 B(35°N)를 지나는 위도선으로 자른 단면입니다. 파란 띠가 달 쪽은 아주 두껍고, 반대쪽은 조금만 두껍습니다. 2단계: 하루 동안 자전하며 B의 해수면 높이를 그래프로 그립니다. 3단계: 달 쪽에서 B는 부풂 중심(28.5°N)과 6.5°밖에 차이 나지 않아 부풂의 거의 꼭대기를 지나므로 매우 높은 만조가 됩니다. 4단계: 반대쪽 부풂의 중심은 28.5°S라서 B와 63.5° 떨어져 있습니다. B는 부풂의 가장자리만 스치므로 조금만 높아지는 낮은 만조가 됩니다. 5단계: 하루에 만조와 간조가 두 번씩 나타나지만 두 만조(그리고 연속된 조차)의 크기가 다른 혼합조입니다. 우리나라처럼 중위도에 있는 지역에서 흔히 나타납니다.">
+<section class="slide" id="s11b" data-tile="light" data-title="중위도 B 지점의 조석" data-notes="1단계: 중위도 B(35°N)를 지나는 위도선으로 자른 단면입니다. 파란 띠가 달 쪽은 아주 두껍고, 반대쪽은 조금만 두껍습니다. 2단계: 하루 동안 자전하며 B의 해수면 높이를 그래프로 그립니다. 3단계: 달 쪽에서 B는 부풂의 가장 높은 곳 가까이를 지나므로 매우 높은 만조가 됩니다. 4단계: 반대쪽 부풂은 남쪽으로 치우쳐 있어서 B는 그 가장자리만 스칩니다. 조금만 높아지는 낮은 만조가 됩니다. 5단계: 혼합조의 정의 — 하루에 만조와 간조가 각각 두 번씩 나타나지만, 연속된 두 만조(간조)의 높이가 서로 다른 조석. 우리나라처럼 중위도에 있는 지역에서 흔히 나타납니다.">
   <svg class="full-svg" viewBox="0 0 1920 1080">
     <defs><radialGradient id="s11b-e" cx=".38" cy=".32"><stop offset="0" stop-color="#9fd8f5"/><stop offset=".6" stop-color="#3a8cc8"/><stop offset="1" stop-color="#1b4f7a"/></radialGradient></defs>
     <g id="s11b-side"></g>
     <g id="s11b-peaks" data-step="1" data-fx="fade"></g>
     <g id="s11b-slice" data-step="1" data-fx="fade" data-delay="300"></g>
-    <g id="s11b-ang1" data-step="3" data-fx="fade"></g>
-    <g id="s11b-ang2" data-step="4" data-fx="fade"></g>
     <text x="330" y="880" text-anchor="middle" font-size="26" font-weight="600" fill="#6e6e73">옆에서 본 지구</text>
     <g data-step="1" data-fx="fade"><path id="s11b-ring" fill="#0077B6" fill-opacity=".16" stroke="var(--c1)" stroke-width="3"/></g>
     <circle id="s11b-disk" fill="url(#s11b-e)"/>
@@ -573,23 +583,21 @@ html.student #notes{display:none!important}
     <span id="s11b-state" class="pill" data-s="대기" style="opacity:0">—</span>
   </div>
   <div class="ws-card" style="left:1220px;top:545px;width:600px;padding:16px 30px">
-    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="1"><span class="tm">부풂</span><span>적도가 기울어져 부풂의 중심이 달 쪽 <b class="c1">28.5°N</b>, 반대쪽 <b class="c1">28.5°S</b></span></div>
-    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="3"><span class="tm">달 쪽</span><span>부풂 중심(28.5°N)과 <b class="c2">6.5°</b>로 아주 가깝다 → <b class="c3">높은 만조</b></span></div>
-    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="4"><span class="tm">반대쪽</span><span>부풂 중심(28.5°S)과 <b class="c2">63.5°</b> 떨어짐 → 부풂의 가장자리만 스쳐 <b class="c3">낮은 만조</b></span></div>
-    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="5"><span class="tm">결론</span><span>하루에 만조 2번, 두 만조의 높이가 다르다 → <b class="act">혼합조</b></span></div>
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="1"><span class="tm">부풂</span><span>적도면이 달의 공전 궤도면에 대해 기울어져 있어, 해수면 부풂도 <b class="c1">적도에 대해 기울어져</b> 있다</span></div>
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="3"><span class="tm">달 쪽</span><span>B는 부풂의 가장 높은 곳 가까이를 지난다 → <b class="c3">높은 만조</b></span></div>
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="4"><span class="tm">반대쪽</span><span>B는 부풂의 가장자리만 스친다 → <b class="c3">낮은 만조</b></span></div>
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="5"><span class="tm">정의</span><span><b class="act">혼합조</b>: 하루에 만조와 간조가 각각 <b>두 번씩</b> 나타나지만, 연속된 두 만조(간조)의 <b>높이가 서로 다른</b> 조석</span></div>
   </div>
   <div class="fine">평형 조석론으로 계산한 모식 그림 · 해수면 부풂은 크게 과장 · 단면은 위도와 관계없이 같은 크기로 그림</div>
 </section>
 
 <!-- ═══ s11c 적도 단면 ═══ -->
-<section class="slide" id="s11c" data-tile="light" data-title="적도 C 지점의 조석" data-notes="1단계: 적도 C(0°)에서 자른 단면입니다. 파란 띠가 달 쪽과 반대쪽에서 똑같은 두께로 부풀어 있습니다. 2단계: 하루 동안 자전하며 C의 해수면 높이를 그래프로 그립니다. 3단계: 달 쪽에서 C는 부풂 중심(28.5°N)과 28.5° 떨어져 있어 만조가 됩니다. 4단계: 반대쪽 부풂의 중심(28.5°S)과도 똑같이 28.5° 떨어져 있어서 같은 높이의 만조가 됩니다. 5단계: 하루에 만조와 간조가 두 번씩, 조차가 거의 같은 반일주조입니다. 부풂의 꼭대기를 지나지 않으므로 만조 높이는 B의 높은 만조보다 낮습니다.">
+<section class="slide" id="s11c" data-tile="light" data-title="적도 C 지점의 조석" data-notes="1단계: 적도 C(0°)에서 자른 단면입니다. 파란 띠가 달 쪽과 반대쪽에서 똑같은 두께로 부풀어 있습니다. 2단계: 하루 동안 자전하며 C의 해수면 높이를 그래프로 그립니다. 3단계: 달 쪽에서 C는 부풂 안을 지나므로 만조가 됩니다. 4단계: 두 부풂이 적도를 사이에 두고 대칭으로 기울어져 있어서, C는 반대쪽 부풂도 달 쪽과 똑같이 지납니다. 같은 높이의 만조가 됩니다. 5단계: 반일주조의 정의 — 하루에 만조와 간조가 각각 두 번씩 나타나며, 연속된 두 만조(간조)의 높이가 거의 같은 조석.">
   <svg class="full-svg" viewBox="0 0 1920 1080">
     <defs><radialGradient id="s11c-e" cx=".38" cy=".32"><stop offset="0" stop-color="#9fd8f5"/><stop offset=".6" stop-color="#3a8cc8"/><stop offset="1" stop-color="#1b4f7a"/></radialGradient></defs>
     <g id="s11c-side"></g>
     <g id="s11c-peaks" data-step="1" data-fx="fade"></g>
     <g id="s11c-slice" data-step="1" data-fx="fade" data-delay="300"></g>
-    <g id="s11c-ang1" data-step="3" data-fx="fade"></g>
-    <g id="s11c-ang2" data-step="4" data-fx="fade"></g>
     <text x="330" y="880" text-anchor="middle" font-size="26" font-weight="600" fill="#6e6e73">옆에서 본 지구</text>
     <g data-step="1" data-fx="fade"><path id="s11c-ring" fill="#0077B6" fill-opacity=".16" stroke="var(--c1)" stroke-width="3"/></g>
     <circle id="s11c-disk" fill="url(#s11c-e)"/>
@@ -611,10 +619,10 @@ html.student #notes{display:none!important}
     <span id="s11c-state" class="pill" data-s="대기" style="opacity:0">—</span>
   </div>
   <div class="ws-card" style="left:1220px;top:545px;width:600px;padding:16px 30px">
-    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="1"><span class="tm">부풂</span><span>적도가 기울어져 부풂의 중심이 달 쪽 <b class="c1">28.5°N</b>, 반대쪽 <b class="c1">28.5°S</b></span></div>
-    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="3"><span class="tm">달 쪽</span><span>부풂 중심(28.5°N)과 <b class="c2">28.5°</b> 차이 → <b class="c3">만조</b></span></div>
-    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="4"><span class="tm">반대쪽</span><span>부풂 중심(28.5°S)과도 <b class="c2">28.5°</b>로 똑같다 → <b class="c3">같은 높이의 만조</b></span></div>
-    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="5"><span class="tm">결론</span><span>하루에 만조 2번, 두 만조의 높이가 비슷 → <b class="act">반일주조</b></span></div>
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="1"><span class="tm">부풂</span><span>적도면이 달의 공전 궤도면에 대해 기울어져 있어, 해수면 부풂도 <b class="c1">적도에 대해 기울어져</b> 있다</span></div>
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="3"><span class="tm">달 쪽</span><span>C는 부풂 안을 지난다 → <b class="c3">만조</b></span></div>
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="4"><span class="tm">반대쪽</span><span>반대쪽 부풂도 달 쪽과 똑같이 지난다 → <b class="c3">같은 높이의 만조</b></span></div>
+    <div class="ws-row" style="grid-template-columns:92px 1fr;font-size:27px;line-height:1.45;padding:9px 0" data-step="5"><span class="tm">정의</span><span><b class="act">반일주조</b>: 하루에 만조와 간조가 각각 <b>두 번씩</b> 나타나며, 연속된 두 만조(간조)의 <b>높이가 거의 같은</b> 조석</span></div>
   </div>
   <div class="fine">평형 조석론으로 계산한 모식 그림 · 해수면 부풂은 크게 과장 · 단면은 위도와 관계없이 같은 크기로 그림</div>
 </section>
@@ -651,9 +659,9 @@ html.student #notes{display:none!important}
   <div class="abs num" style="left:120px;top:250px;display:flex;align-items:center;gap:20px" data-in="300">
     <span class="mute" style="font-size:28px;font-weight:600">경과 시간</span><span id="s11-clock" class="c3" style="font-size:44px;font-weight:700">0시간 00분</span>
   </div>
-  <div class="abs callout" style="top:272px;width:390px" data-step="3"><span class="mute">달 쪽 부풂만 지난다</span><br>만조·간조가 하루 <b>한 번</b>씩<br><b class="act">일주조</b></div>
-  <div class="abs callout" style="top:492px;width:390px" data-step="4"><span class="mute">반대쪽은 부풂 끝만 스친다</span><br>하루 두 번, <b>만조 높이가 다르다</b><br><b class="act">혼합조</b></div>
-  <div class="abs callout" style="top:712px;width:390px" data-step="5"><span class="mute">두 부풂을 똑같이 지난다</span><br>하루 두 번, <b>조차가 비슷</b><br><b class="act">반일주조</b></div>
+  <div class="abs callout" style="top:272px;width:390px" data-step="3"><span class="mute">달 쪽 부풂만 지난다</span><br>만조·간조가 하루 <b>한 번씩</b><br><b class="act">일주조</b></div>
+  <div class="abs callout" style="top:492px;width:390px" data-step="4"><span class="mute">반대쪽은 부풂 끝만 스친다</span><br>하루 두 번씩, <b>연속된 만조 높이가 다름</b><br><b class="act">혼합조</b></div>
+  <div class="abs callout" style="top:712px;width:390px" data-step="5"><span class="mute">두 부풂을 똑같이 지난다</span><br>하루 두 번씩, <b>연속된 만조 높이가 같음</b><br><b class="act">반일주조</b></div>
   <div class="fine">평형 조석론으로 계산한 모식 그래프 · 해수면 부풂은 크게 과장 · 실제 조석은 지형과 해저 수심의 영향을 받아 지역마다 매우 복잡하다</div>
 </section>
 
@@ -1114,7 +1122,7 @@ Deck.start=function(){
 <script>
 /* ═══ 장면: 키워드와 장면별 움직임 ═══ */
 const {U}=Deck;
-window.KW={items:['조석','기조력','조석 주기와 양상','사리와 조금'],at:[-1,-1,0,0,0,1,1,1,1,2,2,2,2,2,3,3,-1,-1,-1]};
+window.KW={items:['조석','기조력','조석 주기와 양상','사리와 조금'],at:[-1,-1,0,0,0,1,1,1,1,2,2,2,2,2,2,3,3,-1,-1,-1]};
 const $id=id=>document.getElementById(id);
 const TAU=Math.PI*2, D2R=Math.PI/180;
 const P2=x=>(3*x*x-1)/2;                      // 평형 조석의 해수면 모양(르장드르 2차)
@@ -1251,14 +1259,38 @@ function s11split(pts){  // 앞·뒤로 나눈 경로 문자열
   S11.ext=S11.lats.map((la,i)=>{const ex=s11ext(la);s11marks($id('s11-mk'),ex,S11.G[i],'s11-m'+i);return ex;});
 })();
 
+/* s11q 세 지역의 조위계(해수면 높이 기둥) + 하루 그래프 */
+const S11Q={xs:[400,960,1520],labs:[['고위도 지역','A · 65°N'],['중위도 지역','B · 35°N'],['적도 지역','C · 0°']],gy0:330,gh:300,G:[]};
+(function(){
+  const sv=$id('s11q-svg');
+  S11Q.xs.forEach((x,i)=>{
+    const g=U.el('g',{},sv);
+    const t1=U.el('text',{x,y:330,'text-anchor':'middle','font-size':34,'font-weight':700,fill:'#f5f5f7'},g);t1.textContent=S11Q.labs[i][0];
+    const t2=U.el('text',{x,y:368,'text-anchor':'middle','font-size':26,'font-weight':600,fill:'#a1a1a6'},g);t2.textContent=S11Q.labs[i][1];
+    // 조위계 기둥
+    U.el('rect',{x:x-210,y:400,width:90,height:340,rx:12,fill:'#1c1c1e',stroke:'#48484a','stroke-width':2},g);
+    U.el('rect',{id:'s11q-w'+i,x:x-208,y:600,width:86,height:138,rx:10,fill:'var(--c1)','fill-opacity':.75},g);
+    for(let k=0;k<=4;k++)U.el('line',{x1:x-210,y1:420+k*75,x2:x-192,y2:420+k*75,stroke:'#6e6e73','stroke-width':2},g);
+    // 하루 그래프
+    const G={x0:x-90,sx:12.5,y0:440,amp:240};S11Q.G[i]=G;
+    U.el('rect',{x:x-100,y:400,width:320,height:340,rx:12,fill:'none',stroke:'#3a3a3c','stroke-width':2},g);
+    [0,12,24].forEach(h=>{const tt=U.el('text',{x:G.x0+G.sx*h,y:772,'text-anchor':'middle','font-size':24,fill:'#a1a1a6'},g);tt.textContent=h+(h===24?'시':'');});
+    U.el('path',{id:'s11q-g'+i,stroke:'var(--c3)','stroke-width':5,fill:'none','stroke-linecap':'round','stroke-linejoin':'round'},g);
+    U.el('circle',{id:'s11q-gd'+i,r:9,fill:'var(--c3)'},g);
+    const mk=U.el('g',{id:'s11q-mk'+i,'font-size':22,'font-weight':700,'text-anchor':'middle'},g);
+    S11Q.ext=S11Q.ext||[];S11Q.ext[i]=s11ext(S11.lats[i]);
+    S11Q.ext[i].forEach((e,j)=>{
+      const ex=G.x0+G.sx*e.t,ey=G.y0+(1-e.h)*G.amp,col=e.hi?'var(--c3)':'var(--c1)';
+      const m=U.el('g',{id:'s11q-m'+i+'-'+j,opacity:0},mk);
+      U.el('circle',{cx:ex.toFixed(1),cy:ey.toFixed(1),r:8,fill:'#1c1c1e',stroke:col,'stroke-width':4},m);
+      const tx=U.el('text',{x:Math.min(G.x0+G.sx*24-6,Math.max(G.x0+6,ex)).toFixed(1),y:(e.hi?ey-16:ey+32).toFixed(1),fill:col},m);tx.textContent=e.hi?'만조':'간조';
+    });
+  });
+})();
+
 /* s11a~c 위도별 단면: 옆에서 본 지구(달의 공전 궤도면) + 북극 위에서 본 위도 단면 */
 const S11L={cx:900,cy:610,Rt:150,base:10,amp:75,sx:330,sy:600,sR:140,ids:['s11a','s11b','s11c'],G:{x0:1260,sx:22.5,y0:342,amp:100},ext:[]};
 S11L.ring=(la,l)=>S11L.Rt+S11L.base+S11L.amp*s11h(s11n(la*D2R,l));   // 단면에서 해수면까지의 반지름
-function s11arc(cx,cy,r,a0,a1){  // 각도(°, 반시계) a0→a1 호
-  const n=Math.max(2,Math.ceil(Math.abs(a1-a0)/2));let d='';
-  for(let j=0;j<=n;j++){const a=(a0+(a1-a0)*j/n)*D2R;d+=(j?'L':'M')+(cx+r*Math.cos(a)).toFixed(1)+' '+(cy-r*Math.sin(a)).toFixed(1);}
-  return d;
-}
 S11L.ids.forEach((P,i)=>{
   const la=S11.lats[i],dl=S11.del/D2R,{sx,sy,sR,cx,cy,Rt}=S11L,k=sR/S11.R,A=S11.a*k;
   const ux=Math.cos(S11.del),uy=-Math.sin(S11.del);
@@ -1272,26 +1304,13 @@ S11L.ids.forEach((P,i)=>{
   const tS=U.el('text',{x:sx,y:sy+sR*1.25+34,'text-anchor':'middle','font-size':28,'font-weight':700},sd);tS.textContent='S';
   arrow(sd,sx+(A+10)*ux,sy+(A+10)*uy,sx+(A+70)*ux,sy+(A+70)*uy,'var(--c3)',5);
   const tm=U.el('text',{x:(sx+(A+40)*ux).toFixed(1),y:(sy+(A+70)*uy-14).toFixed(1),'text-anchor':'middle','font-size':26,'font-weight':700,fill:'var(--c3)'},sd);tm.textContent='달';
-  // 1단계: 부풂의 중심(달 쪽 28.5°N, 반대쪽 28.5°S)
-  const pk=$id(P+'-peaks');
-  U.el('line',{x1:sx-(A+6)*ux,y1:sy-(A+6)*uy,x2:sx+(A+6)*ux,y2:sy+(A+6)*uy,stroke:'var(--c1)','stroke-width':2,'stroke-dasharray':'6 6'},pk);
-  [[1,'28.5°N'],[-1,'28.5°S']].forEach(([sg,txt])=>{
-    const px=sx+sg*sR*ux,py=sy+sg*sR*uy;
-    U.el('circle',{cx:px.toFixed(1),cy:py.toFixed(1),r:9,fill:'var(--c1)',stroke:'#fff','stroke-width':3},pk);
-    const tx=U.el('text',{x:(sx+sg*(sR-62)*ux).toFixed(1),y:(sy+sg*(sR-62)*uy+9).toFixed(1),'text-anchor':'middle','font-size':24,'font-weight':700,fill:'#fff'},pk);tx.textContent=txt;
-  });
+  // 1단계: 부풂의 축(달 쪽과 그 반대쪽) — 적도에 대해 기울어져 있다
+  U.el('line',{x1:sx-(A+6)*ux,y1:sy-(A+6)*uy,x2:sx+(A+6)*ux,y2:sy+(A+6)*uy,stroke:'var(--c1)','stroke-width':2,'stroke-dasharray':'6 6'},$id(P+'-peaks'));
   // 1단계: 이 위도에서 자른 면(옆에서 보면 선분)
   const sl=$id(P+'-slice'),yy=sy-sR*Math.sin(la*D2R),xx=sR*Math.cos(la*D2R);
   U.el('line',{x1:(sx-xx).toFixed(1),y1:yy.toFixed(1),x2:(sx+xx).toFixed(1),y2:yy.toFixed(1),stroke:'var(--c3)','stroke-width':5},sl);
   [-1,1].forEach(sg=>U.el('circle',{cx:(sx+sg*xx).toFixed(1),cy:yy.toFixed(1),r:10,fill:'var(--c3)',stroke:'#fff','stroke-width':3},sl));
   const tl=U.el('text',{x:(sx-xx-18).toFixed(1),y:(yy+9).toFixed(1),'text-anchor':'end','font-size':26,'font-weight':700,fill:'var(--c3)'},sl);tl.textContent=S11.names[i]+' '+(la?la+'°N':'0°');
-  // 3·4단계: 지점과 부풂 중심 사이의 각
-  [[P+'-ang1',la,dl,Math.abs(la-dl)],[P+'-ang2',180-la,180+dl,la+dl]].forEach(([id,a0,a1,v])=>{
-    const g=$id(id),am=(a0+a1)/2*D2R,lr=sR+(v<10?62:46);
-    U.el('path',{d:s11arc(sx,sy,sR+14,a0,a1),stroke:'var(--c2)','stroke-width':6,fill:'none','stroke-linecap':'round'},g);
-    const t=U.el('text',{x:(sx+lr*Math.cos(am)).toFixed(1),y:(sy-lr*Math.sin(am)+9).toFixed(1),'text-anchor':'middle','font-size':28,'font-weight':700,fill:'var(--c2)'},g);
-    t.textContent=(Math.round(v*10)/10)+'°';
-  });
   // 북극 위에서 본 단면: 해수면 띠, 자전 표시, 달의 방향
   const ring=[];for(let l=0;l<=360;l+=2){const r=S11L.ring(la,l*D2R),a=l*D2R;ring.push((cx+r*Math.cos(a)).toFixed(1)+' '+(cy-r*Math.sin(a)).toFixed(1));}
   $id(P+'-ring').setAttribute('d','M'+ring.join(' L')+'Z');
@@ -1419,6 +1438,19 @@ Deck.scene('s10',{
       s10state(c,'만조','다시 만조!');
     }
   }
+});
+
+/* s11q 세 지역의 하루(8초)를 반복 */
+function s11Qdraw(c,t){
+  S11Q.xs.forEach((x,i)=>{
+    const G=S11Q.G[i],la=S11.lats[i],h=s11h(s11n(la*D2R,s11lon(t)));
+    const y=720-280*h;c.$('#s11q-w'+i).setAttribute('y',y.toFixed(1));c.$('#s11q-w'+i).setAttribute('height',(738-y).toFixed(1));
+    s11trace(c,la,t,G,'#s11q-g'+i,'#s11q-gd'+i,S11Q.ext[i],'#s11q-m'+i);
+  });
+  c.$('#s11q-clock').textContent=fmtHM(t);
+}
+Deck.scene('s11q',{
+  enter(c){s11Qdraw(c,24);c.loop(t=>s11Qdraw(c,Math.min(24,(t%9)/8*24)));}
 });
 
 /* s11a~c 단면에서 자전하는 지점의 해수면 높이 → 그래프 */
