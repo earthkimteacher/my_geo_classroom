@@ -1,0 +1,2544 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>행성의 역행과 순행 시뮬레이터</title>
+  <style>
+    /* Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+    :root {
+      --bg-dark: #080810;
+      --panel-bg: rgba(16, 16, 32, 0.65);
+      --panel-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f0f0f8;
+      --text-muted: #a0a0c0;
+      --primary: #4d94ff;
+      --sun-color: #ff5500;
+      --earth-color: #00ccff;
+      --venus-color: #e6b800;
+      --mars-color: #ff6633;
+      --path-color: #ff3399;
+      --font-family: 'Outfit', 'Noto Sans KR', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Fixed aspect ratio scale wrapper */
+    #app-wrapper {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at center, #101026 0%, #05050f 100%);
+      overflow: hidden;
+    }
+
+    #app-container {
+      position: absolute;
+      width: 1280px;
+      height: 768px;
+      transform-origin: top left;
+      background: transparent;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      gap: 16px;
+    }
+
+    /* Background starfield animation canvas */
+    #bg-stars {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    header {
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 60px;
+      border-bottom: 1px solid var(--panel-border);
+      padding-bottom: 12px;
+    }
+
+    .title-area {
+      display: flex;
+      flex-direction: column;
+    }
+
+    header h1 {
+      font-size: 22px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 30%, #a0c0ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Tabs Layout */
+    .tabs {
+      display: flex;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 4px;
+      border-radius: 30px;
+      border: 1px solid var(--panel-border);
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-family);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary) 0%, #1a75ff 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(26, 117, 255, 0.35);
+    }
+
+    .tab-btn:hover:not(.active) {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Main Workspace */
+    .main-workspace {
+      display: flex;
+      flex: 1;
+      gap: 16px;
+      z-index: 5;
+      height: calc(100% - 160px); /* adjusted for controls */
+    }
+
+    /* Left panel: Orbits or Projector */
+    .sim-panel {
+      flex: 3;
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Right panel: Details Dashboard */
+    .dashboard-panel {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    /* Upper card on right: Projection or Telescope view */
+    .display-card {
+      flex: 1.2;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-header {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-header span.badge {
+      font-size: 10px;
+      background: rgba(77, 148, 255, 0.15);
+      border: 1px solid rgba(77, 148, 255, 0.3);
+      padding: 2px 8px;
+      border-radius: 12px;
+      color: var(--primary);
+    }
+
+    /* Inner Telescope & Phase Canvas Container */
+    .telescope-container {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      position: relative;
+    }
+
+    .telescope-viewport {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 3px solid #303050;
+      background: radial-gradient(circle at center, #0a0a1a 0%, #020208 100%);
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 0 15px rgba(77, 148, 255, 0.15);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .telescope-crosshair {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      border-radius: 50%;
+    }
+
+    .telescope-crosshair::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 5%;
+      width: 90%;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .telescope-crosshair::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 5%;
+      width: 1px;
+      height: 90%;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    #telescope-canvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    .telescope-stats {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+      padding-bottom: 4px;
+      font-size: 12px;
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+    }
+
+    .stat-value {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    /* Explanation Card */
+    .explanation-card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .explanation-text {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-main);
+      overflow-y: auto;
+      max-height: 110px;
+      padding-right: 4px;
+    }
+
+    .explanation-text::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .explanation-text::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+    }
+
+    /* Visibility graphic guide */
+    .visibility-guide {
+      margin-top: 10px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 8px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .visibility-icon {
+      width: 32px;
+      height: 32px;
+      background: rgba(77, 148, 255, 0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      border: 1px solid rgba(77, 148, 255, 0.2);
+    }
+
+    .visibility-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .visibility-title {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    .visibility-desc {
+      font-size: 12px;
+      font-weight: 600;
+      color: #ffe680;
+    }
+
+    /* Apparent Motion Projection Canvas Style */
+    #projection-card {
+      display: none; /* toggled by tabs */
+    }
+
+    .projection-container {
+      width: 100%;
+      height: 150px;
+      background: #04040c;
+      border: 1px solid #1a1a3a;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #projection-canvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Controls Panel */
+    .controls-panel {
+      z-index: 10;
+      background: rgba(16, 16, 32, 0.85);
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(15px);
+    }
+
+    .media-buttons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .control-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid var(--panel-border);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      font-size: 14px;
+    }
+
+    .control-btn:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      box-shadow: 0 0 12px rgba(77, 148, 255, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .control-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Play/Pause Button Specifics */
+    .control-btn.play {
+      background: linear-gradient(135deg, var(--primary) 0%, #1a75ff 100%);
+      border-color: #1a75ff;
+      width: 46px;
+      height: 46px;
+      font-size: 16px;
+      box-shadow: 0 4px 15px rgba(26, 117, 255, 0.3);
+    }
+
+    .control-btn.play:hover {
+      box-shadow: 0 0 20px rgba(26, 117, 255, 0.6);
+    }
+
+    /* Slider Container */
+    .slider-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Custom input range */
+    .custom-range {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      outline: none;
+      transition: background 0.3s;
+    }
+
+    .custom-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--primary);
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(77, 148, 255, 0.8);
+      transition: transform 0.1s;
+    }
+
+    .custom-range::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    /* Preset Snap Buttons */
+    .presets-container {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 320px;
+    }
+
+    .presets-title {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .presets-grid {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .preset-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--panel-border);
+      border-radius: 6px;
+      color: var(--text-muted);
+      font-family: var(--font-family);
+      font-size: 11px;
+      font-weight: 500;
+      padding: 6px 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-grow: 1;
+      text-align: center;
+    }
+
+    .preset-btn:hover {
+      background: rgba(77, 148, 255, 0.1);
+      border-color: rgba(77, 148, 255, 0.4);
+      color: var(--text-main);
+    }
+
+    .preset-btn.active {
+      background: rgba(77, 148, 255, 0.18);
+      border-color: var(--primary);
+      color: #b3d1ff;
+      font-weight: bold;
+    }
+
+    /* Speed control area */
+    .speed-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .speed-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .speed-select {
+      background: rgba(16, 16, 32, 0.7);
+      border: 1px solid var(--panel-border);
+      border-radius: 6px;
+      color: var(--text-main);
+      font-family: var(--font-family);
+      font-size: 11px;
+      padding: 4px 8px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* Simulator Canvas styles */
+    #sim-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Hover tooltips overlay on canvas */
+    .canvas-tooltip {
+      position: absolute;
+      background: rgba(10, 10, 20, 0.9);
+      border: 1px solid var(--primary);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      color: var(--text-main);
+      pointer-events: none;
+      display: none;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      z-index: 100;
+    }
+
+    /* Text helper below header */
+    .help-icon {
+      margin-left: 6px;
+      display: inline-flex;
+      width: 16px;
+      height: 16px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: bold;
+      color: var(--text-muted);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .help-icon:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .help-tooltip {
+      position: absolute;
+      width: 240px;
+      bottom: 24px;
+      right: 0;
+      background: rgba(10,10,25,0.95);
+      border: 1px solid var(--primary);
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      line-height: 1.5;
+      color: var(--text-main);
+      display: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+      z-index: 1000;
+      font-weight: normal;
+    }
+
+    .help-icon:hover .help-tooltip {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Wrap for centering and scale-locking -->
+  <div id="app-wrapper">
+    <!-- Starfield Background -->
+    <canvas id="bg-stars"></canvas>
+
+    <div id="app-container">
+      <header>
+        <div class="title-area">
+          <h1>행성의 역행과 순행 시뮬레이터</h1>
+          <div class="subtitle">진광고등학교 지구과학 교사 김덕영, 2026</div>
+        </div>
+
+        <div class="tabs">
+          <button class="tab-btn active" onclick="switchTab(0)">내행성 위치 관계</button>
+          <button class="tab-btn" onclick="switchTab(1)">내행성 겉보기 운동</button>
+          <button class="tab-btn" onclick="switchTab(2)">외행성 위치 관계</button>
+          <button class="tab-btn" onclick="switchTab(3)">외행성 겉보기 운동</button>
+        </div>
+      </header>
+
+      <!-- Main Interaction Board -->
+      <div class="main-workspace">
+        
+        <!-- Left: Physical Orbital Simulation -->
+        <div class="sim-panel" id="canvas-container">
+          <canvas id="sim-canvas"></canvas>
+          <div class="canvas-tooltip" id="tooltip">툴팁 텍스트</div>
+        </div>
+
+        <!-- Right: Information & Visual Analysis Dashboard -->
+        <div class="dashboard-panel">
+          
+          <!-- Upper display: Telescope Phase or Apparent Motion Projection -->
+          <div class="card display-card">
+            
+            <!-- Tab specific display 1: Telescope Phase View (for Positional Relations tabs) -->
+            <div id="telescope-card-content" style="height:100%; display:flex; flex-direction:column;">
+              <div class="card-header">
+                <span>망원경 관측 뷰 (Telescope View)</span>
+                <span class="badge" id="planet-name-badge">금성</span>
+              </div>
+              <div class="telescope-container">
+                <div class="telescope-viewport">
+                  <div class="telescope-crosshair"></div>
+                  <canvas id="telescope-canvas"></canvas>
+                </div>
+                <div class="telescope-stats">
+                  <div class="stat-row">
+                    <span class="stat-label">이각 (Elongation)</span>
+                    <span class="stat-value" id="val-elongation">0.0°</span>
+                  </div>
+                  <div class="stat-row">
+                    <span class="stat-label">겉보기 크기 (Size)</span>
+                    <span class="stat-value" id="val-size">100%</span>
+                  </div>
+                  <div class="stat-row">
+                    <span class="stat-label">위상 모양 (Phase)</span>
+                    <span class="stat-value" id="val-phase">보름달형</span>
+                  </div>
+                  <div class="stat-row">
+                    <span class="stat-label">거리 (Distance)</span>
+                    <span class="stat-value" id="val-distance">1.72 AU</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab specific display 2: Starry Sky Projection (for Apparent Motion tabs) -->
+            <div id="projection-card" style="height:100%; display:none; flex-direction:column;">
+              <div class="card-header">
+                <span>배경 별자리 상의 겉보기 운동 (Celestial Projection)</span>
+                <span class="badge" style="background:rgba(255,51,153,0.15); border:1px solid rgba(255,51,153,0.3); color:var(--path-color);">적경 투영</span>
+              </div>
+              <div class="projection-container">
+                <canvas id="projection-canvas"></canvas>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Lower display: Explanations and Concept Summary -->
+          <div class="card explanation-card">
+            <div class="card-header">
+              <span id="explanation-title">개념 설명</span>
+              <div class="help-icon">?
+                <div class="help-tooltip" id="help-tooltip-content">
+                  마우스 드래그로 궤도 위의 행성이나 지구를 직접 움직일 수 있습니다.<br><br>
+                  자동 재생 상태에서는 공전 속도 조절이 가능하며, 스냅 버튼을 이용해 교과서의 대표 배치를 원클릭으로 관찰할 수 있습니다.
+                </div>
+              </div>
+            </div>
+            
+            <div class="explanation-text" id="explanation-body">
+              시뮬레이션을 시작하여 내행성의 궤도 운동을 관찰하세요.
+            </div>
+
+            <!-- Visibility Guide block -->
+            <div class="visibility-guide">
+              <div class="visibility-icon" id="visibility-icon">🌅</div>
+              <div class="visibility-info">
+                <span class="visibility-title">관측 최적 시간 및 방위</span>
+                <span class="visibility-desc" id="visibility-desc">관측 불가 (태양 부근)</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Bottom: Simulation Play & Presets Control Panel -->
+      <div class="controls-panel">
+        
+        <!-- Play / Pause Buttons -->
+        <div class="media-buttons">
+          <button class="control-btn play" id="btn-play" onclick="togglePlay()" title="재생/일시정지">▶</button>
+          <button class="control-btn" onclick="resetSim()" title="처음 위치로 리셋">🔄</button>
+          <div class="speed-control">
+            <span class="speed-label">속도</span>
+            <select class="speed-select" id="select-speed" onchange="changeSpeed()">
+              <option value="0.25">0.25x</option>
+              <option value="0.5">0.5x</option>
+              <option value="1" selected>1.0x</option>
+              <option value="2">2.0x</option>
+              <option value="4">4.0x</option>
+              <option value="8">8.0x</option>
+              <option value="16">16.0x</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Orbit Progress Control Slider -->
+        <div class="slider-container">
+          <div class="slider-header">
+            <span>공전 진행 제어 (지구 공전 기준)</span>
+            <span id="val-progress">0%</span>
+          </div>
+          <div class="slider-row">
+            <input type="range" class="custom-range" id="slider-orbit" min="0" max="360" value="0" oninput="manualOrbit(this.value)">
+          </div>
+        </div>
+
+        <!-- Snapshot & Preset Positions Grid -->
+        <div class="presets-container">
+          <div class="presets-title" id="presets-title-text">핵심 위치 바로가기 (클릭 시 스냅)</div>
+          <div class="presets-grid" id="presets-grid-buttons">
+            <!-- Buttons dynamically generated per tab -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================================
+       GLOBAL APP STATE
+       ========================================================================= */
+    let currentTab = 0; // 0: Inner Relations, 1: Inner Apparent, 2: Outer Relations, 3: Outer Apparent
+    let isPlaying = false;
+    let animSpeed = 1.0;
+    
+    // Virtual orbital angles (in radians)
+    // Both Earth and planet angles are tracked.
+    // 0 is +X (3 o'clock), -pi/2 is -Y (6 o'clock/bottom).
+    // In our coordinate space: Center is Sun (0, 0).
+    // Earth starts at bottom (-pi/2) to match textbook.
+    const START_ANGLE_EARTH = -Math.PI / 2; // -90 deg
+    
+    let angleEarth = START_ANGLE_EARTH;
+    let anglePlanet = START_ANGLE_EARTH; // Start in conjunction (aligned at bottom)
+
+    // Orbital constants (Relative speeds and radii)
+    const R_EARTH = 135;
+    
+    // Venus (Inner)
+    const R_VENUS = 88;
+    const SPEED_VENUS = 1.62; // orbits 1.62x faster than Earth
+    
+    // Mars (Outer)
+    const R_MARS = 176;
+    const SPEED_MARS = 0.53; // orbits 0.53x speed of Earth
+
+    // Key positional relations angles (assuming Earth is locked at -90 deg for simplicity when snapping)
+    // Elongation: arcsin(R_Venus / R_Earth) is approx 41 deg in our scale
+    const ELONG_MAX_VENUS = Math.asin(R_VENUS / R_EARTH); // 0.716 rad = 41.0 deg
+    
+    // Quadrature: right angle at Earth, so Mars angle is solved by Y_Mars = Y_Earth.
+    // X_Mars = sqrt(R_Mars^2 - R_Earth^2). Angle = atan2(-R_Earth, X_Mars)
+    const QUAD_ANGLE_MARS = Math.acos(R_EARTH / R_MARS); // 0.706 rad = 40.5 deg (relative to center)
+
+    // Step-by-step Apparent motion configurations (1 to 7 corresponding to textbook)
+    // They are computed dynamically in updateDynamicSteps() based on current conjunction position.
+    let INNER_STEPS = [];
+    let OUTER_STEPS = [];
+
+    function getSpeedRatioForTab(tab) {
+      if (tab === 0) return SPEED_VENUS; 
+      if (tab === 1) return 2.75; // Venus textbook step ratio
+      if (tab === 2) return SPEED_MARS; 
+      if (tab === 3) return 0.4166667; // Mars textbook step ratio
+      return 1.0;
+    }
+
+    function getNearestAlignmentAngle() {
+      const ratio = getSpeedRatioForTab(currentTab);
+      if (Math.abs(ratio - 1) < 0.01) return angleEarth;
+      let diff = anglePlanet - angleEarth;
+      diff = Math.atan2(Math.sin(diff), Math.cos(diff));
+      const dE = -diff / (ratio - 1);
+      return angleEarth + dE;
+    }
+
+    function updateDynamicSteps() {
+      const conjAng = getNearestAlignmentAngle();
+      INNER_STEPS = [
+        { step: 1, eAngle: conjAng - 27 * Math.PI/180, pAngle: conjAng - 74.25 * Math.PI/180, label: "1 (순행)" },
+        { step: 2, eAngle: conjAng - 18 * Math.PI/180, pAngle: conjAng - 49.5 * Math.PI/180, label: "2 (순행)" },
+        { step: 3, eAngle: conjAng - 9 * Math.PI/180, pAngle: conjAng - 24.75 * Math.PI/180, label: "3 (유)" },
+        { step: 4, eAngle: conjAng, pAngle: conjAng, label: "4 (역행/내합)" },
+        { step: 5, eAngle: conjAng + 9 * Math.PI/180, pAngle: conjAng + 24.75 * Math.PI/180, label: "5 (유)" },
+        { step: 6, eAngle: conjAng + 18 * Math.PI/180, pAngle: conjAng + 49.5 * Math.PI/180, label: "6 (순행)" },
+        { step: 7, eAngle: conjAng + 27 * Math.PI/180, pAngle: conjAng + 74.25 * Math.PI/180, label: "7 (순행)" }
+      ];
+      OUTER_STEPS = [
+        { step: 1, eAngle: conjAng - 54 * Math.PI/180, pAngle: conjAng - 22.5 * Math.PI/180, label: "1 (순행)" },
+        { step: 2, eAngle: conjAng - 36 * Math.PI/180, pAngle: conjAng - 15 * Math.PI/180, label: "2 (순행)" },
+        { step: 3, eAngle: conjAng - 18 * Math.PI/180, pAngle: conjAng - 7.5 * Math.PI/180, label: "3 (유)" },
+        { step: 4, eAngle: conjAng, pAngle: conjAng, label: "4 (역행/충)" },
+        { step: 5, eAngle: conjAng + 18 * Math.PI/180, pAngle: conjAng + 7.5 * Math.PI/180, label: "5 (유)" },
+        { step: 6, eAngle: conjAng + 36 * Math.PI/180, pAngle: conjAng + 15 * Math.PI/180, label: "6 (순행)" },
+        { step: 7, eAngle: conjAng + 54 * Math.PI/180, pAngle: conjAng + 22.5 * Math.PI/180, label: "7 (순행)" }
+      ];
+    }
+
+    // Initialize steps
+    updateDynamicSteps();
+
+    const VENUS_RELATIONS = [
+      { name: "내합", eAngle: -Math.PI/2, pAngle: -Math.PI/2, desc: "지구-내행성-태양 순으로 일직선을 이룰 때의 위치입니다. 지구와 가장 가까우며, 위상은 삭(망원경에 보이지 않음)이고 시직경이 가장 큽니다." },
+      { name: "외합", eAngle: -Math.PI/2, pAngle: Math.PI/2, desc: "지구-태양-내행성 순으로 일직선을 이룰 때의 위치입니다. 지구에서 가장 멀며, 위상은 보름달(망) 형태이나 태양과 가깝기 때문에 관측되지 않습니다." },
+      { name: "동방 최대 이각", eAngle: -Math.PI/2, pAngle: -Math.PI/2 - (Math.PI/2 - ELONG_MAX_VENUS), desc: "태양의 동쪽으로 가장 멀리 떨어진 위치입니다. 지구에서 볼 때 태양 서쪽(왼쪽)에 위치하며, 태양이 진 후 초저녁 서쪽 하늘에서 잠시 관측됩니다. 반달(오른쪽이 둥근 형태) 모양으로 보입니다." },
+      { name: "서방 최대 이각", eAngle: -Math.PI/2, pAngle: -Math.PI/2 + (Math.PI/2 - ELONG_MAX_VENUS), desc: "태양의 서쪽으로 가장 멀리 떨어진 위치입니다. 지구에서 볼 때 태양 동쪽(오른쪽)에 위치하며, 태양이 뜨기 전 새벽 동쪽 하늘에서 잠시 관측됩니다. 반달(왼쪽이 둥근 형태) 모양으로 보입니다." }
+    ];
+
+    const MARS_RELATIONS = [
+      { name: "충", eAngle: -Math.PI/2, pAngle: -Math.PI/2, desc: "태양-지구-외행성 순으로 일직선을 이룰 때의 위치입니다. 지구와 가장 가까우며, 보름달(망) 모양으로 보이고 시직경이 최대가 됩니다. 밤새도록(남쪽 하늘) 가장 밝게 관측됩니다." },
+      { name: "합", eAngle: -Math.PI/2, pAngle: Math.PI/2, desc: "외행성-태양-지구 순으로 일직선을 이룰 때의 위치입니다. 지구에서 가장 멀고, 태양 빛에 가려 지구에서 관측할 수 없습니다." },
+      { name: "동구", eAngle: -Math.PI/2, pAngle: -Math.PI/2 - QUAD_ANGLE_MARS, desc: "태양과 외행성이 이루는 각(이각)이 태양의 동쪽으로 90도를 이룰 때입니다. 남중 시각은 초저녁(18시)이며, 자정 무렵 서쪽 하늘로 집니다." },
+      { name: "서구", eAngle: -Math.PI/2, pAngle: -Math.PI/2 + QUAD_ANGLE_MARS, desc: "태양과 외행성이 이루는 각(이각)이 태양의 서쪽으로 90도를 이룰 때입니다. 자정 무렵 동쪽 하늘에서 떠올라, 일출 시 남쪽 하늘에 위치합니다." }
+    ];
+
+    // User dragging interactive states
+    let isDraggingPlanet = false;
+    let isDraggingEarth = false;
+
+    // Elements
+    let simCanvas, simCtx;
+    let telescopeCanvas, telescopeCtx;
+    let projectionCanvas, projectionCtx;
+    let starsCanvas, starsCtx;
+    
+    let tooltip = document.getElementById('tooltip');
+    let sliderOrbit = document.getElementById('slider-orbit');
+    let valProgress = document.getElementById('val-progress');
+    let btnPlay = document.getElementById('btn-play');
+
+    /* =========================================================================
+       INITIALIZATION & ASPECT RATIO LOCK
+       ========================================================================= */
+    window.addEventListener('DOMContentLoaded', () => {
+      simCanvas = document.getElementById('sim-canvas');
+      simCtx = simCanvas.getContext('2d');
+      telescopeCanvas = document.getElementById('telescope-canvas');
+      telescopeCtx = telescopeCanvas.getContext('2d');
+      projectionCanvas = document.getElementById('projection-canvas');
+      projectionCtx = projectionCanvas.getContext('2d');
+      starsCanvas = document.getElementById('bg-stars');
+      starsCtx = starsCanvas.getContext('2d');
+
+      // Initialize background stars
+      resizeStarsCanvas();
+      drawBackgroundStars();
+
+      // UI Layout scaling
+      resizeApp();
+      window.addEventListener('resize', () => {
+        resizeApp();
+        resizeStarsCanvas();
+        drawBackgroundStars();
+      });
+
+      // Mouse drag setup on simulation canvas
+      setupDragEvents();
+
+      // Generate initial presets
+      generatePresetButtons();
+
+      // Initial draw
+      updateUI();
+      requestAnimationFrame(tick);
+    });
+
+    let isScaleInitialized = false;
+    let appScale = 1;
+    let appLeft = 0;
+    let appTop = 0;
+
+    function resizeApp() {
+      const container = document.getElementById('app-container');
+      const baseWidth = 1280;
+      const baseHeight = 768;
+
+      if (!isScaleInitialized) {
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        appScale = Math.min(w / baseWidth, h / baseHeight);
+        appLeft = (w - baseWidth * appScale) / 2;
+        appTop = (h - baseHeight * appScale) / 2;
+        isScaleInitialized = true;
+      }
+
+      container.style.transform = `scale(${appScale})`;
+      container.style.left = `${appLeft}px`;
+      container.style.top = `${appTop}px`;
+    }
+
+    let isStarsInitialized = false;
+    function resizeStarsCanvas() {
+      if (!isStarsInitialized) {
+        starsCanvas.width = window.innerWidth;
+        starsCanvas.height = window.innerHeight;
+        isStarsInitialized = true;
+      }
+    }
+
+    const starList = [];
+    function drawBackgroundStars() {
+      starsCtx.fillStyle = '#050510';
+      starsCtx.fillRect(0, 0, starsCanvas.width, starsCanvas.height);
+      
+      // Seed stars once
+      if (starList.length === 0) {
+        for (let i = 0; i < 180; i++) {
+          starList.push({
+            x: Math.random() * 2000,
+            y: Math.random() * 2000,
+            size: Math.random() * 1.5 + 0.5,
+            alpha: Math.random() * 0.7 + 0.3,
+            twinkle: Math.random() * 0.05
+          });
+        }
+      }
+
+      // Draw starry sky
+      starList.forEach(star => {
+        // Adjust coordinate to viewport
+        const x = (star.x % starsCanvas.width);
+        const y = (star.y % starsCanvas.height);
+        starsCtx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+        starsCtx.beginPath();
+        starsCtx.arc(x, y, star.size, 0, Math.PI * 2);
+        starsCtx.fill();
+
+        // Twinkle effect
+        star.alpha += star.twinkle;
+        if (star.alpha > 1 || star.alpha < 0.2) {
+          star.twinkle = -star.twinkle;
+        }
+      });
+    }
+
+    /* =========================================================================
+       TAB & CONFIG SWITCHING
+       ========================================================================= */
+    function switchTab(tabIndex) {
+      currentTab = tabIndex;
+      
+      // Update Tab button CSS
+      const buttons = document.querySelectorAll('.tab-btn');
+      buttons.forEach((btn, idx) => {
+        if (idx === tabIndex) btn.classList.add('active');
+        else btn.classList.remove('active');
+      });
+
+      // Toggle display panels
+      const telCard = document.getElementById('telescope-card-content');
+      const projCard = document.getElementById('projection-card');
+      
+      if (tabIndex === 0 || tabIndex === 2) {
+        telCard.style.display = 'flex';
+        projCard.style.display = 'none';
+      } else {
+        telCard.style.display = 'none';
+        projCard.style.display = 'flex';
+      }
+
+      // Reset positions to default (conjunction/alignment)
+      resetSim();
+
+      // Regrow preset snap buttons
+      generatePresetButtons();
+    }
+
+    function generatePresetButtons() {
+      const grid = document.getElementById('presets-grid-buttons');
+      const title = document.getElementById('presets-title-text');
+      grid.innerHTML = '';
+
+      if (currentTab === 0) {
+        title.innerText = "핵심 내행성 위치 스냅 (원클릭 정렬)";
+        VENUS_RELATIONS.forEach((rel, index) => {
+          const btn = document.createElement('button');
+          btn.className = 'preset-btn';
+          btn.innerText = rel.name;
+          btn.onclick = () => snapToRelation(rel, btn);
+          grid.appendChild(btn);
+        });
+      } else if (currentTab === 1) {
+        title.innerText = "내행성 겉보기 운동 단계별 보기 (교과서 1'~7')";
+        INNER_STEPS.forEach((stepObj, index) => {
+          const btn = document.createElement('button');
+          btn.className = 'preset-btn';
+          btn.innerText = stepObj.label;
+          btn.onclick = () => snapToStep(stepObj, btn);
+          grid.appendChild(btn);
+        });
+      } else if (currentTab === 2) {
+        title.innerText = "핵심 외행성 위치 스냅 (원클릭 정렬)";
+        MARS_RELATIONS.forEach((rel, index) => {
+          const btn = document.createElement('button');
+          btn.className = 'preset-btn';
+          btn.innerText = rel.name;
+          btn.onclick = () => snapToRelation(rel, btn);
+          grid.appendChild(btn);
+        });
+      } else if (currentTab === 3) {
+        title.innerText = "외행성 겉보기 운동 단계별 보기 (교과서 1'~7')";
+        OUTER_STEPS.forEach((stepObj, index) => {
+          const btn = document.createElement('button');
+          btn.className = 'preset-btn';
+          btn.innerText = stepObj.label;
+          btn.onclick = () => snapToStep(stepObj, btn);
+          grid.appendChild(btn);
+        });
+      }
+    }
+
+    /* =========================================================================
+       SIMULATION CLOCK & CONTROLS
+       ========================================================================= */
+    let lastTime = 0;
+    function tick(timestamp) {
+      if (!lastTime) lastTime = timestamp;
+      const delta = (timestamp - lastTime) / 1000;
+      lastTime = timestamp;
+
+      // Handle resize automatically
+      adjustCanvasSize();
+
+      if (isPlaying) {
+        // Orbit counterclockwise (angles increase)
+        // Rate is scaled by speed
+        const speedMultiplier = 0.05 * animSpeed;
+        const ratio = getSpeedRatioForTab(currentTab);
+        
+        angleEarth += delta * speedMultiplier;
+        anglePlanet += delta * speedMultiplier * ratio;
+
+        // Keep within 0 to 2pi
+        angleEarth = angleEarth % (Math.PI * 2);
+        anglePlanet = anglePlanet % (Math.PI * 2);
+
+        // Sync control slider
+        const earthProgressDeg = ((angleEarth - START_ANGLE_EARTH) * 180 / Math.PI) % 360;
+        sliderOrbit.value = Math.round(earthProgressDeg >= 0 ? earthProgressDeg : earthProgressDeg + 360);
+        valProgress.innerText = `${Math.round(sliderOrbit.value / 3.6)}%`;
+
+        updateUI();
+      }
+
+      // Draw all views
+      drawSimulation();
+      if (currentTab === 0 || currentTab === 2) {
+        drawTelescopeView();
+      } else {
+        drawProjectionView();
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    function adjustCanvasSize() {
+      // Set logical resolution of canvases equal to display size to avoid blurriness
+      const container = document.getElementById('canvas-container');
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      
+      if (simCanvas.width !== w || simCanvas.height !== h) {
+        simCanvas.width = w;
+        simCanvas.height = h;
+      }
+
+      const telContainer = telescopeCanvas.parentElement;
+      if (telescopeCanvas.width !== telContainer.clientWidth) {
+        telescopeCanvas.width = telContainer.clientWidth;
+        telescopeCanvas.height = telContainer.clientHeight;
+      }
+
+      const projContainer = projectionCanvas.parentElement;
+      if (projectionCanvas.width !== projContainer.clientWidth) {
+        projectionCanvas.width = projContainer.clientWidth;
+        projectionCanvas.height = projContainer.clientHeight;
+      }
+    }
+
+    function togglePlay() {
+      isPlaying = !isPlaying;
+      btnPlay.innerText = isPlaying ? "⏸" : "▶";
+      
+      // Remove preset button active status when resuming manual flow
+      if (isPlaying) {
+        clearPresetButtonHighlight();
+      }
+    }
+
+    function resetSim() {
+      isPlaying = false;
+      btnPlay.innerText = "▶";
+      
+      const isInner = (currentTab === 0 || currentTab === 1);
+      if (currentTab === 1 || currentTab === 3) {
+        updateDynamicSteps();
+        const step1 = isInner ? INNER_STEPS[0] : OUTER_STEPS[0];
+        angleEarth = step1.eAngle;
+        anglePlanet = step1.pAngle;
+      } else {
+        angleEarth = START_ANGLE_EARTH;
+        anglePlanet = START_ANGLE_EARTH;
+      }
+
+      const earthProgressDeg = ((angleEarth - START_ANGLE_EARTH) * 180 / Math.PI) % 360;
+      sliderOrbit.value = Math.round(earthProgressDeg >= 0 ? earthProgressDeg : earthProgressDeg + 360);
+      valProgress.innerText = `${Math.round(sliderOrbit.value / 3.6)}%`;
+      clearPresetButtonHighlight();
+      
+      if (currentTab === 1 || currentTab === 3) {
+        setTimeout(() => {
+          const firstPresetBtn = document.querySelector('#presets-grid-buttons .preset-btn');
+          if (firstPresetBtn) firstPresetBtn.classList.add('active');
+        }, 0);
+      }
+
+      updateUI();
+    }
+
+    function changeSpeed() {
+      animSpeed = parseFloat(document.getElementById('select-speed').value);
+    }
+
+    function manualOrbit(valueDeg) {
+      // Pause on slide change
+      if (isPlaying) togglePlay();
+      clearPresetButtonHighlight();
+
+      const radDiff = parseFloat(valueDeg) * Math.PI / 180;
+      angleEarth = START_ANGLE_EARTH + radDiff;
+
+      // Sync planet angle relative to speed multiplier
+      const ratio = getSpeedRatioForTab(currentTab);
+      anglePlanet = START_ANGLE_EARTH + radDiff * ratio;
+
+      valProgress.innerText = `${Math.round(valueDeg / 3.6)}%`;
+      updateUI();
+    }
+
+    function snapToRelation(relation, buttonElement) {
+      isPlaying = false;
+      btnPlay.innerText = "▶";
+      clearPresetButtonHighlight();
+      buttonElement.classList.add('active');
+
+      angleEarth = relation.eAngle;
+      anglePlanet = relation.pAngle;
+
+      // Sync slider
+      const earthProgressDeg = ((angleEarth - START_ANGLE_EARTH) * 180 / Math.PI) % 360;
+      sliderOrbit.value = Math.round(earthProgressDeg >= 0 ? earthProgressDeg : earthProgressDeg + 360);
+      valProgress.innerText = `${Math.round(sliderOrbit.value / 3.6)}%`;
+
+      updateUI();
+    }
+
+    function snapToStep(stepObj, buttonElement) {
+      isPlaying = false;
+      btnPlay.innerText = "▶";
+      clearPresetButtonHighlight();
+      buttonElement.classList.add('active');
+
+      angleEarth = stepObj.eAngle;
+      anglePlanet = stepObj.pAngle;
+
+      const earthProgressDeg = ((angleEarth - START_ANGLE_EARTH) * 180 / Math.PI) % 360;
+      sliderOrbit.value = Math.round(earthProgressDeg >= 0 ? earthProgressDeg : earthProgressDeg + 360);
+      valProgress.innerText = `${Math.round(sliderOrbit.value / 3.6)}%`;
+
+      updateUI();
+    }
+
+    function clearPresetButtonHighlight() {
+      document.querySelectorAll('.preset-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+    }
+
+    /* =========================================================================
+       MATH HELPERS & CALCULATIONS
+       ========================================================================= */
+    function normalizeAngle(ang) {
+      let a = ang % (Math.PI * 2);
+      if (a < 0) a += Math.PI * 2;
+      return a;
+    }
+
+    // Geocentric Longitude: direction vector from Earth to Planet
+    function getGeocentricLongitude() {
+      const eRad = R_EARTH;
+      const pRad = (currentTab === 0 || currentTab === 1) ? R_VENUS : R_MARS;
+      
+      const ex = eRad * Math.cos(angleEarth);
+      const ey = eRad * Math.sin(angleEarth);
+      const px = pRad * Math.cos(anglePlanet);
+      const py = pRad * Math.sin(anglePlanet);
+
+      return Math.atan2(py - ey, px - ex);
+    }
+
+    // Elongation (이각) calculation
+    // Angle between Earth-Sun and Earth-Planet
+    function getElongationAngle() {
+      // Vector from Earth to Sun (Sun is at 0,0)
+      const esx = -Math.cos(angleEarth);
+      const esy = -Math.sin(angleEarth);
+      
+      // Vector from Earth to Planet
+      const eRad = R_EARTH;
+      const pRad = (currentTab === 0 || currentTab === 1) ? R_VENUS : R_MARS;
+      const epx = pRad * Math.cos(anglePlanet) - eRad * Math.cos(angleEarth);
+      const epy = pRad * Math.sin(anglePlanet) - eRad * Math.sin(angleEarth);
+      
+      const magEp = Math.sqrt(epx*epx + epy*epy);
+      
+      // Dot product
+      const dot = esx * (epx / magEp) + esy * (epy / magEp);
+      const angle = Math.acos(Math.max(-1, Math.min(1, dot))); // in radians
+      
+      // Determine if Eastern (East of Sun, left of Sun) or Western (West of Sun, right of Sun)
+      // Cross product to get sign: Z component of ES x EP
+      const cross = esx * epy - esy * epx;
+      const isEastern = cross > 0; // In our standard layout, positive cross means Eastern Elongation (left)
+      
+      return {
+        rad: angle,
+        deg: angle * 180 / Math.PI,
+        isEastern: isEastern
+      };
+    }
+
+    // Get current planetary distance from Earth
+    function getPlanetDistance() {
+      const eRad = R_EARTH;
+      const pRad = (currentTab === 0 || currentTab === 1) ? R_VENUS : R_MARS;
+      const ex = eRad * Math.cos(angleEarth);
+      const ey = eRad * Math.sin(angleEarth);
+      const px = pRad * Math.cos(anglePlanet);
+      const py = pRad * Math.sin(anglePlanet);
+      const distPx = Math.sqrt((px-ex)*(px-ex) + (py-ey)*(py-ey));
+      
+      // Scale to Astronomical Units (AU)
+      // Say R_EARTH = 175px represents 1.0 AU
+      return distPx / R_EARTH;
+    }
+
+    // Helper to identify the currently active planetary alignment relationship
+    function getActiveRelationNode(isInner) {
+      const elong = getElongationAngle();
+      const angleDiff = normalizeAngle(anglePlanet - angleEarth);
+      
+      if (isInner) {
+        const diffFromConjunction = Math.abs(angleDiff);
+        const diffFromOpposition = Math.abs(angleDiff - Math.PI);
+        if (diffFromConjunction < 0.1 || diffFromConjunction > Math.PI*2 - 0.1) {
+          return "내합";
+        }
+        if (diffFromOpposition < 0.1) {
+          return "외합";
+        }
+        if (Math.abs(elong.deg - ELONG_MAX_VENUS*180/Math.PI) < 2.0 && elong.isEastern) {
+          return "동방 최대 이각";
+        }
+        if (Math.abs(elong.deg - ELONG_MAX_VENUS*180/Math.PI) < 2.0 && !elong.isEastern) {
+          return "서방 최대 이각";
+        }
+      } else {
+        const diffFromConjunction = Math.abs(angleDiff - Math.PI);
+        const diffFromOpposition = Math.abs(angleDiff);
+        const diffFromEastQuad = Math.abs(angleDiff - QUAD_ANGLE_MARS);
+        const diffFromWestQuad = Math.abs(angleDiff - (Math.PI*2 - QUAD_ANGLE_MARS));
+
+        if (diffFromOpposition < 0.1 || diffFromOpposition > Math.PI*2 - 0.1) {
+          return "충";
+        }
+        if (diffFromConjunction < 0.1) {
+          return "합";
+        }
+        if (diffFromEastQuad < 0.1) {
+          return "동구";
+        }
+        if (diffFromWestQuad < 0.1) {
+          return "서구";
+        }
+      }
+      return null;
+    }
+
+    /* =========================================================================
+       DRAG AND DROP ORBITS (INTERACTIVE PHYSICS)
+       ========================================================================= */
+    function setupDragEvents() {
+      function handleStart(e) {
+        const rect = simCanvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        
+        // Calculate canvas space coordinates
+        const scaleX = simCanvas.width / rect.width;
+        const scaleY = simCanvas.height / rect.height;
+        const mx = (clientX - rect.left) * scaleX;
+        const my = (clientY - rect.top) * scaleY;
+        
+        // Center coordinates in Y-up math space
+        const cx = simCanvas.width / 2;
+        const cy = simCanvas.height / 2;
+        const rx = mx - cx;
+        const ry = cy - my; // Y-up!
+
+        const eRad = R_EARTH;
+        const pRad = (currentTab === 0 || currentTab === 1) ? R_VENUS : R_MARS;
+
+        // Check if cursor is close to Earth or Planet in Y-up math space
+        const ex = eRad * Math.cos(angleEarth);
+        const ey = eRad * Math.sin(angleEarth);
+        const px = pRad * Math.cos(anglePlanet);
+        const py = pRad * Math.sin(anglePlanet);
+
+        const distToEarth = Math.sqrt((rx-ex)*(rx-ex) + (ry-ey)*(ry-ey));
+        const distToPlanet = Math.sqrt((rx-px)*(rx-px) + (ry-py)*(ry-py));
+
+        if (distToPlanet < 25) {
+          isDraggingPlanet = true;
+          if (isPlaying) togglePlay();
+        } else if (distToEarth < 25) {
+          isDraggingEarth = true;
+          if (isPlaying) togglePlay();
+        }
+      }
+
+      function handleMove(e) {
+        if (!isDraggingPlanet && !isDraggingEarth) return;
+        
+        const rect = simCanvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        
+        const scaleX = simCanvas.width / rect.width;
+        const scaleY = simCanvas.height / rect.height;
+        const mx = (clientX - rect.left) * scaleX;
+        const my = (clientY - rect.top) * scaleY;
+        
+        const cx = simCanvas.width / 2;
+        const cy = simCanvas.height / 2;
+        const rx = mx - cx;
+        const ry = cy - my; // Y-up!
+
+        // Calculate angle from center in Y-up space
+        const newAngle = Math.atan2(ry, rx);
+
+        if (isDraggingPlanet) {
+          anglePlanet = normalizeAngle(newAngle);
+        } else if (isDraggingEarth) {
+          angleEarth = normalizeAngle(newAngle);
+        }
+        
+        // Sync slider
+        const earthProgressDeg = ((angleEarth - START_ANGLE_EARTH) * 180 / Math.PI) % 360;
+        sliderOrbit.value = Math.round(earthProgressDeg >= 0 ? earthProgressDeg : earthProgressDeg + 360);
+        valProgress.innerText = `${Math.round(sliderOrbit.value / 3.6)}%`;
+
+        clearPresetButtonHighlight();
+        updateUI();
+      }
+
+      function handleEnd() {
+        isDraggingPlanet = false;
+        isDraggingEarth = false;
+      }
+
+      simCanvas.addEventListener('mousedown', handleStart);
+      simCanvas.addEventListener('mousemove', handleMove);
+      window.addEventListener('mouseup', handleEnd);
+
+      simCanvas.addEventListener('touchstart', handleStart, {passive: true});
+      simCanvas.addEventListener('touchmove', handleMove, {passive: true});
+      window.addEventListener('touchend', handleEnd);
+    }
+
+    /* =========================================================================
+       DYNAMIC UI CONTENT UPDATES (TEXT AND LABELS)
+       ========================================================================= */
+    function updateUI() {
+      const elong = getElongationAngle();
+      const dist = getPlanetDistance();
+      
+      const isInner = (currentTab === 0 || currentTab === 1);
+      
+      // Update Telescope Badge
+      document.getElementById('planet-name-badge').innerText = isInner ? "금성 (내행성)" : "화성 (외행성)";
+
+      // Update telescope side panel stats
+      document.getElementById('val-elongation').innerText = `${isInner ? (elong.isEastern ? '동방 ' : '서방 ') : (elong.isEastern ? '동방 ' : '서방 ')}${elong.deg.toFixed(1)}°`;
+      document.getElementById('val-distance').innerText = `${dist.toFixed(2)} AU`;
+      document.getElementById('val-size').innerText = `${(100 / dist).toFixed(0)}%`;
+      
+      // Estimate Phase name
+      // Venus phase is determined by phase angle
+      // Mars is always mostly full
+      let phaseName = "";
+      if (isInner) {
+        if (elong.deg < 8) {
+          phaseName = (anglePlanet > angleEarth) ? "내합(삭) 부근" : "외합(망) 부근";
+        } else if (Math.abs(elong.deg - ELONG_MAX_VENUS * 180 / Math.PI) < 3) {
+          phaseName = elong.isEastern ? "동방최대이각(반달)" : "서방최대이각(반달)";
+        } else if (dist < 1.0) {
+          phaseName = "초승달/그믐달형";
+        } else {
+          phaseName = "볼록한 달(현월)형";
+        }
+      } else {
+        if (elong.deg < 15) phaseName = "합 부근 (보름달)";
+        else if (elong.deg > 165) phaseName = "충 부근 (보름달)";
+        else phaseName = "볼록한 형태 (보름달 부근)";
+      }
+      document.getElementById('val-phase').innerText = phaseName;
+
+      // Detect positional status and update Description & Visibility Guide
+      let statusTitle = "일반 공전 상태";
+      let statusDesc = "행성과 지구가 궤도를 돌며 공전하고 있습니다.";
+      let obsTime = "태양 방향에 가까워 관측이 곤란합니다.";
+      let obsIcon = "☁️";
+
+      if (isInner) {
+        // Inner planet relations checks
+        const angleDiff = normalizeAngle(anglePlanet - angleEarth);
+        
+        // Check proximity to key relations (approx within 0.08 radians or 5 degrees)
+        const diffFromConjunction = Math.abs(angleDiff);
+        const diffFromOpposition = Math.abs(angleDiff - Math.PI);
+        const diffFromEastElong = Math.abs(angleDiff - (Math.PI/2 + ELONG_MAX_VENUS));
+        const diffFromWestElong = Math.abs(angleDiff - (Math.PI/2 - ELONG_MAX_VENUS));
+
+        if (diffFromConjunction < 0.1 || diffFromConjunction > Math.PI*2 - 0.1) {
+          statusTitle = "내합 (Inferior Conjunction)";
+          statusDesc = VENUS_RELATIONS[0].desc;
+          obsTime = "관측 불가 (태양과 일치)";
+          obsIcon = "☀️";
+        } else if (diffFromOpposition < 0.1) {
+          statusTitle = "외합 (Superior Conjunction)";
+          statusDesc = VENUS_RELATIONS[1].desc;
+          obsTime = "관측 불가 (태양 뒤편)";
+          obsIcon = "☀️";
+        } else if (Math.abs(elong.deg - ELONG_MAX_VENUS*180/Math.PI) < 2.0 && elong.isEastern) {
+          statusTitle = "동방 최대 이각 (Greatest Eastern Elongation)";
+          statusDesc = VENUS_RELATIONS[2].desc;
+          obsTime = "초저녁 서쪽 하늘 (태양이 진 직후 약 2~3시간)";
+          obsIcon = "🌅";
+        } else if (Math.abs(elong.deg - ELONG_MAX_VENUS*180/Math.PI) < 2.0 && !elong.isEastern) {
+          statusTitle = "서방 최대 이각 (Greatest Western Elongation)";
+          statusDesc = VENUS_RELATIONS[3].desc;
+          obsTime = "새벽 동쪽 하늘 (태양이 뜨기 전 약 2~3시간)";
+          obsIcon = "🌄";
+        } else {
+          // General positions
+          if (dist < 1.0) {
+            statusTitle = "지구에 접근 중 (내합 부근)";
+            statusDesc = "내행성이 내합을 향해 지구로 가까워지고 있습니다. 망원경 관측 시 크기는 커지나, 빛나는 부분은 가늘어져 초승달/그믐달 모양이 됩니다.";
+            obsTime = elong.isEastern ? "초저녁 서쪽 하늘 (고도 낮음)" : "새벽 동쪽 하늘 (고도 낮음)";
+            obsIcon = elong.isEastern ? "🌅" : "🌄";
+          } else {
+            statusTitle = "지구에서 멀어지는 중 (외합 부근)";
+            statusDesc = "내행성이 외합을 향해 지구에서 멀어지고 있습니다. 겉보기 크기는 매우 작아지나, 빛나는 부분이 많아져 보름달에 가까워집니다.";
+            obsTime = elong.isEastern ? "초저녁 서쪽 하늘 (태양과 가까움)" : "새벽 동쪽 하늘 (태양과 가까움)";
+            obsIcon = elong.isEastern ? "🌅" : "🌄";
+          }
+        }
+      } else {
+        // Outer planet relations checks
+        const angleDiff = normalizeAngle(anglePlanet - angleEarth);
+        const diffFromConjunction = Math.abs(angleDiff - Math.PI); // opposite to Earth is Conjunction
+        const diffFromOpposition = Math.abs(angleDiff); // aligned with Earth is Opposition
+        const diffFromEastQuad = Math.abs(angleDiff - QUAD_ANGLE_MARS); // East Quad
+        const diffFromWestQuad = Math.abs(angleDiff - (Math.PI*2 - QUAD_ANGLE_MARS)); // West Quad
+
+        if (diffFromOpposition < 0.1 || diffFromOpposition > Math.PI*2 - 0.1) {
+          statusTitle = "충 (Opposition)";
+          statusDesc = MARS_RELATIONS[0].desc;
+          obsTime = "한밤중 남쪽 하늘 (태양 반대편, 밤새도록 관측 가능)";
+          obsIcon = "🌌";
+        } else if (diffFromConjunction < 0.1) {
+          statusTitle = "합 (Conjunction)";
+          statusDesc = MARS_RELATIONS[1].desc;
+          obsTime = "관측 불가 (태양과 일치)";
+          obsIcon = "☀️";
+        } else if (diffFromEastQuad < 0.1) {
+          statusTitle = "동구 (Eastern Quadrature)";
+          statusDesc = MARS_RELATIONS[2].desc;
+          obsTime = "초저녁 남쪽 하늘 (자정에 서쪽 하늘로 짐)";
+          obsIcon = "🌓";
+        } else if (diffFromWestQuad < 0.1) {
+          statusTitle = "서구 (Western Quadrature)";
+          statusDesc = MARS_RELATIONS[3].desc;
+          obsTime = "새벽 남쪽 하늘 (자정에 동쪽에서 떠오름)";
+          obsIcon = "🌗";
+        } else {
+          // General positions
+          if (angleDiff > 0 && angleDiff < Math.PI) {
+            statusTitle = "동구 부근 (태양 동편)";
+            statusDesc = "외행성이 태양의 동쪽에 위치해 있습니다. 남중 시각은 낮과 초저녁 사이입니다. 보름달에 거의 가깝게 둥글게 보입니다.";
+            obsTime = "초저녁부터 자정 사이 남서쪽 하늘";
+            obsIcon = "🌓";
+          } else {
+            statusTitle = "서구 부근 (태양 서편)";
+            statusDesc = "외행성이 태양의 서쪽에 위치해 있습니다. 남중 시각은 새벽과 정오 사이입니다.";
+            obsTime = "자정부터 아침 사이 남동쪽 하늘";
+            obsIcon = "🌗";
+          }
+        }
+      }
+
+      // Add information about retrograde motion during apparent motion tabs
+      if (currentTab === 1 || currentTab === 3) {
+        // Apparent motion text integration
+        const isRetrograde = checkRetrogradeState();
+        if (isRetrograde === "역행") {
+          statusTitle += " - [역행 중]";
+          statusDesc = "지구와 행성의 거리가 가까워진 시기로, 지구의 공전 속도 차이로 인해 배경 별자리에 대해 행성이 **동쪽에서 서쪽(왼쪽에서 오른쪽)**으로 움직이는 역행 운동이 나타납니다. (교과서의 3' ~ 5' 사이)";
+        } else if (isRetrograde === "유") {
+          statusTitle += " - [유 (Stationary)]";
+          statusDesc = "순행에서 역행으로, 혹은 역행에서 순행으로 바뀌는 순간으로 행성이 배경 별자리에 대해 정지한 것처럼 보입니다. (교과서의 3' 및 5' 지점)";
+        } else {
+          statusTitle += " - [순행 중]";
+          statusDesc = "행성이 배경 별자리를 기준으로 **서쪽에서 동쪽(오른쪽에서 왼쪽)**으로 움직이는 정상적인 순행 운동이 나타납니다. (교과서의 1' ~ 3' 및 5' ~ 7' 사이)";
+        }
+      }
+
+      document.getElementById('explanation-title').innerText = statusTitle;
+      document.getElementById('explanation-body').innerHTML = statusDesc;
+      document.getElementById('visibility-desc').innerText = obsTime;
+      document.getElementById('visibility-icon').innerText = obsIcon;
+    }
+
+    // Helper to evaluate retrograde/prograde
+    function checkRetrogradeState() {
+      const isInner = (currentTab === 0 || currentTab === 1);
+      const eRad = R_EARTH;
+      const pRad = isInner ? R_VENUS : R_MARS;
+      const ratio = getSpeedRatioForTab(currentTab);
+
+      // Small delta to check derivative
+      const dt = 0.0005;
+
+      function getLongAtAngle(angE, angP) {
+        const ex = eRad * Math.cos(angE);
+        const ey = eRad * Math.sin(angE);
+        const px = pRad * Math.cos(angP);
+        const py = pRad * Math.sin(angP);
+        return Math.atan2(py - ey, px - ex);
+      }
+
+      const l1 = getLongAtAngle(angleEarth, anglePlanet);
+      const l2 = getLongAtAngle(angleEarth + dt, anglePlanet + dt * ratio);
+
+      let dl = l2 - l1;
+      // wrap to [-pi, pi]
+      if (dl > Math.PI) dl -= Math.PI * 2;
+      if (dl < -Math.PI) dl += Math.PI * 2;
+
+      const dLong_dt = dl / dt; // rate of change of longitude
+      
+      // Threshold for "유" (Stationary) - let's make it a reasonable window so it's visible to students when paused
+      if (Math.abs(dLong_dt) < 0.2) {
+        return "유";
+      }
+      // positive derivative means prograde (순행) in Y-up, negative means retrograde (역행)
+      return (dLong_dt > 0) ? "순행" : "역행";
+    }
+
+    /* =========================================================================
+       CANVAS 2D RENDERING - SOLAR SYSTEM SIMULATION
+       ========================================================================= */
+    function getSphereIntersection(ex_m, ey_m, px_m, py_m, rSphere) {
+      const dx = px_m - ex_m;
+      const dy = py_m - ey_m;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist === 0) return null;
+      const ux = dx / dist;
+      const uy = dy / dist;
+
+      const E_dot_D = ex_m * ux + ey_m * uy;
+      const E_sq = ex_m * ex_m + ey_m * ey_m;
+      
+      const disc = E_dot_D * E_dot_D - E_sq + rSphere * rSphere;
+      if (disc < 0) return null; 
+      
+      const t = -E_dot_D + Math.sqrt(disc);
+      return {
+        x: ex_m + t * ux,
+        y: ey_m + t * uy
+      };
+    }
+
+    function drawSimulation() {
+      const w = simCanvas.width;
+      const h = simCanvas.height;
+      simCtx.clearRect(0, 0, w, h);
+
+      const cx = w / 2;
+      const cy = h / 2;
+
+      // Draw faint space grid
+      simCtx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
+      simCtx.lineWidth = 1;
+      const gridSize = 40;
+      for (let x = 0; x < w; x += gridSize) {
+        simCtx.beginPath(); simCtx.moveTo(x, 0); simCtx.lineTo(x, h); simCtx.stroke();
+      }
+      for (let y = 0; y < h; y += gridSize) {
+        simCtx.beginPath(); simCtx.moveTo(0, y); simCtx.lineTo(w, y); simCtx.stroke();
+      }
+
+      const isInner = (currentTab === 0 || currentTab === 1);
+      const isRelations = (currentTab === 0 || currentTab === 2);
+
+      // Radii variables
+      const eRad = R_EARTH;
+      const pRad = isInner ? R_VENUS : R_MARS;
+
+      // Math coordinates (Y-up)
+      const ex_m = eRad * Math.cos(angleEarth);
+      const ey_m = eRad * Math.sin(angleEarth);
+      const px_m = pRad * Math.cos(anglePlanet);
+      const py_m = pRad * Math.sin(anglePlanet);
+
+      // Canvas coordinates (Y-down)
+      const ex = cx + ex_m;
+      const ey = cy - ey_m;
+      const px = cx + px_m;
+      const py = cy - py_m;
+
+      // 1. Draw orbits
+      // Earth Orbit
+      simCtx.strokeStyle = 'rgba(0, 204, 255, 0.25)';
+      simCtx.lineWidth = 2;
+      simCtx.beginPath();
+      simCtx.arc(cx, cy, eRad, 0, Math.PI * 2);
+      simCtx.stroke();
+
+      // Planet Orbit
+      simCtx.strokeStyle = isInner ? 'rgba(230, 184, 0, 0.25)' : 'rgba(255, 102, 51, 0.25)';
+      simCtx.lineWidth = 2;
+      simCtx.beginPath();
+      simCtx.arc(cx, cy, pRad, 0, Math.PI * 2);
+      simCtx.stroke();
+
+      // 2. Draw Position Guides
+      if (isRelations) {
+        drawOrbitGuides(cx, cy, eRad, pRad);
+      } else {
+        updateDynamicSteps();
+        // Draw Celestial Sphere Arc and project step dots
+        const rSphere = 240;
+        const conjAng = getNearestAlignmentAngle();
+
+        // Draw Celestial Sphere Arc
+        simCtx.strokeStyle = 'rgba(255, 51, 153, 0.25)';
+        simCtx.lineWidth = 1.5;
+        simCtx.setLineDash([4, 4]);
+        simCtx.beginPath();
+        // Canvas angle is negative of Y-up angle
+        simCtx.arc(cx, cy, rSphere, -conjAng - 0.65, -conjAng + 0.65);
+        simCtx.stroke();
+        simCtx.setLineDash([]);
+
+        // Label Celestial Sphere Arc
+        simCtx.fillStyle = 'rgba(255, 51, 153, 0.55)';
+        simCtx.font = 'bold 10px ' + varColor('--font-family');
+        simCtx.textAlign = 'center';
+        simCtx.textBaseline = 'middle';
+        const textAng = -conjAng;
+        const tx = cx + (rSphere + 15) * Math.cos(textAng);
+        const ty = cy + (rSphere + 15) * Math.sin(textAng);
+        simCtx.fillText("배경 천구", tx, ty);
+
+        // Draw steps 1-7 (dots, numbers, dotted lines of sight, projections)
+        drawApparentMotionSteps(cx, cy, eRad, pRad, rSphere);
+
+        // Draw dotted path connecting projected step dots on the sphere
+        simCtx.strokeStyle = 'rgba(255, 51, 153, 0.35)';
+        simCtx.lineWidth = 1.25;
+        simCtx.setLineDash([2, 3]);
+        simCtx.beginPath();
+        const steps = isInner ? INNER_STEPS : OUTER_STEPS;
+        steps.forEach((st, idx) => {
+          const st_ex_m = eRad * Math.cos(st.eAngle);
+          const st_ey_m = eRad * Math.sin(st.eAngle);
+          const st_px_m = pRad * Math.cos(st.pAngle);
+          const st_py_m = pRad * Math.sin(st.pAngle);
+          const S = getSphereIntersection(st_ex_m, st_ey_m, st_px_m, st_py_m, rSphere);
+          if (S) {
+            const sx = cx + S.x;
+            const sy = cy - S.y;
+            if (idx === 0) simCtx.moveTo(sx, sy);
+            else simCtx.lineTo(sx, sy);
+          }
+        });
+        simCtx.stroke();
+        simCtx.setLineDash([]);
+
+        // Draw current position projection ray and glowing marker on the celestial sphere
+        const S_curr = getSphereIntersection(ex_m, ey_m, px_m, py_m, rSphere);
+        if (S_curr) {
+          const sx = cx + S_curr.x;
+          const sy = cy - S_curr.y;
+
+          // Thick glowing line of sight
+          simCtx.strokeStyle = 'rgba(255, 230, 128, 0.7)';
+          simCtx.lineWidth = 2.0;
+          simCtx.beginPath();
+          simCtx.moveTo(ex, ey);
+          simCtx.lineTo(sx, sy);
+          simCtx.stroke();
+
+          // Glowing dot on the sphere
+          simCtx.fillStyle = '#ffffff';
+          simCtx.strokeStyle = '#ff3399';
+          simCtx.lineWidth = 2;
+          simCtx.beginPath();
+          simCtx.arc(sx, sy, 5.5, 0, Math.PI*2);
+          simCtx.fill();
+          simCtx.stroke();
+
+          // State label next to the dot
+          const isRetro = checkRetrogradeState();
+          simCtx.fillStyle = isRetro === "역행" ? '#ff3399' : (isRetro === "유" ? '#ffe680' : '#00ccff');
+          simCtx.font = 'bold 11px ' + varColor('--font-family');
+          simCtx.textAlign = 'center';
+          simCtx.textBaseline = 'bottom';
+          // Offset text slightly outwards
+          const lx = cx + (rSphere + 22) * (S_curr.x / rSphere);
+          const ly = cy - (rSphere + 22) * (S_curr.y / rSphere);
+          simCtx.fillText(isRetro, lx, ly);
+        }
+      }
+
+      // 3. Draw Connection Lines and Elongation Angle
+      drawConnectingLines(cx, cy, ex, ey, px, py, isInner, isRelations);
+
+      // 4. Draw Sun
+      drawSun(cx, cy);
+
+      // 5. Draw Earth
+      drawPlanetBody(ex, ey, 'earth', 10, angleEarth);
+
+      // 6. Draw Planet
+      drawPlanetBody(px, py, isInner ? 'venus' : 'mars', isInner ? 8 : 9, anglePlanet);
+
+      // Draw Orbit Direction Arrows (counter-clockwise)
+      drawOrbitArrow(cx, cy, eRad, angleEarth, 'rgba(0, 204, 255, 0.8)');
+      drawOrbitArrow(cx, cy, pRad, anglePlanet, isInner ? 'rgba(230, 184, 0, 0.8)' : 'rgba(255, 102, 51, 0.8)');
+    }
+
+    function drawSun(x, y) {
+      // Glow
+      const glow = simCtx.createRadialGradient(x, y, 5, x, y, 28);
+      glow.addColorStop(0, '#ffffff');
+      glow.addColorStop(0.2, '#ffcc00');
+      glow.addColorStop(0.5, '#ff4400');
+      glow.addColorStop(1, 'rgba(255, 68, 0, 0)');
+      
+      simCtx.fillStyle = glow;
+      simCtx.beginPath();
+      simCtx.arc(x, y, 28, 0, Math.PI*2);
+      simCtx.fill();
+
+      // Solid center
+      simCtx.fillStyle = '#ffcc00';
+      simCtx.beginPath();
+      simCtx.arc(x, y, 14, 0, Math.PI*2);
+      simCtx.fill();
+
+      // Text label
+      simCtx.fillStyle = '#ffffff';
+      simCtx.font = '10px ' + varColor('--font-family');
+      simCtx.textAlign = 'center';
+      simCtx.fillText("태양", x, y - 18);
+    }
+
+    function drawPlanetBody(x, y, type, radius, orbitAngle) {
+      // Base color
+      let baseColor = '#ffffff';
+      if (type === 'earth') baseColor = varColor('--earth-color');
+      else if (type === 'venus') baseColor = varColor('--venus-color');
+      else if (type === 'mars') baseColor = varColor('--mars-color');
+
+      // Draw body
+      simCtx.fillStyle = baseColor;
+      simCtx.beginPath();
+      simCtx.arc(x, y, radius, 0, Math.PI*2);
+      simCtx.fill();
+
+      // Draw 3D shading (gradient overlay representing light and shadow)
+      // Light source is at center Sun, so shift light center towards Sun (which is opposite canvas Y-sin)
+      const shadGrad = simCtx.createRadialGradient(
+        x - radius * 0.3 * Math.cos(orbitAngle),
+        y + radius * 0.3 * Math.sin(orbitAngle),
+        radius * 0.1,
+        x, y, radius
+      );
+      shadGrad.addColorStop(0, 'rgba(255, 255, 255, 0.5)');
+      shadGrad.addColorStop(0.5, 'rgba(0,0,0,0)');
+      shadGrad.addColorStop(1, 'rgba(0, 0, 0, 0.85)');
+
+      simCtx.fillStyle = shadGrad;
+      simCtx.beginPath();
+      simCtx.arc(x, y, radius, 0, Math.PI*2);
+      simCtx.fill();
+
+      // Draw atmosphere glow for Earth
+      if (type === 'earth') {
+        simCtx.strokeStyle = 'rgba(0, 204, 255, 0.5)';
+        simCtx.lineWidth = 1.5;
+        simCtx.beginPath();
+        simCtx.arc(x, y, radius + 1.5, 0, Math.PI*2);
+        simCtx.stroke();
+      }
+
+      // Draw label
+      simCtx.fillStyle = '#ffffff';
+      simCtx.font = 'bold 11px ' + varColor('--font-family');
+      simCtx.textAlign = 'center';
+      let label = "지구";
+      if (type === 'venus') label = "금성";
+      if (type === 'mars') label = "화성";
+      
+      simCtx.fillText(label, x, y + radius + 15);
+    }
+
+    function drawOrbitArrow(cx, cy, radius, angle, color) {
+      // Find two points on path to get exact movement direction vector
+      const a1 = angle + 0.1;
+      const a2 = angle + 0.15;
+      const x1 = cx + radius * Math.cos(a1);
+      const y1 = cy - radius * Math.sin(a1);
+      const x2 = cx + radius * Math.cos(a2);
+      const y2 = cy - radius * Math.sin(a2);
+
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+      const len = Math.sqrt(dx*dx + dy*dy);
+      if (len === 0) return;
+      const ux = dx / len;
+      const uy = dy / len;
+
+      const nx = -uy;
+      const ny = ux;
+
+      simCtx.fillStyle = color;
+      simCtx.beginPath();
+      simCtx.moveTo(x2, y2);
+      simCtx.lineTo(x2 - 8 * ux + 3 * nx, y2 - 8 * uy + 3 * ny);
+      simCtx.lineTo(x2 - 8 * ux - 3 * nx, y2 - 8 * uy - 3 * ny);
+      simCtx.closePath();
+      simCtx.fill();
+    }
+
+    function drawOrbitGuides(cx, cy, eRad, pRad) {
+      const isInner = (currentTab === 0 || currentTab === 1);
+      
+      simCtx.lineWidth = 1;
+      simCtx.font = 'bold 11px ' + varColor('--font-family');
+      simCtx.textBaseline = 'middle';
+
+      const activeNodeName = getActiveRelationNode(isInner);
+      const isInitialState = (!isPlaying && parseFloat(sliderOrbit.value) === 0);
+
+      if (isInner) {
+        // Venus guides: 내합, 외합, 최대이각
+        const list = [
+          { name: "내합", ang: angleEarth, align: 'center' },
+          { name: "외합", ang: angleEarth + Math.PI, align: 'center' },
+          { name: "동방 최대 이각", ang: angleEarth - (Math.PI/2 - ELONG_MAX_VENUS), align: 'right' },
+          { name: "서방 최대 이각", ang: angleEarth + (Math.PI/2 - ELONG_MAX_VENUS), align: 'left' }
+        ];
+
+        list.forEach(node => {
+          const nx = cx + pRad * Math.cos(node.ang);
+          const ny = cy - pRad * Math.sin(node.ang);
+
+          // Node circle
+          simCtx.fillStyle = 'rgba(230, 184, 0, 0.75)';
+          simCtx.beginPath();
+          simCtx.arc(nx, ny, 5.0, 0, Math.PI*2);
+          simCtx.fill();
+
+          // Dotted guide line from Sun
+          simCtx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+          simCtx.setLineDash([3, 3]);
+          simCtx.beginPath();
+          simCtx.moveTo(cx, cy);
+          simCtx.lineTo(nx, ny);
+          simCtx.stroke();
+          simCtx.setLineDash([]);
+
+          // Text label positioning
+          simCtx.fillStyle = varColor('--venus-color');
+          if (node.name === "내합" || node.name === "외합") {
+            const textDist = pRad + 16;
+            const tx = cx + textDist * Math.cos(node.ang);
+            const ty = cy - textDist * Math.sin(node.ang);
+
+            simCtx.textAlign = 'center';
+            simCtx.textBaseline = Math.sin(node.ang) > 0.1 ? 'bottom' : (Math.sin(node.ang) < -0.1 ? 'top' : 'middle');
+            simCtx.fillText(node.name, tx, ty);
+          } else {
+            // Draw tangent line from Earth to Venus orbit
+            const ex = cx + eRad * Math.cos(angleEarth);
+            const ey = cy - eRad * Math.sin(angleEarth);
+            
+            simCtx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+            simCtx.beginPath();
+            simCtx.moveTo(nx, ny);
+            simCtx.lineTo(ex, ey);
+            simCtx.stroke();
+
+            // Right angle symbol
+            const size = 10;
+            const ux = -Math.cos(node.ang);
+            const uy = Math.sin(node.ang); 
+            const tangentAng = node.ang + (node.align === 'right' ? -Math.PI/2 : Math.PI/2);
+            const vx = Math.cos(tangentAng);
+            const vy = -Math.sin(tangentAng);
+
+            const px1 = nx + size * ux;
+            const py1 = ny + size * uy;
+            const px2 = nx + size * ux + size * vx;
+            const py2 = ny + size * uy + size * vy;
+            const px3 = nx + size * vx;
+            const py3 = ny + size * vy;
+
+            simCtx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+            simCtx.beginPath();
+            simCtx.moveTo(px1, py1);
+            simCtx.lineTo(px2, py2);
+            simCtx.lineTo(px3, py3);
+            simCtx.stroke();
+
+            const textDist = pRad + 16;
+            const tx = cx + textDist * Math.cos(node.ang);
+            const ty = cy - textDist * Math.sin(node.ang);
+
+            simCtx.textAlign = Math.cos(node.ang) > 0.1 ? 'left' : (Math.cos(node.ang) < -0.1 ? 'right' : 'center');
+            simCtx.textBaseline = Math.sin(node.ang) > 0.1 ? 'bottom' : (Math.sin(node.ang) < -0.1 ? 'top' : 'middle');
+            simCtx.fillText(node.name, tx, ty);
+          }
+        });
+
+      } else {
+        // Mars guides: 충, 합, 동구, 서구
+        const list = [
+          { name: "충", ang: angleEarth, align: 'center' },
+          { name: "합", ang: angleEarth + Math.PI, align: 'center' },
+          { name: "동구", ang: angleEarth - QUAD_ANGLE_MARS, align: 'right' },
+          { name: "서구", ang: angleEarth + QUAD_ANGLE_MARS, align: 'left' }
+        ];
+
+        list.forEach(node => {
+          const nx = cx + pRad * Math.cos(node.ang);
+          const ny = cy - pRad * Math.sin(node.ang);
+
+          // Node circle
+          simCtx.fillStyle = 'rgba(255, 102, 51, 0.75)';
+          simCtx.beginPath();
+          simCtx.arc(nx, ny, 5.0, 0, Math.PI*2);
+          simCtx.fill();
+
+          // Dotted guide line from Sun
+          simCtx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+          simCtx.setLineDash([3, 3]);
+          simCtx.beginPath();
+          simCtx.moveTo(cx, cy);
+          simCtx.lineTo(nx, ny);
+          simCtx.stroke();
+          simCtx.setLineDash([]);
+
+          // Text label
+          simCtx.fillStyle = varColor('--mars-color');
+          if (node.name === "충" || node.name === "합") {
+            const textDist = pRad + 16;
+            const tx = cx + textDist * Math.cos(node.ang);
+            const ty = cy - textDist * Math.sin(node.ang);
+
+            simCtx.textAlign = 'center';
+            simCtx.textBaseline = Math.sin(node.ang) > 0.1 ? 'bottom' : (Math.sin(node.ang) < -0.1 ? 'top' : 'middle');
+            simCtx.fillText(node.name, tx, ty);
+          } else {
+            // Draw quadrature connections
+            const ex = cx + eRad * Math.cos(angleEarth);
+            const ey = cy - eRad * Math.sin(angleEarth);
+            
+            simCtx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+            simCtx.beginPath();
+            simCtx.moveTo(ex, ey);
+            simCtx.lineTo(nx, ny);
+            simCtx.stroke();
+
+            // Right angle symbol at Earth
+            const size = 10;
+            const ux = -Math.cos(angleEarth);
+            const uy = Math.sin(angleEarth); 
+            const tangentAng = angleEarth + (node.align === 'right' ? -Math.PI/2 : Math.PI/2);
+            const vx = Math.cos(tangentAng);
+            const vy = -Math.sin(tangentAng);
+
+            const px1 = ex + size * ux;
+            const py1 = ey + size * uy;
+            const px2 = ex + size * ux + size * vx;
+            const py2 = ey + size * uy + size * vy;
+            const px3 = ex + size * vx;
+            const py3 = ey + size * vy;
+
+            simCtx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+            simCtx.beginPath();
+            simCtx.moveTo(px1, py1);
+            simCtx.lineTo(px2, py2);
+            simCtx.lineTo(px3, py3);
+            simCtx.stroke();
+
+            const textDist = pRad + 16;
+            const tx = cx + textDist * Math.cos(node.ang);
+            const ty = cy - textDist * Math.sin(node.ang);
+
+            simCtx.textAlign = Math.cos(node.ang) > 0.1 ? 'left' : (Math.cos(node.ang) < -0.1 ? 'right' : 'center');
+            simCtx.textBaseline = Math.sin(node.ang) > 0.1 ? 'bottom' : (Math.sin(node.ang) < -0.1 ? 'top' : 'middle');
+            simCtx.fillText(node.name, tx, ty);
+          }
+        });
+      }
+    }
+
+    function drawApparentMotionSteps(cx, cy, eRad, pRad, rSphere) {
+      const isInner = (currentTab === 0 || currentTab === 1);
+      const steps = isInner ? INNER_STEPS : OUTER_STEPS;
+
+      simCtx.font = 'bold 10px ' + varColor('--font-family');
+      simCtx.textAlign = 'center';
+      simCtx.textBaseline = 'middle';
+
+      steps.forEach(st => {
+        const ex_m = eRad * Math.cos(st.eAngle);
+        const ey_m = eRad * Math.sin(st.eAngle);
+        const px_m = pRad * Math.cos(st.pAngle);
+        const py_m = pRad * Math.sin(st.pAngle);
+
+        const ex = cx + ex_m;
+        const ey = cy - ey_m;
+        const px = cx + px_m;
+        const py = cy - py_m;
+
+        // Faint dots on orbits
+        simCtx.fillStyle = 'rgba(0, 204, 255, 0.7)';
+        simCtx.beginPath(); simCtx.arc(ex, ey, 4.0, 0, Math.PI*2); simCtx.fill();
+        
+        simCtx.fillStyle = isInner ? 'rgba(230, 184, 0, 0.7)' : 'rgba(255, 102, 51, 0.7)';
+        simCtx.beginPath(); simCtx.arc(px, py, 4.0, 0, Math.PI*2); simCtx.fill();
+
+        // Draw step numbers (clearly visible)
+        simCtx.fillStyle = '#ffffff';
+        simCtx.font = 'bold 11px ' + varColor('--font-family');
+        simCtx.fillText(st.step, ex + 12 * Math.cos(st.eAngle), ey - 12 * Math.sin(st.eAngle));
+        simCtx.fillText(st.step + "'", px + 12 * Math.cos(st.pAngle), py - 12 * Math.sin(st.pAngle));
+
+        // Connect step line of sight thinly with dotted line to sphere
+        const S = getSphereIntersection(ex_m, ey_m, px_m, py_m, rSphere);
+        if (S) {
+          const sx = cx + S.x;
+          const sy = cy - S.y;
+
+          simCtx.strokeStyle = 'rgba(255, 255, 255, 0.35)'; // Higher visibility
+          simCtx.lineWidth = 1;
+          simCtx.setLineDash([2, 3]);
+          simCtx.beginPath();
+          simCtx.moveTo(ex, ey);
+          simCtx.lineTo(sx, sy);
+          simCtx.stroke();
+          simCtx.setLineDash([]);
+
+          // Draw small projection dot and number on the celestial sphere
+          simCtx.fillStyle = '#ff3399'; // Vibrant hot pink
+          simCtx.beginPath();
+          simCtx.arc(sx, sy, 3.5, 0, Math.PI*2);
+          simCtx.fill();
+
+          simCtx.fillStyle = '#ff99cc';
+          simCtx.font = 'bold 10px ' + varColor('--font-family');
+          
+          // Stagger label distances to prevent overlap (especially on outer planets at the bottom)
+          const labelDist = rSphere + (st.step % 2 === 0 ? 8 : 18);
+          const lx = cx + labelDist * (S.x / rSphere);
+          const ly = cy - labelDist * (S.y / rSphere);
+
+          // Draw a small line from the projection point (sx, sy) to the label (lx, ly)
+          simCtx.strokeStyle = 'rgba(255, 51, 153, 0.4)';
+          simCtx.lineWidth = 0.5;
+          simCtx.beginPath();
+          simCtx.moveTo(sx, sy);
+          simCtx.lineTo(lx, ly);
+          simCtx.stroke();
+
+          simCtx.fillText(st.step + "''", lx, ly);
+        }
+      });
+    }
+
+    function drawConnectingLines(cx, cy, ex, ey, px, py, isInner, isRelations) {
+      // 1. Earth-Sun connection
+      simCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+      simCtx.lineWidth = 1;
+      simCtx.beginPath();
+      simCtx.moveTo(cx, cy);
+      simCtx.lineTo(ex, ey);
+      simCtx.stroke();
+
+      // 2. Planet-Sun connection
+      simCtx.strokeStyle = isInner ? 'rgba(230, 184, 0, 0.15)' : 'rgba(255, 102, 51, 0.15)';
+      simCtx.beginPath();
+      simCtx.moveTo(cx, cy);
+      simCtx.lineTo(px, py);
+      simCtx.stroke();
+
+      // 3. Line of Sight (지구 -> 행성) extending out of the screen
+      const dx = px - ex;
+      const dy = py - ey;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist === 0) return;
+      
+      // Draw line of sight
+      simCtx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+      simCtx.lineWidth = 1.5;
+      simCtx.setLineDash([4, 4]);
+      simCtx.beginPath();
+      simCtx.moveTo(ex, ey);
+      simCtx.lineTo(ex + dx/dist * 800, ey + dy/dist * 800);
+      simCtx.stroke();
+      simCtx.setLineDash([]);
+
+      // Arrow head from Earth to Planet
+      const ax = ex + dx/dist * (dist + 12);
+      const ay = ey + dy/dist * (dist + 12);
+      const ang = Math.atan2(dy, dx);
+      simCtx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+      simCtx.beginPath();
+      simCtx.moveTo(ax, ay);
+      simCtx.lineTo(ax - 10 * Math.cos(ang - 0.25), ay - 10 * Math.sin(ang - 0.25));
+      simCtx.lineTo(ax - 10 * Math.cos(ang + 0.25), ay - 10 * Math.sin(ang + 0.25));
+      simCtx.closePath();
+      simCtx.fill();
+
+      // 4. Draw Elongation Angle Arc (Shortest angle)
+      if (isRelations) {
+        const elong = getElongationAngle();
+
+        const angToSun = Math.atan2(cy - ey, cx - ex);
+        const angToPlanet = Math.atan2(py - ey, px - ex);
+
+        let diff = angToPlanet - angToSun;
+        while (diff < -Math.PI) diff += Math.PI * 2;
+        while (diff > Math.PI) diff -= Math.PI * 2;
+        const anticlockwise = diff < 0;
+
+        simCtx.strokeStyle = '#ffe680';
+        simCtx.lineWidth = 2;
+        simCtx.beginPath();
+        simCtx.arc(ex, ey, 25, angToSun, angToPlanet, anticlockwise);
+        simCtx.stroke();
+
+        // Draw text for angle near Earth
+        const labelAng = angToSun + diff / 2;
+        const lx = ex + 40 * Math.cos(labelAng);
+        const ly = ey + 40 * Math.sin(labelAng);
+
+        simCtx.fillStyle = '#ffe680';
+        simCtx.font = 'bold 11px ' + varColor('--font-family');
+        simCtx.textAlign = 'center';
+        simCtx.textBaseline = 'middle';
+        simCtx.fillText(`이각 ${elong.deg.toFixed(0)}°`, lx, ly);
+      }
+    }
+
+    /* =========================================================================
+       CANVAS 2D RENDERING - TELESCOPE & PHASE VIEW
+       ========================================================================= */
+    function drawTelescopeView() {
+      const w = telescopeCanvas.width;
+      const h = telescopeCanvas.height;
+      telescopeCtx.clearRect(0, 0, w, h);
+
+      const cx = w / 2;
+      const cy = h / 2;
+
+      const isInner = (currentTab === 0 || currentTab === 1);
+      const dist = getPlanetDistance();
+      
+      const baseRadius = isInner ? 28 : 22;
+      const scaleFactor = 1.0 / dist;
+      const radius = baseRadius * scaleFactor;
+
+      // Calculate phase angle (angle Sun - Planet - Earth)
+      const psx = -Math.cos(anglePlanet);
+      const psy = -Math.sin(anglePlanet);
+
+      const eRad = R_EARTH;
+      const pRad = isInner ? R_VENUS : R_MARS;
+      const pex = eRad * Math.cos(angleEarth) - pRad * Math.cos(anglePlanet);
+      const pey = eRad * Math.sin(angleEarth) - pRad * Math.sin(anglePlanet);
+      const magPe = Math.sqrt(pex*pex + pey*pey);
+
+      const dot = psx * (pex / magPe) + psy * (pey / magPe);
+      const phaseAngle = Math.acos(Math.max(-1, Math.min(1, dot)));
+
+      // Determine illuminated fraction
+      const fraction = (1 + Math.cos(phaseAngle)) / 2;
+
+      const elong = getElongationAngle();
+      const isRightLit = isInner ? !elong.isEastern : elong.isEastern; 
+
+      // Drawing the planet sphere inside the telescope eyepiece
+      telescopeCtx.save();
+      telescopeCtx.translate(cx, cy);
+
+      // Base planet disk (dark/shadow side)
+      telescopeCtx.fillStyle = isInner ? '#1a1a10' : '#1c0c08';
+      telescopeCtx.beginPath();
+      telescopeCtx.arc(0, 0, radius, 0, Math.PI*2);
+      telescopeCtx.fill();
+
+      // Draw illuminated portion using clipping path
+      telescopeCtx.beginPath();
+      telescopeCtx.arc(0, 0, radius, 0, Math.PI*2);
+      telescopeCtx.clip();
+
+      // Light color
+      const litGrad = telescopeCtx.createRadialGradient(
+        (isRightLit ? 1 : -1) * radius * 0.3,
+        -radius * 0.1,
+        radius * 0.1,
+        0, 0, radius
+      );
+      if (isInner) {
+        litGrad.addColorStop(0, '#fffae6');
+        litGrad.addColorStop(0.8, '#e6b800');
+        litGrad.addColorStop(1, '#998000');
+      } else {
+        litGrad.addColorStop(0, '#ff9980');
+        litGrad.addColorStop(0.6, '#ff6633');
+        litGrad.addColorStop(1, '#b33600');
+      }
+      telescopeCtx.fillStyle = litGrad;
+
+      // Draw the crescent/gibbous overlay
+      telescopeCtx.beginPath();
+      if (fraction >= 0.5) {
+        telescopeCtx.arc(0, 0, radius, -Math.PI/2, Math.PI/2, !isRightLit);
+        const ellipseWidth = radius * (2 * fraction - 1);
+        telescopeCtx.ellipse(0, 0, ellipseWidth, radius, 0, Math.PI/2, -Math.PI/2, !isRightLit);
+      } else {
+        telescopeCtx.arc(0, 0, radius, -Math.PI/2, Math.PI/2, !isRightLit);
+        const ellipseWidth = radius * (1 - 2 * fraction);
+        telescopeCtx.ellipse(0, 0, ellipseWidth, radius, 0, Math.PI/2, -Math.PI/2, isRightLit);
+      }
+      telescopeCtx.closePath();
+      telescopeCtx.fill();
+
+      // Add atmospheric glow overlay
+      const glowGrad = telescopeCtx.createLinearGradient(
+        (isRightLit ? -1 : 1) * radius, 0,
+        (isRightLit ? 1 : -1) * radius, 0
+      );
+      glowGrad.addColorStop(0, 'rgba(0,0,0,0.6)');
+      glowGrad.addColorStop(0.5, 'rgba(0,0,0,0)');
+      glowGrad.addColorStop(1, 'rgba(255,255,255,0.2)');
+      telescopeCtx.fillStyle = glowGrad;
+      telescopeCtx.beginPath();
+      telescopeCtx.arc(0, 0, radius, 0, Math.PI*2);
+      telescopeCtx.fill();
+
+      // Mars polar ice caps
+      if (!isInner) {
+        telescopeCtx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        telescopeCtx.beginPath();
+        telescopeCtx.arc(0, -radius * 0.9, radius * 0.25, 0, Math.PI, true);
+        telescopeCtx.fill();
+      }
+
+      telescopeCtx.restore();
+    }
+
+    /* =========================================================================
+       CANVAS 2D RENDERING - CELESTIAL APPARENT MOTION PROJECTION
+       ========================================================================= */
+    function drawProjectionView() {
+      const w = projectionCanvas.width;
+      const h = projectionCanvas.height;
+      projectionCtx.clearRect(0, 0, w, h);
+
+      const isInner = (currentTab === 0 || currentTab === 1);
+      const steps = isInner ? INNER_STEPS : OUTER_STEPS;
+
+      // 1. Draw starry background inside projection panel
+      projectionCtx.fillStyle = '#020208';
+      projectionCtx.fillRect(0, 0, w, h);
+
+      // Drawing constellation helper lines
+      projectionCtx.strokeStyle = 'rgba(255,255,255,0.04)';
+      projectionCtx.lineWidth = 1;
+      
+      projectionCtx.beginPath();
+      projectionCtx.moveTo(w*0.1, h*0.2); projectionCtx.lineTo(w*0.2, h*0.4); projectionCtx.lineTo(w*0.35, h*0.3);
+      projectionCtx.moveTo(w*0.6, h*0.7); projectionCtx.lineTo(w*0.75, h*0.8); projectionCtx.lineTo(w*0.9, h*0.6);
+      projectionCtx.stroke();
+
+      // Constellation stars
+      const starConst = [
+        {x: w*0.1, y: h*0.2}, {x: w*0.2, y: h*0.4}, {x: w*0.35, y: h*0.3},
+        {x: w*0.6, y: h*0.7}, {x: w*0.75, y: h*0.8}, {x: w*0.9, y: h*0.6},
+        {x: w*0.15, y: h*0.75}, {x: w*0.45, y: h*0.85}, {x: w*0.85, y: h*0.2}
+      ];
+      projectionCtx.fillStyle = 'rgba(255,255,255,0.3)';
+      starConst.forEach(s => {
+        projectionCtx.beginPath();
+        projectionCtx.arc(s.x, s.y, 1.5, 0, Math.PI*2);
+        projectionCtx.fill();
+      });
+
+      // East and West labels (East is Left, West is Right on Korean sky maps)
+      projectionCtx.fillStyle = '#ff66b2';
+      projectionCtx.font = 'bold 11px ' + varColor('--font-family');
+      projectionCtx.textAlign = 'left';
+      projectionCtx.fillText("동 (East)", 15, h - 18);
+      projectionCtx.textAlign = 'right';
+      projectionCtx.fillText("서 (West)", w - 15, h - 18);
+
+      // Midline (Ecliptic line)
+      projectionCtx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+      projectionCtx.lineWidth = 1;
+      projectionCtx.setLineDash([5, 5]);
+      projectionCtx.beginPath();
+      projectionCtx.moveTo(0, h / 2);
+      projectionCtx.lineTo(w, h / 2);
+      projectionCtx.stroke();
+      projectionCtx.setLineDash([]);
+
+      // 2. Draw historical projection path
+      const cx = w / 2;
+      const cy = h / 2;
+      const scaleX = isInner ? 165 : 200;
+      const scaleY = isInner ? 40 : 50; // Open loop vertically to make it distinct
+
+      function getProjCoords(angE, angP) {
+        const eRad = R_EARTH;
+        const pRad = isInner ? R_VENUS : R_MARS;
+        
+        // Math coordinates (Y-up)
+        const ex = eRad * Math.cos(angE);
+        const ey = eRad * Math.sin(angE);
+        const px = pRad * Math.cos(angP);
+        const py = pRad * Math.sin(angP);
+
+        // Vector Earth->Planet
+        const vx = px - ex;
+        const vy = py - ey;
+        const lambda = Math.atan2(vy, vx);
+        
+        const conjAng = getNearestAlignmentAngle();
+        const refLong = isInner ? (conjAng + Math.PI) : conjAng; // Dynamic alignment reference longitude
+        let deltaLambda = lambda - refLong;
+        
+        while (deltaLambda < -Math.PI) deltaLambda += Math.PI * 2;
+        while (deltaLambda > Math.PI) deltaLambda -= Math.PI * 2;
+
+        // Longitude increases leftward (direct motion, West to East)
+        const px_proj = cx - scaleX * deltaLambda;
+        const py_proj = cy - scaleY * Math.sin(angP - angE) - 10;
+
+        return { x: px_proj, y: py_proj };
+      }
+
+      // Draw the step markers (1 to 7) on the celestial graph
+      steps.forEach(st => {
+        const coords = getProjCoords(st.eAngle, st.pAngle);
+
+        // Vertical dashed projection line to centerline
+        projectionCtx.strokeStyle = 'rgba(255, 51, 153, 0.15)';
+        projectionCtx.lineWidth = 1;
+        projectionCtx.setLineDash([2, 2]);
+        projectionCtx.beginPath();
+        projectionCtx.moveTo(coords.x, coords.y);
+        projectionCtx.lineTo(coords.x, h/2);
+        projectionCtx.stroke();
+        projectionCtx.setLineDash([]);
+
+        // Node
+        projectionCtx.fillStyle = 'rgba(255, 51, 153, 0.6)';
+        projectionCtx.beginPath();
+        projectionCtx.arc(coords.x, coords.y, 4, 0, Math.PI*2);
+        projectionCtx.fill();
+
+        // Label
+        projectionCtx.fillStyle = '#ff99cc';
+        projectionCtx.font = 'bold 10px ' + varColor('--font-family');
+        projectionCtx.textAlign = 'center';
+        projectionCtx.textBaseline = 'bottom';
+        projectionCtx.fillText(st.step + "'", coords.x, coords.y - 6);
+      });
+
+      // Draw continuous theoretical line
+      projectionCtx.strokeStyle = 'rgba(255, 51, 153, 0.5)';
+      projectionCtx.lineWidth = 1.5;
+      projectionCtx.setLineDash([3, 3]); // Dotted/dashed path!
+      projectionCtx.beginPath();
+      
+      const numPoints = 240; // Smoother and longer line
+      const conjAng = getNearestAlignmentAngle();
+      const pathRange = isInner ? 75 * Math.PI / 180 : 120 * Math.PI / 180;
+      const startE = conjAng - pathRange;
+      const endE = conjAng + pathRange;
+      const ratio = getSpeedRatioForTab(currentTab);
+      
+      for (let i = 0; i <= numPoints; i++) {
+        const t = i / numPoints;
+        const angE = startE + (endE - startE) * t;
+        const angP = anglePlanet + ratio * (angE - angleEarth);
+
+        const pt = getProjCoords(angE, angP);
+        if (i === 0) projectionCtx.moveTo(pt.x, pt.y);
+        else projectionCtx.lineTo(pt.x, pt.y);
+      }
+      projectionCtx.stroke();
+      projectionCtx.setLineDash([]);
+
+      // 3. Draw current planet position on projection path
+      const currentCoords = getProjCoords(angleEarth, anglePlanet);
+
+      if (currentCoords.x >= 0 && currentCoords.x <= w) {
+        // Vertical projection line from current position to centerline
+        projectionCtx.strokeStyle = 'rgba(255, 230, 128, 0.4)';
+        projectionCtx.lineWidth = 1.5;
+        projectionCtx.setLineDash([3, 3]);
+        projectionCtx.beginPath();
+        projectionCtx.moveTo(currentCoords.x, currentCoords.y);
+        projectionCtx.lineTo(currentCoords.x, h/2);
+        projectionCtx.stroke();
+        projectionCtx.setLineDash([]);
+
+        // Ring outer glow
+        projectionCtx.strokeStyle = '#ff3399';
+        projectionCtx.lineWidth = 2.5;
+        projectionCtx.beginPath();
+        projectionCtx.arc(currentCoords.x, currentCoords.y, 8, 0, Math.PI*2);
+        projectionCtx.stroke();
+
+        // White solid inner dot
+        projectionCtx.fillStyle = '#ffffff';
+        projectionCtx.beginPath();
+        projectionCtx.arc(currentCoords.x, currentCoords.y, 4.5, 0, Math.PI*2);
+        projectionCtx.fill();
+
+        const isRetrograde = checkRetrogradeState();
+        projectionCtx.fillStyle = isRetrograde === "역행" ? '#ff3399' : (isRetrograde === "유" ? '#ffe680' : '#00ccff');
+        projectionCtx.font = 'bold 11px ' + varColor('--font-family');
+        projectionCtx.textAlign = 'center';
+        projectionCtx.textBaseline = 'top';
+        projectionCtx.fillText(isRetrograde, currentCoords.x, currentCoords.y + 11);
+      }
+    }
+
+    /* =========================================================================
+       UTILITIES & MISC
+       ========================================================================= */
+    function varColor(name) {
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
+  </script>
+</body>
+</html>
