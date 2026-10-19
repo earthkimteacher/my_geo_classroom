@@ -1,6 +1,6 @@
 # my_geo_classroom — 작업 안내 (Claude용)
 
-고등학교 지구과학 교사(김덕영)의 수업 자료 저장소입니다. GitHub Pages로 `earth.esbest.net`에 배포됩니다(`CNAME`).
+고등학교 지구과학 교사의 수업 자료 저장소입니다. GitHub Pages로 `earth.esbest.net`에 배포됩니다(`CNAME`).
 답변과 슬라이드 내용은 모두 **한국어**로 작성합니다.
 
 ## 폴더
