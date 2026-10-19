@@ -140,6 +140,10 @@ body:not(.on-light) #kwbar .kw.done{background:rgba(255,255,255,.24);color:#f5f5
 body:not(.on-light) #kwbar .kw.cur{background:#2997ff;color:#fff}
 
 /* 하단 컨트롤(HUD) */
+#resume{position:fixed;left:50%;top:24px;transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:12px;padding:12px 14px 12px 22px;border-radius:16px;background:rgba(28,28,30,.94);color:#f5f5f7;font-size:17px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.35);max-width:calc(100vw - 32px)}
+#resume span{line-height:1.4} #resume small{display:block;font-size:13px;font-weight:500;color:#a1a1a6}
+#resume button{flex:none;border:0;border-radius:10px;padding:10px 16px;font:inherit;font-size:16px;cursor:pointer;background:#3a3a3c;color:#f5f5f7}
+#resume button.go{background:#0a84ff}
 #hud{position:fixed;right:22px;bottom:18px;display:flex;align-items:center;gap:8px;z-index:50;opacity:0;transform:translateY(8px);transition:opacity .35s var(--ease-out),transform .35s var(--ease-out);pointer-events:none}
 #hud.show{opacity:1;transform:none;pointer-events:auto}
 #hud button{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(210,210,215,.64);color:#1d1d1f;-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);transition:transform .15s var(--ease-out)}
@@ -238,13 +242,11 @@ html.student #notes{display:none!important}
 </section>
 
 <!-- ═══ s02 오늘의 키워드 ═══ -->
-<section class="slide" id="s02" data-tile="light" data-title="오늘의 키워드" data-notes="두 차시 동안 따라갈 키워드 4개입니다. 1·2는 13차시(조석, 기조력), 3·4는 14차시(조석 주기와 양상, 사리와 조금)입니다. 다음 장부터 오른쪽 위에 지금 배우는 키워드가 표시되고, 칩을 누르면 그 키워드의 첫 장으로 이동합니다.">
+<section class="slide" id="s02" data-tile="light" data-title="오늘의 키워드" data-notes="이 수업에서 따라갈 키워드 4개입니다. 다음 장부터 오른쪽 위에 지금 배우는 키워드가 표시되고, 칩을 누르면 그 키워드의 첫 장으로 이동합니다.">
   <div class="hd" data-in><div class="eb">학습 안내</div><h2>오늘의 키워드</h2></div>
   <svg class="full-svg" viewBox="0 0 1920 1080">
     <path d="M330 600H1590" stroke="#e8e8ed" stroke-width="12" stroke-linecap="round" fill="none"/>
     <path d="M330 600H1590" stroke="var(--act)" stroke-width="12" stroke-linecap="round" fill="none" data-in="500" data-fx="draw" data-dur="2000"/>
-    <g data-in="300" data-fx="fade" stroke="#c7c7cc" stroke-width="3" fill="none"><path d="M260 492V470H820V492"/><path d="M1100 492V470H1660V492"/></g>
-    <g data-in="300" data-fx="fade" font-size="28" font-weight="700" fill="#86868b" text-anchor="middle"><text x="540" y="450">13차시</text><text x="1380" y="450">14차시</text></g>
     <g data-in="500" data-fx="pop"><circle cx="330" cy="600" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="330" y="617" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">1</text></g>
     <g data-in="1000" data-fx="pop"><circle cx="750" cy="600" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="750" y="617" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">2</text></g>
     <g data-in="1500" data-fx="pop"><circle cx="1170" cy="600" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="1170" y="617" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">3</text></g>
@@ -258,7 +260,6 @@ html.student #notes{display:none!important}
   <div class="abs center mute kw-s" style="left:980px" data-in="1750">12시간 25분 · 위도</div>
   <div class="abs center kw-n" style="left:1400px" data-in="2150">사리와 조금</div>
   <div class="abs center mute kw-s" style="left:1400px" data-in="2250">달의 위상</div>
-  <div class="abs mute" style="left:120px;top:920px;font-size:28px" data-in="2600">지금 배우는 키워드는 오른쪽 위에 계속 표시돼요</div>
 </section>
 
 <!-- ═══ s03 도입: 갯벌은 언제? ═══ -->
@@ -1035,6 +1036,24 @@ function updateChrome(){
   notesP.textContent=sec.dataset.notes||'(이 장면에는 노트가 없어요)';
   syncKw();
   try{history.replaceState(null,'','#'+(i+1));}catch(e){}
+  if(!STILL&&!holdPos)try{localStorage.setItem(POS_KEY,JSON.stringify({i,k:Deck.k,t:Date.now()}));}catch(e){}
+}
+/* 중단 위치 기억: 마지막으로 본 장·단계를 이 브라우저에 저장해 두었다가, 다음에 열 때 이어 보기를 제안 */
+const POS_KEY='deck-pos:'+location.pathname;
+let holdPos=false;   // 이어 보기 안내가 떠 있는 동안은 저장된 위치를 덮어쓰지 않는다
+function readPos(){try{const p=JSON.parse(localStorage.getItem(POS_KEY)||'null');return p&&p.i>=0?p:null;}catch(e){return null;}}
+function offerResume(p){
+  const n=Deck.list.length;if(!p||p.i<=0||p.i>=n)return;
+  const sec=Deck.list[p.i],d=new Date(p.t),box=document.createElement('div');
+  const when=(d.getMonth()+1)+'월 '+d.getDate()+'일 '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+  box.id='resume';
+  box.innerHTML='<span>지난번에 <b>'+(p.i+1)+'번 ‘'+(sec.dataset.title||'')+'’</b>에서 멈췄어요<small>'+when+'</small></span><button class="go">이어서 보기</button><button>처음부터</button>';
+  document.body.appendChild(box);holdPos=true;
+  const outside=e=>{if(!box.contains(e.target))close();};
+  const close=()=>{holdPos=false;box.remove();removeEventListener('keydown',close,true);removeEventListener('pointerdown',outside,true);};
+  box.querySelector('.go').onclick=e=>{e.stopPropagation();close();show(p.i,p.k||0,{instant:true});};
+  box.querySelector('button:not(.go)').onclick=e=>{e.stopPropagation();close();};
+  addEventListener('keydown',close,true);addEventListener('pointerdown',outside,true);
 }
 function buildKw(){
   const K=window.KW;if(!K)return;
@@ -1125,8 +1144,11 @@ Deck.start=function(){
       case '?':helpEl.classList.add('show');break;
     }
   });
-  const h=parseInt(location.hash.slice(1))||1,kk=parseInt(Q.get('k'))||0;
+  const saved=readPos(),h=parseInt(location.hash.slice(1))||1,kk=parseInt(Q.get('k'))||0;
+  const ask=!STILL&&!location.search.includes('k=')&&h===1&&saved&&saved.i>0&&saved.i<Deck.list.length;
+  holdPos=!!ask;   // 첫 장을 보여 주면서 저장된 위치를 지우지 않도록
   show(h-1,kk,{instant:kk>0||STILL});
+  if(ask)offerResume(saved);
   pokeHud();
 };
 })();
