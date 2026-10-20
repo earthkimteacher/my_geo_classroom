@@ -22,7 +22,7 @@
     c.reveal / c.a / c.tween / c.count / c.loop / c.wait 사용 (장면을 떠나면 자동 정리)
  4) 오른쪽 위 키워드 표시는 window.KW 의 items(이름), at(슬라이드별 키워드 번호, 없으면 -1)
 
- [단축키]  → Space 다음 · ← 이전 · N 노트 · O 목차 · B/W 검은/흰 화면 · F 전체 화면 · ? 도움말
+ [단축키]  → Space 다음 · ← 이전 · N 노트 · O 목차 · L 레이저 포인터 · B/W 검은/흰 화면 · F 전체 화면 · ? 도움말
  [주소 옵션] ?s=1 학생 모드(노트 숨김) · ?still=1 컨트롤 숨김 정지 화면 · #3 3번 슬라이드 · &k=2 2단계 상태
 ═══════════════════════════════════════════════════════════════════
 -->
@@ -155,6 +155,12 @@ body:not(.on-light) #kwbar .kw.cur{background:#2997ff;color:#fff}
 #hud.show{opacity:1;transform:none;pointer-events:auto}
 #hud button{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(210,210,215,.64);color:#1d1d1f;-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);transition:transform .15s var(--ease-out)}
 #hud button:active{transform:scale(.92)}
+#hud #b-laser.on{background:#ff2d55;color:#fff}
+body.notes-open #hud{bottom:calc(34vh + 18px)}   /* 노트가 열려도 컨트롤이 가려지지 않게 */
+/* 레이저 포인터(L): 화면 위 투명 캔버스. 켜져 있는 동안 클릭은 슬라이드로 가지 않는다 */
+#laser{position:fixed;inset:0;width:100vw;height:100vh;z-index:49;display:none;cursor:none;touch-action:none}
+#laser.on{display:block}
+html.still #laser{display:none!important}
 #hud button svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 #hud .count{min-width:84px;height:44px;border-radius:9999px;display:grid;place-items:center;padding:0 16px;background:rgba(210,210,215,.64);color:#1d1d1f;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px)}
 #progress{position:fixed;left:0;right:0;bottom:0;height:3px;z-index:40}
@@ -171,6 +177,8 @@ body.on-light #stepdots i{background:rgba(0,0,0,.16)} body.on-light #stepdots i.
 .overlay.show{display:block}
 #notes{position:fixed;left:0;right:0;bottom:0;height:34vh;z-index:55;transform:translateY(102%);transition:transform .45s var(--ease-out);background:rgba(22,22,23,.88);color:#f5f5f7;-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);padding:22px 40px 26px;overflow:auto}
 #notes.show{transform:none}
+#notes-x{position:absolute;top:14px;right:22px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.14);color:#f5f5f7;font-size:18px}
+#notes-x:hover{background:rgba(255,255,255,.26)}
 #notes .nh{font-size:15px;color:#a1a1a6;font-weight:600;margin-bottom:10px} #notes .nh b{color:#f5f5f7;font-size:18px;margin-right:10px}
 #notes p{font-size:clamp(17px,1.55vw,24px);line-height:1.6;max-width:1500px}
 /* 목차(O): 실제 슬라이드가 작아져 격자로 펼쳐지고, 누르면 그 장으로 확대되어 들어간다 */
@@ -855,10 +863,11 @@ html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why{visib
   <button id="b-next" aria-label="다음"><svg viewBox="0 0 20 20"><path d="M7.5 4l6 6-6 6"/></svg></button>
   <button id="b-mark" aria-label="책갈피·메모 (M)"><svg viewBox="0 0 20 20"><path d="M5.5 3h9v14l-4.5-3.5L5.5 17z"/></svg></button>
   <button id="b-notes" aria-label="발표자 노트 (N)"><svg viewBox="0 0 20 20"><path d="M4 5h12M4 10h12M4 15h7"/></svg></button>
+  <button id="b-laser" aria-label="레이저 포인터 (L)"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="2.6"/><path d="M10 2.5v3M10 14.5v3M2.5 10h3M14.5 10h3"/></svg></button>
   <button id="b-ov" aria-label="목차 (O)"><svg viewBox="0 0 20 20"><rect x="3" y="3" width="5.5" height="5.5" rx="1"/><rect x="11.5" y="3" width="5.5" height="5.5" rx="1"/><rect x="3" y="11.5" width="5.5" height="5.5" rx="1"/><rect x="11.5" y="11.5" width="5.5" height="5.5" rx="1"/></svg></button>
   <button id="b-fs" aria-label="전체 화면 (F)"><svg viewBox="0 0 20 20"><path d="M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4"/></svg></button>
 </div>
-<div id="notes"><div class="nh"><b id="notes-t"></b>발표자 노트</div><p id="notes-p"></p></div>
+<div id="notes"><button id="notes-x" aria-label="노트 닫기 (N 또는 Esc)">✕</button><div class="nh"><b id="notes-t"></b>발표자 노트</div><p id="notes-p"></p></div>
 <div class="overlay" id="help"><div class="box"><h3>단축키</h3><table>
   <tr><td><kbd>→</kbd> <kbd>Space</kbd></td><td>다음 (클릭도 가능)</td></tr>
   <tr><td><kbd>←</kbd></td><td>이전</td></tr>
@@ -867,6 +876,7 @@ html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why{visib
   <tr><td><kbd>B</kbd> <kbd>W</kbd></td><td>검은 화면 / 흰 화면</td></tr>
   <tr><td><kbd>F</kbd></td><td>전체 화면</td></tr>
   <tr><td><kbd>M</kbd></td><td>책갈피 · 메모 (지금 위치 저장)</td></tr>
+  <tr><td><kbd>L</kbd></td><td>레이저 포인터 켜기·끄기 (누른 채 움직이면 선, 떼면 사라짐)</td></tr>
   <tr><td><kbd>Esc</kbd></td><td>덮개 닫기</td></tr></table></div></div>
 <div id="blank"></div>
 
@@ -1076,6 +1086,7 @@ function prev(){
 
 /* 크롬(컨트롤) */
 function updateChrome(){
+  if(LZ.cv)lzClear();   // 장·단계가 바뀌면 레이저로 그린 선을 지운다
   const n=Deck.list.length,i=Deck.i,sec=Deck.list[i];
   countEl.textContent=(i+1)+' / '+n;
   progI.style.width=((i+1)/n*100)+'%';
@@ -1155,7 +1166,7 @@ function ovLayout(n){
 function ovMark(i){ovSel=i;Deck.list.forEach((s,j)=>s.classList.toggle('sel',j===i));}
 function openToc(){
   if(OV)return;
-  OV=1;closeOverlays();
+  OV=1;closeOverlays();if(LZ.on)lzSet(false);
   const L=ovLayout(Deck.list.length),K=window.KW;
   stage.style.setProperty('--ovw',(3/L.s).toFixed(1)+'px');
   stage.style.setProperty('--ovr',(12/L.s).toFixed(1)+'px');
@@ -1206,6 +1217,75 @@ function pokeHud(){
   hud.classList.add('show');clearTimeout(hudTimer);
   hudTimer=setTimeout(()=>hud.classList.remove('show'),2500);
 }
+function setNotes(v){
+  notesEl.classList.toggle('show',v);
+  document.body.classList.toggle('notes-open',notesEl.classList.contains('show')&&!rootEl.classList.contains('student'));
+}
+
+/* 레이저 포인터(L): 켜면 빨간 점이 마우스를 따라가고, 누른 채 움직이면 선이 그려졌다가 떼면 서서히 사라진다.
+   켜져 있어도 방향키로 넘길 수 있고, 장·단계가 바뀌면 그려 둔 선은 지운다. Esc로 끈다. */
+const LZ={on:false,cv:null,g:null,pt:null,pts:[],down:null,seq:0,raf:0},LZ_FADE=1100,LZ_ALPHA=.7;   // 선의 기본 투명도
+function lzPaint(){if(!LZ.raf)LZ.raf=requestAnimationFrame(lzDraw);}
+function lzClear(){if(LZ.pts.length){LZ.pts=[];lzPaint();}}
+function lzSize(){
+  const d=Math.min(devicePixelRatio||1,2);
+  LZ.cv.width=Math.round(innerWidth*d);LZ.cv.height=Math.round(innerHeight*d);
+  LZ.g.setTransform(d,0,0,d,0,0);lzPaint();
+}
+function lzSet(v){
+  LZ.on=v;LZ.pts=[];LZ.pt=null;LZ.down=null;
+  LZ.cv.classList.toggle('on',v);document.getElementById('b-laser').classList.toggle('on',v);
+  if(v)lzSize();else lzPaint();
+}
+function lzDraw(now){
+  const g=LZ.g;LZ.raf=0;g.clearRect(0,0,innerWidth,innerHeight);
+  if(!LZ.on)return;
+  LZ.pts=LZ.pts.filter(p=>p.t==null||now-p.t<LZ_FADE);
+  g.lineCap=g.lineJoin='round';
+  // 획마다 하나의 경로로 그린다(반투명 선분이 겹치는 이음매가 진해지지 않게)
+  for(let i=0;i<LZ.pts.length;){
+    const s=LZ.pts[i].s,t=LZ.pts[i].t;let j=i;
+    g.beginPath();g.moveTo(LZ.pts[i].x,LZ.pts[i].y);
+    while(j+1<LZ.pts.length&&LZ.pts[j+1].s===s){j++;g.lineTo(LZ.pts[j].x,LZ.pts[j].y);}
+    if(j>i){
+      g.globalAlpha=LZ_ALPHA*(t==null?1:Math.max(0,1-(now-t)/LZ_FADE));
+      g.lineWidth=6;g.strokeStyle='rgba(255,45,85,.22)';g.stroke();
+      g.lineWidth=2.5;g.strokeStyle='#ff2d55';g.stroke();
+    }
+    i=j+1;
+  }
+  g.globalAlpha=1;
+  if(LZ.pt){
+    const {x,y}=LZ.pt,gl=g.createRadialGradient(x,y,2,x,y,22);
+    gl.addColorStop(0,'rgba(255,45,85,.75)');gl.addColorStop(1,'rgba(255,45,85,0)');
+    g.fillStyle=gl;g.beginPath();g.arc(x,y,22,0,Math.PI*2);g.fill();
+    g.fillStyle='#ff2d55';g.strokeStyle='#fff';g.lineWidth=2;g.beginPath();g.arc(x,y,6.5,0,Math.PI*2);g.fill();g.stroke();
+  }
+  if(LZ.pts.some(p=>p.t!=null))lzPaint();   // 사라지는 중인 선이 있으면 계속 그린다
+}
+function lzAdd(e){
+  LZ.pt={x:e.clientX,y:e.clientY};
+  if(LZ.down!=null){
+    const l=LZ.pts[LZ.pts.length-1];
+    if(!l||l.s!==LZ.seq||Math.hypot(l.x-e.clientX,l.y-e.clientY)>=2)LZ.pts.push({x:e.clientX,y:e.clientY,t:null,s:LZ.seq});
+  }
+  lzPaint();
+}
+function lzMount(){
+  const cv=LZ.cv=document.createElement('canvas');cv.id='laser';document.body.appendChild(cv);
+  LZ.g=cv.getContext('2d');
+  cv.addEventListener('pointerdown',e=>{if(e.button!==0)return;e.preventDefault();LZ.down=e.pointerId;LZ.seq++;cv.setPointerCapture(e.pointerId);lzAdd(e);});
+  cv.addEventListener('pointermove',lzAdd);
+  const up=e=>{
+    if(e.pointerId!==LZ.down)return;
+    lzAdd(e);const t=performance.now();LZ.pts.forEach(p=>{if(p.t==null)p.t=t;});
+    LZ.down=null;if(e.pointerType!=='mouse')LZ.pt=null;lzPaint();
+  };
+  cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+  cv.addEventListener('pointerleave',()=>{if(LZ.down==null){LZ.pt=null;lzPaint();}});
+  cv.addEventListener('contextmenu',e=>e.preventDefault());
+  addEventListener('resize',()=>{if(LZ.on)lzSize();});
+}
 
 Deck.start=function(){
   stage=document.getElementById('stage');viewport=document.getElementById('viewport');
@@ -1229,7 +1309,9 @@ Deck.start=function(){
   document.getElementById('b-prev').onclick=prev;
   document.getElementById('b-next').onclick=next;
   document.getElementById('b-mark').onclick=openMark;
-  document.getElementById('b-notes').onclick=()=>notesEl.classList.toggle('show');
+  document.getElementById('b-notes').onclick=()=>setNotes(!notesEl.classList.contains('show'));
+  document.getElementById('notes-x').onclick=()=>setNotes(false);
+  lzMount();document.getElementById('b-laser').onclick=e=>{e.stopPropagation();lzSet(!LZ.on);e.currentTarget.blur();};
   document.getElementById('b-ov').onclick=e=>{e.stopPropagation();OV?closeToc():openToc();};
   document.getElementById('b-fs').onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();else rootEl.requestFullscreen&&rootEl.requestFullscreen();};
   helpEl.addEventListener('click',e=>{if(e.target===helpEl)closeOverlays();});
@@ -1247,7 +1329,7 @@ Deck.start=function(){
     if(e.target.closest&&e.target.closest('#markbox,#resume'))return;
     if(OV){if(OV===1)tocKey(e);return;}
     const key=e.key;
-    if(key==='Escape'){closeOverlays();blankEl.className='';return;}
+    if(key==='Escape'){if(LZ.on){lzSet(false);return;}closeOverlays();setNotes(false);blankEl.className='';return;}
     if(blankEl.className){blankEl.className='';return;}
     if(helpEl.classList.contains('show'))return;
     switch(key){
@@ -1255,7 +1337,8 @@ Deck.start=function(){
       case 'ArrowLeft':case 'ArrowUp':case 'PageUp':case 'Backspace':e.preventDefault();prev();break;
       case 'Home':show(0,0);break;
       case 'End':show(Deck.list.length-1,0);break;
-      case 'n':case 'N':notesEl.classList.toggle('show');break;
+      case 'n':case 'N':setNotes(!notesEl.classList.contains('show'));break;
+      case 'l':case 'L':if(!e.repeat)lzSet(!LZ.on);break;
       case 'o':case 'O':openToc();break;
       case 'b':case 'B':toggleBlank('black');break;
       case 'w':case 'W':toggleBlank('white');break;
