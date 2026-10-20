@@ -359,7 +359,7 @@ html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why{visib
 </section>
 
 <!-- ═══ s06 공통 질량 중심 ═══ -->
-<section class="slide" id="s06" data-tile="dark" data-title="지구와 달의 공통 질량 중심" data-notes="1단계: 지구의 질량이 달의 약 80배이므로 지구와 달의 공통 질량 중심은 지구 내부에 있습니다. 2단계: 지구와 달은 이 점을 기준으로 함께 돕니다. 지구 중심도 작은 원을 그립니다(자전은 생략). 3단계: 지구 위 어느 지점이든 똑같은 크기의 원을 그리며 움직이므로, 모든 지점에서 크기와 방향이 같은 원심력(달의 반대 방향)을 받습니다. 이것이 다음 장 기조력의 한 성분입니다. 그림의 크기와 거리는 실제 비율과 다릅니다.">
+<section class="slide" id="s06" data-tile="dark" data-title="지구와 달의 공통 질량 중심" data-notes="1단계: 지구의 질량이 달의 약 80배이므로 지구와 달의 공통 질량 중심은 지구 내부에 있습니다. 2단계: 지구와 달은 이 점을 기준으로 함께 돕니다. 지구 중심도 작은 원을 그립니다(자전은 생략). 3단계: 자전을 빼면 지구는 방향을 바꾸지 않은 채(관람차 곤돌라처럼) 돌기 때문에, 지구 위 어느 지점이든 지구 중심과 똑같이 움직여 같은 크기의 원을 그립니다. 4단계: 각 지점이 그리는 원의 중심은 공통 질량 중심이 아니라 지점마다 다른 곳입니다. 하지만 어느 순간이든 그 지점에서 달 쪽으로 같은 거리(지구 중심~공통 질량 중심)에 있습니다. 점선들이 늘 나란히 달을 가리키며 도는 것을 보여 주세요. 5단계: 원심력은 원의 중심 반대쪽으로 작용하므로 모든 지점에서 달의 반대 방향이고, 원의 크기와 주기가 같으니 크기도 같습니다. 이것이 다음 장 기조력의 한 성분입니다. '공통 질량 중심에서 바깥쪽이 아닌가?'라는 질문에는, 그건 지구가 회전판처럼(달처럼 한 면만 보이며) 돌 때의 이야기이고 실제 지구는 그렇게 돌지 않는다고 답합니다. 그림의 크기와 거리는 실제 비율과 다릅니다.">
   <svg class="full-svg" viewBox="0 0 1920 1080">
     <defs><radialGradient id="s06-e" cx=".38" cy=".32"><stop offset="0" stop-color="#7fd0ff"/><stop offset=".55" stop-color="#1f6fb2"/><stop offset="1" stop-color="#0b2f52"/></radialGradient></defs>
     <circle cx="640" cy="620" r="360" fill="none" stroke="#6e6e73" stroke-width="2" stroke-dasharray="6 10" data-in="300" data-fx="fade"/>
@@ -370,6 +370,19 @@ html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why{visib
     </g>
     <g id="s06-earth" transform="translate(560 620)">
       <circle r="110" fill="url(#s06-e)"/>
+      <!-- 4단계: 각 지점에서 자기 원의 중심까지(언제나 달 쪽). 5단계: 원심력(원의 중심 반대쪽). .s06-rot은 s06place가 달 방향으로 돌린다 -->
+      <g data-step="4" data-fx="fade">
+        <g class="s06-rot" data-x="0" data-y="0"><line x1="0" y1="0" x2="80" y2="0" stroke="var(--c2)" stroke-width="3" stroke-dasharray="5 6"/></g>
+        <g class="s06-rot" data-x="-70" data-y="-55" transform="translate(-70 -55)"><line x1="0" y1="0" x2="80" y2="0" stroke="var(--c4)" stroke-width="3" stroke-dasharray="5 6"/><circle cx="80" r="7" fill="var(--c4)" stroke="#1c1c1e" stroke-width="2"/></g>
+        <g class="s06-rot" data-x="75" data-y="-40" transform="translate(75 -40)"><line x1="0" y1="0" x2="80" y2="0" stroke="var(--c4)" stroke-width="3" stroke-dasharray="5 6"/><circle cx="80" r="7" fill="var(--c4)" stroke="#1c1c1e" stroke-width="2"/></g>
+        <g class="s06-rot" data-x="10" data-y="80" transform="translate(10 80)"><line x1="0" y1="0" x2="80" y2="0" stroke="var(--c4)" stroke-width="3" stroke-dasharray="5 6"/><circle cx="80" r="7" fill="var(--c4)" stroke="#1c1c1e" stroke-width="2"/></g>
+      </g>
+      <g data-step="5" data-fx="fade">
+        <g class="s06-rot" data-x="0" data-y="0"><line x1="0" y1="0" x2="-74" y2="0" stroke="var(--c3)" stroke-width="5" stroke-linecap="round"/><polygon points="-92,0 -74,-10 -74,10" fill="var(--c3)"/></g>
+        <g class="s06-rot" data-x="-70" data-y="-55" transform="translate(-70 -55)"><line x1="0" y1="0" x2="-74" y2="0" stroke="var(--c3)" stroke-width="5" stroke-linecap="round"/><polygon points="-92,0 -74,-10 -74,10" fill="var(--c3)"/></g>
+        <g class="s06-rot" data-x="75" data-y="-40" transform="translate(75 -40)"><line x1="0" y1="0" x2="-74" y2="0" stroke="var(--c3)" stroke-width="5" stroke-linecap="round"/><polygon points="-92,0 -74,-10 -74,10" fill="var(--c3)"/></g>
+        <g class="s06-rot" data-x="10" data-y="80" transform="translate(10 80)"><line x1="0" y1="0" x2="-74" y2="0" stroke="var(--c3)" stroke-width="5" stroke-linecap="round"/><polygon points="-92,0 -74,-10 -74,10" fill="var(--c3)"/></g>
+      </g>
       <circle r="7" fill="var(--c2)" data-step="2" data-fx="pop"/>
       <g data-step="3" data-fx="pop"><circle cx="-70" cy="-55" r="9" fill="var(--c4)"/><circle cx="75" cy="-40" r="9" fill="var(--c4)"/><circle cx="10" cy="80" r="9" fill="var(--c4)"/></g>
       <text y="-130" text-anchor="middle" font-size="30" font-weight="600" fill="#f5f5f7">지구</text>
@@ -387,10 +400,12 @@ html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why{visib
     </g>
   </svg>
   <div class="hd" data-in><div class="eb"><b>2</b>기조력</div><h2>지구와 달은 함께 돈다</h2></div>
-  <div class="ws-card" style="left:1180px;top:280px;width:620px;padding:22px 36px">
-    <div class="ws-row" style="grid-template-columns:1fr" data-step="1"><span style="font-size:32px;line-height:1.5"><b class="c3">공통 질량 중심</b><br>지구 질량이 달의 약 80배 → <b>지구 내부</b>에 있다</span></div>
-    <div class="ws-row" style="grid-template-columns:1fr" data-step="2"><span style="font-size:32px;line-height:1.5"><b class="c2">지구 중심</b><br>공통 질량 중심 둘레를 작은 원을 그리며 돈다</span></div>
-    <div class="ws-row" style="grid-template-columns:1fr" data-step="3"><span style="font-size:32px;line-height:1.5"><b class="c4">지구 위 모든 지점</b><br>같은 크기의 원을 그린다 → 모든 지점에서 <b>크기·방향이 같은 원심력</b> (달의 반대 방향)</span></div>
+  <div class="ws-card" style="left:1160px;top:220px;width:660px;padding:16px 34px">
+    <div class="ws-row" style="grid-template-columns:1fr" data-step="1"><span style="font-size:30px;line-height:1.45"><b class="c3">공통 질량 중심</b><br>지구 질량이 달의 약 80배 → <b>지구 내부</b>에 있다</span></div>
+    <div class="ws-row" style="grid-template-columns:1fr" data-step="2"><span style="font-size:30px;line-height:1.45"><b class="c2">지구 중심</b><br>공통 질량 중심 둘레를 작은 원을 그리며 돈다</span></div>
+    <div class="ws-row" style="grid-template-columns:1fr" data-step="3"><span style="font-size:30px;line-height:1.45"><b class="c4">지구 위 모든 지점</b><br>지구는 방향을 바꾸지 않고 돈다 → 모든 지점이 지구 중심과 똑같이 움직여 <b>같은 크기의 원</b>을 그린다</span></div>
+    <div class="ws-row" style="grid-template-columns:1fr" data-step="4"><span style="font-size:30px;line-height:1.45"><b class="c4">각 원의 중심</b><br>지점마다 다른 곳에 있지만, 언제나 그 지점에서 <b>달 쪽</b>으로 같은 거리에 있다</span></div>
+    <div class="ws-row" style="grid-template-columns:1fr" data-step="5"><span style="font-size:30px;line-height:1.45"><b class="c3">원심력</b><br>원의 중심 반대쪽 → 모든 지점에서 <b>달의 반대 방향</b>. 원의 크기와 도는 빠르기가 같으니 <b>크기도 같다</b></span></div>
   </div>
   <div class="fine">그림의 크기와 거리는 실제 비율과 다름 · 지구 자전은 생략</div>
 </section>
@@ -1504,6 +1519,9 @@ function s06place(c,th){
   c.$('#s06-earth').setAttribute('transform','translate('+ex.toFixed(1)+' '+ey.toFixed(1)+')');
   c.$('#s06-moon').setAttribute('transform','translate('+mx.toFixed(1)+' '+my.toFixed(1)+')');
   const l=c.$('#s06-link');l.setAttribute('x1',ex);l.setAttribute('y1',ey);l.setAttribute('x2',mx);l.setAttribute('y2',my);
+  // 각 지점 → 자기 원의 중심(= 지구 중심 → 공통 질량 중심과 같은 방향, 달 쪽)
+  const rot=(-th/D2R).toFixed(2);
+  c.$$('.s06-rot').forEach(g=>g.setAttribute('transform','translate('+g.dataset.x+' '+g.dataset.y+') rotate('+rot+')'));
 }
 Deck.scene('s06',{
   enter(c){s06place(c,0);},
