@@ -22,7 +22,7 @@
     c.reveal / c.a / c.tween / c.count / c.loop / c.wait 사용 (장면을 떠나면 자동 정리)
  4) 오른쪽 위 키워드 표시는 window.KW 의 items(이름), at(슬라이드별 키워드 번호, 없으면 -1)
 
- [단축키]  → Space 다음 · ← 이전 · N 노트 · O 전체 보기 · B/W 검은/흰 화면 · F 전체 화면 · ? 도움말
+ [단축키]  → Space 다음 · ← 이전 · N 노트 · O 목차 · B/W 검은/흰 화면 · F 전체 화면 · ? 도움말
  [주소 옵션] ?s=1 학생 모드(노트 숨김) · ?still=1 컨트롤 숨김 정지 화면 · #3 3번 슬라이드 · &k=2 2단계 상태
 ═══════════════════════════════════════════════════════════════════
 -->
@@ -166,21 +166,32 @@ body.on-light #progress i{background:rgba(0,0,0,.22)}
 #stepdots i.on{background:rgba(255,255,255,.9);transform:scale(1.15)}
 body.on-light #stepdots i{background:rgba(0,0,0,.16)} body.on-light #stepdots i.on{background:rgba(0,0,0,.62)}
 
-/* 덮개: 노트·전체 보기·도움말·화면 끄기 */
+/* 덮개: 노트·도움말·화면 끄기 */
 .overlay{position:fixed;inset:0;z-index:60;display:none}
 .overlay.show{display:block}
 #notes{position:fixed;left:0;right:0;bottom:0;height:34vh;z-index:55;transform:translateY(102%);transition:transform .45s var(--ease-out);background:rgba(22,22,23,.88);color:#f5f5f7;-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);padding:22px 40px 26px;overflow:auto}
 #notes.show{transform:none}
 #notes .nh{font-size:15px;color:#a1a1a6;font-weight:600;margin-bottom:10px} #notes .nh b{color:#f5f5f7;font-size:18px;margin-right:10px}
 #notes p{font-size:clamp(17px,1.55vw,24px);line-height:1.6;max-width:1500px}
-#overview{background:rgba(0,0,0,.72);-webkit-backdrop-filter:saturate(180%) blur(24px);backdrop-filter:saturate(180%) blur(24px);overflow:auto;padding:56px 5vw}
-#overview h2{color:#f5f5f7;font-size:28px;font-weight:600;margin-bottom:22px}
-#overview .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
-#overview .ov{position:relative;aspect-ratio:16/9;border-radius:11px;padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between;text-align:left;border:1px solid rgba(255,255,255,.1)}
-#overview .ov.cur{outline:3px solid #2997ff;outline-offset:3px}
-#overview .ov .n{font-size:14px;font-weight:700;opacity:.6} #overview .ov .tt{font-size:19px;font-weight:600;line-height:1.25}
-#overview .ov[data-tile="black"],#overview .ov[data-tile="dark"],#overview .ov[data-tile="graphite"]{background:#1d1d1f;color:#f5f5f7}
-#overview .ov[data-tile="light"]{background:#fff;color:#1d1d1f} #overview .ov[data-tile="parchment"]{background:#f5f5f7;color:#1d1d1f}
+/* 목차(O): 실제 슬라이드가 작아져 격자로 펼쳐지고, 누르면 그 장으로 확대되어 들어간다 */
+#stage.ov{background:#111113}
+#stage.ov .slide{display:block;cursor:pointer;transform-origin:0 0;border-radius:var(--ovr);outline:var(--ovw) solid rgba(255,255,255,.14);transition:transform .55s var(--ease-out),opacity .35s ease,outline-color .2s}
+#stage.ov .slide *{pointer-events:none}
+#stage.ov .slide.is-on{outline-color:#2997ff}
+#stage.ov:not(.ov-out) :is(.slide:hover,.slide.sel){outline-color:#f5f5f7}
+#stage.ov .slide:not(.is-on) :is([data-in],[data-step]){opacity:1!important}   /* 썸네일은 다 나온 상태로 */
+#stage.ov .slide:not(.is-on) :is([data-fx="draw"],[data-fx="draw"] :is(path,line,polyline,polygon,circle,ellipse,rect)){stroke-dashoffset:0!important}
+#stage.ov .slide.pick{z-index:5;outline-color:transparent}
+#stage.ov-out .slide:not(.pick){opacity:0}
+#stage.ov #kwbar{opacity:0;pointer-events:none}
+#ovl{position:absolute;inset:0;z-index:4;display:none;pointer-events:none;color:#f5f5f7;transition:opacity .3s}
+#stage.ov #ovl{display:block} #stage.ov-out #ovl{opacity:0}
+#ovl .ovh{position:absolute;top:44px;font-size:44px;font-weight:700;letter-spacing:-.01em}
+#ovl .ovh span{margin-left:24px;font-size:24px;font-weight:500;color:#a1a1a6}
+#ovl .oc{position:absolute;line-height:1.25}
+#ovl .oc b,#ovl .oc span{display:block;font-size:24px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#ovl .oc b{font-weight:700;color:#64D2FF} #ovl .oc.cur b{color:#2997ff}
+#ovl .oc span{font-weight:600}
 #help{background:rgba(0,0,0,.6);place-items:center} #help.show{display:grid}
 #help .box{background:#fff;color:#1d1d1f;border-radius:18px;padding:34px 40px;min-width:520px}
 #help h3{font-size:24px;margin-bottom:16px} #help table{border-collapse:collapse;font-size:17px} #help td{padding:7px 18px 7px 0;border-bottom:1px solid #f0f0f0}
@@ -844,16 +855,15 @@ html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why{visib
   <button id="b-next" aria-label="다음"><svg viewBox="0 0 20 20"><path d="M7.5 4l6 6-6 6"/></svg></button>
   <button id="b-mark" aria-label="책갈피·메모 (M)"><svg viewBox="0 0 20 20"><path d="M5.5 3h9v14l-4.5-3.5L5.5 17z"/></svg></button>
   <button id="b-notes" aria-label="발표자 노트 (N)"><svg viewBox="0 0 20 20"><path d="M4 5h12M4 10h12M4 15h7"/></svg></button>
-  <button id="b-ov" aria-label="전체 보기 (O)"><svg viewBox="0 0 20 20"><rect x="3" y="3" width="5.5" height="5.5" rx="1"/><rect x="11.5" y="3" width="5.5" height="5.5" rx="1"/><rect x="3" y="11.5" width="5.5" height="5.5" rx="1"/><rect x="11.5" y="11.5" width="5.5" height="5.5" rx="1"/></svg></button>
+  <button id="b-ov" aria-label="목차 (O)"><svg viewBox="0 0 20 20"><rect x="3" y="3" width="5.5" height="5.5" rx="1"/><rect x="11.5" y="3" width="5.5" height="5.5" rx="1"/><rect x="3" y="11.5" width="5.5" height="5.5" rx="1"/><rect x="11.5" y="11.5" width="5.5" height="5.5" rx="1"/></svg></button>
   <button id="b-fs" aria-label="전체 화면 (F)"><svg viewBox="0 0 20 20"><path d="M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4"/></svg></button>
 </div>
 <div id="notes"><div class="nh"><b id="notes-t"></b>발표자 노트</div><p id="notes-p"></p></div>
-<div class="overlay" id="overview"><h2>전체 보기</h2><div class="grid" id="ov-grid"></div></div>
 <div class="overlay" id="help"><div class="box"><h3>단축키</h3><table>
   <tr><td><kbd>→</kbd> <kbd>Space</kbd></td><td>다음 (클릭도 가능)</td></tr>
   <tr><td><kbd>←</kbd></td><td>이전</td></tr>
   <tr><td><kbd>N</kbd></td><td>발표자 노트</td></tr>
-  <tr><td><kbd>O</kbd></td><td>전체 보기</td></tr>
+  <tr><td><kbd>O</kbd></td><td>목차 (누르면 그 장으로)</td></tr>
   <tr><td><kbd>B</kbd> <kbd>W</kbd></td><td>검은 화면 / 흰 화면</td></tr>
   <tr><td><kbd>F</kbd></td><td>전체 화면</td></tr>
   <tr><td><kbd>M</kbd></td><td>책갈피 · 메모 (지금 위치 저장)</td></tr>
@@ -986,7 +996,7 @@ const scenes={};
 const Deck={scene(id,def){scenes[id]=def;},list:[],i:-1,k:0,ctx:null,token:0,U,STILL};
 window.Deck=Deck;
 
-let stage,viewport,hud,progI,dotsEl,countEl,notesEl,notesT,notesP,ovEl,ovGrid,helpEl,blankEl,kwbar,hudTimer;
+let stage,viewport,hud,progI,dotsEl,countEl,notesEl,notesT,notesP,ovl,helpEl,blankEl,kwbar,hudTimer;
 
 function stepsOf(sec){
   if(sec.__steps!=null)return sec.__steps;
@@ -1016,12 +1026,12 @@ async function show(i,k=0,o={}){
   i=Math.max(0,Math.min(n-1,i));
   const to=Deck.list[i],from=Deck.i>=0?Deck.list[Deck.i]:null;
   k=Math.max(0,Math.min(stepsOf(to),k));
-  const instant=!!o.instant||STILL;
+  const instant=!!o.instant||STILL, fade=!instant&&!o.noFade;   // noFade: 목차에서 확대해 들어갈 때(장면 등장은 그대로)
   if(Deck.ctx){Deck.ctx.hurry();Deck.ctx.dispose();}
   const token=++Deck.token;
   if(from&&from!==to){
     from.classList.remove('is-on');
-    if(instant)from.classList.remove('is-out');
+    if(!fade)from.classList.remove('is-out');
     else{
       from.classList.add('is-out');
       const an=from.animate([{opacity:1},{opacity:0}],{duration:450,easing:'ease'});
@@ -1031,7 +1041,7 @@ async function show(i,k=0,o={}){
   if(to.__fade){try{to.__fade.cancel();}catch(e){}to.__fade=null;}
   to.innerHTML=to.__pristine;
   to.classList.remove('is-out');to.classList.add('is-on');
-  if(from!==to&&!instant)to.__fade=to.animate([{opacity:0},{opacity:1}],{duration:450,easing:'ease'});
+  if(from!==to&&fade)to.__fade=to.animate([{opacity:0},{opacity:1}],{duration:450,easing:'ease'});
   const c=new Ctx(to);Deck.ctx=c;Deck.i=i;Deck.k=k;
   document.body.classList.toggle('on-light',/light|parchment/.test(to.dataset.tile));
   updateChrome();
@@ -1051,6 +1061,7 @@ function stepTo(k){
   safe(async()=>{runDecl(c,k);if(def.go)await def.go(c,k);},c);
 }
 function next(){
+  if(OV)return;
   const c=Deck.ctx;
   if(c&&c.isBusy()){c.hurry();return;}
   const sec=Deck.list[Deck.i];
@@ -1058,6 +1069,7 @@ function next(){
   else if(Deck.i<Deck.list.length-1)show(Deck.i+1,0);
 }
 function prev(){
+  if(OV)return;
   if(Deck.k>0)show(Deck.i,Deck.k-1,{instant:true});
   else if(Deck.i>0){const p=Deck.list[Deck.i-1];show(Deck.i-1,stepsOf(p),{instant:true});}
 }
@@ -1125,18 +1137,65 @@ function syncKw(){
   kwbar.classList.toggle('show',cur>=0);
   Array.from(kwbar.children).forEach((b,idx)=>{b.classList.toggle('cur',idx===cur);b.classList.toggle('done',idx<cur);});
 }
-function closeOverlays(){ovEl.classList.remove('show');helpEl.classList.remove('show');}
-function openOverview(){
-  ovGrid.innerHTML='';
-  Deck.list.forEach((s,idx)=>{
-    const b=document.createElement('button');b.className='ov'+(idx===Deck.i?' cur':'');b.dataset.tile=s.dataset.tile;
-    const a=document.createElement('span');a.className='n';a.textContent=idx+1;
-    const t=document.createElement('span');t.className='tt';t.textContent=s.dataset.title||'';
-    b.appendChild(a);b.appendChild(t);
-    b.onclick=()=>{closeOverlays();show(idx,0);};
-    ovGrid.appendChild(b);
+function closeOverlays(){helpEl.classList.remove('show');}
+
+/* 목차(O): 실제 슬라이드를 줄여 격자로 펼친다. 장 수에 맞춰 썸네일이 가장 커지는 열 수를 고른다 */
+let OV=0,ovSel=0,ovCols=1;   // OV: 0 닫힘 · 1 열림 · 2 닫히는 중
+function ovLayout(n){
+  const T=130,B=30,gx=36,gy=26,cap=68,W=1720,H=SH-T-B;
+  let best=null;
+  for(let cols=1;cols<=n;cols++){
+    const rows=Math.ceil(n/cols),s=Math.min((W-(cols-1)*gx)/cols/SW,((H-(rows-1)*gy)/rows-cap)/SH);
+    if(!best||s>best.s)best={cols,s};
+  }
+  const s=best.s,tw=SW*s,th=SH*s,x0=(SW-(best.cols*tw+(best.cols-1)*gx))/2;
+  ovCols=best.cols;
+  return {s,tw,th,x0,at:i=>({x:x0+(i%best.cols)*(tw+gx),y:T+Math.floor(i/best.cols)*(th+cap+gy)})};
+}
+function ovMark(i){ovSel=i;Deck.list.forEach((s,j)=>s.classList.toggle('sel',j===i));}
+function openToc(){
+  if(OV)return;
+  OV=1;closeOverlays();
+  const L=ovLayout(Deck.list.length),K=window.KW;
+  stage.style.setProperty('--ovw',(3/L.s).toFixed(1)+'px');
+  stage.style.setProperty('--ovr',(12/L.s).toFixed(1)+'px');
+  ovl.innerHTML='';
+  const h=document.createElement('div');h.className='ovh';h.style.left=L.x0+'px';
+  h.innerHTML='목차<span>슬라이드를 누르면 그 장으로 갑니다 · 방향키로 고르고 Enter · O 또는 Esc 돌아가기</span>';
+  ovl.appendChild(h);
+  stage.classList.add('ov');
+  Deck.list.forEach((s,i)=>{
+    const p=L.at(i);
+    s.style.transform='translate('+p.x+'px,'+p.y+'px) scale('+L.s+')';
+    if(i!==Deck.i&&!STILL)s.animate([{opacity:0},{opacity:1}],{duration:450,delay:150,easing:'ease',fill:'backwards'});
+    const kw=K&&K.at&&K.at[i]>=0?K.items[K.at[i]]:'';
+    const c=document.createElement('div');c.className='oc'+(i===Deck.i?' cur':'');
+    c.style.cssText='left:'+p.x+'px;top:'+(p.y+L.th+8)+'px;width:'+L.tw+'px';
+    const b=document.createElement('b');b.textContent=(i+1)+(kw?' · '+kw:'');
+    const t=document.createElement('span');t.textContent=s.dataset.title||'';
+    c.appendChild(b);c.appendChild(t);ovl.appendChild(c);
   });
-  ovEl.classList.add('show');
+  ovMark(Deck.i);
+}
+function closeToc(i){
+  if(OV!==1)return;
+  OV=2;if(i==null||i<0)i=Deck.i;
+  const pick=Deck.list[i];
+  pick.classList.add('pick');stage.classList.add('ov-out');
+  pick.style.transform='';                                // 고른 장이 제자리로 커진다
+  if(i!==Deck.i)show(i,0,{noFade:true});                  // 다른 장이면 처음부터(등장 효과는 확대되는 동안 재생)
+  setTimeout(()=>{
+    stage.classList.remove('ov','ov-out');
+    Deck.list.forEach(s=>{s.style.transform='';s.classList.remove('pick','sel');});
+    ovl.innerHTML='';OV=0;
+  },STILL?0:560);
+}
+function tocKey(e){
+  const k=e.key,n=Deck.list.length;
+  if(k==='Escape'||k==='o'||k==='O'){closeToc();return;}
+  if(k==='Enter'||k===' '){e.preventDefault();closeToc(ovSel);return;}
+  const d={ArrowRight:1,ArrowLeft:-1,ArrowDown:ovCols,ArrowUp:-ovCols}[k];
+  if(d){e.preventDefault();ovMark(Math.max(0,Math.min(n-1,ovSel+d)));}
 }
 function toggleBlank(kind){blankEl.className=(blankEl.className===kind)?'':kind;}
 function fit(){
@@ -1152,7 +1211,7 @@ Deck.start=function(){
   stage=document.getElementById('stage');viewport=document.getElementById('viewport');
   hud=document.getElementById('hud');progI=document.querySelector('#progress i');dotsEl=document.getElementById('stepdots');
   countEl=document.getElementById('count');notesEl=document.getElementById('notes');notesT=document.getElementById('notes-t');notesP=document.getElementById('notes-p');
-  ovEl=document.getElementById('overview');ovGrid=document.getElementById('ov-grid');helpEl=document.getElementById('help');blankEl=document.getElementById('blank');
+  helpEl=document.getElementById('help');blankEl=document.getElementById('blank');
   // ?print=1: 레이저 인쇄용 — 어두운 장도 흰 배경(light)으로 바꾼다
   if(rootEl.classList.contains('print'))stage.querySelectorAll(':scope > .slide').forEach(sec=>{
     if(/black|dark|graphite/.test(sec.dataset.tile)){sec.dataset.tile='light';sec.classList.add('was-dark');}
@@ -1165,37 +1224,39 @@ Deck.start=function(){
     sec.__pristine=sec.innerHTML;
   });
   buildKw();
+  ovl=document.createElement('div');ovl.id='ovl';stage.appendChild(ovl);
   fit();addEventListener('resize',fit);
   document.getElementById('b-prev').onclick=prev;
   document.getElementById('b-next').onclick=next;
   document.getElementById('b-mark').onclick=openMark;
   document.getElementById('b-notes').onclick=()=>notesEl.classList.toggle('show');
-  document.getElementById('b-ov').onclick=openOverview;
+  document.getElementById('b-ov').onclick=e=>{e.stopPropagation();OV?closeToc():openToc();};
   document.getElementById('b-fs').onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();else rootEl.requestFullscreen&&rootEl.requestFullscreen();};
-  ovEl.addEventListener('click',e=>{if(e.target===ovEl)closeOverlays();});
   helpEl.addEventListener('click',e=>{if(e.target===helpEl)closeOverlays();});
   viewport.addEventListener('click',e=>{
+    if(OV){if(OV===1){const s=e.target.closest('.slide');closeToc(s?Deck.list.indexOf(s):-1);}return;}
     if(e.target.closest('#kwbar'))return;
     (e.clientX/innerWidth<.28)?prev():next();
   });
   addEventListener('mousemove',pokeHud);addEventListener('touchstart',pokeHud,{passive:true});
   let tx=null;
   addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
-  addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>60){dx<0?next():prev();}},{passive:true});
+  addEventListener('touchend',e=>{if(tx===null||OV)return;const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>60){dx<0?next():prev();}},{passive:true});
   addEventListener('keydown',e=>{
     if(e.metaKey||e.ctrlKey||e.altKey)return;
     if(e.target.closest&&e.target.closest('#markbox,#resume'))return;
+    if(OV){if(OV===1)tocKey(e);return;}
     const key=e.key;
     if(key==='Escape'){closeOverlays();blankEl.className='';return;}
     if(blankEl.className){blankEl.className='';return;}
-    if(ovEl.classList.contains('show')||helpEl.classList.contains('show'))return;
+    if(helpEl.classList.contains('show'))return;
     switch(key){
       case 'ArrowRight':case 'ArrowDown':case ' ':case 'PageDown':case 'Enter':e.preventDefault();next();break;
       case 'ArrowLeft':case 'ArrowUp':case 'PageUp':case 'Backspace':e.preventDefault();prev();break;
       case 'Home':show(0,0);break;
       case 'End':show(Deck.list.length-1,0);break;
       case 'n':case 'N':notesEl.classList.toggle('show');break;
-      case 'o':case 'O':openOverview();break;
+      case 'o':case 'O':openToc();break;
       case 'b':case 'B':toggleBlank('black');break;
       case 'w':case 'W':toggleBlank('white');break;
       case 'f':case 'F':document.getElementById('b-fs').click();break;
