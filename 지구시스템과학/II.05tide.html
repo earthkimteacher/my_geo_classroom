@@ -365,16 +365,77 @@ html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why{visib
 </section>
 
 <!-- ═══ s05 조석 용어(빈칸) ═══ -->
-<section class="slide" id="s05" data-tile="parchment" data-title="조석의 용어" data-notes="학습지 빈칸을 채웁니다. ① 주기적 ② 만조(고조) ③ 간조(저조) ④ 밀물 ⑤ 썰물 ⑥ 조류 ⑦ 차(조차) ⑧ 정조. 한자 풀이를 곁들이면 기억에 도움이 됩니다: 조석(조수 潮, 조수 汐), 조류(조수 潮, 흐름 流), 조차(조수 潮, 어그러질 差). 우리나라 서해안의 최대 조차는 약 9 m입니다.">
-  <div class="hd" data-in><div class="eb"><b>1</b>조석</div><h2>조석의 용어</h2></div>
-  <div class="ws-card wide" style="left:120px;top:270px;width:1680px" data-in="300">
-    <div class="ws-row"><span class="tm">조석</span><span>해수면의 높이가 <span class="bk"><span class="a" data-step="1" data-fx="pop">주기적</span><span class="n">1</span></span>으로 높아졌다 낮아지는 현상</span></div>
-    <div class="ws-row"><span class="tm">만조 · 간조</span><span>해수면이 가장 높을 때 <span class="bk"><span class="a" data-step="2" data-fx="pop">만조</span><span class="n">2</span></span><span class="mute" style="font-size:30px">(고조)</span>, 가장 낮을 때 <span class="bk"><span class="a" data-step="2" data-fx="pop" data-delay="250">간조</span><span class="n">3</span></span><span class="mute" style="font-size:30px">(저조)</span></span></div>
-    <div class="ws-row"><span class="tm">밀물 · 썰물</span><span>간조 → 만조 <span class="bk"><span class="a" data-step="3" data-fx="pop">밀물</span><span class="n">4</span></span>, 만조 → 간조 <span class="bk"><span class="a" data-step="3" data-fx="pop" data-delay="250">썰물</span><span class="n">5</span></span>, 이러한 해수의 흐름 <span class="bk"><span class="a" data-step="3" data-fx="pop" data-delay="500">조류</span><span class="n">6</span></span></span></div>
-    <div class="ws-row"><span class="tm">조차</span><span>만조와 간조의 해수면 높이 <span class="bk"><span class="a" data-step="4" data-fx="pop">차</span><span class="n">7</span></span> <span class="mute" style="font-size:30px">— 우리나라 서해안은 최대 약 9 m</span></span></div>
-    <div class="ws-row"><span class="tm">정조</span><span>밀물과 썰물이 바뀌며 흐름이 멈추는 시기 <span class="bk"><span class="a" data-step="5" data-fx="pop">정조</span><span class="n">8</span></span> <span class="mute" style="font-size:30px">— 조류가 가장 약하다</span></span></div>
+<section class="slide" id="s05" data-tile="parchment" data-title="조석의 용어" data-notes="왼쪽 위는 4장의 조석 곡선, 왼쪽 아래는 같은 시각의 갯벌 해안 단면입니다. 곡선 위의 점과 해안의 바닷물 높이가 함께 움직이니, 그래프의 어느 부분이 바닷가에서 어떤 모습인지 연결해 주세요. 1단계 ① 주기적: 같은 모양이 약 12시간 25분마다 되풀이됩니다. 2단계 ② 만조(고조) ③ 간조(저조): 만조 때는 갯벌이 잠기고, 간조 때는 드러납니다. 3단계 ④ 밀물 ⑤ 썰물 ⑥ 조류: 곡선이 올라가는 동안(초록) 바닷물이 육지 쪽으로 들어오고, 내려가는 동안(주황) 바다 쪽으로 빠집니다. 이 흐름이 조류이며, 화살표 길이는 곡선의 기울기(해수면이 변하는 빠르기)로 계산했습니다. 4단계 ⑦ 차(조차): 만조와 간조 때 해수면 높이 차. 우리나라 서해안은 최대 약 9 m입니다. 5단계 ⑧ 정조: 곡선이 평평해지는 만조·간조 무렵에는 해수면이 거의 변하지 않아 흐름이 멈춥니다. 한자 풀이: 조석(조수 潮, 조수 汐), 조류(조수 潮, 흐름 流), 조차(조수 潮, 어그러질 差).">
+  <style>
+    #s05 .ws-row{grid-template-columns:1fr;gap:0;font-size:29px;line-height:1.42;padding:9px 14px;border-radius:12px;transition:background .45s}
+    #s05 .ws-row .tm{font-size:24px}
+    #s05 .ws-row.cur{background:rgba(0,102,204,.08)}
+  </style>
+  <div class="hd" data-in><div class="eb"><b>1</b>조석</div><h2>조석의 용어 — 그래프와 바닷가에서 찾아보기</h2></div>
+  <svg class="full-svg" viewBox="0 0 1920 1080">
+    <defs><clipPath id="s05-clip"><rect x="120" y="640" width="940" height="360" rx="18"/></clipPath></defs>
+    <!-- 조석 곡선(4장과 같은 모양) -->
+    <g data-in="200" data-fx="fade">
+      <path d="M200 560H1030M200 560V280" stroke="#1d1d1f" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <g fill="#6e6e73" font-size="24" text-anchor="middle"><text x="200" y="592">0시</text><text x="398" y="592">6</text><text x="596" y="592">12</text><text x="794" y="592">18</text><text x="992" y="592">24시</text></g>
+      <text x="160" y="420" text-anchor="middle" font-size="24" font-weight="600" fill="#1d1d1f" transform="rotate(-90 160 420)">해수면 높이</text>
+    </g>
+    <g data-step="1" data-fx="fade" data-delay="1800">
+      <rect x="405" y="300" width="410" height="220" fill="var(--c1)" fill-opacity=".08"/>
+      <path d="M405 300V520M815 300V520" stroke="var(--c1)" stroke-width="2" stroke-dasharray="6 6"/>
+      <text x="610" y="500" text-anchor="middle" font-size="24" font-weight="700" fill="var(--c1)">같은 모양이 되풀이된다</text>
+    </g>
+    <path id="s05-curve" d="M200 310" stroke="var(--c1)" stroke-width="6" fill="none" stroke-linecap="round" data-step="1" data-fx="draw" data-dur="2000"/>
+    <g data-step="3" data-fx="fade">
+      <path id="s05-up" stroke="var(--c4)" stroke-width="9" fill="none" stroke-linecap="round" stroke-opacity=".85"/>
+      <path id="s05-down" stroke="var(--c3)" stroke-width="9" fill="none" stroke-linecap="round" stroke-opacity=".85"/>
+      <g font-size="26" font-weight="700"><text x="492" y="400" text-anchor="end" fill="var(--c4)">밀물 ↗</text><text x="728" y="400" fill="var(--c3)">↘ 썰물</text></g>
+    </g>
+    <g data-step="2" data-fx="fade">
+      <circle cx="610" cy="310" r="10" fill="var(--c3)"/><circle cx="1020" cy="310" r="10" fill="var(--c3)"/>
+      <circle cx="405" cy="510" r="10" fill="var(--c1)"/><circle cx="815" cy="510" r="10" fill="var(--c1)"/>
+      <g font-size="26" font-weight="700" text-anchor="middle"><text x="610" y="292" fill="var(--c3)">만조</text><text x="1020" y="292" fill="var(--c3)">만조</text><text x="405" y="544" fill="var(--c1)">간조</text><text x="815" y="544" fill="var(--c1)">간조</text></g>
+    </g>
+    <g data-step="4" data-fx="fade">
+      <path d="M610 310H840" stroke="#86868b" stroke-width="2" stroke-dasharray="7 7"/>
+      <path d="M815 324V496" stroke="var(--c2)" stroke-width="5"/>
+      <polygon points="815,314 804,336 826,336" fill="var(--c2)"/><polygon points="815,506 804,484 826,484" fill="var(--c2)"/>
+      <text x="832" y="420" font-size="28" font-weight="700" fill="var(--c2)">조차</text>
+    </g>
+    <g data-step="5" data-fx="fade">
+      <g fill="none" stroke="#6e6e73" stroke-width="2.5" stroke-dasharray="5 5"><circle cx="610" cy="310" r="20"/><circle cx="1020" cy="310" r="20"/><circle cx="405" cy="510" r="20"/><circle cx="815" cy="510" r="20"/></g>
+      <g font-size="24" font-weight="700" fill="#6e6e73"><text x="646" y="302">정조</text><text x="984" y="302" text-anchor="end">정조</text><text x="441" y="540">정조</text><text x="851" y="540">정조</text></g>
+    </g>
+    <circle id="s05-dot" cx="200" cy="310" r="11" fill="#1d1d1f" stroke="#fff" stroke-width="3" opacity="0"/>
+    <!-- 갯벌 해안 단면: 곡선 위 점의 시각과 같은 해수면 -->
+    <g data-in="400" data-fx="fade">
+      <g clip-path="url(#s05-clip)">
+        <rect x="120" y="640" width="940" height="360" fill="#eaf3f9"/>
+        <rect id="s05-water" x="120" y="803" width="940" height="197" fill="#5fb3e0" fill-opacity=".55"/>
+        <path id="s05-wline" d="M120 803H1060" stroke="#0077B6" stroke-width="3"/>
+        <path d="M120 690L300 715L880 925L1060 985V1000H120Z" fill="#a8896a"/>
+        <path d="M120 690L300 715L880 925L1060 985" fill="none" stroke="#7a5f45" stroke-width="3"/>
+      </g>
+      <g font-size="26" font-weight="700"><text x="186" y="830" fill="#fff">육지</text><text x="610" y="880" fill="#fff">갯벌</text><text x="1040" y="676" text-anchor="end" fill="#0077B6">바다 →</text></g>
+    </g>
+    <g data-step="4" data-fx="fade">
+      <path d="M120 770H1060M120 910H1060" stroke="#1d1d1f" stroke-width="2" stroke-dasharray="8 7" stroke-opacity=".55"/>
+      <g font-size="24" font-weight="600" fill="#fff"><text x="140" y="762">만조 때 해수면</text><text x="140" y="902">간조 때 해수면</text></g>
+      <path d="M1035 782V898" stroke="var(--c2)" stroke-width="5"/>
+      <polygon points="1035,772 1025,792 1045,792" fill="var(--c2)"/><polygon points="1035,908 1025,888 1045,888" fill="var(--c2)"/>
+      <text x="1022" y="848" text-anchor="end" font-size="28" font-weight="700" fill="var(--c2)">조차</text>
+    </g>
+    <text id="s05-tide" x="590" y="690" text-anchor="middle" font-size="28" font-weight="700"></text>
+    <g id="s05-flow"></g>
+  </svg>
+  <div class="ws-card" style="left:1090px;top:236px;width:710px;padding:14px 22px" data-in="300">
+    <div class="ws-row" data-r="1"><span class="tm">조석</span><span>해수면의 높이가 <span class="bk"><span class="a" data-step="1" data-fx="pop">주기적</span><span class="n">1</span></span>으로 높아졌다 낮아지는 현상</span></div>
+    <div class="ws-row" data-r="2"><span class="tm">만조 · 간조</span><span>해수면이 가장 높을 때 <span class="bk"><span class="a" data-step="2" data-fx="pop">만조</span><span class="n">2</span></span><span class="mute" style="font-size:26px">(고조)</span>, 가장 낮을 때 <span class="bk"><span class="a" data-step="2" data-fx="pop" data-delay="250">간조</span><span class="n">3</span></span><span class="mute" style="font-size:26px">(저조)</span></span></div>
+    <div class="ws-row" data-r="3"><span class="tm">밀물 · 썰물 · 조류</span><span>간조 → 만조 <span class="bk"><span class="a" data-step="3" data-fx="pop">밀물</span><span class="n">4</span></span>, 만조 → 간조 <span class="bk"><span class="a" data-step="3" data-fx="pop" data-delay="250">썰물</span><span class="n">5</span></span>, 이러한 해수의 흐름 <span class="bk"><span class="a" data-step="3" data-fx="pop" data-delay="500">조류</span><span class="n">6</span></span></span></div>
+    <div class="ws-row" data-r="4"><span class="tm">조차</span><span>만조와 간조의 해수면 높이 <span class="bk"><span class="a" data-step="4" data-fx="pop">차</span><span class="n">7</span></span> <span class="mute" style="font-size:26px">— 우리나라 서해안은 최대 약 9 m</span></span></div>
+    <div class="ws-row" data-r="5"><span class="tm">정조</span><span>밀물과 썰물이 바뀌며 흐름이 멈추는 시기 <span class="bk"><span class="a" data-step="5" data-fx="pop">정조</span><span class="n">8</span></span> <span class="mute" style="font-size:26px">— 조류가 가장 약하다</span></span></div>
   </div>
-  <div class="fine">조석(조수 潮, 조수 汐) · 조류(조수 潮, 흐름 流) · 조차(조수 潮, 어그러질 差)</div>
+  <div class="fine">해안 단면은 모식 그림(높이 과장) · 조석(조수 潮, 조수 汐) · 조류(조수 潮, 흐름 流) · 조차(조수 潮, 어그러질 差)</div>
 </section>
 
 <!-- ═══ s06 공통 질량 중심 ═══ -->
@@ -1385,6 +1446,17 @@ function arrow(parent,x1,y1,x2,y2,color,w){
   $id('s04-curve').setAttribute('d','M'+p.join(' L'));
 })();
 
+/* s05 용어: 조석 곡선(4장과 같은 위상, 0시 만조) + 올라가는 구간(밀물)·내려가는 구간(썰물) */
+const S05={X:t=>200+33*t,Y:h=>410-100*h,P:12.42,yw:h=>840-70*h,shore:y=>300+(y-715)*580/210};
+const s05h=t=>Math.cos(TAU*t/S05.P), s05v=t=>-Math.sin(TAU*t/S05.P);   // 높이(−1~1), 오르내리는 빠르기(+ 밀물)
+(function(){
+  const seg=(a,b)=>{const p=[];for(let t=a;t<=b+1e-9;t+=.1)p.push(S05.X(t).toFixed(1)+' '+S05.Y(s05h(t)).toFixed(1));return 'M'+p.join(' L');};
+  $id('s05-curve').setAttribute('d',seg(0,24.84));
+  const P=S05.P,h=P/2;
+  $id('s05-up').setAttribute('d',seg(h,P)+seg(P+h,24.84));
+  $id('s05-down').setAttribute('d',seg(0,h)+seg(P,P+h));
+})();
+
 /* s07 기조력 성분: 달의 인력(초록) + 원심력(보라) = 기조력(파랑) */
 (function(){
   const E={x:620,y:640},R=230,M={x:1700,y:640},D=M.x-E.x,L0=110;
@@ -1653,6 +1725,44 @@ Deck.scene('s03',{
       if(st.dataset.s!==s){st.dataset.s=s;st.textContent=s;}
     };
     draw(0);c.loop(t=>draw(t));
+  }
+});
+
+/* s05 곡선 위의 점(시각 t)과 해안 단면의 해수면·조류 화살표를 함께 그린다. k = 지금 단계 */
+function s05draw(c,t,k){
+  const on=t!=null;if(!on)t=0;
+  const h=s05h(t),v=s05v(t),y=S05.yw(h),xs=S05.shore(y);
+  const w=c.$('#s05-water');w.setAttribute('y',y.toFixed(1));w.setAttribute('height',(1000-y).toFixed(1));
+  c.$('#s05-wline').setAttribute('d','M120 '+y.toFixed(1)+'H1060');
+  const d=c.$('#s05-dot');d.setAttribute('opacity',on?1:0);
+  d.setAttribute('cx',S05.X(t).toFixed(1));d.setAttribute('cy',S05.Y(h).toFixed(1));
+  // 만조·간조 무렵 해안의 모습(2단계부터)
+  const tt=c.$('#s05-tide');
+  if(on&&k>=2&&h>.85){tt.textContent='만조 — 갯벌이 잠긴다';tt.setAttribute('fill','var(--c3)');}
+  else if(on&&k>=2&&h<-.85){tt.textContent='간조 — 갯벌이 드러난다';tt.setAttribute('fill','var(--c1)');}
+  else tt.textContent='';
+  // 조류(3단계부터): 화살표 길이 = 해수면이 변하는 빠르기. 정조(5단계)는 흐름이 거의 없을 때
+  const g=c.$('#s05-flow');g.innerHTML='';
+  if(!on||k<3)return;
+  const ay=y-34,x0=xs+60;
+  if(k>=5&&Math.abs(v)<.2){
+    const s=U.el('text',{x:590,y:732,'text-anchor':'middle','font-size':26,'font-weight':700,fill:'#6e6e73'},g);s.textContent='정조 — 흐름이 멈춘다';
+    return;
+  }
+  const L=24+110*Math.abs(v),col=v>0?'var(--c4)':'var(--c3)';
+  if(v>0)arrow(g,x0+L,ay,x0,ay,col,6);else arrow(g,x0,ay,x0+L,ay,col,6);
+  const s=U.el('text',{x:(x0+L/2).toFixed(1),y:ay-16,'text-anchor':'middle','font-size':26,'font-weight':700,fill:col},g);
+  s.textContent=v>0?'밀물':'썰물';
+}
+Deck.scene('s05',{
+  enter(c){c.k=0;s05draw(c,null,0);},
+  go(c,k){
+    c.k=k;
+    c.$$('.ws-row').forEach(r=>r.classList.toggle('cur',+r.dataset.r===k));
+    if(!c.lp){
+      const lag=c.instant?0:2.2;                                   // 곡선이 다 그려진 뒤 점이 출발
+      c.lp=c.loop(T=>s05draw(c,T<lag?null:((T-lag)*24.84/14)%24.84,c.k));   // 하루(24.84시간) = 14초
+    }
   }
 });
 
