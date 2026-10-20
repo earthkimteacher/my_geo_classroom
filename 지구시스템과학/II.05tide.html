@@ -773,14 +773,14 @@ html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why{visib
   <div class="hd" data-in><div class="eb"><b>4</b>사리와 조금</div><h2>헷갈리지 말자: 만조·간조 vs 사리·조금</h2></div>
   <div class="ws-card" style="left:120px;top:250px;width:800px;padding:24px 36px" data-step="1">
     <div class="ws-h"><b>만조 <span class="mute" style="font-size:32px">vs</span> 간조</b><span>하루 동안의 '순간'</span></div>
-    <svg viewBox="0 0 728 190" width="728" height="190" style="display:block;margin:6px 0 4px"><g id="s13v-day"></g></svg>
+    <svg viewBox="0 0 728 248" width="728" height="248" style="display:block;margin:6px 0 4px"><g id="s13v-day"></g></svg>
     <div class="ws-row" style="grid-template-columns:96px 1fr;font-size:27px;line-height:1.45;padding:9px 0"><span class="tm">뜻</span><span><b class="c2">만조</b>: 해수면이 가장 높아졌을 때<br><b class="c4">간조</b>: 해수면이 가장 낮아졌을 때</span></div>
     <div class="ws-row" style="grid-template-columns:96px 1fr;font-size:27px;line-height:1.45;padding:9px 0"><span class="tm">주기</span><span>약 <b>12시간 25분</b>마다 → 하루에 보통 <b>두 번씩</b></span></div>
     <div class="ws-row" style="grid-template-columns:96px 1fr;font-size:27px;line-height:1.45;padding:9px 0"><span class="tm">원인</span><span><b>지구의 자전</b>: 해수면 부풂을 지날 때 만조, 벗어날 때 간조</span></div>
   </div>
   <div class="ws-card" style="left:1000px;top:250px;width:800px;padding:24px 36px" data-step="2">
     <div class="ws-h"><b>사리 <span class="mute" style="font-size:32px">vs</span> 조금</b><span>한 달 동안의 '시기'</span></div>
-    <svg viewBox="0 0 728 190" width="728" height="190" style="display:block;margin:6px 0 4px"><g id="s13v-month"></g></svg>
+    <svg viewBox="0 0 728 248" width="728" height="248" style="display:block;margin:6px 0 4px"><g id="s13v-month"></g></svg>
     <div class="ws-row" style="grid-template-columns:96px 1fr;font-size:27px;line-height:1.45;padding:9px 0"><span class="tm">뜻</span><span><b class="c1">사리</b>: 조차(만조−간조)가 가장 큰 시기<br><b class="c3">조금</b>: 조차가 가장 작은 시기</span></div>
     <div class="ws-row" style="grid-template-columns:96px 1fr;font-size:27px;line-height:1.45;padding:9px 0"><span class="tm">주기</span><span>약 <b>15일</b>마다 → 한 달에 <b>두 번씩</b></span></div>
     <div class="ws-row" style="grid-template-columns:96px 1fr;font-size:27px;line-height:1.45;padding:9px 0"><span class="tm">원인</span><span><b>달의 위상</b>: 삭·망일 때 사리, 상현·하현일 때 조금</span></div>
@@ -1451,9 +1451,9 @@ S11L.ids.forEach((P,i)=>{
 /* s13v 작은 그래프: 하루(만조·간조), 한 달(사리·조금) */
 (function(){
   // 하루: 0~24시
-  const gd=$id('s13v-day'),Xd=t=>40+28*t,Yd=v=>95-62*v,pd=[];
+  const gd=$id('s13v-day'),Xd=t=>40+28*t,Yd=v=>105-62*v,pd=[];
   for(let t=0;t<=24;t+=.1)pd.push(Xd(t).toFixed(1)+' '+Yd(Math.cos(TAU*(t-2)/12.42)).toFixed(1));
-  U.el('path',{d:'M40 170H716M40 170V20',stroke:'#1d1d1f','stroke-width':2,fill:'none'},gd);
+  U.el('path',{d:'M40 212H716M40 212V14',stroke:'#1d1d1f','stroke-width':2,fill:'none'},gd);
   U.el('path',{d:'M'+pd.join(' L'),stroke:'var(--c1)','stroke-width':4,fill:'none'},gd);
   [[2,1,'만조'],[14.42,1,'만조'],[8.21,-1,'간조'],[20.63,-1,'간조']].forEach(([t,v,lb])=>{
     const x=Xd(t),y=Yd(v),col=v>0?'var(--c2)':'var(--c4)';
@@ -1461,19 +1461,19 @@ S11L.ids.forEach((P,i)=>{
     const tx=U.el('text',{x:x.toFixed(1),y:(v>0?y-16:y+32).toFixed(1),'text-anchor':'middle','font-size':24,'font-weight':700,fill:col},gd);tx.textContent=lb;
   });
   U.el('path',{d:'M'+(Xd(2)+40)+' '+Yd(1)+'V'+Yd(-1),stroke:'#6e6e73','stroke-width':2,'stroke-dasharray':'4 5'},gd);
-  const tz=U.el('text',{x:Xd(2)+50,y:100,'font-size':22,fill:'#6e6e73'},gd);tz.textContent='조차';
-  [0,12,24].forEach(h=>{const t=U.el('text',{x:Xd(h),y:190,'text-anchor':h?(h===24?'end':'middle'):'start','font-size':22,fill:'#6e6e73'},gd);t.textContent=h+'시';});
+  const tz=U.el('text',{x:Xd(2)+50,y:110,'font-size':22,fill:'#6e6e73'},gd);tz.textContent='조차';
+  [0,12,24].forEach(h=>{const t=U.el('text',{x:Xd(h),y:240,'text-anchor':h?(h===24?'end':'middle'):'start','font-size':22,fill:'#6e6e73'},gd);t.textContent=h+'시';});
   // 한 달: 0~30일, 조차가 약 15일 주기로 커졌다 작아졌다
   const gm=$id('s13v-month'),Xm=d=>40+22.5*d,A=d=>.55+.45*Math.cos(TAU*d/14.77),pm=[],up=[],dn=[];
-  for(let d=0;d<=30;d+=.02){const v=A(d)*Math.cos(TAU*d*24/12.42);pm.push(Xm(d).toFixed(1)+' '+(95-62*v).toFixed(1));}
-  for(let d=0;d<=30;d+=.1){up.push(Xm(d).toFixed(1)+' '+(95-62*A(d)).toFixed(1));dn.push(Xm(d).toFixed(1)+' '+(95+62*A(d)).toFixed(1));}
-  U.el('path',{d:'M40 170H716M40 170V20',stroke:'#1d1d1f','stroke-width':2,fill:'none'},gm);
+  for(let d=0;d<=30;d+=.02){const v=A(d)*Math.cos(TAU*d*24/12.42);pm.push(Xm(d).toFixed(1)+' '+(105-62*v).toFixed(1));}
+  for(let d=0;d<=30;d+=.1){up.push(Xm(d).toFixed(1)+' '+(105-62*A(d)).toFixed(1));dn.push(Xm(d).toFixed(1)+' '+(105+62*A(d)).toFixed(1));}
+  U.el('path',{d:'M40 212H716M40 212V14',stroke:'#1d1d1f','stroke-width':2,fill:'none'},gm);
   U.el('path',{d:'M'+pm.join(' L'),stroke:'var(--c1)','stroke-width':1.6,fill:'none','stroke-opacity':.8},gm);
   U.el('path',{d:'M'+up.join(' L')+'M'+dn.join(' L'),stroke:'#1d1d1f','stroke-width':2,'stroke-dasharray':'5 5',fill:'none'},gm);
   [[0,'사리','var(--c1)'],[7.385,'조금','var(--c3)'],[14.77,'사리','var(--c1)'],[22.155,'조금','var(--c3)'],[29.54,'사리','var(--c1)']].forEach(([d,lb,col])=>{
-    const t=U.el('text',{x:Math.min(700,Math.max(62,Xm(d))).toFixed(1),y:18,'text-anchor':'middle','font-size':24,'font-weight':700,fill:col},gm);t.textContent=lb;
+    const t=U.el('text',{x:Math.min(700,Math.max(62,Xm(d))).toFixed(1),y:26,'text-anchor':'middle','font-size':24,'font-weight':700,fill:col},gm);t.textContent=lb;
   });
-  [0,15,30].forEach(d=>{const t=U.el('text',{x:Xm(d),y:190,'text-anchor':d?(d===30?'end':'middle'):'start','font-size':22,fill:'#6e6e73'},gm);t.textContent=d+'일';});
+  [0,15,30].forEach(d=>{const t=U.el('text',{x:Xm(d),y:240,'text-anchor':d?(d===30?'end':'middle'):'start','font-size':22,fill:'#6e6e73'},gm);t.textContent=d+'일';});
 })();
 
 /* ── 움직이는 장면 ── */
