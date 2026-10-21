@@ -65,6 +65,7 @@ my_geo_classroom/
 │  └─ 밀란코비치 시뮬레이터.html
 ├─ 지구시스템과학/
 │  └─ II.05tide.html                  조석 슬라이드
+├─ index.html                         사이트 첫 화면 (수업 자료 목록)
 ├─ CLAUDE.md                          슬라이드 제작 안내 (Claude용)
 └─ CNAME                              earth.esbest.net 연결
 ```
