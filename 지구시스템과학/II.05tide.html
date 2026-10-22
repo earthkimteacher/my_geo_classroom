@@ -215,6 +215,9 @@ html.student #notes{display:none!important}
 html.print .slide{background:#fff!important}
 html.print .was-dark [fill="#f5f5f7"]{fill:#1d1d1f}
 html.print .was-dark [stroke="#f5f5f7"]{stroke:#1d1d1f}
+html.print .was-dark [style*="background:rgba(255,255,255"]{background:rgba(0,0,0,.09)!important}   /* 어두운 면에서 흐린 흰색으로 깐 바탕(막대의 100% 칸 등)은 흰 종이에서 사라지므로 연한 회색으로 */
+html.print .was-dark [style*="dashed #f5f5f7"],html.print .was-dark [style*="solid #f5f5f7"]{border-color:#1d1d1f!important}   /* 범례의 흰 점선 등 */
+html.print .slide[data-tile="parchment"] .ws-card,html.print .qz-why,html.print .rc,html.print .box{background:#f5f5f7}   /* 회색 바탕 위 흰 카드는 흰 종이에서 사라지므로 연한 회색으로 */
 html.print .was-dark [fill="#1c1c1e"]{fill:#f2f2f7}
 html.print .was-dark [fill="#3a3a3c"]{fill:#8e8e93}
 html.print #s01-water{fill:#cfe6f5;opacity:1}
