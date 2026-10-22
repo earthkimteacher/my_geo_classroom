@@ -11,6 +11,7 @@
   자료를 추가할 때는 아래 <script>의 SUBJECTS 배열만 고칩니다.
   - 과목 순서: 학년 순, 같은 학년은 가나다순
   - 과목 안 items: 단원 번호 순(I.01 → I.06 → II.01 …). 단원 번호가 없는 시뮬레이터는 unit을 비웁니다.
+  - 학생용 PDF가 있으면 pdf에 경로를 적습니다(과목폴더/PDF/파일.pdf). 카드에 '학생용 PDF ↓' 단추가 생깁니다.
   README.md의 '수업 자료' 목록도 같은 내용으로 함께 고칩니다.
 -->
 <style>
@@ -34,7 +35,7 @@ section{margin-top:40px}
 section h2{display:flex;align-items:baseline;gap:10px;font-size:26px;font-weight:700;letter-spacing:-.01em;padding-bottom:12px;border-bottom:1px solid var(--line);margin-bottom:16px}
 section h2 span{font-size:16px;font-weight:600;color:var(--t2)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
-.card{display:flex;flex-direction:column;gap:6px;background:var(--card);border-radius:16px;padding:20px 22px;border:1px solid var(--line);transition:transform .2s,box-shadow .2s,border-color .2s}
+.card{position:relative;display:flex;flex-direction:column;gap:6px;background:var(--card);border-radius:16px;padding:20px 22px;border:1px solid var(--line);transition:transform .2s,box-shadow .2s,border-color .2s}
 .card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.08);border-color:var(--act)}
 .card .top{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700}
 .card .unit{color:var(--act)}
@@ -43,6 +44,11 @@ section h2 span{font-size:16px;font-weight:600;color:var(--t2)}
 .card .tt{font-size:20px;font-weight:700;line-height:1.35}
 .card .note{font-size:15px;color:var(--t2)}
 .card .go{margin-top:auto;padding-top:8px;font-size:15px;font-weight:600;color:var(--act)}
+.card .main::after{content:'';position:absolute;inset:0;border-radius:16px}   /* 카드 어디를 눌러도 열기 */
+.card .acts{display:flex;align-items:center;gap:14px;margin-top:auto;padding-top:8px}
+.card .acts .go{margin:0;padding:0}
+.card .pdf{position:relative;z-index:1;font-size:14px;font-weight:600;padding:4px 12px;border-radius:9999px;border:1px solid var(--line);color:var(--ink)}
+.card .pdf:hover{border-color:var(--act);color:var(--act)}
 .tips{margin-top:56px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 26px}
 .tips h3{font-size:18px;font-weight:700;margin-bottom:10px}
 .tips ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px 20px;font-size:15px;color:var(--t2)}
@@ -85,7 +91,7 @@ const SUBJECTS=[
     {unit:'',type:'시뮬레이터',title:'지구 외적 요인(밀란코비치 주기)에 의한 기후 변화 시뮬레이터',note:'',href:'지구과학/밀란코비치 시뮬레이터.html'},
   ]},
   {name:'지구시스템과학',grade:'고2',items:[
-    {unit:'II.05',type:'슬라이드',title:'조석',note:'13·14차시',href:'지구시스템과학/II.05tide.html'},
+    {unit:'II.05',type:'슬라이드',title:'조석',note:'13·14차시',href:'지구시스템과학/II.05tide.html',pdf:'지구시스템과학/PDF/II.05tide_학생용.pdf'},
   ]},
 ];
 const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;};
@@ -94,14 +100,17 @@ SUBJECTS.forEach(s=>{
   const sec=el('section'),h=el('h2',null,s.name);h.appendChild(el('span',null,s.grade));sec.appendChild(h);
   const grid=el('div','grid');
   s.items.forEach(it=>{
-    const a=el('a','card');a.href=encodeURI(it.href);
+    const card=el('div','card');
     const top=el('div','top');
     if(it.unit)top.appendChild(el('span','unit',it.unit+'.'));
     top.appendChild(el('span','tag'+(it.type==='시뮬레이터'?' sim':''),it.type));
-    a.appendChild(top);a.appendChild(el('div','tt',it.title));
-    if(it.note)a.appendChild(el('div','note',it.note));
-    a.appendChild(el('div','go','열기 →'));
-    grid.appendChild(a);
+    card.appendChild(top);
+    const tt=el('div','tt'),a=el('a','main',it.title);a.href=encodeURI(it.href);tt.appendChild(a);card.appendChild(tt);
+    if(it.note)card.appendChild(el('div','note',it.note));
+    const acts=el('div','acts');acts.appendChild(el('span','go','열기 →'));
+    if(it.pdf){const p=el('a','pdf','학생용 PDF ↓');p.href=encodeURI(it.pdf);p.setAttribute('download','');acts.appendChild(p);}
+    card.appendChild(acts);
+    grid.appendChild(card);
   });
   sec.appendChild(grid);list.appendChild(sec);
 });

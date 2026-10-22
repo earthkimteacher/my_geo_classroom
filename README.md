@@ -20,7 +20,7 @@
 ### 지구시스템과학 (고2)
 | 단원 | 자료 | 바로 열기 |
 |---|---|---|
-| II.05. 조석 | 슬라이드 — 13·14차시 | [열기](https://earth.esbest.net/지구시스템과학/II.05tide.html) |
+| II.05. 조석 | 슬라이드 — 13·14차시 | [열기](https://earth.esbest.net/지구시스템과학/II.05tide.html) · [학생용 PDF](https://earth.esbest.net/지구시스템과학/PDF/II.05tide_학생용.pdf) |
 
 ## 슬라이드 사용법
 
@@ -64,13 +64,15 @@ my_geo_classroom/
 │  ├─ 행성의 역행과 순행 시뮬레이터.html
 │  └─ 밀란코비치 시뮬레이터.html
 ├─ 지구시스템과학/
-│  └─ II.05tide.html                  조석 슬라이드
+│  ├─ II.05tide.html                  조석 슬라이드
+│  └─ PDF/
+│     └─ II.05tide_학생용.pdf          조석 학생용 인쇄본
 ├─ index.html                         사이트 첫 화면 (수업 자료 목록)
 ├─ CLAUDE.md                          슬라이드 제작 안내 (Claude용)
 └─ CNAME                              earth.esbest.net 연결
 ```
 
-- 파일 이름 규칙: 과목 폴더 안에 `단원번호+영어 주제.html` (예: `지구시스템과학/II.05tide.html`)
+- 파일 이름 규칙: 과목 폴더 안에 `단원번호+영어 주제.html` (예: `지구시스템과학/II.05tide.html`). 학생용 PDF는 과목 폴더의 `PDF/` 안에 `같은이름_학생용.pdf`
 - 브라우저 탭 제목 규칙: `과목명 - 단원 번호. 단원명 - 진광고등학교 교사 김덕영`
 
 ## 만드는 방식
