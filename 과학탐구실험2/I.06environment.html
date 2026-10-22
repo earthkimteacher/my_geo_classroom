@@ -156,6 +156,9 @@ body:not(.on-light) #kwbar .kw.cur{background:#2997ff;color:#fff}
 #hud button{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(210,210,215,.64);color:#1d1d1f;-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);transition:transform .15s var(--ease-out)}
 #hud button:active{transform:scale(.92)}
 #hud #b-laser.on{background:#ff2d55;color:#fff}
+#hud #b-pause.on{background:#0066cc;color:#fff}
+#b-pause .i-play,#b-pause.on .i-pause{display:none} #b-pause.on .i-play{display:block}
+html.paused #hud{opacity:1;transform:none;pointer-events:auto}   /* 멈춘 동안은 컨트롤을 계속 보여 줌 */
 body.notes-open #hud{bottom:calc(34vh + 18px)}   /* 노트가 열려도 컨트롤이 가려지지 않게 */
 /* 레이저 포인터(L): 화면 위 투명 캔버스. 켜져 있는 동안 클릭은 슬라이드로 가지 않는다 */
 #laser{position:fixed;inset:0;width:100vw;height:100vh;z-index:49;display:none;cursor:none;touch-action:none}
@@ -691,6 +694,7 @@ html.print #s01 .t-lead{color:#6e6e73}
   <button id="b-prev" aria-label="이전"><svg viewBox="0 0 20 20"><path d="M12.5 4 6.5 10l6 6"/></svg></button>
   <div class="count" id="count">1 / 1</div>
   <button id="b-next" aria-label="다음"><svg viewBox="0 0 20 20"><path d="M7.5 4l6 6-6 6"/></svg></button>
+  <button id="b-pause" aria-label="애니메이션 일시정지 (P)"><svg class="i-pause" viewBox="0 0 20 20"><path d="M7 4.5v11M13 4.5v11"/></svg><svg class="i-play" viewBox="0 0 20 20"><path d="M7 4.5l9 5.5-9 5.5z"/></svg></button>
   <button id="b-mark" aria-label="책갈피·메모 (M)"><svg viewBox="0 0 20 20"><path d="M5.5 3h9v14l-4.5-3.5L5.5 17z"/></svg></button>
   <button id="b-notes" aria-label="발표자 노트 (N)"><svg viewBox="0 0 20 20"><path d="M4 5h12M4 10h12M4 15h7"/></svg></button>
   <button id="b-laser" aria-label="레이저 포인터 (L)"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="2.6"/><path d="M10 2.5v3M10 14.5v3M2.5 10h3M14.5 10h3"/></svg></button>
@@ -706,6 +710,7 @@ html.print #s01 .t-lead{color:#6e6e73}
   <tr><td><kbd>B</kbd> <kbd>W</kbd></td><td>검은 화면 / 흰 화면</td></tr>
   <tr><td><kbd>F</kbd></td><td>전체 화면</td></tr>
   <tr><td><kbd>M</kbd></td><td>책갈피 · 메모 (지금 위치 저장)</td></tr>
+  <tr><td><kbd>P</kbd></td><td>애니메이션 일시정지 · 이어서 재생 (멈춘 상태에서 → 도 재생)</td></tr>
   <tr><td><kbd>L</kbd></td><td>레이저 포인터 켜기·끄기 (누른 채 움직이면 선, 떼면 사라짐)</td></tr>
   <tr><td><kbd>Esc</kbd></td><td>덮개 닫기</td></tr></table></div></div>
 <div id="blank"></div>
@@ -742,6 +747,22 @@ const STUB={finished:Promise.resolve(),cancel(){},finish(){}};
 const NS='http://www.w3.org/2000/svg';
 const U={el(tag,attrs={},parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}};
 
+/* 일시정지(P, HUD 버튼): 루프·tween·wait는 PAUSED를 보고 시간을 멈추고, WAAPI 애니메이션은 pause/play.
+   다음(→·클릭)을 누르면 이어서 재생하고, 장·단계가 바뀌면 자동으로 풀린다 */
+let PAUSED=false,pausedAnims=[];
+function setPause(v){
+  if(v===PAUSED)return;PAUSED=v;
+  if(v){
+    pausedAnims=document.getAnimations().filter(a=>{
+      if(a.playState!=='running')return false;
+      const t=a.effect&&a.effect.target;return !(t&&t.closest&&t.closest('#hud,#notes,#kwbar,#ovl'));
+    });
+    pausedAnims.forEach(a=>{try{a.pause();}catch(e){}});
+  }else{pausedAnims.forEach(a=>{try{a.play();}catch(e){}});pausedAnims=[];}
+  rootEl.classList.toggle('paused',v);
+  const b=document.getElementById('b-pause');if(b){b.classList.toggle('on',v);b.setAttribute('aria-label',v?'이어서 재생 (P)':'애니메이션 일시정지 (P)');}
+}
+
 /* 장면 도구 상자: 장면을 떠나면 dispose 로 타이머·루프·애니메이션이 한꺼번에 정리된다 */
 class Ctx{
   constructor(root){this.root=root;this.instant=false;this.alive=true;this._anims=[];this._loops=[];this._timers=[];this._waits=[];this._tweens=[];}
@@ -771,7 +792,7 @@ class Ctx{
   }
   wait(ms){
     if(this.instant||!this.alive)return Promise.resolve();
-    return new Promise(res=>{const w={res};w.t=setTimeout(()=>{const i=this._waits.indexOf(w);if(i>=0)this._waits.splice(i,1);res();},ms);this._waits.push(w);});
+    return this.tween(ms,()=>{},{noInit:true,ease:'linear'});   // 일시정지 중에는 기다리는 시간도 멈춘다
   }
   tween(dur,fn,o={}){
     const ease=typeof o.ease==='function'?o.ease:(JE[o.ease]||JE.out);
@@ -783,9 +804,11 @@ class Ctx{
       tw.kill=()=>{if(done)return;done=true;cancelAnimationFrame(id);rm();res();};
       this._tweens.push(tw);
       if(!o.noInit){try{fn(0,0);}catch(e){console.error(e);}}
-      const delay=o.delay||0;
+      const delay=o.delay||0;let last=null;
       const tick=now=>{
         if(done)return;
+        if(PAUSED){if(start!==null&&last!==null)start+=now-last;last=now;id=requestAnimationFrame(tick);return;}   // 멈춘 시간만큼 뒤로 민다
+        last=now;
         if(start===null)start=now+delay;
         const t=(now-start)/dur;
         if(t<0){id=requestAnimationFrame(tick);return;}
@@ -806,6 +829,7 @@ class Ctx{
     const L={on:true,t:0,last:null,id:0};
     const tick=now=>{
       if(!L.on||!this.alive)return;
+      if(PAUSED){L.last=now;L.id=requestAnimationFrame(tick);return;}
       const dt=L.last===null?0:Math.min(.05,(now-L.last)/1000);L.last=now;L.t+=dt;
       try{fn(L.t,dt);}catch(e){console.error(e);L.on=false;return;}
       L.id=requestAnimationFrame(tick);
@@ -863,6 +887,7 @@ function runDecl(c,k){
 
 async function show(i,k=0,o={}){
   const n=Deck.list.length;if(!n)return;
+  if(PAUSED)setPause(false);
   i=Math.max(0,Math.min(n-1,i));
   const to=Deck.list[i],from=Deck.i>=0?Deck.list[Deck.i]:null;
   k=Math.max(0,Math.min(stepsOf(to),k));
@@ -897,11 +922,13 @@ async function show(i,k=0,o={}){
 }
 function stepTo(k){
   const c=Deck.ctx,sec=Deck.list[Deck.i],def=scenes[sec.id]||{};
+  if(PAUSED)setPause(false);
   c.instant=false;Deck.k=k;updateChrome();
   safe(async()=>{runDecl(c,k);if(def.go)await def.go(c,k);},c);
 }
 function next(){
   if(OV)return;
+  if(PAUSED){setPause(false);return;}   // 멈춘 상태에서 다음(→·클릭) = 이어서 재생
   const c=Deck.ctx;
   if(c&&c.isBusy()){c.hurry();return;}
   const sec=Deck.list[Deck.i];
@@ -1139,6 +1166,7 @@ Deck.start=function(){
   document.getElementById('b-prev').onclick=prev;
   document.getElementById('b-next').onclick=next;
   document.getElementById('b-mark').onclick=openMark;
+  document.getElementById('b-pause').onclick=e=>{e.stopPropagation();setPause(!PAUSED);e.currentTarget.blur();};
   document.getElementById('b-notes').onclick=()=>setNotes(!notesEl.classList.contains('show'));
   document.getElementById('notes-x').onclick=()=>setNotes(false);
   lzMount();document.getElementById('b-laser').onclick=e=>{e.stopPropagation();lzSet(!LZ.on);e.currentTarget.blur();};
@@ -1169,6 +1197,7 @@ Deck.start=function(){
       case 'End':show(Deck.list.length-1,0);break;
       case 'n':case 'N':setNotes(!notesEl.classList.contains('show'));break;
       case 'l':case 'L':if(!e.repeat)lzSet(!LZ.on);break;
+      case 'p':case 'P':if(!e.repeat)setPause(!PAUSED);break;
       case 'o':case 'O':openToc();break;
       case 'b':case 'B':toggleBlank('black');break;
       case 'w':case 'W':toggleBlank('white');break;
@@ -1428,7 +1457,12 @@ Deck.scene('s13',{steps:1,go(c,k){
   if(k!==1)return;
   const el=c.$('#s13-tm'),lb=c.$('#s13-tl'),T=600;lb.textContent='모둠 토의 중';
   const t0=performance.now();   // 실제 시계 기준(창이 뒤로 가도 늦어지지 않게)
-  c.loop(()=>{const r=Math.max(0,Math.ceil(T-(performance.now()-t0)/1000));el.textContent=Math.floor(r/60)+':'+String(r%60).padStart(2,'0');
+  // 일시정지(P)한 동안은 타이머도 멈춘다: 멈춘 시간(off)을 모아 빼 준다
+  let off=0,ps=null;const html=document.documentElement;
+  const mo=new MutationObserver(()=>{if(!c.alive){mo.disconnect();return;}const p=html.classList.contains('paused');
+    if(p&&ps===null)ps=performance.now();else if(!p&&ps!==null){off+=performance.now()-ps;ps=null;}});
+  mo.observe(html,{attributes:true,attributeFilter:['class']});
+  c.loop(()=>{const r=Math.max(0,Math.ceil(T-(performance.now()-t0-off)/1000));el.textContent=Math.floor(r/60)+':'+String(r%60).padStart(2,'0');
     if(r===0){lb.textContent='시간 끝! 모둠별로 발표해 보자';el.style.color='var(--c3)';}});
 }});
 
