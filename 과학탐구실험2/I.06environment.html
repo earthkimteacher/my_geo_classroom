@@ -222,6 +222,15 @@ html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why{visib
 
 
 /* ── 과학탐구실험2 I-06 학교 주변 환경 수업에서 추가한 스타일 ── */
+/* 인쇄(?print=1): 표지 밤 풍경을 연하게, '지난 카드 흐리게' 효과는 인쇄물에서 풀기 */
+html.print #s01 .s01-sky{fill:#eef3f8}
+html.print #s01 [fill="#0f151a"]{fill:#c9cfd6}
+html.print #s01 [fill="#1a2029"] *,html.print #s01 g[fill="#1a2029"]>*{fill:#b9c0c8}
+html.print #s01 g[fill="#1c1f24"]>*{fill:#aab0b8}
+html.print #s01 rect[fill="#0c0e11"]{fill:#d8d8dc}
+html.print #s01 rect[fill="#1b1c20"]{fill:#c4c4c9}
+html.print #s04a .pc.dim,html.print #s04b .pc.dim{filter:none}
+html.print #s10-b1,html.print #s10-b2,html.print #s10-b3,html.print #s11-b1{filter:none!important}
 .kw-n{width:320px;top:690px;font-size:44px;font-weight:700;letter-spacing:-.025em}
 .kw-s{width:320px;top:754px;font-size:28px}
 .box{position:absolute;border-radius:18px;padding:24px 30px;background:#fff;z-index:3}
@@ -1457,6 +1466,7 @@ Deck.scene('s11',{go(c,k){
 Deck.scene('s13',{steps:1,go(c,k){
   if(k!==1)return;
   const el=c.$('#s13-tm'),lb=c.$('#s13-tl'),T=600;lb.textContent='모둠 토의 중';
+  if(document.documentElement.classList.contains('print'))return;   // 인쇄물에는 줄어들기 전 10분 그대로
   const t0=performance.now();   // 실제 시계 기준(창이 뒤로 가도 늦어지지 않게)
   // 일시정지(P)한 동안은 타이머도 멈춘다: 멈춘 시간(off)을 모아 빼 준다
   let off=0,ps=null;const html=document.documentElement;
