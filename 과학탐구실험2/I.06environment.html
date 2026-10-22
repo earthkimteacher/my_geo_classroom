@@ -52,8 +52,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .slide[data-tile="graphite"]{background:var(--graphite);color:var(--on-dark)}
 .slide[data-tile="light"]{background:#fff;color:var(--ink)}
 .slide[data-tile="parchment"]{background:var(--parch);color:var(--ink)}
-.slide[data-tile="black"],.slide[data-tile="dark"],.slide[data-tile="graphite"]{--t2:#a1a1a6;--t3:#6e6e73;--hl:#3a3a3c;--act:#2997ff}
-.slide[data-tile="light"],.slide[data-tile="parchment"]{--c1:#0077B6;--c2:#9A7400;--c3:#C4391B;--c4:#1E8B3E;--t2:#6e6e73;--t3:#86868b;--hl:#e0e0e0;--act:#0066cc}
+.slide[data-tile="black"],.slide[data-tile="dark"],.slide[data-tile="graphite"]{--t2:#a1a1a6;--t3:#8e8e93;--hl:#3a3a3c;--act:#2997ff}
+.slide[data-tile="light"],.slide[data-tile="parchment"]{--c1:#0077B6;--c2:#9A7400;--c3:#C4391B;--c4:#1E8B3E;--t2:#6e6e73;--t3:#6e6e73;--hl:#e0e0e0;--act:#0066cc}
 
 /* 글자 체계 (무대 px, 최소 24) */
 .t-title{font-size:84px;font-weight:600;line-height:1.1;letter-spacing:-.025em}
@@ -91,10 +91,11 @@ svg [data-in],svg [data-step]{transform-box:fill-box;transform-origin:center}
 .ws-row{display:grid;grid-template-columns:130px 1fr;gap:22px;align-items:baseline;font-size:38px;line-height:1.55;padding:12px 0;border-top:1px solid var(--hl)}
 .ws-row:first-of-type{border-top:0}
 .ws-row .tm{font-size:26px;font-weight:600;color:var(--t2)}
-.bk{position:relative;display:inline-block;min-width:3.2em;margin:0 .2em;padding:0 .3em;text-align:center;line-height:1.3;white-space:nowrap;border-bottom:4px solid #c7c7cc}
+.ws-row .tm.term{font-size:1.1em;font-weight:800;color:inherit;line-height:1.3;letter-spacing:-.01em}   /* 용어 이름표: 설명보다 크고 진하게(개념 색은 style로) */
+.bk{position:relative;display:inline-block;min-width:3.2em;margin:0 .2em 0 42px;padding:0 .3em;text-align:center;line-height:1.3;white-space:nowrap;border-bottom:4px solid #c7c7cc}
 .slide[data-tile="black"] .bk,.slide[data-tile="dark"] .bk,.slide[data-tile="graphite"] .bk{border-bottom-color:#48484a}
 .bk .a{display:inline-block;font-weight:700;color:var(--act)}
-.bk .n{position:absolute;left:-.6em;top:-.5em;min-width:1.25em;height:1.25em;padding:0 .2em;border-radius:9999px;background:var(--act);color:#fff;font-size:.46em;font-weight:700;line-height:1.25em;text-align:center}
+.bk .n{position:absolute;left:-36px;top:50%;margin-top:-15px;min-width:30px;height:30px;padding:0 4px;box-sizing:border-box;border-radius:9999px;background:var(--act);color:#fff;font-size:24px;font-weight:700;line-height:30px;text-align:center}   /* 번호(24px)는 빈칸 바로 왼쪽에 — 프로젝터에서도 읽히게 */
 .say-line{position:absolute;left:120px;right:120px;text-align:center;font-size:44px;font-weight:600;letter-spacing:-.02em;z-index:3}
 .fine{position:absolute;left:120px;bottom:40px;font-size:24px;color:var(--t3);z-index:3}
 

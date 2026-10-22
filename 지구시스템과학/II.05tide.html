@@ -52,8 +52,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .slide[data-tile="graphite"]{background:var(--graphite);color:var(--on-dark)}
 .slide[data-tile="light"]{background:#fff;color:var(--ink)}
 .slide[data-tile="parchment"]{background:var(--parch);color:var(--ink)}
-.slide[data-tile="black"],.slide[data-tile="dark"],.slide[data-tile="graphite"]{--t2:#a1a1a6;--t3:#6e6e73;--hl:#3a3a3c;--act:#2997ff}
-.slide[data-tile="light"],.slide[data-tile="parchment"]{--c1:#0077B6;--c2:#9A7400;--c3:#C4391B;--c4:#1E8B3E;--t2:#6e6e73;--t3:#86868b;--hl:#e0e0e0;--act:#0066cc}
+.slide[data-tile="black"],.slide[data-tile="dark"],.slide[data-tile="graphite"]{--t2:#a1a1a6;--t3:#8e8e93;--hl:#3a3a3c;--act:#2997ff}
+.slide[data-tile="light"],.slide[data-tile="parchment"]{--c1:#0077B6;--c2:#9A7400;--c3:#C4391B;--c4:#1E8B3E;--t2:#6e6e73;--t3:#6e6e73;--hl:#e0e0e0;--act:#0066cc}
 
 /* 글자 체계 (무대 px, 최소 24) */
 .t-title{font-size:84px;font-weight:600;line-height:1.1;letter-spacing:-.025em}
@@ -91,10 +91,11 @@ svg [data-in],svg [data-step]{transform-box:fill-box;transform-origin:center}
 .ws-row{display:grid;grid-template-columns:130px 1fr;gap:22px;align-items:baseline;font-size:38px;line-height:1.55;padding:12px 0;border-top:1px solid var(--hl)}
 .ws-row:first-of-type{border-top:0}
 .ws-row .tm{font-size:26px;font-weight:600;color:var(--t2)}
-.bk{position:relative;display:inline-block;min-width:3.2em;margin:0 .2em;padding:0 .3em;text-align:center;line-height:1.3;white-space:nowrap;border-bottom:4px solid #c7c7cc}
+.ws-row .tm.term{font-size:1.1em;font-weight:800;color:inherit;line-height:1.3;letter-spacing:-.01em}   /* 용어 이름표: 설명보다 크고 진하게(개념 색은 style로) */
+.bk{position:relative;display:inline-block;min-width:3.2em;margin:0 .2em 0 42px;padding:0 .3em;text-align:center;line-height:1.3;white-space:nowrap;border-bottom:4px solid #c7c7cc}
 .slide[data-tile="black"] .bk,.slide[data-tile="dark"] .bk,.slide[data-tile="graphite"] .bk{border-bottom-color:#48484a}
 .bk .a{display:inline-block;font-weight:700;color:var(--act)}
-.bk .n{position:absolute;left:-.6em;top:-.5em;min-width:1.25em;height:1.25em;padding:0 .2em;border-radius:9999px;background:var(--act);color:#fff;font-size:.46em;font-weight:700;line-height:1.25em;text-align:center}
+.bk .n{position:absolute;left:-36px;top:50%;margin-top:-15px;min-width:30px;height:30px;padding:0 4px;box-sizing:border-box;border-radius:9999px;background:var(--act);color:#fff;font-size:24px;font-weight:700;line-height:30px;text-align:center}   /* 번호(24px)는 빈칸 바로 왼쪽에 — 프로젝터에서도 읽히게 */
 .say-line{position:absolute;left:120px;right:120px;text-align:center;font-size:44px;font-weight:600;letter-spacing:-.02em;z-index:3}
 .fine{position:absolute;left:120px;bottom:40px;font-size:24px;color:var(--t3);z-index:3}
 
@@ -248,7 +249,7 @@ html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why{visib
 .qz-box{border:2px solid var(--hl);border-radius:16px;padding:16px 28px;font-size:34px;line-height:1.6;background:#fff}
 .qz-ch.row{flex-direction:row;flex-wrap:wrap;gap:16px}
 .qz-ch.row li{padding:12px 30px;border:2px solid var(--hl);background:#fff}
-.qz-ch.row .qz-mark{top:-24px;right:-14px;margin-top:0;font-size:22px;padding:2px 14px}
+.qz-ch.row .qz-mark{top:-26px;right:-14px;margin-top:0;font-size:24px;padding:2px 14px}
 .rc.rc4{width:400px;padding:30px 30px}
 .rc.rc4 h3{font-size:40px}
 .rc.rc4 p{font-size:28px}
@@ -371,7 +372,7 @@ html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why{visib
 <section class="slide" id="s05" data-tile="parchment" data-title="조석의 용어" data-notes="왼쪽 위는 4장의 조석 곡선, 왼쪽 아래는 같은 시각의 갯벌 해안 단면입니다. 곡선 위의 점과 해안의 바닷물 높이가 함께 움직이니, 그래프의 어느 부분이 바닷가에서 어떤 모습인지 연결해 주세요. 1단계 ① 주기적: 같은 모양이 약 12시간 25분마다 되풀이됩니다. 2단계 ② 만조(고조) ③ 간조(저조): 만조 때는 갯벌이 잠기고, 간조 때는 드러납니다. 3단계 ④ 밀물 ⑤ 썰물 ⑥ 조류: 곡선이 올라가는 동안(초록) 바닷물이 육지 쪽으로 들어오고, 내려가는 동안(주황) 바다 쪽으로 빠집니다. 이 흐름이 조류이며, 화살표 길이는 곡선의 기울기(해수면이 변하는 빠르기)로 계산했습니다. 4단계 ⑦ 차(조차): 만조와 간조 때 해수면 높이 차. 우리나라 서해안은 최대 약 9 m입니다. 5단계 ⑧ 정조: 곡선이 평평해지는 만조·간조 무렵에는 해수면이 거의 변하지 않아 흐름이 멈춥니다. 한자 풀이: 조석(조수 潮, 조수 汐), 조류(조수 潮, 흐름 流), 조차(조수 潮, 어그러질 差).">
   <style>
     #s05 .ws-row{grid-template-columns:1fr;gap:0;font-size:29px;line-height:1.42;padding:9px 14px;border-radius:12px;transition:background .45s}
-    #s05 .ws-row .tm{font-size:24px}
+    #s05 .ws-row .tm{margin-bottom:2px}
     #s05 .ws-row .bk{white-space:nowrap}
     #s05 .ws-row.cur{background:rgba(0,102,204,.08)}
   </style>
@@ -417,7 +418,7 @@ html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why{visib
         <rect x="120" y="640" width="940" height="360" fill="#eaf3f9"/>
         <rect id="s05-water" x="120" y="803" width="940" height="197" fill="#5fb3e0" fill-opacity=".55"/>
         <path id="s05-wline" d="M120 803H1060" stroke="#0077B6" stroke-width="3"/>
-        <path d="M120 690L300 715L880 925L1060 985V1000H120Z" fill="#a8896a"/>
+        <path d="M120 690L300 715L880 925L1060 985V1000H120Z" fill="#94755a"/>
         <path d="M120 690L300 715L880 925L1060 985" fill="none" stroke="#7a5f45" stroke-width="3"/>
       </g>
       <g font-size="26" font-weight="700"><text x="186" y="830" fill="#fff">육지</text><text x="610" y="880" fill="#fff">갯벌</text><text x="1040" y="676" text-anchor="end" fill="#0077B6">바다 →</text></g>
@@ -433,11 +434,11 @@ html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why{visib
     <g id="s05-flow"></g>
   </svg>
   <div class="ws-card" style="left:1090px;top:236px;width:710px;padding:14px 22px" data-in="300">
-    <div class="ws-row" data-r="1"><span class="tm">조석</span><span>해수면의 높이가 <span class="bk"><span class="a" data-step="1" data-fx="pop">주기적</span><span class="n">1</span></span>으로 높아졌다 낮아지는 현상</span></div>
-    <div class="ws-row" data-r="2"><span class="tm">만조 · 간조</span><span>해수면이 가장 높을 때 <span class="bk"><span class="a" data-step="2" data-fx="pop">만조</span><span class="n">2</span></span><span class="mute" style="font-size:26px">(고조)</span>,<br>가장 낮을 때 <span class="bk"><span class="a" data-step="2" data-fx="pop" data-delay="250">간조</span><span class="n">3</span></span><span class="mute" style="font-size:26px">(저조)</span></span></div>
-    <div class="ws-row" data-r="3"><span class="tm">밀물 · 썰물 · 조류</span><span>간조 → 만조 <span class="bk"><span class="a" data-step="3" data-fx="pop">밀물</span><span class="n">4</span></span>, 만조 → 간조 <span class="bk"><span class="a" data-step="3" data-fx="pop" data-delay="250">썰물</span><span class="n">5</span></span>,<br>이러한 해수의 흐름 <span class="bk"><span class="a" data-step="3" data-fx="pop" data-delay="500">조류</span><span class="n">6</span></span></span></div>
-    <div class="ws-row" data-r="4"><span class="tm">조차</span><span>만조와 간조의 해수면 높이 <span class="bk"><span class="a" data-step="4" data-fx="pop">차</span><span class="n">7</span></span><br><span class="mute" style="font-size:26px">우리나라 서해안은 최대 약 9 m</span></span></div>
-    <div class="ws-row" data-r="5"><span class="tm">정조</span><span>밀물과 썰물이 바뀌며 흐름이 멈추는 시기 <span class="bk"><span class="a" data-step="5" data-fx="pop">정조</span><span class="n">8</span></span><br><span class="mute" style="font-size:26px">조류가 가장 약하다</span></span></div>
+    <div class="ws-row" data-r="1"><span class="tm term">조석</span><span>해수면의 높이가 <span class="bk"><span class="a" data-step="1" data-fx="pop">주기적</span><span class="n">1</span></span>으로 높아졌다 낮아지는 현상</span></div>
+    <div class="ws-row" data-r="2"><span class="tm term">만조 · 간조</span><span>해수면이 가장 높을 때 <span class="bk"><span class="a" data-step="2" data-fx="pop">만조</span><span class="n">2</span></span><span class="mute" style="font-size:26px">(고조)</span>,<br>가장 낮을 때 <span class="bk"><span class="a" data-step="2" data-fx="pop" data-delay="250">간조</span><span class="n">3</span></span><span class="mute" style="font-size:26px">(저조)</span></span></div>
+    <div class="ws-row" data-r="3"><span class="tm term">밀물 · 썰물 · 조류</span><span>간조 → 만조 <span class="bk"><span class="a" data-step="3" data-fx="pop">밀물</span><span class="n">4</span></span>, 만조 → 간조 <span class="bk"><span class="a" data-step="3" data-fx="pop" data-delay="250">썰물</span><span class="n">5</span></span>,<br>이러한 해수의 흐름 <span class="bk"><span class="a" data-step="3" data-fx="pop" data-delay="500">조류</span><span class="n">6</span></span></span></div>
+    <div class="ws-row" data-r="4"><span class="tm term">조차</span><span>만조와 간조의 해수면 높이 <span class="bk"><span class="a" data-step="4" data-fx="pop">차</span><span class="n">7</span></span><br><span class="mute" style="font-size:26px">우리나라 서해안은 최대 약 9 m</span></span></div>
+    <div class="ws-row" data-r="5"><span class="tm term">정조</span><span>밀물과 썰물이 바뀌며 흐름이 멈추는 시기 <span class="bk"><span class="a" data-step="5" data-fx="pop">정조</span><span class="n">8</span></span><br><span class="mute" style="font-size:26px">조류가 가장 약하다</span></span></div>
   </div>
   <div class="fine">해안 단면은 모식 그림(높이 과장) · 조석(조수 潮, 조수 汐) · 조류(조수 潮, 흐름 流) · 조차(조수 潮, 어그러질 差)</div>
 </section>
@@ -518,9 +519,9 @@ html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why{visib
   </svg>
   <div class="hd" data-in><div class="eb"><b>2</b>기조력</div><h2>기조력은 어떻게 생길까?</h2></div>
   <div class="ws-card" style="left:1100px;top:250px;width:700px;padding:18px 34px">
-    <div class="ws-row" style="grid-template-columns:150px 1fr" data-step="1"><span class="tm" style="color:var(--c4)">달의 인력</span><span style="font-size:32px">가까울수록 크다 · 달 중심 방향</span></div>
-    <div class="ws-row" style="grid-template-columns:150px 1fr" data-step="2"><span class="tm" style="color:#BF5AF2">원심력</span><span style="font-size:32px">어디서나 크기·방향이 같다</span></div>
-    <div class="ws-row" style="grid-template-columns:150px 1fr" data-step="3"><span class="tm" style="color:var(--c1)">기조력</span><span style="font-size:32px">두 힘의 <b class="c1">합력</b></span></div>
+    <div class="ws-row" style="grid-template-columns:180px 1fr;font-size:32px" data-step="1"><span class="tm term" style="color:var(--c4)">달의 인력</span><span style="font-size:32px">가까울수록 크다 · 달 중심 방향</span></div>
+    <div class="ws-row" style="grid-template-columns:180px 1fr;font-size:32px" data-step="2"><span class="tm term" style="color:#BF5AF2">원심력</span><span style="font-size:32px">어디서나 크기·방향이 같다</span></div>
+    <div class="ws-row" style="grid-template-columns:180px 1fr;font-size:32px" data-step="3"><span class="tm term" style="color:var(--c1)">기조력</span><span style="font-size:32px">두 힘의 <b class="c1">합력</b></span></div>
   </div>
   <div class="abs" style="left:1000px;top:770px;width:800px;font-size:30px;line-height:1.6" data-step="3" data-delay="400">
     <div>달에 가까운 쪽: 인력 &gt; 원심력 → <b class="c1">달 쪽</b>으로</div>
@@ -896,7 +897,7 @@ html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why{visib
     <g data-in="200" data-fx="fade">
       <g stroke="#e8e8ed" stroke-width="2"><path d="M200 770H1740M200 680H1740M200 590H1740M200 500H1740M200 410H1740" fill="none"/></g>
       <path d="M200 860H1750M200 860V400" stroke="#1d1d1f" stroke-width="3" fill="none" stroke-linecap="round"/>
-      <g id="s13-xt" fill="#6e6e73" font-size="22" text-anchor="middle"></g>
+      <g id="s13-xt" fill="#6e6e73" font-size="24" text-anchor="middle"></g>
       <g fill="#6e6e73" font-size="24" text-anchor="end"><text x="186" y="868">0</text><text x="186" y="778">2</text><text x="186" y="688">4</text><text x="186" y="598">6</text><text x="186" y="508">8</text><text x="186" y="418">10</text></g>
       <text x="120" y="380" font-size="26" font-weight="600" fill="#1d1d1f">해수면 높이 (m)</text>
       <text x="1750" y="936" text-anchor="end" font-size="26" font-weight="600" fill="#1d1d1f">양력 (일)</text>
@@ -915,7 +916,7 @@ html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why{visib
     <g data-step="4" data-fx="fade" font-size="30" font-weight="700" text-anchor="middle" fill="var(--c3)"><text x="860.6" y="396">조금</text><text x="1589.5" y="396">조금</text></g>
   </svg>
   <div class="say-line" style="top:950px;font-size:38px" data-step="5">약 <span class="act">15일</span>마다 사리와 조금이 반복 — 한 달에 두 번씩</div>
-  <div class="fine" style="font-size:22px;bottom:30px">모식 그래프: 2023년 5월 인천 앞바다 조석(국립해양조사원)의 특징을 단순화함 · 실제 사리는 망·삭보다 1~2일 늦기도 한다</div>
+  <div class="fine" style="bottom:30px">모식 그래프: 2023년 5월 인천 앞바다 조석(국립해양조사원)의 특징을 단순화함 · 실제 사리는 망·삭보다 1~2일 늦기도 한다</div>
 </section>
 
 <!-- ═══ s13v 사리·조금 vs 만조·간조 ═══ -->
@@ -1714,7 +1715,7 @@ const S11Q={xs:[400,960,1520],labs:[['고위도 지역','A · 65°N'],['중위�
     [0,12,24].forEach(h=>{const tt=U.el('text',{x:G.x0+G.sx*h,y:772,'text-anchor':'middle','font-size':24,fill:'#a1a1a6'},g);tt.textContent=h+(h===24?'시':'');});
     U.el('path',{id:'s11q-g'+i,stroke:'var(--c3)','stroke-width':5,fill:'none','stroke-linecap':'round','stroke-linejoin':'round'},g);
     U.el('circle',{id:'s11q-gd'+i,r:9,fill:'var(--c3)'},g);
-    const mk=U.el('g',{id:'s11q-mk'+i,'font-size':22,'font-weight':700,'text-anchor':'middle'},g);
+    const mk=U.el('g',{id:'s11q-mk'+i,'font-size':24,'font-weight':700,'text-anchor':'middle'},g);
     S11Q.ext=S11Q.ext||[];S11Q.ext[i]=s11ext(S11.lats[i]);
     S11Q.ext[i].forEach((e,j)=>{
       const ex=G.x0+G.sx*e.t,ey=G.y0+(1-e.h)*G.amp,col=e.hi?'var(--c3)':'var(--c1)';
@@ -1805,8 +1806,8 @@ S11L.ids.forEach((P,i)=>{
     const tx=U.el('text',{x:x.toFixed(1),y:(v>0?y-16:y+32).toFixed(1),'text-anchor':'middle','font-size':24,'font-weight':700,fill:col},gd);tx.textContent=lb;
   });
   U.el('path',{d:'M'+(Xd(2)+40)+' '+Yd(1)+'V'+Yd(-1),stroke:'#6e6e73','stroke-width':2,'stroke-dasharray':'4 5'},gd);
-  const tz=U.el('text',{x:Xd(2)+50,y:110,'font-size':22,fill:'#6e6e73'},gd);tz.textContent='조차';
-  [0,12,24].forEach(h=>{const t=U.el('text',{x:Xd(h),y:240,'text-anchor':h?(h===24?'end':'middle'):'start','font-size':22,fill:'#6e6e73'},gd);t.textContent=h+'시';});
+  const tz=U.el('text',{x:Xd(2)+50,y:110,'font-size':24,fill:'#6e6e73'},gd);tz.textContent='조차';
+  [0,12,24].forEach(h=>{const t=U.el('text',{x:Xd(h),y:240,'text-anchor':h?(h===24?'end':'middle'):'start','font-size':24,fill:'#6e6e73'},gd);t.textContent=h+'시';});
   // 한 달: 0~30일, 조차가 약 15일 주기로 커졌다 작아졌다. 사리 = 달+태양(1+0.46), 조금 = 달−태양(1−0.46) → 조금 조차는 사리의 약 37%
   const gm=$id('s13v-month'),Xm=d=>40+22.5*d,A=d=>(1+.46*Math.cos(TAU*d/14.77))/1.46,pm=[],up=[],dn=[];
   for(let d=0;d<=30;d+=.02){const v=A(d)*Math.cos(TAU*d*24/12.42);pm.push(Xm(d).toFixed(1)+' '+(105-62*v).toFixed(1));}
@@ -1817,7 +1818,7 @@ S11L.ids.forEach((P,i)=>{
   [[0,'사리','var(--c1)'],[7.385,'조금','var(--c3)'],[14.77,'사리','var(--c1)'],[22.155,'조금','var(--c3)'],[29.54,'사리','var(--c1)']].forEach(([d,lb,col])=>{
     const t=U.el('text',{x:Math.min(700,Math.max(62,Xm(d))).toFixed(1),y:26,'text-anchor':'middle','font-size':24,'font-weight':700,fill:col},gm);t.textContent=lb;
   });
-  [0,15,30].forEach(d=>{const t=U.el('text',{x:Xm(d),y:240,'text-anchor':d?(d===30?'end':'middle'):'start','font-size':22,fill:'#6e6e73'},gm);t.textContent=d+'일';});
+  [0,15,30].forEach(d=>{const t=U.el('text',{x:Xm(d),y:240,'text-anchor':d?(d===30?'end':'middle'):'start','font-size':24,fill:'#6e6e73'},gm);t.textContent=d+'일';});
 })();
 
 /* ── 움직이는 장면 ── */
