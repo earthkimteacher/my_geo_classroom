@@ -1243,8 +1243,8 @@ Deck.start=function(){
   });
   addEventListener('mousemove',pokeHud);addEventListener('touchstart',pokeHud,{passive:true});
   let tx=null;
-  addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
-  addEventListener('touchend',e=>{if(tx===null||OV)return;const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>60){dx<0?next():prev();}},{passive:true});
+  addEventListener('touchstart',e=>{tx=LZ.on?null:e.touches[0].clientX;},{passive:true});   // 레이저로 긋는 동안은 밀기(장 넘기기)로 보지 않는다
+  addEventListener('touchend',e=>{if(tx===null||OV||LZ.on){tx=null;return;}const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>60){dx<0?next():prev();}},{passive:true});
   addEventListener('keydown',e=>{
     if(e.metaKey||e.ctrlKey||e.altKey)return;
     if(e.target.closest&&e.target.closest('#markbox,#resume'))return;
