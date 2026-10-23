@@ -9,12 +9,12 @@
 ### 과학탐구실험2 (고1)
 | 단원 | 자료 | 바로 열기 |
 |---|---|---|
-| I.06. 생활 속 문제를 과학으로 해결해 볼까? | 슬라이드 — 학교 주변 환경 탐구 1차시 | [열기](https://earth.esbest.net/과학탐구실험2/I.06environment.html) · [학생용 PDF](https://earth.esbest.net/과학탐구실험2/PDF/I.06environment_학생용.pdf) |
+| I.06. 생활 속 문제를 과학으로 해결해 볼까? | 슬라이드 — 학교 주변 환경 탐구 | [열기](https://earth.esbest.net/과학탐구실험2/I.06environment.html) · [학생용 PDF](https://earth.esbest.net/과학탐구실험2/PDF/I.06environment_학생용.pdf) |
 
 ### 통합과학2 (고1)
 | 단원 | 자료 | 바로 열기 |
 |---|---|---|
-| II.1.3. 지구 환경의 변화 | 슬라이드 — 6~9차시 · 복사 평형부터 엘니뇨까지 | [열기](https://earth.esbest.net/통합과학2/II.1.3climate.html) |
+| II.1.3. 지구 환경의 변화 | 슬라이드 — 복사 평형부터 엘니뇨까지 | [열기](https://earth.esbest.net/통합과학2/II.1.3climate.html) |
 
 ### 지구과학 (고2)
 | 시뮬레이터 | 바로 열기 |
@@ -25,7 +25,7 @@
 ### 지구시스템과학 (고2)
 | 단원 | 자료 | 바로 열기 |
 |---|---|---|
-| II.05. 조석 | 슬라이드 — 13·14차시 | [열기](https://earth.esbest.net/지구시스템과학/II.05tide.html) · [학생용 PDF](https://earth.esbest.net/지구시스템과학/PDF/II.05tide_학생용.pdf) |
+| II.05. 조석 | 슬라이드 | [열기](https://earth.esbest.net/지구시스템과학/II.05tide.html) · [학생용 PDF](https://earth.esbest.net/지구시스템과학/PDF/II.05tide_학생용.pdf) |
 
 ## 슬라이드 사용법
 
