@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>지구시스템과학 - II.04. 해일 - 진광고등학교 교사 김덕영</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<!--
+═══════════════════════════════════════════════════════════════════
+ 수업 슬라이드 엔진 (단일 파일, 외부 라이브러리 없음 — 글꼴만 CDN)
+
+ [슬라이드 추가 방법]
+ 1) <section class="slide" id="s17" data-tile="dark" data-title="제목" data-notes="발표자 노트"> ... </section> 를 추가
+    data-tile : black | dark | graphite (어두운 면)  /  light | parchment (밝은 면)
+ 2) 등장 효과는 HTML 속성으로:
+    data-in="300"            장면에 들어올 때 저절로 (값 = 지연 ms)
+    data-step="2"            2번째 클릭에서 나타남
+    data-fx="rise|fade|pop|left|up|scale|draw|wipe"   등장 모양 (draw = SVG 선 그리기)
+    data-delay / data-dur    지연·길이(ms)
+ 3) 더 복잡한 움직임은 하단 <script>에서 Deck.scene('s17', { enter(c){}, go(c,k){} }) 로 작성
+    c.reveal / c.a / c.tween / c.count / c.loop / c.wait 사용 (장면을 떠나면 자동 정리)
+ 4) 오른쪽 위 키워드 표시는 window.KW 의 items(이름), at(슬라이드별 키워드 번호, 없으면 -1)
+
+ [단축키]  → Space 다음 · ← 이전 · N 노트 · O 목차 · P 일시정지 · L 레이저 포인터 · B/W 검은/흰 화면 · F 전체 화면 · ? 도움말
+ [주소 옵션] ?s=1 학생 모드(노트 숨김) · ?still=1 컨트롤 숨김 정지 화면 · #3 3번 슬라이드 · &k=2 2단계 상태
+═══════════════════════════════════════════════════════════════════
+-->
+<style>
+:root{
+  --white:#fff; --parch:#f5f5f7; --black:#000; --dark:#1d1d1f; --graphite:#272729;
+  --ink:#1d1d1f; --on-dark:#f5f5f7;
+  --c1:#64D2FF; --c2:#FFD60A; --c3:#FF6A3D; --c4:#30D158;
+  --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+  --ease-out:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:#000}
+body{font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word;user-select:none;-webkit-user-select:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+/* 무대 */
+#viewport{position:fixed;inset:0;overflow:hidden;background:#000}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center center;overflow:hidden;background:#000}
+.slide{position:absolute;inset:0;display:none;overflow:hidden;isolation:isolate}
+.slide.is-on{display:block;z-index:2}
+.slide.is-out{display:block;z-index:1}
+
+/* 면(타일) */
+.slide[data-tile="black"]{background:#000;color:var(--on-dark)}
+.slide[data-tile="dark"]{background:var(--dark);color:var(--on-dark)}
+.slide[data-tile="graphite"]{background:var(--graphite);color:var(--on-dark)}
+.slide[data-tile="light"]{background:#fff;color:var(--ink)}
+.slide[data-tile="parchment"]{background:var(--parch);color:var(--ink)}
+.slide[data-tile="black"],.slide[data-tile="dark"],.slide[data-tile="graphite"]{--t2:#a1a1a6;--t3:#8e8e93;--hl:#3a3a3c;--act:#2997ff}
+.slide[data-tile="light"],.slide[data-tile="parchment"]{--c1:#0077B6;--c2:#9A7400;--c3:#C4391B;--c4:#1E8B3E;--t2:#6e6e73;--t3:#6e6e73;--hl:#e0e0e0;--act:#0066cc}
+
+/* 글자 체계 (무대 px, 최소 24) */
+.t-title{font-size:84px;font-weight:600;line-height:1.1;letter-spacing:-.025em}
+.t-lead{font-size:44px;font-weight:400;line-height:1.3;letter-spacing:-.012em}
+.t-eyebrow{font-size:30px;font-weight:600;line-height:1.2;letter-spacing:.01em;color:var(--t2)}
+.t-cap{font-size:26px;line-height:1.35}
+.num{font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.abs{position:absolute} .center{text-align:center}
+.mute{color:var(--t2)} .mute2{color:var(--t3)}
+.c1{color:var(--c1)} .c2{color:var(--c2)} .c3{color:var(--c3)} .c4{color:var(--c4)} .act{color:var(--act)}
+.full-svg{position:absolute;inset:0;width:1920px;height:1080px;overflow:visible}
+svg text{font-family:var(--font)}
+.f-c1{fill:var(--c1)} .f-c2{fill:var(--c2)} .f-c3{fill:var(--c3)} .f-c4{fill:var(--c4)}
+.s-hl{stroke:var(--hl)} .tb{transform-box:fill-box;transform-origin:center}
+
+/* 선언형 등장 */
+[data-in],[data-step]{opacity:0}
+[data-fx="draw"],[data-fx="draw"] :is(path,line,polyline,polygon,circle,ellipse,rect){stroke-dasharray:1 1;stroke-dashoffset:1}
+[data-fx="draw"]{opacity:1}
+svg [data-in],svg [data-step]{transform-box:fill-box;transform-origin:center}
+
+/* 장면 머리 */
+.hd{position:absolute;left:120px;top:78px;right:120px;z-index:3}
+.hd .eb{font-size:28px;font-weight:600;color:var(--t2);margin-bottom:10px}
+.hd .eb b{color:var(--act);font-weight:700;margin-right:.35em}
+.hd h2{font-size:66px;font-weight:600;line-height:1.1;letter-spacing:-.028em}
+
+/* 학습지 카드와 빈칸 */
+.ws-card{position:absolute;border-radius:18px;padding:30px 44px 26px;background:#f5f5f7;z-index:3}
+.slide[data-tile="parchment"] .ws-card{background:#fff}
+.slide[data-tile="black"] .ws-card,.slide[data-tile="dark"] .ws-card,.slide[data-tile="graphite"] .ws-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+.ws-card .ws-h{display:flex;align-items:baseline;gap:18px;margin-bottom:6px}
+.ws-card .ws-h b{font-size:40px;font-weight:700;letter-spacing:-.02em}
+.ws-card .ws-h span{font-size:28px;color:var(--t2)}
+.ws-row{display:grid;grid-template-columns:130px 1fr;gap:22px;align-items:baseline;font-size:38px;line-height:1.55;padding:12px 0;border-top:1px solid var(--hl)}
+.ws-row:first-of-type{border-top:0}
+.ws-row .tm{font-size:26px;font-weight:600;color:var(--t2)}
+.ws-row .tm.term{font-size:1.1em;font-weight:800;color:inherit;line-height:1.3;letter-spacing:-.01em}   /* 용어 이름표: 설명보다 크고 진하게(개념 색은 style로) */
+.bk{position:relative;display:inline-block;min-width:3.2em;margin:0 .2em 0 42px;padding:0 .3em;text-align:center;line-height:1.3;white-space:nowrap;border-bottom:4px solid #c7c7cc}
+.slide[data-tile="black"] .bk,.slide[data-tile="dark"] .bk,.slide[data-tile="graphite"] .bk{border-bottom-color:#48484a}
+.bk .a{display:inline-block;font-weight:700;color:var(--act)}
+.bk .n{position:absolute;left:-36px;top:50%;margin-top:-15px;min-width:30px;height:30px;padding:0 4px;box-sizing:border-box;border-radius:9999px;background:var(--act);color:#fff;font-size:24px;font-weight:700;line-height:30px;text-align:center}   /* 번호(24px)는 빈칸 바로 왼쪽에 — 프로젝터에서도 읽히게 */
+.say-line{position:absolute;left:120px;right:120px;text-align:center;font-size:44px;font-weight:600;letter-spacing:-.02em;z-index:3}
+.fine{position:absolute;left:120px;bottom:40px;font-size:24px;color:var(--t3);z-index:3}
+
+/* 수식 */
+.eq-big{font-size:150px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.eq-cap{font-size:38px;color:var(--t2);margin-top:14px}
+.eq-in{font-size:44px;font-weight:600;line-height:1.5}
+
+/* 확인 문제 */
+.qz{position:absolute;left:120px;top:84px;width:1680px;display:flex;flex-direction:column;gap:24px}
+.qz-eb{display:flex;align-items:center;gap:14px;font-size:30px;font-weight:600;color:var(--t2)}
+.qz-eb b{color:var(--act);font-weight:700}
+.qz-lv{display:inline-flex;padding:2px 14px;border-radius:9999px;border:2px solid var(--hl);font-size:26px}
+.qz-stem{font-size:40px;font-weight:600;line-height:1.42;letter-spacing:-.015em}
+.qz-ch{list-style:none;display:flex;flex-direction:column;gap:8px}
+.qz-ch li{position:relative;display:flex;gap:18px;font-size:38px;line-height:1.38;padding:12px 150px 12px 20px;border-radius:14px}
+.qz-n{flex:none;font-weight:700;color:var(--t2)}
+.qz-hl{position:absolute;inset:0;border-radius:14px;border:3px solid var(--act);background:color-mix(in srgb,var(--act) 10%,transparent);pointer-events:none}
+.qz-mark{position:absolute;right:18px;top:50%;margin-top:-.78em;font-size:30px;font-weight:700;color:#fff;background:var(--act);border-radius:9999px;padding:3px 18px}
+.qz-why{border-radius:18px;background:#fff;border-left:6px solid var(--act);padding:22px 30px 24px}
+.qz-why-h{font-size:26px;font-weight:700;color:var(--act);margin-bottom:6px}
+.qz-why-t{font-size:32px;line-height:1.5}
+.qz-why b{color:var(--act)}
+
+/* 정리 카드 */
+.rc{position:absolute;top:290px;width:520px;height:560px;border-radius:18px;background:#fff;padding:34px 34px;display:flex;flex-direction:column;gap:14px}
+.rc .no{font-size:26px;font-weight:700;color:var(--act)}
+.rc h3{font-size:46px;font-weight:600;letter-spacing:-.02em;line-height:1.15}
+.rc p{font-size:30px;line-height:1.5}
+.rc .big{margin-top:auto;font-size:52px;font-weight:700;letter-spacing:-.02em}
+
+/* 키워드 진행 표시 */
+#kwbar{position:absolute;top:34px;right:44px;z-index:30;display:flex;align-items:center;gap:8px;opacity:0;transform:translateY(-8px);pointer-events:none;transition:opacity .45s var(--ease-out),transform .45s var(--ease-out)}
+#kwbar.show{opacity:1;transform:none;pointer-events:auto}
+#kwbar .kw{display:flex;align-items:center;height:46px;min-width:46px;border-radius:9999px;background:rgba(0,0,0,.055);color:#86868b;font-size:24px;font-weight:600;line-height:1;transition:background .45s,color .45s}
+#kwbar .kw b{width:46px;height:46px;flex:none;display:grid;place-items:center;font-weight:700}
+#kwbar .kw span{max-width:0;overflow:hidden;white-space:nowrap;transition:max-width .6s var(--ease-out),padding .6s var(--ease-out)}
+#kwbar .kw.done{background:rgba(0,0,0,.13);color:#3a3a3c}
+#kwbar .kw.cur{background:#0066cc;color:#fff}
+#kwbar .kw.cur span{max-width:460px;padding-right:22px}
+body:not(.on-light) #kwbar .kw{background:rgba(255,255,255,.1);color:#8e8e93}
+body:not(.on-light) #kwbar .kw.done{background:rgba(255,255,255,.24);color:#f5f5f7}
+body:not(.on-light) #kwbar .kw.cur{background:#2997ff;color:#fff}
+
+/* 하단 컨트롤(HUD) */
+#resume,#markbox{position:fixed;left:50%;top:24px;transform:translateX(-50%);z-index:60;padding:14px 16px 14px 22px;border-radius:16px;background:rgba(28,28,30,.95);color:#f5f5f7;font-size:17px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.35);max-width:calc(100vw - 32px)}
+#resume{display:flex;align-items:center;gap:12px}
+#resume span{line-height:1.4} #resume small{display:block;font-size:13px;font-weight:500;color:#a1a1a6} #resume b{color:#ffd60a}
+#resume button,#markbox button{flex:none;border:0;border-radius:10px;padding:10px 16px;font:inherit;font-size:16px;cursor:pointer;background:#3a3a3c;color:#f5f5f7}
+#resume button.go,#markbox button.go{background:#0a84ff}
+/* 책갈피 창: 반마다 이름을 붙여 여러 개 저장, 누르면 그 장·단계로 이동 */
+#markbox{width:540px;max-height:calc(100vh - 48px);overflow:auto;padding:16px 18px}
+#markbox .t{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px} #markbox .t b{font-size:19px} #markbox .t span{font-size:13px;font-weight:500;color:#a1a1a6}
+#markbox .add{display:flex;gap:8px}
+#markbox input{flex:1;min-width:0;border:1px solid #48484a;border-radius:10px;background:#1c1c1e;color:#f5f5f7;font:inherit;font-size:16px;font-weight:500;padding:10px 12px}
+#markbox .now{font-size:13px;font-weight:500;color:#a1a1a6;margin:7px 2px 12px}
+#markbox ul{list-style:none;display:flex;flex-direction:column;gap:6px;margin:0;padding:0}
+#markbox li{display:flex;gap:6px}
+#markbox li .jump{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;background:#2c2c2e;padding:9px 14px}
+#markbox li .jump b{max-width:100%;font-size:17px;color:#ffd60a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#markbox li .jump span{max-width:100%;font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#markbox li .jump small{font-size:12px;font-weight:500;color:#a1a1a6}
+#markbox li .jump:hover{background:#3a3a3c} #markbox li .jump.here{box-shadow:inset 0 0 0 2px #0a84ff}
+#markbox li .upd,#markbox li .x{padding:0 12px;font-size:14px}
+#markbox li .x.sure{background:#ff453a}
+#markbox li.empty{font-size:14px;font-weight:500;color:#a1a1a6;padding:6px 2px;line-height:1.5}
+#markbox .foot{display:flex;justify-content:flex-end;margin-top:12px}
+#hud button.on{background:#ffd60a}
+#hud{position:fixed;right:22px;bottom:18px;display:flex;align-items:center;gap:8px;z-index:50;opacity:0;transform:translateY(8px);transition:opacity .35s var(--ease-out),transform .35s var(--ease-out);pointer-events:none}
+#hud.show{opacity:1;transform:none;pointer-events:auto}
+#hud button{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(210,210,215,.64);color:#1d1d1f;-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);transition:transform .15s var(--ease-out)}
+#hud button:active{transform:scale(.92)}
+#hud #b-laser.on{background:#ff2d55;color:#fff}
+#hud #b-pause.on{background:#0066cc;color:#fff}
+#b-pause .i-play,#b-pause.on .i-pause{display:none} #b-pause.on .i-play{display:block}
+html.paused #hud{opacity:1;transform:none;pointer-events:auto}   /* 멈춘 동안은 컨트롤을 계속 보여 줌 */
+body.notes-open #hud{bottom:calc(34vh + 18px)}   /* 노트가 열려도 컨트롤이 가려지지 않게 */
+/* 레이저 포인터(L): 화면 위 투명 캔버스. 켜져 있는 동안 클릭은 슬라이드로 가지 않는다 */
+#laser{position:fixed;inset:0;width:100vw;height:100vh;z-index:49;display:none;cursor:none;touch-action:none}
+#laser.on{display:block}
+html.still #laser{display:none!important}
+#hud button svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#hud .count{min-width:84px;height:44px;border-radius:9999px;display:grid;place-items:center;padding:0 16px;background:rgba(210,210,215,.64);color:#1d1d1f;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px)}
+#progress{position:fixed;left:0;right:0;bottom:0;height:3px;z-index:40}
+#progress i{display:block;height:100%;width:0;background:rgba(255,255,255,.38);transition:width .5s var(--ease-out),background .4s}
+body.on-light #progress i{background:rgba(0,0,0,.22)}
+/* 쪽 번호 + 단계 점(화면 아래 가운데, 늘 보임): 바탕(알약 모양)을 깔아 화면 위아래 검은 여백(16:9가 아닌 화면)이나 밝은 장에서도 보이게.
+   좁은 화면에서는 오른쪽 아래 도구 모음이 가운데까지 오므로, 도구 모음이 보이는 동안 그 위로 올라간다 */
+#stepdots{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);display:flex;align-items:center;gap:10px;z-index:40;padding:6px 14px;border-radius:9999px;background:rgba(28,28,30,.72);transition:bottom .35s var(--ease-out),opacity .35s}
+#stepdots .pg{font-size:14px;font-weight:700;line-height:1;color:#f5f5f7;font-variant-numeric:tabular-nums;white-space:nowrap}
+#stepdots .pg small{font-size:12px;font-weight:600;color:#a1a1a6}
+#stepdots i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.32);transition:background .3s,transform .3s}
+#stepdots i.on{background:#fff;transform:scale(1.15)}
+body.on-light #stepdots{background:rgba(255,255,255,.9);box-shadow:0 1px 6px rgba(0,0,0,.28)} body.on-light #stepdots .pg{color:#1d1d1f} body.on-light #stepdots .pg small{color:#6e6e73} body.on-light #stepdots i{background:rgba(0,0,0,.18)} body.on-light #stepdots i.on{background:rgba(0,0,0,.7)}
+body.notes-open #stepdots{bottom:calc(34vh + 12px)}
+@media (max-width:1440px){
+  body:has(#hud.show) #stepdots,html.paused #stepdots{bottom:72px}
+  body.notes-open:has(#hud.show) #stepdots,html.paused body.notes-open #stepdots{bottom:calc(34vh + 72px)}
+}
+
+/* 덮개: 노트·도움말·화면 끄기 */
+.overlay{position:fixed;inset:0;z-index:60;display:none}
+.overlay.show{display:block}
+#notes{position:fixed;left:0;right:0;bottom:0;height:34vh;z-index:55;transform:translateY(102%);transition:transform .45s var(--ease-out);background:rgba(22,22,23,.88);color:#f5f5f7;-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);padding:22px 40px 26px;overflow:auto}
+#notes.show{transform:none}
+#notes-x{position:absolute;top:14px;right:22px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.14);color:#f5f5f7;font-size:18px}
+#notes-x:hover{background:rgba(255,255,255,.26)}
+#notes .nh{font-size:15px;color:#a1a1a6;font-weight:600;margin-bottom:10px} #notes .nh b{color:#f5f5f7;font-size:18px;margin-right:10px}
+#notes p{font-size:clamp(17px,1.55vw,24px);line-height:1.6;max-width:1500px}
+/* 목차(O): 실제 슬라이드가 작아져 격자로 펼쳐지고, 누르면 그 장으로 확대되어 들어간다 */
+#stage.ov{background:#111113}
+#stage.ov .slide{display:block;cursor:pointer;transform-origin:0 0;border-radius:var(--ovr);outline:var(--ovw) solid rgba(255,255,255,.14);transition:transform .55s var(--ease-out),opacity .35s ease,outline-color .2s}
+#stage.ov .slide *{pointer-events:none}
+#stage.ov .slide.is-on{outline-color:#2997ff}
+#stage.ov:not(.ov-out) :is(.slide:hover,.slide.sel){outline-color:#f5f5f7}
+#stage.ov .slide:not(.is-on) :is([data-in],[data-step]){opacity:1!important}   /* 썸네일은 다 나온 상태로 */
+#stage.ov .slide:not(.is-on) :is([data-fx="draw"],[data-fx="draw"] :is(path,line,polyline,polygon,circle,ellipse,rect)){stroke-dashoffset:0!important}
+#stage.ov .slide.pick{z-index:5;outline-color:transparent}
+#stage.ov-out .slide:not(.pick){opacity:0}
+#stage.ov #kwbar{opacity:0;pointer-events:none}
+#ovl{position:absolute;inset:0;z-index:4;display:none;pointer-events:none;color:#f5f5f7;transition:opacity .3s}
+#stage.ov #ovl{display:block} #stage.ov-out #ovl{opacity:0}
+#ovl .ovh{position:absolute;top:44px;font-size:44px;font-weight:700;letter-spacing:-.01em}
+#ovl .ovh span{margin-left:24px;font-size:24px;font-weight:500;color:#a1a1a6}
+#ovl .oc{position:absolute;line-height:1.25}
+#ovl .oc b,#ovl .oc span{display:block;font-size:24px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#ovl .oc b{font-weight:700;color:#64D2FF} #ovl .oc.cur b{color:#2997ff}
+#ovl .oc span{font-weight:600}
+#help{background:rgba(0,0,0,.6);place-items:center} #help.show{display:grid}
+#help .box{background:#fff;color:#1d1d1f;border-radius:18px;padding:34px 40px;min-width:520px}
+#help h3{font-size:24px;margin-bottom:16px} #help table{border-collapse:collapse;font-size:17px} #help td{padding:7px 18px 7px 0;border-bottom:1px solid #f0f0f0}
+#help kbd{display:inline-block;min-width:30px;padding:3px 9px;border-radius:8px;background:#f5f5f7;border:1px solid #e0e0e0;font:600 15px var(--font);text-align:center}
+#blank{position:fixed;inset:0;z-index:70;display:none} #blank.black{display:block;background:#000} #blank.white{display:block;background:#fff}
+html.still #hud,html.still #progress,html.still #stepdots{display:none!important}
+html.student #notes{display:none!important}
+/* ?print=1: 어두운 장을 흰 배경으로 인쇄할 때 원래 밝은 글자·선·면을 어둡게(또는 연하게) 바꾼다 */
+html.print .slide{background:#fff!important}
+html.print .was-dark [fill="#f5f5f7"]{fill:#1d1d1f}
+html.print .was-dark [stroke="#f5f5f7"]{stroke:#1d1d1f}
+html.print .was-dark [style*="background:rgba(255,255,255"]{background:rgba(0,0,0,.09)!important}   /* 어두운 면에서 흐린 흰색으로 깐 바탕(막대의 100% 칸 등)은 흰 종이에서 사라지므로 연한 회색으로 */
+html.print .was-dark [style*="dashed #f5f5f7"],html.print .was-dark [style*="solid #f5f5f7"]{border-color:#1d1d1f!important}   /* 범례의 흰 점선 등 */
+html.print .slide[data-tile="parchment"] .ws-card,html.print .qz-why,html.print .rc,html.print .box{background:#f5f5f7}   /* 회색 바탕 위 흰 카드는 흰 종이에서 사라지므로 연한 회색으로 */
+html.print .was-dark [fill="#1c1c1e"]{fill:#f2f2f7}
+html.print .was-dark [fill="#3a3a3c"]{fill:#8e8e93}
+html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why{visibility:hidden!important}   /* ?ans=0: 빈칸 정답·문제 풀이 숨김(학생용 인쇄) */
+@media (prefers-reduced-motion: reduce){ .slide *{scroll-behavior:auto} }
+/* 그림 크게 보기(2026-10-26): 장 안의 그림 상자 .pic(figure > img)을 누르면 무대 가운데에 크게 띄움 */
+.pic{position:absolute;margin:0;border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.06),0 12px 30px rgba(0,0,0,.10);z-index:2;cursor:zoom-in}
+.pic img{display:block;width:100%;height:100%;object-fit:contain}
+.pic.cv img{object-fit:cover}   /* 사진만: 가장자리를 조금 잘라 칸을 채움(도표·글자 든 그림은 쓰지 않음) */
+.pic::after{content:'';position:absolute;right:16px;bottom:16px;width:52px;height:52px;border-radius:9999px;background:rgba(29,29,31,.62) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='M15.5 15.5L21 21M10.5 7.5v6M7.5 10.5h6'/%3E%3C/svg%3E") center/28px no-repeat;opacity:0;transition:opacity .25s;pointer-events:none}
+.pic:hover::after{opacity:1}
+html.still .pic,html.print .pic{cursor:default}
+html.still .pic::after,html.print .pic::after{display:none}
+#zoom{position:absolute;inset:0;z-index:60;display:none;background:rgba(0,0,0,0);transition:background .32s var(--ease-out);cursor:zoom-out}
+#zoom.on{display:block}
+#zoom.show{background:rgba(0,0,0,.8)}
+#zoom img{position:absolute;border-radius:18px;background:#fff;box-shadow:0 24px 80px rgba(0,0,0,.45);transform-origin:0 0}
+/* 부분 확대(2026-10-26): 브라우저 자체 확대·두 번 톡 확대를 막고 엔진이 직접 확대 */
+#viewport{touch-action:none}
+#zbadge{position:fixed;top:12px;left:50%;transform:translate(-50%,-8px);z-index:45;display:flex;align-items:center;gap:10px;padding:5px 6px 5px 16px;border-radius:9999px;background:rgba(28,28,30,.8);color:#f5f5f7;font-size:15px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
+#zbadge.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+#zbadge b{font-variant-numeric:tabular-nums}
+#zbadge button{border:0;border-radius:9999px;padding:6px 14px;font:inherit;font-weight:700;color:#1d1d1f;background:#f5f5f7;cursor:pointer}
+html.zoomed #viewport{cursor:grab}
+
+/* ── 해일 수업에서 추가한 스타일 ──
+   격자(모든 장 공통): 좌우 여백 120px → 내용 x 120~1800(폭 1680), 머리(.hd) 아래 내용 시작 y 250,
+   단·개체 사이 40px, 카드 안쪽 여백 좌우 36px, 내용 아래 끝 y 990 이내 */
+.kw-n{width:380px;top:690px;font-size:44px;font-weight:700;letter-spacing:-.025em}
+.kw-s{width:380px;top:756px;font-size:30px}
+/* 머리 아래 첫 줄 */
+.lead{position:absolute;left:120px;right:120px;top:250px;font-size:40px;font-weight:600;line-height:1.4;letter-spacing:-.015em;z-index:3}
+.lead.mu{font-weight:500;color:var(--t2)}
+.lead b{font-weight:700;color:var(--ink)}
+/* 그림 상자 .pic(누르면 크게 보기)는 엔진에 있음. 그림 위 이름표만 여기서 */
+.pic .tag{position:absolute;left:20px;top:20px;display:inline-flex;align-items:center;height:56px;padding:0 24px;border-radius:9999px;background:rgba(29,29,31,.8);color:#fff;font-size:30px;font-weight:700;letter-spacing:-.01em}
+/* 학습지 카드: 줄 글자 36px, 용어는 1.1배 굵게(엔진 .tm.term), 항목 이름(.tm)은 28px 회색 */
+.ws-card{padding:26px 36px}
+.ws-card.eq{display:flex;flex-direction:column;justify-content:center}
+.ws-card .ws-row{font-size:36px;line-height:1.5;padding:14px 0}
+.ws-card .ws-row .tm{font-size:28px}
+.ws-card .ws-row .tm.term{font-size:1.1em}
+.ws-card.st .ws-row{grid-template-columns:1fr;gap:2px}
+.ws-card.side .ws-row{grid-template-columns:180px 1fr;gap:24px}
+.ws-card .ws-row .mu{color:var(--t2);font-size:30px}
+.ws-card .ws-row .mu .fr{font-size:.84em}   /* 분수 글자도 24px 이상 */
+.ws-card.num .ws-row{grid-template-columns:44px 1fr;gap:18px;align-items:start}
+.ws-card.num .no{font-size:36px;font-weight:700;line-height:1.5}   /* 항목 번호는 글자로(빈칸 번호 원과 헷갈리지 않게) */
+/* 그림 아래 이름 */
+.cap{position:absolute;font-size:30px;font-weight:700;color:var(--t2);z-index:3}
+/* 흐름 칩(원인 → 결과): 카드 안에서 줄마다 첫 칸(72px)을 비우거나 →·또는을 넣어 칩의 왼쪽 끝을 맞춤 */
+.ws-card.flow{display:flex;flex-direction:column;justify-content:center;gap:24px}
+.flow .fr-row{display:flex;align-items:center;gap:16px;flex-wrap:nowrap}
+.flow .fr-row.alt{border-top:2px dashed var(--hl);padding-top:24px}
+.flow .ld{flex:none;width:72px;text-align:center}
+.flow .ch{display:inline-flex;align-items:center;height:70px;padding:0 28px;border-radius:9999px;background:#f5f5f7;font-size:34px;font-weight:600;letter-spacing:-.015em;white-space:nowrap}
+.flow .ar{font-size:34px;font-weight:700;color:var(--t2)}
+.flow .or{font-size:34px;font-weight:700;color:var(--t2)}
+/* 식 */
+.m{font-family:'Cambria Math','Times New Roman',serif;font-style:italic;font-weight:400}
+.mr{font-family:'Cambria Math','Times New Roman',serif;font-weight:400}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;font-size:.8em;line-height:1.05;margin:0 .1em;font-family:'Cambria Math','Times New Roman',serif;font-weight:400}
+.fr i{font-style:normal;padding:0 .16em;border-bottom:.07em solid currentColor}
+.fr b{font-weight:400}
+.sq{white-space:nowrap;font-family:'Cambria Math','Times New Roman',serif;font-weight:400}
+.sq .in{font-style:italic;border-top:.06em solid currentColor;padding:0 .08em}
+/* 인터랙티브 장: 장면 상자(x 120~1800, y 250~850) + 아래 조작 막대(y 874~962) */
+.ia-box{position:absolute;left:120px;top:250px;width:1680px;height:600px;border-radius:18px;overflow:hidden;z-index:1}
+.ia-box svg{display:block;width:1680px;height:600px}
+.ia-panel{position:absolute;left:120px;width:1680px;top:874px;height:88px;display:flex;align-items:center;gap:28px;padding:0 32px;border-radius:18px;background:#f5f5f7;font-size:32px;font-weight:600;color:var(--ink);z-index:5}
+.ia-panel label{display:flex;align-items:center;gap:16px;white-space:nowrap}
+.ia-panel input[type=range]{width:340px;height:40px;accent-color:var(--act);cursor:pointer}
+.ia-panel .val{min-width:140px;font-variant-numeric:tabular-nums;color:var(--act);font-weight:700}
+.ia-btn{border:0;border-radius:12px;height:62px;padding:0 24px;font:inherit;font-size:32px;font-weight:700;color:#fff;background:#1d1d1f;cursor:pointer;white-space:nowrap}
+.ia-btn.sub{background:#d1d1d6;color:#1d1d1f}
+.ia-chk{display:flex;align-items:center;gap:12px;cursor:pointer}
+.ia-chk input{width:30px;height:30px;accent-color:var(--act);cursor:pointer}
+.ia-stat{margin-left:auto;display:flex;align-items:center;gap:32px}
+.ia-stat .st{display:flex;flex-direction:column;line-height:1.12;white-space:nowrap}
+.ia-stat .st i{font-style:normal;font-size:26px;font-weight:600;color:var(--t2)}
+.ia-stat .st b{font-size:36px;font-weight:800;color:var(--act);font-variant-numeric:tabular-nums}
+html.print .ia-panel{display:none}
+#s03-card .ws-row{padding:10px 0}
+.ws-card .v-eq{font-size:64px;line-height:1.3;margin:10px 0 6px}
+/* 인쇄: 표지의 넓은 어두운 면을 연하게 */
+html.print #s01 .full-svg>rect{fill:#fff}
+html.print #s01 #s01-water{fill:#d6e9f6}
+html.print #s01 #s01-land,html.print #s01 #s01-town{fill:#d1d1d6}
+html.print #s01 #s01-cloud,html.print #s01 #s01-lamp{display:none}
+</style>
+</head>
+<body>
+
+<div id="viewport"><div id="stage">
+
+<!-- ═══ s01 표지 ═══ -->
+<section class="slide" id="s01" data-tile="black" data-title="표지" data-notes="">
+  <svg class="full-svg" viewBox="0 0 1920 1080" id="s01-svg">
+    <defs>
+      <linearGradient id="s01-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#010307"/><stop offset="1" stop-color="#10243a"/></linearGradient>
+      <linearGradient id="s01-sea" gradientUnits="userSpaceOnUse" x1="0" y1="760" x2="0" y2="1080"><stop offset="0" stop-color="#1b5d8f"/><stop offset="1" stop-color="#03101b"/></linearGradient>
+      <filter id="s01-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="40"/></filter>
+      <filter id="s01-glow" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="14"/></filter>
+    </defs>
+    <rect width="1920" height="1080" fill="url(#s01-sky)"/>
+    <g id="s01-cloud" fill="#9fb3c8" opacity=".09" filter="url(#s01-blur)">
+      <ellipse cx="300" cy="170" rx="380" ry="70"/><ellipse cx="1000" cy="110" rx="460" ry="80"/><ellipse cx="1600" cy="230" rx="360" ry="64"/><ellipse cx="2300" cy="150" rx="420" ry="72"/>
+    </g>
+    <path id="s01-water" fill="url(#s01-sea)" opacity=".95"/>
+    <path id="s01-crest" fill="none" stroke="#64D2FF" stroke-opacity=".5" stroke-width="3"/>
+    <path id="s01-land" fill="#070b10"/>
+    <path id="s01-edge" fill="none" stroke="#33465b" stroke-width="3"/>
+    <g id="s01-town" fill="#070b10" stroke="#33465b" stroke-width="2"></g>
+    <circle id="s01-lamp" r="16" fill="#FFD60A" opacity=".55" filter="url(#s01-glow)"/>
+  </svg>
+  <div class="abs" style="right:120px;top:80px;font-size:26px;font-weight:600;color:#a1a1a6;letter-spacing:-.01em" data-in="900">2026 진광고등학교 교사 김덕영</div>
+  <div class="abs t-eyebrow" style="left:160px;top:300px" data-in="900">지구시스템과학 · Ⅱ. 해수의 운동과 순환</div>
+  <div class="abs t-title" style="left:156px;top:350px;font-size:150px;letter-spacing:-.04em" data-in="1100">04. 해일</div>
+  <div class="abs t-lead mute" style="left:160px;top:540px" data-in="1500">폭풍 해일 · 지진 해일</div>
+</section>
+
+<!-- ═══ s02 오늘의 키워드 ═══ -->
+<section class="slide" id="s02" data-tile="light" data-title="오늘의 키워드" data-notes="">
+  <div class="hd" data-in><div class="eb">학습 안내</div><h2>오늘의 키워드</h2></div>
+  <svg class="full-svg" viewBox="0 0 1920 1080">
+    <path d="M330 600H1590" stroke="#e8e8ed" stroke-width="12" stroke-linecap="round" fill="none"/>
+    <path d="M330 600H1590" stroke="var(--act)" stroke-width="12" stroke-linecap="round" fill="none" data-in="500" data-fx="draw" data-dur="2000"/>
+    <g data-in="500" data-fx="pop"><circle cx="330" cy="600" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="330" y="617" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">1</text></g>
+    <g data-in="1000" data-fx="pop"><circle cx="750" cy="600" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="750" y="617" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">2</text></g>
+    <g data-in="1500" data-fx="pop"><circle cx="1170" cy="600" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="1170" y="617" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">3</text></g>
+    <g data-in="2000" data-fx="pop"><circle cx="1590" cy="600" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="1590" y="617" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">4</text></g>
+  </svg>
+  <div class="abs center kw-n" style="left:140px" data-in="650">해일</div>
+  <div class="abs center mute kw-s" style="left:140px" data-in="750">천해파의 성질</div>
+  <div class="abs center kw-n" style="left:560px" data-in="1150">폭풍 해일</div>
+  <div class="abs center mute kw-s" style="left:560px" data-in="1250">낮은 중심 기압 · 강풍</div>
+  <div class="abs center kw-n" style="left:980px" data-in="1650">지진 해일</div>
+  <div class="abs center mute kw-s" style="left:980px" data-in="1750">파장이 매우 긴 파동</div>
+  <div class="abs center kw-n" style="left:1400px" data-in="2150">피해와 대처</div>
+  <div class="abs center mute kw-s" style="left:1400px" data-in="2250">만조 · 방파제 · 대피</div>
+</section>
+
+<!-- ═══ s03 지난 시간 — 해파의 분류 (PPT 2쪽) ═══ -->
+<section class="slide" id="s03" data-tile="parchment" data-title="지난 시간에 배운 내용 — 해파의 분류" data-notes="">
+  <div class="hd" data-in><div class="eb">지난 시간에 배운 내용</div><h2>해파의 분류</h2></div>
+  <div class="lead mu" data-in="200">파장과 수심의 관계에 따라 심해파, 전이파(천이파), 천해파로 나눈다.</div>
+  <figure class="pic" id="s03-pic" style="left:120px;top:346px;width:640px;height:476px" data-in="350" data-fx="fade"><img src="img/II.04/p2_해파의_운동.png" alt="천해파에서 물 입자의 운동"></figure>
+  <div class="ws-card st eq" id="s03-card" style="left:800px;top:346px;width:1000px;height:476px;padding-top:20px;padding-bottom:20px" data-in="450">
+    <div class="ws-row"><span class="tm term">천해파</span><span>수심이 파장의 <span class="bk"><span class="a" data-step="1" data-fx="pop"><span class="fr"><i>1</i><b>20</b></span></span><span class="n">1</span></span>보다 얕은 곳에서 전달되는 해파<br><span class="mu">수심<span class="mr">(</span><span class="m">h</span><span class="mr">) &lt; </span><span class="fr"><i>1</i><b>20</b></span>파장<span class="mr">(</span><span class="m">L</span><span class="mr">)</span></span></span></div>
+    <div class="ws-row"><span class="tm term">물 입자의 운동</span><span>해저면의 영향으로 물 입자는 <span class="bk"><span class="a" data-step="2" data-fx="pop">타원</span><span class="n">2</span></span> 운동을 한다.<br>→ 수심이 깊어질수록 타원이 납작해지고,<br>해저면에서는 <span class="bk"><span class="a" data-step="3" data-fx="pop">직선 왕복</span><span class="n">3</span></span> 운동을 한다.</span></div>
+  </div>
+  <div class="ws-card side" id="s03-v" style="left:120px;top:862px;width:1680px;padding-top:20px;padding-bottom:20px" data-in="550">
+    <div class="ws-row"><span class="tm term">전파 속도</span><span>천해파의 전파 속도<span class="mr">(v) = </span><span class="bk"><span class="a" data-step="4" data-fx="pop"><span class="sq">√<span class="in">gh</span></span></span><span class="n">4</span></span> <span class="mu">(g: 중력 가속도, h: 수심)</span></span></div>
+  </div>
+</section>
+
+<!-- ═══ s04 해일이란? (PPT 3쪽) ═══ -->
+<section class="slide" id="s04" data-tile="light" data-title="해일이란?" data-notes="">
+  <div class="hd" data-in><div class="eb"><b>1</b>해일</div><h2>해일이란?</h2></div>
+  <div class="ws-card side" id="s04-card" style="left:120px;top:250px;width:1680px" data-in="200">
+    <div class="ws-row"><span class="tm term">해일</span><span>여러 원인에 의해 해수면의 높이가 <span class="bk"><span class="a" data-step="1" data-fx="pop">급격하게 상승</span><span class="n">1</span></span>하여<br>해수가 육지로 밀려드는 현상</span></div>
+    <div class="ws-row"><span class="tm">종류</span><span>크게 <span class="bk"><span class="a" data-step="2" data-fx="pop">폭풍 해일</span><span class="n">2</span></span>과 <span class="bk"><span class="a" data-step="3" data-fx="pop">지진 해일</span><span class="n">3</span></span>(쓰나미)로 나눌 수 있으며,<br>둘 다 <span class="bk"><span class="a" data-step="4" data-fx="pop">천해파</span><span class="n">4</span></span>의 성질을 갖는다.</span></div>
+  </div>
+  <figure class="pic cv" id="s04-p1" style="left:120px;top:615px;width:820px;height:375px" data-in="400" data-fx="fade"><img src="img/II.04/p3_폭풍해일.jpg" alt="폭풍 해일 영상 장면"><span class="tag" data-step="2" data-fx="pop">폭풍 해일</span></figure>
+  <figure class="pic cv" id="s04-p2" style="left:980px;top:615px;width:820px;height:375px" data-in="550" data-fx="fade"><img src="img/II.04/p3_지진해일.jpg" alt="지진 해일 사진"><span class="tag" data-step="3" data-fx="pop">지진 해일(쓰나미)</span></figure>
+</section>
+
+<!-- ═══ s05 폭풍 해일 (PPT 4쪽) ═══ -->
+<section class="slide" id="s05" data-tile="parchment" data-title="폭풍 해일" data-notes="">
+  <div class="hd" data-in><div class="eb"><b>2</b>폭풍 해일</div><h2>폭풍 해일</h2></div>
+  <div class="ws-card side" id="s05-card" style="left:120px;top:250px;width:1680px" data-in="200">
+    <div class="ws-row"><span class="tm term">폭풍 해일</span><span>강한 중위도 저기압이나 태풍 등이 해안으로 접근할 때,<br><span class="bk"><span class="a" data-step="1" data-fx="pop">낮은 중심 기압</span><span class="n">1</span></span>과 <span class="bk"><span class="a" data-step="2" data-fx="pop">강풍</span><span class="n">2</span></span>에 의해 해수면이 급격하게 상승하여 일어나는 해일</span></div>
+    <div class="ws-row"><span class="tm">기압</span><span>해면 기압이 1hPa 낮아지면 해수면은 약 <span class="bk"><span class="a" data-step="3" data-fx="pop">1cm</span><span class="n">3</span></span> 높아진다.</span></div>
+    <div class="ws-row"><span class="tm">성질</span><span>파장이 길어 <span class="bk"><span class="a" data-step="4" data-fx="pop">천해파</span><span class="n">4</span></span>의 성질을 띤다.</span></div>
+  </div>
+  <figure class="pic" id="s05-pic" style="left:120px;top:644px;width:590px;height:346px" data-in="400" data-fx="fade"><img src="img/II.04/p4_기압과_해수면.png" alt="기압과 해수면 높이"></figure>
+  <div class="ws-card flow" id="s05-flow" style="left:750px;top:644px;width:1050px;height:346px" data-in="450">
+    <div class="fr-row"><span class="ld"></span><span class="ch" data-step="5" data-fx="left">저기압 중심</span><span class="ar" data-step="5" data-delay="150" data-fx="fade">→</span><span class="ch" data-step="5" data-delay="250" data-fx="left">상승 기류</span><span class="ar" data-step="5" data-delay="400" data-fx="fade">→</span><span class="ch" data-step="5" data-delay="500" data-fx="left">물을 빨아들임</span></div>
+    <div class="fr-row"><span class="ld ar" data-step="6" data-fx="fade">→</span><span class="ch" data-step="6" data-delay="100" data-fx="left">지나가면 다시 물이 하강</span><span class="ar" data-step="6" data-delay="250" data-fx="fade">→</span><span class="ch" data-step="6" data-delay="350" data-fx="left">물이 출렁</span></div>
+    <div class="fr-row alt"><span class="ld or" data-step="7" data-fx="fade">또는</span><span class="ch" data-step="7" data-delay="150" data-fx="left">바람이 불어서 물을 이동시킴</span></div>
+  </div>
+</section>
+
+<!-- ═══ s05i 폭풍 해일 — 직접 해 보기 (PPT 4쪽 인터랙티브 표기) ═══ -->
+<section class="slide" id="s05i" data-tile="light" data-title="폭풍 해일 — 직접 해 보기" data-notes="PPT 4쪽 표기(폭풍 이동과 해수면 변화, 중심 기압의 변화와 해수면 상승 정도를 조절할 수 있게)에 따라 만든 인터랙티브 자료입니다. 중심 기압 막대를 움직이면 저기압 아래 해수면이 1 hPa에 약 1 cm씩 높아집니다(1013 hPa 기준). [폭풍 이동]을 누르면 저기압이 해안으로 다가가고, 해수면이 높아진 곳도 함께 움직여 해안에 닿으면 바닷물이 육지로 밀려듭니다. [강풍]을 켜면 바람이 바닷물을 해안 쪽으로 밀어 해안의 해수면이 더 높아집니다(초록 화살표. 바람에 의한 몫은 바람의 세기와 해안 지형에 따라 크게 달라 숫자로 나타내지 않음). 해수면 높이는 그림에서 크게 과장했습니다.">
+  <div class="hd" data-in><div class="eb"><b>2</b>폭풍 해일</div><h2>직접 해 보기 — 중심 기압과 해수면 높이</h2></div>
+  <div class="ia-box" data-in="200" data-fx="fade"><svg id="s05i-svg" viewBox="0 0 1680 600"></svg></div>
+  <div class="ia-panel" data-in="350">
+    <label>중심 기압 <input id="s05i-range" type="range" min="900" max="1010" step="5" value="950"><span class="val" id="s05i-pv">950 hPa</span></label>
+    <button class="ia-btn" id="s05i-go" type="button">폭풍 이동 ▶</button>
+    <button class="ia-btn sub" id="s05i-reset" type="button">처음으로</button>
+    <label class="ia-chk"><input id="s05i-wind" type="checkbox">강풍</label>
+    <div class="ia-stat"><div class="st"><i>기압에 의한 해수면 상승</i><b id="s05i-h">약 63 cm</b></div></div>
+  </div>
+  <div class="fine">모식 그림 · 해수면 높이는 크게 과장 · 기압에 의한 상승은 1 hPa당 약 1 cm(1013 hPa 기준)로 계산</div>
+</section>
+
+<!-- ═══ s06 지진 해일 (PPT 5쪽) ═══ -->
+<section class="slide" id="s06" data-tile="parchment" data-title="지진 해일" data-notes="">
+  <div class="hd" data-in><div class="eb"><b>3</b>지진 해일</div><h2>지진 해일</h2></div>
+  <div class="ws-card side" id="s06-card" style="left:120px;top:250px;width:1680px" data-in="200">
+    <div class="ws-row"><span class="tm term">지진 해일</span><span>해저에서 지진, 화산 폭발, 단층 운동 등의 갑작스런 지각 변동이 발생할 때,<br><span class="bk"><span class="a" data-step="1" data-fx="pop">파장이 매우 긴 파동</span><span class="n">1</span></span>이 형성되어 해안가로 밀려오면서 생긴 해일</span></div>
+    <div class="ws-row"><span class="tm">특징</span><span>해안가로 밀려오면서 속도가 <span class="bk"><span class="a" data-step="2" data-fx="pop">느려지고</span><span class="n">2</span></span>,<br>파장이 <span class="bk"><span class="a" data-step="3" data-fx="pop">짧아지며</span><span class="n">3</span></span>, 파고가 <span class="bk"><span class="a" data-step="4" data-fx="pop">높아진다</span><span class="n">4</span></span>.</span></div>
+  </div>
+  <figure class="pic" id="s06-pic" style="left:120px;top:615px;width:1187px;height:375px" data-in="400" data-fx="fade"><img src="img/II.04/p5_지진해일_전파.png" alt="지진 해일의 발생과 전파"></figure>
+  <div class="ws-card st eq" id="s06-v" style="left:1347px;top:615px;width:453px;height:375px" data-in="500">
+    <div class="ws-row"><span class="tm">천해파의 전파 속도</span><span class="v-eq"><span class="mr">v = </span><span class="sq">√<span class="in">gh</span></span></span><span class="mu">g: 중력 가속도<br>h: 수심</span></div>
+  </div>
+</section>
+
+<!-- ═══ s06i 지진 해일 — 직접 해 보기 (PPT 5쪽 인터랙티브 표기) ═══ -->
+<section class="slide" id="s06i" data-tile="light" data-title="지진 해일 — 직접 해 보기" data-notes="PPT 5쪽 표기(해안가로 파동이 밀려오면서 파고가 높아지고 속도가 느려지는 것이 잘 드러나도록)에 따라 만든 인터랙티브 자료입니다. [재생]을 누르면 해저 지진으로 생긴 파동이 해안으로 밀려옵니다. 속도는 천해파의 전파 속도 v = √(gh)로 계산했습니다(수심 4000 m 약 700 km/h, 1000 m 약 350 km/h, 20 m 약 50 km/h로 어림해 보여 줌 — 앞 장 교과서 그림의 값과 같음). 점들은 같은 시간 간격마다 파동의 위치를 찍은 것으로, 해안에 가까울수록 간격이 좁아져 속도가 느려지는 것이 보입니다. 파고는 수심의 네제곱근에 반비례한다고 놓고(그린의 법칙) 계산했고, 파장은 주기가 같을 때 속도에 비례하므로 폭이 좁아집니다. 그림 위쪽 글은 교과서 그림의 번호 글(②~⑤)을 그대로 씁니다. 시간 막대를 끌어 원하는 위치에서 멈춰 설명할 수 있습니다. 수심, 거리, 파고는 그림에서 실제 비율과 다릅니다.">
+  <div class="hd" data-in><div class="eb"><b>3</b>지진 해일</div><h2>직접 해 보기 — 해안가로 밀려오는 지진 해일</h2></div>
+  <div class="ia-box" data-in="200" data-fx="fade"><svg id="s06i-svg" viewBox="0 0 1680 600"></svg></div>
+  <div class="ia-panel" data-in="350">
+    <button class="ia-btn" id="s06i-go" type="button">재생 ▶</button>
+    <label>시간 <input id="s06i-range" type="range" min="0" max="1000" step="1" value="0"></label>
+    <label class="ia-chk"><input id="s06i-dots" type="checkbox" checked>같은 시간 간격 표시</label>
+    <div class="ia-stat"><div class="st"><i>파고</i><b id="s06i-a">처음의 1.0배</b></div></div>
+  </div>
+  <div class="fine">모식 그림 · 수심·거리·파고는 실제 비율과 다름 · 속도는 v = √(gh)로 계산</div>
+</section>
+
+<!-- ═══ s07 해일로 인한 피해 (PPT 6쪽) ═══ -->
+<section class="slide" id="s07" data-tile="light" data-title="해일로 인한 피해" data-notes="">
+  <div class="hd" data-in><div class="eb"><b>4</b>피해와 대처</div><h2>해일로 인한 피해</h2></div>
+  <div class="lead" data-in="200">해일 발생 당시의 기압, 만조 시기, 해안 및 해저 지형 등에 따라 달라진다.</div>
+  <figure class="pic" id="s07-pic" style="left:120px;top:346px;width:700px;height:600px" data-in="350" data-fx="fade"><img src="img/II.04/p6_해일_피해.jpg" alt="만조 때 폭풍 해일"></figure>
+  <div class="ws-card num eq" id="s07-card" style="left:860px;top:346px;width:940px;height:600px" data-in="450">
+    <div class="ws-row"><span class="no">1.</span><span>해수면이 높아지는 <span class="bk"><span class="a" data-step="1" data-fx="pop">만조</span><span class="n">1</span></span> 때 태풍이 통과하면<br>폭풍 해일의 피해가 더 커진다.</span></div>
+    <div class="ws-row"><span class="no">2.</span><span>태풍의 <span class="bk"><span class="a" data-step="2" data-fx="pop">위험 반원</span><span class="n">2</span></span>에 해안이 위치하면<br>폭풍 해일의 피해가 더 커진다.</span></div>
+    <div class="ws-row"><span class="no">3.</span><span>수심이 급격하게 <span class="bk"><span class="a" data-step="3" data-fx="pop">얕아지는</span><span class="n">3</span></span> 곳,<br>만과 같이 폐쇄된 해역에서는<br>폭풍 해일의 세기가 더 강해진다.</span></div>
+    <div class="ws-row"><span class="no">4.</span><span>지진의 <span class="bk"><span class="a" data-step="4" data-fx="pop">규모</span><span class="n">4</span></span>가 크면 해일 피해가 커진다.</span></div>
+  </div>
+</section>
+
+<!-- ═══ s08 해일에 대처하는 방법 (PPT 7쪽) ═══ -->
+<section class="slide" id="s08" data-tile="light" data-title="해일에 대처하는 방법" data-notes="">
+  <div class="hd" data-in><div class="eb"><b>4</b>피해와 대처</div><h2>해일에 대처하는 방법</h2></div>
+  <div class="ws-card" id="s08-card" style="left:120px;top:250px;width:1680px" data-in="200">
+    <div class="ws-row" style="grid-template-columns:1fr"><span>해안에 <span class="bk"><span class="a" data-step="1" data-fx="pop">방파제</span><span class="n">1</span></span>, 차수벽 등을 설치하여 해수의 유입을 막고,</span></div>
+    <div class="ws-row" style="grid-template-columns:1fr"><span>해일 발생 <span class="bk"><span class="a" data-step="2" data-fx="pop">예보나 경보</span><span class="n">2</span></span> 발령 시 즉시 <span class="bk"><span class="a" data-step="3" data-fx="pop">안전한 곳</span><span class="n">3</span></span>으로 대피한다.</span></div>
+  </div>
+  <figure class="pic cv" id="s08-p1" style="left:120px;top:509px;width:512px;height:420px" data-step="1" data-fx="fade"><img src="img/II.04/p7_방파제.jpg" alt="방파제"></figure>
+  <div class="cap" style="left:120px;top:949px" data-step="1" data-delay="200">방파제</div>
+  <figure class="pic" id="s08-p2" style="left:672px;top:509px;width:342px;height:420px" data-step="2" data-fx="fade"><img src="img/II.04/p7_지진해일_정보.png" alt="지진 해일 정보"></figure>
+  <div class="cap" style="left:672px;top:949px" data-step="2" data-delay="200">예보·경보</div>
+  <figure class="pic" id="s08-p3" style="left:1054px;top:509px;width:746px;height:420px" data-step="3" data-fx="fade"><img src="img/II.04/p7_긴급대피장소.jpg" alt="긴급대피장소 표지판"></figure>
+  <div class="cap" style="left:1054px;top:949px" data-step="3" data-delay="200">긴급대피장소</div>
+</section>
+
+<div id="kwbar-host"></div>
+</div></div>
+
+<!-- 하단 컨트롤 -->
+<div id="progress"><i></i></div>
+<div id="stepdots"></div>
+<div id="hud">
+  <button id="b-prev" aria-label="이전"><svg viewBox="0 0 20 20"><path d="M12.5 4 6.5 10l6 6"/></svg></button>
+  <div class="count" id="count">1 / 1</div>
+  <button id="b-next" aria-label="다음"><svg viewBox="0 0 20 20"><path d="M7.5 4l6 6-6 6"/></svg></button>
+  <button id="b-pause" aria-label="애니메이션 일시정지 (P)"><svg class="i-pause" viewBox="0 0 20 20"><path d="M7 4.5v11M13 4.5v11"/></svg><svg class="i-play" viewBox="0 0 20 20"><path d="M7 4.5l9 5.5-9 5.5z"/></svg></button>
+  <button id="b-mark" aria-label="책갈피 (M)"><svg viewBox="0 0 20 20"><path d="M5.5 3h9v14l-4.5-3.5L5.5 17z"/></svg></button>
+  <button id="b-notes" aria-label="발표자 노트 (N)"><svg viewBox="0 0 20 20"><path d="M4 5h12M4 10h12M4 15h7"/></svg></button>
+  <button id="b-laser" aria-label="레이저 포인터 (L)"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="2.6"/><path d="M10 2.5v3M10 14.5v3M2.5 10h3M14.5 10h3"/></svg></button>
+  <button id="b-ov" aria-label="목차 (O)"><svg viewBox="0 0 20 20"><rect x="3" y="3" width="5.5" height="5.5" rx="1"/><rect x="11.5" y="3" width="5.5" height="5.5" rx="1"/><rect x="3" y="11.5" width="5.5" height="5.5" rx="1"/><rect x="11.5" y="11.5" width="5.5" height="5.5" rx="1"/></svg></button>
+  <button id="b-fs" aria-label="전체 화면 (F)"><svg viewBox="0 0 20 20"><path d="M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4"/></svg></button>
+</div>
+<div id="notes"><button id="notes-x" aria-label="노트 닫기 (N 또는 Esc)">✕</button><div class="nh"><b id="notes-t"></b>발표자 노트</div><p id="notes-p"></p></div>
+<div class="overlay" id="help"><div class="box"><h3>단축키</h3><table>
+  <tr><td><kbd>→</kbd> <kbd>Space</kbd></td><td>다음 (클릭도 가능)</td></tr>
+  <tr><td><kbd>←</kbd></td><td>이전</td></tr>
+  <tr><td><kbd>N</kbd></td><td>발표자 노트</td></tr>
+  <tr><td><kbd>O</kbd></td><td>목차 (누르면 그 장으로)</td></tr>
+  <tr><td><kbd>B</kbd> <kbd>W</kbd></td><td>검은 화면 / 흰 화면</td></tr>
+  <tr><td><kbd>F</kbd></td><td>전체 화면</td></tr>
+  <tr><td><kbd>M</kbd></td><td>책갈피 목록 (반마다 저장 · 눌러서 이동)</td></tr>
+  <tr><td><kbd>P</kbd></td><td>애니메이션 일시정지 · 이어서 재생 (멈춘 상태에서 → 도 재생)</td></tr>
+  <tr><td><kbd>L</kbd></td><td>레이저 포인터 켜기·끄기 (누른 채 움직이면 선, 떼면 사라짐)</td></tr>
+  <tr><td>두 손가락 벌리기<br>트랙패드 핀치 · Ctrl+휠</td><td>부분 확대 (확대 중 끌어서 옮기기 · 두 번 톡이나 Esc로 원래대로)</td></tr>
+  <tr><td><kbd>Esc</kbd></td><td>덮개 닫기</td></tr></table></div></div>
+<div id="blank"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   엔진: 1920×1080 무대 · 장면(enter + 클릭 단계 go) · 선언형 등장 · 복원 후 순간 재생
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+'use strict';
+const SW=1920,SH=1080;
+const Q=new URLSearchParams(location.search);
+const STILL=Q.get('still')==='1', STUDENT=Q.get('s')==='1';
+const rootEl=document.documentElement;
+if(STILL)rootEl.classList.add('still');
+if(STUDENT)rootEl.classList.add('student');
+if(Q.get('ans')==='0')rootEl.classList.add('noans');
+if(Q.get('print')==='1')rootEl.classList.add('print');
+
+const EASE={out:'cubic-bezier(.2,.8,.2,1)',inOut:'cubic-bezier(.65,0,.35,1)',in:'cubic-bezier(.55,0,.75,.1)',spring:'cubic-bezier(.34,1.56,.64,1)',linear:'linear'};
+const JE={linear:t=>t,out:t=>1-Math.pow(1-t,3),inOut:t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,in:t=>t*t*t,quad:t=>t*t};
+const FX={
+  rise:{k:[{opacity:0,transform:'translateY(28px)'},{opacity:1,transform:'translateY(0px)'}],dur:800},
+  fade:{k:[{opacity:0},{opacity:1}],dur:600},
+  scale:{k:[{opacity:0,transform:'scale(.92)'},{opacity:1,transform:'scale(1)'}],dur:800},
+  pop:{k:[{opacity:0,transform:'scale(.5)'},{opacity:1,transform:'scale(1)'}],dur:700,ease:'spring'},
+  left:{k:[{opacity:0,transform:'translateX(-64px)'},{opacity:1,transform:'translateX(0px)'}],dur:800},
+  up:{k:[{opacity:0,transform:'translateY(72px)'},{opacity:1,transform:'translateY(0px)'}],dur:900},
+  draw:{k:[{opacity:1,strokeDashoffset:1},{opacity:1,strokeDashoffset:0}],dur:1100,ease:'inOut'},
+  wipe:{k:[{opacity:1,clipPath:'inset(0 100% 0 0)'},{opacity:1,clipPath:'inset(0 0% 0 0)'}],dur:900,ease:'inOut'}
+};
+const GEOM='path,line,polyline,polygon,circle,ellipse,rect';
+const STUB={finished:Promise.resolve(),cancel(){},finish(){}};
+const NS='http://www.w3.org/2000/svg';
+const U={el(tag,attrs={},parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}};
+
+/* 일시정지(P, HUD 버튼): 루프·tween·wait는 PAUSED를 보고 시간을 멈추고, WAAPI 애니메이션은 pause/play.
+   다음(→·클릭)을 누르면 이어서 재생하고, 장·단계가 바뀌면 자동으로 풀린다 */
+let PAUSED=false,pausedAnims=[];
+function setPause(v){
+  if(v===PAUSED)return;PAUSED=v;
+  if(v){
+    pausedAnims=document.getAnimations().filter(a=>{
+      if(a.playState!=='running')return false;
+      const t=a.effect&&a.effect.target;return !(t&&t.closest&&t.closest('#hud,#notes,#kwbar,#ovl'));
+    });
+    pausedAnims.forEach(a=>{try{a.pause();}catch(e){}});
+  }else{pausedAnims.forEach(a=>{try{a.play();}catch(e){}});pausedAnims=[];}
+  rootEl.classList.toggle('paused',v);
+  const b=document.getElementById('b-pause');if(b){b.classList.toggle('on',v);b.setAttribute('aria-label',v?'이어서 재생 (P)':'애니메이션 일시정지 (P)');}
+}
+
+/* 장면 도구 상자: 장면을 떠나면 dispose 로 타이머·루프·애니메이션이 한꺼번에 정리된다 */
+class Ctx{
+  constructor(root){this.root=root;this.instant=false;this.alive=true;this._anims=[];this._loops=[];this._timers=[];this._waits=[];this._tweens=[];}
+  $(s){return this.root.querySelector(s);}
+  $$(s){return Array.from(this.root.querySelectorAll(s));}
+  _els(x){if(typeof x==='string')return this.$$(x);if(!x)return [];if(x instanceof Element)return [x];return Array.from(x);}
+  a(el,kf,o={}){
+    if(typeof el==='string')el=this.$(el);
+    if(!el||!this.alive)return STUB;
+    const inst=this.instant&&o.iter!==Infinity;
+    const an=el.animate(kf,{duration:inst?0:(o.dur??700),delay:inst?0:(o.delay??0),easing:EASE[o.ease]||o.ease||EASE.out,fill:o.fill||'both',iterations:o.iter??1,direction:o.dir||'normal'});
+    if(inst){try{an.finish();}catch(e){}}
+    this._anims.push(an);return an;
+  }
+  reveal(el,fx='rise',o={}){
+    let last=STUB;
+    this._els(el).forEach((e,i)=>{
+      const P=FX[fx]||FX.rise;
+      const d=Object.assign({dur:P.dur,ease:P.ease||'out'},o);
+      if(o.stagger)d.delay=(o.delay||0)+i*o.stagger;
+      if(fx==='draw'){
+        const geo=(e.matches&&e.matches(GEOM))?[e]:Array.from(e.querySelectorAll(GEOM));
+        geo.forEach(g=>{g.setAttribute('pathLength','1');g.style.strokeDasharray='1 1';last=this.a(g,P.k,d);});
+      }else last=this.a(e,P.k,d);
+    });
+    return last;
+  }
+  wait(ms){
+    if(this.instant||!this.alive)return Promise.resolve();
+    return this.tween(ms,()=>{},{noInit:true,ease:'linear'});   // 일시정지 중에는 기다리는 시간도 멈춘다
+  }
+  tween(dur,fn,o={}){
+    const ease=typeof o.ease==='function'?o.ease:(JE[o.ease]||JE.out);
+    if(this.instant||!this.alive){if(this.alive)fn(1,1);return Promise.resolve();}
+    return new Promise(res=>{
+      let start=null,done=false,id=0;const tw={};
+      const rm=()=>{const i=this._tweens.indexOf(tw);if(i>=0)this._tweens.splice(i,1);};
+      tw.finish=()=>{if(done)return;done=true;cancelAnimationFrame(id);rm();try{fn(1,1);}catch(e){console.error(e);}res();};
+      tw.kill=()=>{if(done)return;done=true;cancelAnimationFrame(id);rm();res();};
+      this._tweens.push(tw);
+      if(!o.noInit){try{fn(0,0);}catch(e){console.error(e);}}
+      const delay=o.delay||0;let last=null;
+      const tick=now=>{
+        if(done)return;
+        if(PAUSED){if(start!==null&&last!==null)start+=now-last;last=now;id=requestAnimationFrame(tick);return;}   // 멈춘 시간만큼 뒤로 민다
+        last=now;
+        if(start===null)start=now+delay;
+        const t=(now-start)/dur;
+        if(t<0){id=requestAnimationFrame(tick);return;}
+        if(t>=1){tw.finish();return;}
+        try{fn(ease(t),t);}catch(e){console.error(e);tw.kill();return;}
+        id=requestAnimationFrame(tick);
+      };
+      id=requestAnimationFrame(tick);
+    });
+  }
+  count(el,from,to,o={}){
+    if(typeof el==='string')el=this.$(el);
+    if(!el)return Promise.resolve();
+    const fmt=o.fmt||(v=>String(Math.round(v)));
+    return this.tween(o.dur??1000,p=>{el.textContent=fmt(from+(to-from)*p);},{ease:o.ease||'out',delay:o.delay});
+  }
+  loop(fn){
+    const L={on:true,t:0,last:null,id:0};
+    const tick=now=>{
+      if(!L.on||!this.alive)return;
+      if(PAUSED){L.last=now;L.id=requestAnimationFrame(tick);return;}
+      const dt=L.last===null?0:Math.min(.05,(now-L.last)/1000);L.last=now;L.t+=dt;
+      try{fn(L.t,dt);}catch(e){console.error(e);L.on=false;return;}
+      L.id=requestAnimationFrame(tick);
+    };
+    L.stop=()=>{L.on=false;cancelAnimationFrame(L.id);};
+    L.id=requestAnimationFrame(tick);this._loops.push(L);return L;
+  }
+  isBusy(){
+    if(this._waits.length||this._tweens.length)return true;
+    return this._anims.some(a=>{try{if(a.playState!=='running')return false;return a.effect.getComputedTiming().iterations!==Infinity;}catch(e){return false;}});
+  }
+  hurry(){
+    this.instant=true;
+    this._anims.forEach(a=>{try{if(a.effect.getComputedTiming().iterations!==Infinity&&a.playState==='running')a.finish();}catch(e){}});
+    this._tweens.slice().forEach(t=>t.finish());
+    this._waits.splice(0).forEach(w=>{clearTimeout(w.t);w.res();});
+  }
+  dispose(){
+    this.alive=false;
+    this._loops.forEach(l=>l.stop());
+    this._timers.forEach(id=>clearTimeout(id));
+    this._tweens.slice().forEach(t=>t.kill());
+    this._waits.splice(0).forEach(w=>{clearTimeout(w.t);w.res();});
+  }
+}
+
+const scenes={};
+const Deck={scene(id,def){scenes[id]=def;},list:[],i:-1,k:0,ctx:null,token:0,U,STILL};
+window.Deck=Deck;
+
+let stage,viewport,hud,progI,dotsEl,countEl,notesEl,notesT,notesP,ovl,helpEl,blankEl,kwbar,hudTimer;
+
+function stepsOf(sec){
+  if(sec.__steps!=null)return sec.__steps;
+  let m=+((scenes[sec.id]||{}).steps||0);
+  const tmp=document.createElement('div');tmp.innerHTML=sec.__pristine;
+  tmp.querySelectorAll('[data-step]').forEach(e=>{m=Math.max(m,+e.getAttribute('data-step')||0);});
+  return (sec.__steps=m);
+}
+const safe=async(fn,c)=>{try{await fn();}catch(e){if(c&&c.alive)console.error('[scene '+c.root.id+']',e);}};
+
+function runDecl(c,k){
+  if(k===0){
+    c.$$('[data-in]').forEach(el=>{
+      const v=el.getAttribute('data-in');
+      const delay=+(el.dataset.delay||(v&&!isNaN(+v)?v:0));
+      c.reveal(el,el.dataset.fx||'rise',{delay,dur:el.dataset.dur?+el.dataset.dur:undefined});
+    });
+  }else{
+    c.$$('[data-step="'+k+'"]').forEach(el=>{
+      c.reveal(el,el.dataset.fx||'rise',{delay:+(el.dataset.delay||0),dur:el.dataset.dur?+el.dataset.dur:undefined});
+    });
+  }
+}
+
+async function show(i,k=0,o={}){
+  const n=Deck.list.length;if(!n)return;
+  if(ZM)zoomClose(true);
+  if(i!==Deck.i)zvReset();
+  if(PAUSED)setPause(false);
+  i=Math.max(0,Math.min(n-1,i));
+  const to=Deck.list[i],from=Deck.i>=0?Deck.list[Deck.i]:null;
+  k=Math.max(0,Math.min(stepsOf(to),k));
+  const instant=!!o.instant||STILL, fade=!instant&&!o.noFade;   // noFade: 목차에서 확대해 들어갈 때(장면 등장은 그대로)
+  if(Deck.ctx){Deck.ctx.hurry();Deck.ctx.dispose();}
+  const token=++Deck.token;
+  if(from&&from!==to){
+    from.classList.remove('is-on');
+    if(!fade)from.classList.remove('is-out');
+    else{
+      from.classList.add('is-out');
+      const an=from.animate([{opacity:1},{opacity:0}],{duration:450,easing:'ease'});
+      from.__fade=an;an.onfinish=()=>{from.classList.remove('is-out');};
+    }
+  }
+  if(to.__fade){try{to.__fade.cancel();}catch(e){}to.__fade=null;}
+  to.innerHTML=to.__pristine;
+  to.classList.remove('is-out');to.classList.add('is-on');
+  if(from!==to&&fade)to.__fade=to.animate([{opacity:0},{opacity:1}],{duration:450,easing:'ease'});
+  const c=new Ctx(to);Deck.ctx=c;Deck.i=i;Deck.k=k;
+  document.body.classList.toggle('on-light',/light|parchment/.test(to.dataset.tile));
+  updateChrome();
+  const def=scenes[to.id]||{};
+  c.instant=instant||k>0;
+  await safe(async()=>{runDecl(c,0);if(def.enter)await def.enter(c);},c);
+  for(let j=1;j<=k;j++){
+    if(token!==Deck.token)return;
+    await safe(async()=>{runDecl(c,j);if(def.go)await def.go(c,j);},c);
+  }
+  if(token!==Deck.token)return;
+  c.instant=instant;
+}
+function stepTo(k){
+  const c=Deck.ctx,sec=Deck.list[Deck.i],def=scenes[sec.id]||{};
+  if(PAUSED)setPause(false);
+  c.instant=false;Deck.k=k;updateChrome();
+  safe(async()=>{runDecl(c,k);if(def.go)await def.go(c,k);},c);
+}
+function next(){
+  if(OV)return;
+  if(PAUSED){setPause(false);return;}   // 멈춘 상태에서 다음(→·클릭) = 이어서 재생
+  const c=Deck.ctx;
+  if(c&&c.isBusy()){c.hurry();return;}
+  const sec=Deck.list[Deck.i];
+  if(Deck.k<stepsOf(sec))stepTo(Deck.k+1);
+  else if(Deck.i<Deck.list.length-1)show(Deck.i+1,0);
+}
+function prev(){
+  if(OV)return;
+  if(Deck.k>0)show(Deck.i,Deck.k-1,{instant:true});
+  else if(Deck.i>0){const p=Deck.list[Deck.i-1];show(Deck.i-1,stepsOf(p),{instant:true});}
+}
+
+/* 크롬(컨트롤) */
+function updateChrome(){
+  if(LZ.cv)lzClear();   // 장·단계가 바뀌면 레이저로 그린 선을 지운다
+  const n=Deck.list.length,i=Deck.i,sec=Deck.list[i];
+  countEl.textContent=(i+1)+' / '+n;
+  progI.style.width=((i+1)/n*100)+'%';
+  const st=stepsOf(sec);
+  dotsEl.innerHTML='<span class="pg">'+(i+1)+'<small> / '+n+'</small></span>';   // 쪽 번호(늘 보임) + 이 장의 단계 점
+  for(let j=0;j<st;j++){const d=document.createElement('i');if(j<Deck.k)d.className='on';dotsEl.appendChild(d);}
+  notesT.textContent=(i+1)+'. '+(sec.dataset.title||'');
+  notesP.textContent=sec.dataset.notes||'(이 장면에는 노트가 없어요)';
+  syncKw();
+  try{history.replaceState(null,'','#'+(i+1));}catch(e){}
+  const mb=document.getElementById('b-mark');if(mb)mb.classList.toggle('on',readMarks().some(p=>p.i===i));   // 이 장에 책갈피가 있으면 노란 버튼
+}
+/* 책갈피(여러 개): 반마다 이름을 붙여 지금 장·단계를 저장해 두고, 목록에서 눌러 이동한다(직접 누를 때만 저장).
+   이 브라우저(localStorage)에만 저장되므로 기기·브라우저가 다르면 따로 저장된다. 다음에 열 때 이어 보기를 제안 */
+const MARK_KEY='deck-marks:'+location.pathname,MARK_OLD='deck-mark:'+location.pathname;
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function readMarks(){   // 최근에 저장한 것이 위로
+  let a=[];
+  try{a=JSON.parse(localStorage.getItem(MARK_KEY)||'[]');if(!Array.isArray(a))a=[];}catch(e){a=[];}
+  try{const o=JSON.parse(localStorage.getItem(MARK_OLD)||'null');   // 예전 형식(책갈피 하나·메모)이 남아 있으면 목록으로 옮긴다
+    if(o&&o.i>=0){a.push({name:o.memo||'책갈피',i:o.i,k:o.k||0,t:o.t||Date.now()});localStorage.setItem(MARK_KEY,JSON.stringify(a));localStorage.removeItem(MARK_OLD);}}catch(e){}
+  return a.filter(p=>p&&p.i>=0&&p.i<Deck.list.length).sort((x,y)=>(y.t||0)-(x.t||0));
+}
+function writeMarks(a){try{a.length?localStorage.setItem(MARK_KEY,JSON.stringify(a)):localStorage.removeItem(MARK_KEY);}catch(e){}updateChrome();}
+const fmtWhen=t=>{const d=new Date(t);return (d.getMonth()+1)+'월 '+d.getDate()+'일 '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');};
+const slideName=i=>(i+1)+'번 ‘'+(Deck.list[i].dataset.title||'')+'’';
+const posName=p=>slideName(p.i)+(p.k?' · '+p.k+'단계':'');
+function popup(id,html){  // 화면 위쪽 작은 창; 바깥을 누르거나 Esc로 닫힌다
+  document.getElementById('resume')?.remove();document.getElementById('markbox')?.remove();
+  const box=document.createElement('div');box.id=id;box.innerHTML=html;document.body.appendChild(box);
+  const outside=e=>{if(!box.contains(e.target))close();};
+  const key=e=>{if(e.key==='Escape'||!box.contains(e.target))close();};
+  function close(){box.remove();removeEventListener('pointerdown',outside,true);removeEventListener('keydown',key,true);}
+  addEventListener('pointerdown',outside,true);addEventListener('keydown',key,true);
+  return {box,close};
+}
+function openMark(){
+  const {box,close}=popup('markbox','<div class="t"><b>책갈피</b><span>이 브라우저에만 저장됩니다</span></div>'+
+    '<div class="add"><input maxlength="40" placeholder="이름 (예: 1-3반)"><button class="go">지금 위치 저장</button></div>'+
+    '<div class="now">지금 위치: '+esc(posName({i:Deck.i,k:Deck.k}))+' · 같은 이름으로 저장하면 그 책갈피를 바꿉니다</div><ul></ul>'+
+    '<div class="foot"><button class="no">닫기</button></div>');
+  const inp=box.querySelector('input'),ul=box.querySelector('ul');
+  const render=()=>{
+    const a=readMarks();
+    ul.innerHTML=a.length?a.map((p,n)=>'<li data-n="'+n+'"><button class="jump'+(p.i===Deck.i&&(p.k||0)===Deck.k?' here':'')+'"><b>'+esc(p.name||'책갈피')+'</b><span>'+esc(posName(p))+'</span><small>'+fmtWhen(p.t)+'에 저장</small></button>'+
+      '<button class="upd" title="이 책갈피를 지금 위치로 바꾸기">여기로</button><button class="x" title="지우기">✕</button></li>').join('')
+      :'<li class="empty">저장된 책갈피가 없습니다.<br>반 이름을 쓰고 ‘지금 위치 저장’을 누르세요.</li>';
+    ul.querySelectorAll('li[data-n]').forEach(li=>{
+      const n=+li.dataset.n,p=a[n],save=()=>{writeMarks(a);render();};
+      li.querySelector('.jump').onclick=()=>{close();show(p.i,p.k||0,{instant:true});};
+      li.querySelector('.upd').onclick=()=>{p.i=Deck.i;p.k=Deck.k;p.t=Date.now();save();};
+      const x=li.querySelector('.x');x.onclick=()=>{if(!x.classList.contains('sure')){x.classList.add('sure');x.textContent='지우기';return;}a.splice(n,1);save();};   // 두 번 눌러야 지운다
+    });
+  };
+  const add=()=>{
+    const a=readMarks(),name=inp.value.trim()||('책갈피 '+(a.length+1)),p={name,i:Deck.i,k:Deck.k,t:Date.now()},same=a.find(q=>q.name===name);
+    if(same)Object.assign(same,p);else a.push(p);
+    writeMarks(a);inp.value='';render();
+  };
+  box.querySelector('.go').onclick=add;
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();add();}});
+  box.querySelector('.no').onclick=close;
+  render();setTimeout(()=>inp.focus(),0);
+}
+function offerResume(a){
+  const p=a[0];
+  const {box,close}=popup('resume','<span>책갈피 '+a.length+'개 · 최근: <b>'+esc(p.name||'책갈피')+'</b> '+esc(posName(p))+'<small>'+fmtWhen(p.t)+'에 저장</small></span>'+
+    '<button class="go">이어서 보기</button><button class="ls">목록</button><button class="no">닫기</button>');
+  box.querySelector('.go').onclick=()=>{close();show(p.i,p.k||0,{instant:true});};
+  box.querySelector('.ls').onclick=()=>{close();openMark();};
+  box.querySelector('.no').onclick=close;
+}
+function buildKw(){
+  const K=window.KW;if(!K)return;
+  kwbar=document.createElement('div');kwbar.id='kwbar';stage.appendChild(kwbar);
+  K.items.forEach((name,idx)=>{
+    const b=document.createElement('button');b.className='kw';
+    const bb=document.createElement('b');bb.textContent=idx+1;
+    const sp=document.createElement('span');sp.textContent=name;
+    b.appendChild(bb);b.appendChild(sp);
+    b.onclick=e=>{e.stopPropagation();const first=K.at.indexOf(idx);if(first>=0)show(first,0);};
+    kwbar.appendChild(b);
+  });
+}
+function syncKw(){
+  const K=window.KW;if(!K||!kwbar)return;
+  const cur=K.at[Deck.i]!=null?K.at[Deck.i]:-1;
+  kwbar.classList.toggle('show',cur>=0);
+  Array.from(kwbar.children).forEach((b,idx)=>{b.classList.toggle('cur',idx===cur);b.classList.toggle('done',idx<cur);});
+}
+function closeOverlays(){helpEl.classList.remove('show');}
+
+/* 그림 크게 보기(2026-10-26 교사 요청): 장 안의 .pic 그림을 누르면 그 자리에서 무대 가운데로 커지며 떠오름(Push-in).
+   다시 누르거나 아무 키나 누르면 제자리로 돌아가며 닫힘. 여는 동안 장·단계는 넘어가지 않음. 정지 화면·인쇄에서는 쓰지 않음 */
+let ZM=null;
+const zoomEl=document.createElement('div');zoomEl.id='zoom';   // 무대에는 처음 열 때 붙임(stage는 Deck.start에서 정해짐)
+function zoomRect(el){const sr=stage.getBoundingClientRect(),sc=sr.width/SW,r=el.getBoundingClientRect();return {x:(r.left-sr.left)/sc,y:(r.top-sr.top)/sc,w:r.width/sc,h:r.height/sc};}
+function zoomOpen(fig){
+  const img=fig.querySelector('img');if(!img||ZM)return;
+  const a=zoomRect(fig),nw=img.naturalWidth||a.w,nh=img.naturalHeight||a.h,k=Math.min(1760/nw,960/nh);
+  const b={w:nw*k,h:nh*k};b.x=(SW-b.w)/2;b.y=(SH-b.h)/2;
+  const z=document.createElement('img');z.src=img.currentSrc||img.src;z.alt=img.alt||'';
+  Object.assign(z.style,{left:b.x+'px',top:b.y+'px',width:b.w+'px',height:b.h+'px'});
+  if(zoomEl.parentNode!==stage)stage.appendChild(zoomEl);
+  zoomEl.innerHTML='';zoomEl.appendChild(z);zoomEl.classList.add('on');
+  const from='translate('+(a.x-b.x)+'px,'+(a.y-b.y)+'px) scale('+(a.w/b.w)+','+(a.h/b.h)+')';
+  ZM={fig,from,z};
+  requestAnimationFrame(()=>zoomEl.classList.add('show'));
+  z.animate([{transform:from},{transform:'none'}],{duration:420,easing:EASE.out});
+}
+function zoomClose(now){
+  if(!ZM)return;const {from,z}=ZM;ZM=null;
+  const done=()=>{zoomEl.classList.remove('on','show');zoomEl.innerHTML='';};
+  if(now){done();return;}
+  zoomEl.classList.remove('show');
+  z.animate([{transform:'none'},{transform:from}],{duration:300,easing:EASE.inOut,fill:'forwards'}).onfinish=done;
+}
+
+/* 목차(O): 실제 슬라이드를 줄여 격자로 펼친다. 장 수에 맞춰 썸네일이 가장 커지는 열 수를 고른다 */
+let OV=0,ovSel=0,ovCols=1;   // OV: 0 닫힘 · 1 열림 · 2 닫히는 중
+function ovLayout(n){
+  const T=130,B=30,gx=36,gy=26,cap=68,W=1720,H=SH-T-B;
+  let best=null;
+  for(let cols=1;cols<=n;cols++){
+    const rows=Math.ceil(n/cols),s=Math.min((W-(cols-1)*gx)/cols/SW,((H-(rows-1)*gy)/rows-cap)/SH);
+    if(!best||s>best.s)best={cols,s};
+  }
+  const s=best.s,tw=SW*s,th=SH*s,x0=(SW-(best.cols*tw+(best.cols-1)*gx))/2;
+  ovCols=best.cols;
+  return {s,tw,th,x0,at:i=>({x:x0+(i%best.cols)*(tw+gx),y:T+Math.floor(i/best.cols)*(th+cap+gy)})};
+}
+function ovMark(i){ovSel=i;Deck.list.forEach((s,j)=>s.classList.toggle('sel',j===i));}
+function openToc(){
+  if(OV)return;
+  zvReset(false);OV=1;closeOverlays();if(LZ.on)lzSet(false);
+  const L=ovLayout(Deck.list.length),K=window.KW;
+  stage.style.setProperty('--ovw',(3/L.s).toFixed(1)+'px');
+  stage.style.setProperty('--ovr',(12/L.s).toFixed(1)+'px');
+  ovl.innerHTML='';
+  const h=document.createElement('div');h.className='ovh';h.style.left=L.x0+'px';
+  h.innerHTML='목차<span>슬라이드를 누르면 그 장으로 갑니다 · 방향키로 고르고 Enter · O 또는 Esc 돌아가기</span>';
+  ovl.appendChild(h);
+  stage.classList.add('ov');
+  Deck.list.forEach((s,i)=>{
+    const p=L.at(i);
+    s.style.transform='translate('+p.x+'px,'+p.y+'px) scale('+L.s+')';
+    if(i!==Deck.i&&!STILL)s.animate([{opacity:0},{opacity:1}],{duration:450,delay:150,easing:'ease',fill:'backwards'});
+    const kw=K&&K.at&&K.at[i]>=0?K.items[K.at[i]]:'';
+    const c=document.createElement('div');c.className='oc'+(i===Deck.i?' cur':'');
+    c.style.cssText='left:'+p.x+'px;top:'+(p.y+L.th+8)+'px;width:'+L.tw+'px';
+    const b=document.createElement('b');b.textContent=(i+1)+(kw?' · '+kw:'');
+    const t=document.createElement('span');t.textContent=s.dataset.title||'';
+    c.appendChild(b);c.appendChild(t);ovl.appendChild(c);
+  });
+  ovMark(Deck.i);
+}
+function closeToc(i){
+  if(OV!==1)return;
+  OV=2;if(i==null||i<0)i=Deck.i;
+  const pick=Deck.list[i];
+  pick.classList.add('pick');stage.classList.add('ov-out');
+  pick.style.transform='';                                // 고른 장이 제자리로 커진다
+  if(i!==Deck.i)show(i,0,{noFade:true});                  // 다른 장이면 처음부터(등장 효과는 확대되는 동안 재생)
+  setTimeout(()=>{
+    stage.classList.remove('ov','ov-out');
+    Deck.list.forEach(s=>{s.style.transform='';s.classList.remove('pick','sel');});
+    ovl.innerHTML='';OV=0;
+  },STILL?0:560);
+}
+function tocKey(e){
+  const k=e.key,n=Deck.list.length;
+  if(k==='Escape'||k==='o'||k==='O'){closeToc();return;}
+  if(k==='Enter'||k===' '){e.preventDefault();closeToc(ovSel);return;}
+  const d={ArrowRight:1,ArrowLeft:-1,ArrowDown:ovCols,ArrowUp:-ovCols}[k];
+  if(d){e.preventDefault();ovMark(Math.max(0,Math.min(n-1,ovSel+d)));}
+}
+function toggleBlank(kind){blankEl.className=(blankEl.className===kind)?'':kind;}
+function fit(){
+  FS=Math.min(innerWidth/SW,innerHeight/SH);zvClamp();stApply(false);
+}
+/* 부분 확대(2026-10-26 교사 요청): 아이패드는 두 손가락 벌리기·오므리기, 맥은 트랙패드 핀치(사파리 gesture, 크롬 등 ctrl+휠),
+   마우스는 Ctrl+휠로 손가락(포인터) 자리를 중심으로 1~4배 확대. 확대 중에는 한 손가락 끌기·두 손가락 스크롤로 옮기고,
+   눌러도 장이 넘어가지 않음. 두 번 톡·두 번 클릭·Esc·위쪽 [원래대로]로 되돌리고, 장을 옮기거나 목차를 열면 저절로 원래대로.
+   브라우저 자체 확대는 막음: 엔진이 창 크기에 맞춰 무대를 다시 줄이기 때문에 브라우저 확대는 바로 되돌려졌음 */
+let FS=1,zbadge=null;
+const ZV={z:1,x:0,y:0},ZMAX=4,PZ={p:null,d0:1,z0:1,pan:null,mv:0,used:false,tap:0,tx:0,ty:0,g:null,eat:0};
+function stApply(anim){
+  if(!stage)return;
+  stage.style.transition=anim?'transform .35s cubic-bezier(.2,.8,.2,1)':'';
+  stage.style.transform='translate(-50%,-50%) translate('+ZV.x.toFixed(1)+'px,'+ZV.y.toFixed(1)+'px) scale('+(FS*ZV.z)+')';
+  const on=ZV.z>1.01;rootEl.classList.toggle('zoomed',on);
+  if(zbadge){zbadge.classList.toggle('show',on);zbadge.querySelector('b').textContent=Math.round(ZV.z*100)+'%';}
+}
+function zvClamp(){const mx=SW*FS*(ZV.z-1)/2,my=SH*FS*(ZV.z-1)/2;ZV.x=Math.max(-mx,Math.min(mx,ZV.x));ZV.y=Math.max(-my,Math.min(my,ZV.y));}
+function zvPoint(sx,sy){const S=FS*ZV.z;return {x:(sx-innerWidth/2-ZV.x)/S,y:(sy-innerHeight/2-ZV.y)/S};}   // 화면 점 아래의 무대 점(무대 가운데 기준)
+function zvSet(z,p,sx,sy){   // 무대 점 p가 화면 (sx,sy)에 오도록 z배 확대
+  ZV.z=Math.max(1,Math.min(ZMAX,z));
+  if(ZV.z<1.001){ZV.z=1;ZV.x=0;ZV.y=0;}
+  else{const S=FS*ZV.z;ZV.x=sx-innerWidth/2-p.x*S;ZV.y=sy-innerHeight/2-p.y*S;zvClamp();}
+  stApply(false);
+}
+function zvReset(anim=true){if(ZV.z===1&&!ZV.x&&!ZV.y)return;ZV.z=1;ZV.x=0;ZV.y=0;stApply(anim);}
+const zvOK=()=>!STILL&&!OV&&!ZM&&!rootEl.classList.contains('print');
+function zoomInit(){
+  Deck.zoom=ZV;   // 확인용(콘솔에서 Deck.zoom)
+  zbadge=document.createElement('div');zbadge.id='zbadge';
+  zbadge.innerHTML='<span>확대 <b>100%</b></span><button type="button">원래대로</button>';
+  document.body.appendChild(zbadge);
+  zbadge.addEventListener('click',e=>{e.stopPropagation();zvReset();});
+  ['touchstart','touchend','pointerdown'].forEach(ev=>zbadge.addEventListener(ev,e=>e.stopPropagation(),{passive:true}));
+  // 아이패드: 두 손가락 = 확대, 확대 중 한 손가락 = 옮기기
+  addEventListener('touchstart',e=>{
+    if(!zvOK()||LZ.on)return;
+    const t=e.touches;
+    if(t.length===2){const a=t[0],b=t[1];PZ.used=true;PZ.d0=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY)||1;PZ.z0=ZV.z;
+      PZ.p=zvPoint((a.clientX+b.clientX)/2,(a.clientY+b.clientY)/2);PZ.pan=null;e.preventDefault();}
+    else if(t.length===1&&ZV.z>1.01){PZ.pan={x:t[0].clientX,y:t[0].clientY,ox:ZV.x,oy:ZV.y};PZ.mv=0;}
+  },{passive:false});
+  addEventListener('touchmove',e=>{
+    if(!zvOK()||LZ.on)return;
+    const t=e.touches;
+    if(t.length===2&&PZ.p){const a=t[0],b=t[1];zvSet(PZ.z0*Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY)/PZ.d0,PZ.p,(a.clientX+b.clientX)/2,(a.clientY+b.clientY)/2);e.preventDefault();}
+    else if(t.length===1&&PZ.pan){const dx=t[0].clientX-PZ.pan.x,dy=t[0].clientY-PZ.pan.y;PZ.mv=Math.max(PZ.mv,Math.hypot(dx,dy));
+      ZV.x=PZ.pan.ox+dx;ZV.y=PZ.pan.oy+dy;zvClamp();stApply(false);e.preventDefault();}
+  },{passive:false});
+  addEventListener('touchend',e=>{
+    if(e.touches.length===1&&PZ.p){PZ.p=null;if(ZV.z>1.01){const t=e.touches[0];PZ.pan={x:t.clientX,y:t.clientY,ox:ZV.x,oy:ZV.y};PZ.mv=99;}return;}   // 두 손가락 중 하나를 떼면 남은 손가락으로 옮기기
+    if(e.touches.length)return;
+    if(PZ.pan&&!PZ.used&&PZ.mv<10){   // 확대 중 톡 두 번 = 원래대로
+      const c=e.changedTouches[0],now=performance.now();
+      if(now-PZ.tap<350&&Math.hypot(c.clientX-PZ.tx,c.clientY-PZ.ty)<40){PZ.tap=0;PZ.eat=now;zvReset();}   // 뒤따르는 클릭은 버림(장이 넘어가지 않게)else{PZ.tap=now;PZ.tx=c.clientX;PZ.ty=c.clientY;}
+    }
+    PZ.pan=null;PZ.p=null;setTimeout(()=>{PZ.used=false;},0);   // 이 손동작이 끝날 때까지는 밀기(장 넘기기)로 보지 않음
+  },{passive:true});
+  // 맥 사파리 트랙패드 핀치(아이패드는 위 터치로 처리)
+  const touchDev=navigator.maxTouchPoints>0;
+  addEventListener('gesturestart',e=>{e.preventDefault();if(touchDev||!zvOK())return;PZ.g={z0:ZV.z,p:zvPoint(e.clientX,e.clientY)};},{passive:false});
+  addEventListener('gesturechange',e=>{e.preventDefault();if(touchDev||!PZ.g||!zvOK())return;zvSet(PZ.g.z0*e.scale,PZ.g.p,e.clientX,e.clientY);},{passive:false});
+  addEventListener('gestureend',e=>{e.preventDefault();PZ.g=null;},{passive:false});
+  // 크롬·엣지·파이어폭스: 트랙패드 핀치와 Ctrl+휠 = 확대, 확대 중 두 손가락 스크롤·휠 = 옮기기
+  addEventListener('wheel',e=>{
+    if(!zvOK())return;
+    if(e.ctrlKey){e.preventDefault();if(PZ.g)return;const d=Math.max(-50,Math.min(50,e.deltaY*(e.deltaMode?20:1)));zvSet(ZV.z*Math.exp(-d*0.01),zvPoint(e.clientX,e.clientY),e.clientX,e.clientY);}
+    else if(ZV.z>1.01){e.preventDefault();ZV.x-=e.deltaX;ZV.y-=e.deltaY;zvClamp();stApply(false);}
+  },{passive:false});
+  addEventListener('dblclick',e=>{if(ZV.z>1.01&&!e.target.closest('#hud,#zbadge,.ia-panel'))zvReset();});
+}
+function pokeHud(){
+  hud.classList.add('show');clearTimeout(hudTimer);
+  hudTimer=setTimeout(()=>hud.classList.remove('show'),2500);
+}
+function setNotes(v){
+  notesEl.classList.toggle('show',v);
+  document.body.classList.toggle('notes-open',notesEl.classList.contains('show')&&!rootEl.classList.contains('student'));
+}
+
+/* 레이저 포인터(L): 켜면 빨간 점이 마우스를 따라가고, 누른 채 움직이면 선이 그려졌다가 떼면 서서히 사라진다.
+   켜져 있어도 방향키로 넘길 수 있고, 장·단계가 바뀌면 그려 둔 선은 지운다. Esc로 끈다. */
+const LZ={on:false,cv:null,g:null,pt:null,pts:[],down:null,seq:0,raf:0},LZ_FADE=1100,LZ_ALPHA=.7;   // 선의 기본 투명도
+function lzPaint(){if(!LZ.raf)LZ.raf=requestAnimationFrame(lzDraw);}
+function lzClear(){if(LZ.pts.length){LZ.pts=[];lzPaint();}}
+function lzSize(){
+  const d=Math.min(devicePixelRatio||1,2);
+  LZ.cv.width=Math.round(innerWidth*d);LZ.cv.height=Math.round(innerHeight*d);
+  LZ.g.setTransform(d,0,0,d,0,0);lzPaint();
+}
+function lzSet(v){
+  LZ.on=v;LZ.pts=[];LZ.pt=null;LZ.down=null;
+  LZ.cv.classList.toggle('on',v);document.getElementById('b-laser').classList.toggle('on',v);
+  if(v)lzSize();else lzPaint();
+}
+function lzDraw(now){
+  const g=LZ.g;LZ.raf=0;g.clearRect(0,0,innerWidth,innerHeight);
+  if(!LZ.on)return;
+  LZ.pts=LZ.pts.filter(p=>p.t==null||now-p.t<LZ_FADE);
+  g.lineCap=g.lineJoin='round';
+  // 획마다 하나의 경로로 그린다(반투명 선분이 겹치는 이음매가 진해지지 않게)
+  for(let i=0;i<LZ.pts.length;){
+    const s=LZ.pts[i].s,t=LZ.pts[i].t;let j=i;
+    g.beginPath();g.moveTo(LZ.pts[i].x,LZ.pts[i].y);
+    while(j+1<LZ.pts.length&&LZ.pts[j+1].s===s){j++;g.lineTo(LZ.pts[j].x,LZ.pts[j].y);}
+    if(j>i){
+      g.globalAlpha=LZ_ALPHA*(t==null?1:Math.max(0,1-(now-t)/LZ_FADE));
+      g.lineWidth=6;g.strokeStyle='rgba(255,45,85,.22)';g.stroke();
+      g.lineWidth=2.5;g.strokeStyle='#ff2d55';g.stroke();
+    }
+    i=j+1;
+  }
+  g.globalAlpha=1;
+  if(LZ.pt){
+    const {x,y}=LZ.pt,gl=g.createRadialGradient(x,y,2,x,y,22);
+    gl.addColorStop(0,'rgba(255,45,85,.75)');gl.addColorStop(1,'rgba(255,45,85,0)');
+    g.fillStyle=gl;g.beginPath();g.arc(x,y,22,0,Math.PI*2);g.fill();
+    g.fillStyle='#ff2d55';g.strokeStyle='#fff';g.lineWidth=2;g.beginPath();g.arc(x,y,6.5,0,Math.PI*2);g.fill();g.stroke();
+  }
+  if(LZ.pts.some(p=>p.t!=null))lzPaint();   // 사라지는 중인 선이 있으면 계속 그린다
+}
+function lzAdd(e){
+  LZ.pt={x:e.clientX,y:e.clientY};
+  if(LZ.down!=null){
+    const l=LZ.pts[LZ.pts.length-1];
+    if(!l||l.s!==LZ.seq||Math.hypot(l.x-e.clientX,l.y-e.clientY)>=2)LZ.pts.push({x:e.clientX,y:e.clientY,t:null,s:LZ.seq});
+  }
+  lzPaint();
+}
+function lzMount(){
+  const cv=LZ.cv=document.createElement('canvas');cv.id='laser';document.body.appendChild(cv);
+  LZ.g=cv.getContext('2d');
+  cv.addEventListener('pointerdown',e=>{if(e.button!==0)return;e.preventDefault();LZ.down=e.pointerId;LZ.seq++;cv.setPointerCapture(e.pointerId);lzAdd(e);});
+  cv.addEventListener('pointermove',lzAdd);
+  const up=e=>{
+    if(e.pointerId!==LZ.down)return;
+    lzAdd(e);const t=performance.now();LZ.pts.forEach(p=>{if(p.t==null)p.t=t;});
+    LZ.down=null;if(e.pointerType!=='mouse')LZ.pt=null;lzPaint();
+  };
+  cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+  cv.addEventListener('pointerleave',()=>{if(LZ.down==null){LZ.pt=null;lzPaint();}});
+  cv.addEventListener('contextmenu',e=>e.preventDefault());
+  addEventListener('resize',()=>{if(LZ.on)lzSize();});
+}
+
+Deck.start=function(){
+  stage=document.getElementById('stage');viewport=document.getElementById('viewport');
+  hud=document.getElementById('hud');progI=document.querySelector('#progress i');dotsEl=document.getElementById('stepdots');
+  countEl=document.getElementById('count');notesEl=document.getElementById('notes');notesT=document.getElementById('notes-t');notesP=document.getElementById('notes-p');
+  helpEl=document.getElementById('help');blankEl=document.getElementById('blank');
+  // ?print=1: 레이저 인쇄용 — 어두운 장도 흰 배경(light)으로 바꾼다
+  if(rootEl.classList.contains('print'))stage.querySelectorAll(':scope > .slide').forEach(sec=>{
+    if(/black|dark|graphite/.test(sec.dataset.tile)){sec.dataset.tile='light';sec.classList.add('was-dark');}
+  });
+  Deck.list=Array.from(stage.querySelectorAll(':scope > .slide'));
+  Deck.list.forEach(sec=>{
+    sec.querySelectorAll('[data-fx="draw"]').forEach(el=>{
+      (el.matches(GEOM)?[el]:Array.from(el.querySelectorAll(GEOM))).forEach(g=>g.setAttribute('pathLength','1'));
+    });
+    sec.__pristine=sec.innerHTML;
+  });
+  buildKw();
+  ovl=document.createElement('div');ovl.id='ovl';stage.appendChild(ovl);
+  fit();addEventListener('resize',fit);zoomInit();
+  document.getElementById('b-prev').onclick=prev;
+  document.getElementById('b-next').onclick=next;
+  document.getElementById('b-mark').onclick=openMark;
+  document.getElementById('b-pause').onclick=e=>{e.stopPropagation();setPause(!PAUSED);e.currentTarget.blur();};
+  document.getElementById('b-notes').onclick=()=>setNotes(!notesEl.classList.contains('show'));
+  document.getElementById('notes-x').onclick=()=>setNotes(false);
+  lzMount();document.getElementById('b-laser').onclick=e=>{e.stopPropagation();lzSet(!LZ.on);e.currentTarget.blur();};
+  document.getElementById('b-ov').onclick=e=>{e.stopPropagation();OV?closeToc():openToc();};
+  document.getElementById('b-fs').onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();else rootEl.requestFullscreen&&rootEl.requestFullscreen();};
+  helpEl.addEventListener('click',e=>{if(e.target===helpEl)closeOverlays();});
+  viewport.addEventListener('click',e=>{
+    if(ZM){zoomClose();return;}
+    if(ZV.z>1.01||performance.now()-PZ.eat<600)return;   // 부분 확대 중(또는 두 번 톡으로 막 되돌린 직후)에는 눌러도 넘어가지 않음
+    if(OV){if(OV===1){const s=e.target.closest('.slide');closeToc(s?Deck.list.indexOf(s):-1);}return;}
+    if(e.target.closest('#kwbar'))return;
+    const zp=e.target.closest('.slide .pic');if(zp&&!STILL&&!LZ.on){zoomOpen(zp);return;}   // 그림을 누르면 크게 보기
+    (e.clientX/innerWidth<.28)?prev():next();
+  });
+  addEventListener('mousemove',pokeHud);addEventListener('touchstart',pokeHud,{passive:true});
+  let tx=null;
+  addEventListener('touchstart',e=>{tx=LZ.on?null:e.touches[0].clientX;},{passive:true});   // 레이저로 긋는 동안은 밀기(장 넘기기)로 보지 않는다
+  addEventListener('touchend',e=>{if(tx===null||OV||LZ.on||ZM||PZ.used||ZV.z>1.01){tx=null;return;}const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>60){dx<0?next():prev();}},{passive:true});
+  addEventListener('keydown',e=>{
+    if(e.metaKey||e.ctrlKey||e.altKey)return;
+    if(ZM){e.preventDefault();zoomClose();return;}   // 크게 보기 중에는 아무 키나 닫기만
+    if(e.target.closest&&e.target.closest('#markbox,#resume'))return;
+    if(OV){if(OV===1)tocKey(e);return;}
+    const key=e.key;
+    if(key==='Escape'){if(LZ.on){lzSet(false);return;}if(ZV.z>1.01){zvReset();return;}closeOverlays();setNotes(false);blankEl.className='';return;}
+    if(blankEl.className){blankEl.className='';return;}
+    if(helpEl.classList.contains('show'))return;
+    switch(key){
+      case 'ArrowRight':case 'ArrowDown':case ' ':case 'PageDown':case 'Enter':e.preventDefault();next();break;
+      case 'ArrowLeft':case 'ArrowUp':case 'PageUp':case 'Backspace':e.preventDefault();prev();break;
+      case 'Home':show(0,0);break;
+      case 'End':show(Deck.list.length-1,0);break;
+      case 'n':case 'N':setNotes(!notesEl.classList.contains('show'));break;
+      case 'l':case 'L':if(!e.repeat)lzSet(!LZ.on);break;
+      case 'p':case 'P':if(!e.repeat)setPause(!PAUSED);break;
+      case 'o':case 'O':openToc();break;
+      case 'b':case 'B':toggleBlank('black');break;
+      case 'w':case 'W':toggleBlank('white');break;
+      case 'f':case 'F':document.getElementById('b-fs').click();break;
+      case 'm':case 'M':openMark();break;
+      case '?':helpEl.classList.add('show');break;
+    }
+  });
+  try{localStorage.removeItem('deck-pos:'+location.pathname);}catch(e){}   // 예전 자동 저장 값 정리
+  const marks=readMarks(),h=parseInt(location.hash.slice(1))||1,kk=parseInt(Q.get('k'))||0;
+  show(h-1,kk,{instant:kk>0||STILL});
+  if(!STILL&&!Q.has('k')&&h===1&&marks.length)offerResume(marks);
+  pokeHud();
+};
+})();
+</script>
+
+
+<script>
+/* ═══ 장면: 해일 수업 ═══ */
+const {U}=Deck;
+/* 해일 수업 (2026-10-26 규칙: 내용은 교사 PPT·PDF, 배치·디자인은 기존 스타일 + 인터랙티브 두 장) */
+window.KW={items:['해일','폭풍 해일','지진 해일','피해와 대처'],at:[-1,-1,-1,0,1,1,2,2,3,3]};
+const $id=id=>document.getElementById(id);
+const f1=v=>(+v).toFixed(1);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const svgEl=(tag,attrs,parent)=>U.el(tag,attrs,parent);
+
+/* 인터랙티브 장의 조작 부품: 누르거나 끌어도 장이 넘어가지 않게(클릭·키·터치 밀기를 여기서 멈춤) */
+function iaIsolate(c){
+  c.$$('.ia-panel').forEach(p=>{
+    ['click','pointerdown','touchstart','touchend'].forEach(ev=>p.addEventListener(ev,e=>e.stopPropagation(),{passive:true}));
+    p.querySelectorAll('input,button').forEach(el=>el.addEventListener('keydown',e=>e.stopPropagation()));
+  });
+}
+
+/* ── 표지: 밤바다에서 파장이 긴 물결이 해안으로 밀려와 육지로 넘쳐 들어왔다 빠짐 ──
+   얕은 곳으로 갈수록 느려지고(√수심) 높아짐 — 수업 내용과 같은 방향의 움직임 */
+const S1={y0:840,shore:1520,v0:230};
+const s1land=x=>x<S1.shore?S1.y0+(S1.shore-x)*0.57:S1.y0-(x-S1.shore)*0.32;   // 해안선 앞은 바다 밑 비탈, 뒤는 육지
+const s1v=x=>x<1000?S1.v0:S1.v0*Math.max(.3,Math.sqrt(Math.max(0,S1.shore-x)/520));
+const s1A=x=>16*(1+1.8*clamp((x-1000)/520,0,1));
+function s1build(c){
+  const lp=[];for(let x=1100;x<=1920;x+=10)lp.push(x+' '+f1(Math.min(1080,s1land(x))));
+  $id('s01-land').setAttribute('d','M'+lp.join(' L')+' L1920 1080 L1100 1080Z');
+  const ep=[];for(let x=S1.shore;x<=1920;x+=10)ep.push(x+' '+f1(s1land(x)));
+  $id('s01-edge').setAttribute('d','M'+ep.join(' L'));
+  const town=$id('s01-town');town.innerHTML='';
+  [[1610,40,30],[1690,44,33]].forEach(([hx,w,h])=>{const y=s1land(hx);
+    svgEl('rect',{x:hx-w/2,y:f1(y-h),width:w,height:h+4},town);
+    svgEl('path',{d:'M'+(hx-w/2-6)+' '+f1(y-h)+' L'+hx+' '+f1(y-h-22)+' L'+(hx+w/2+6)+' '+f1(y-h)+'Z'},town);});
+  const lx=1810,ly=s1land(lx);   // 등대
+  svgEl('path',{d:'M'+(lx-18)+' '+f1(ly+4)+' L'+(lx+18)+' '+f1(ly+4)+' L'+(lx+12)+' '+f1(ly-146)+' L'+(lx-12)+' '+f1(ly-146)+'Z'},town);
+  svgEl('rect',{x:lx-18,y:f1(ly-156),width:36,height:10},town);
+  svgEl('rect',{x:lx-10,y:f1(ly-180),width:20,height:24,fill:'#3a3a2a'},town);
+  svgEl('path',{d:'M'+(lx-14)+' '+f1(ly-180)+' L'+lx+' '+f1(ly-198)+' L'+(lx+14)+' '+f1(ly-180)+'Z'},town);
+  const lamp=$id('s01-lamp');lamp.setAttribute('cx',lx);lamp.setAttribute('cy',f1(ly-168));
+  c.clouds=[...c.$$('#s01-cloud ellipse')].map(e=>({e,x0:+e.getAttribute('cx')}));
+  c.xc=-200;c.ph='go';c.r=0;c.tw=0;
+}
+function s1draw(c,t){
+  const {y0,shore}=S1,xc=c.xc,Amax=s1A(shore);
+  const run=c.ph==='run'||c.ph==='back'?c.r:0;
+  const A=s1A(Math.min(xc,shore))*(1-.55*run),w=Math.max(90,240*s1v(Math.min(xc,shore-1))/S1.v0);
+  const up=Amax*1.7*run;
+  const eta=x=>{const rp=4*Math.sin(2*Math.PI*(x/170-t/2.8))+2.5*Math.sin(2*Math.PI*(x/73+t/1.9));
+    return Math.max(A*Math.exp(-Math.pow((x-xc)/w,2)),up*Math.pow(clamp((x-(shore-300))/300,0,1),2))+rp*(1-clamp((x-shore+200)/200,0,1));};
+  const lev=y0-up;let xf=shore;if(up>0)while(xf<1916&&s1land(xf)>lev)xf+=4;
+  const pts=[];for(let x=0;x<shore;x+=8)pts.push(x+' '+f1(y0-eta(x)));
+  pts.push(shore+' '+f1(up>0?lev:y0-eta(shore)));
+  const sea=up>0?pts.concat([xf+' '+f1(lev),'1920 '+f1(Math.max(lev,s1land(1920))+60)]):pts.concat(['1920 '+(y0+60)]);
+  $id('s01-water').setAttribute('d','M'+sea.join(' L')+' L1920 1080 L0 1080Z');
+  $id('s01-crest').setAttribute('d','M'+pts.join(' L')+(up>0?' L'+xf+' '+f1(lev):''));
+  c.clouds.forEach(o=>o.e.setAttribute('cx',f1(((o.x0+t*14)%2600+2600)%2600-400)));   // 구름은 바다 → 육지 쪽으로 천천히
+}
+Deck.scene('s01',{
+  enter(c){
+    s1build(c);s1draw(c,0);
+    if(document.documentElement.classList.contains('print'))return;
+    c.loop((t,dt)=>{
+      if(c.ph==='go'){c.xc+=s1v(c.xc)*dt;if(c.xc>=S1.shore-40){c.xc=S1.shore-40;c.ph='run';c.r=0;}}
+      else if(c.ph==='run'){c.r=Math.min(1,c.r+dt/1.8);if(c.r>=1)c.ph='back';}
+      else if(c.ph==='back'){c.r=Math.max(0,c.r-dt/2.6);if(c.r<=0){c.ph='wait';c.tw=0;c.xc=-600;}}
+      else{c.tw+=dt;if(c.tw>1.2)c.ph='go';}
+      s1draw(c,t);
+    });
+  }
+});
+
+/* ── 폭풍 해일 직접 해 보기(장면 상자 1680×600): 저기압 아래 해수면이 1 hPa에 약 1 cm 높아짐(1013 hPa 기준) ──
+   그림의 해수면 높이는 1 cm = 1 px로 크게 과장. 강풍은 해안 쪽으로 바닷물을 미는 효과(크기는 모식).
+   출렁임: 지점마다 해수면이 평형 수위(기압 + 바람)를 늦게 따라가다 지나치고 되돌아오며(감쇠 진동, 주기 약 3.2초),
+   이웃 지점과 이어져 물결로 퍼짐 → 저기압이 지나간 뒤 물이 다시 내려가며 출렁인다(PPT 4쪽 흐름) */
+const S4={y0:330,S:1,R:190,shore:1320,s0:180,sEnd:1300,speed:150,sy:104,dx:8,w:2*Math.PI/3.2,g:.16,c2:3600,bx:600};
+const s4ss=u=>u*u*(3-2*u);
+const s4land=x=>x<820?560:(x<S4.shore?560-230*s4ss((x-820)/(S4.shore-820)):S4.y0-230*Math.pow((x-S4.shore)/360,1.3));   // 바다 밑 → 해안선(x 1320) → 육지가 끊김 없이 이어짐
+function s4eq(c,x){   // 평형 수위(cm) = 기압에 의한 상승 + (강풍일 때) 바람에 밀려 쌓인 물
+  const dp=1013-c.p,s=c.s,wind=c.wind?Math.exp(-Math.pow((S4.shore-s)/400,2)):0;
+  return dp*Math.exp(-Math.pow((x-s)/S4.R,2))+(c.wind?0.5*Math.max(dp,25)*wind*Math.exp(-(S4.shore-x)/180):0);
+}
+function s4init(c){const n=Math.round(S4.shore/S4.dx)+1;c.E=new Float64Array(n);c.V=new Float64Array(n);for(let i=0;i<n;i++)c.E[i]=s4eq(c,i*S4.dx);}
+function s4step(c,dt){
+  const {w,g,c2,dx}=S4,E=c.E,V=c.V,n=E.length,k=w*w,tt=Math.min(dt,.1),m=Math.max(1,Math.ceil(tt*120)),d=tt/m,q=c2/(dx*dx);
+  const EQ=new Float64Array(n);for(let i=0;i<n;i++)EQ[i]=s4eq(c,i*dx);
+  for(let it=0;it<m;it++){
+    for(let i=0;i<n;i++){const L=E[i>0?i-1:0],R=E[i<n-1?i+1:n-1];V[i]+=(k*(EQ[i]-E[i])-2*g*V[i]+q*(L-2*E[i]+R))*d;}
+    for(let i=0;i<n;i++)E[i]+=V[i]*d;
+  }
+}
+const s4at=(c,x)=>{const f=x/S4.dx,i=Math.max(0,Math.min(c.E.length-2,Math.floor(f))),u=f-i;return c.E[i]*(1-u)+c.E[i+1]*u;};
+function s4build(c){
+  const g=c.$('#s05i-svg');g.innerHTML='';
+  const defs=svgEl('defs',{},g);
+  const lg=svgEl('linearGradient',{id:'s05i-sea',gradientUnits:'userSpaceOnUse',x1:0,y1:120,x2:0,y2:580},defs);
+  svgEl('stop',{offset:0,'stop-color':'#4fb3e6'},lg);svgEl('stop',{offset:1,'stop-color':'#1d6fa8'},lg);
+  svgEl('rect',{x:0,y:0,width:1680,height:600,fill:'#eef6fc'},g);                        // 하늘
+  c.sea=svgEl('path',{fill:'url(#s05i-sea)'},g);                                          // 바다(해수면 곡선 아래)
+  const lp=[];for(let x=0;x<=1680;x+=8)lp.push(x+' '+f1(s4land(x)));
+  svgEl('path',{d:'M'+lp.join(' L')+' L1680 600 L0 600Z',fill:'#d8b98a'},g);              // 바다 밑과 육지(한 선)
+  svgEl('path',{d:'M'+lp.join(' L'),fill:'none',stroke:'#a8875c','stroke-width':4},g);
+  c.flood=svgEl('path',{fill:'url(#s05i-sea)'},g);                                        // 육지로 밀려든 바닷물(땅 위)
+  const hx=1460,hy=s4land(hx);                                                            // 집
+  svgEl('rect',{x:hx-50,y:f1(hy-70),width:100,height:74,fill:'#fff',stroke:'#6e6e73','stroke-width':3},g);
+  svgEl('path',{d:'M'+(hx-66)+' '+f1(hy-66)+' L'+hx+' '+f1(hy-126)+' L'+(hx+66)+' '+f1(hy-66)+'Z',fill:'#d9534f'},g);
+  svgEl('line',{x1:0,y1:S4.y0,x2:1340,y2:S4.y0,stroke:'#1d1d1f','stroke-width':3,'stroke-dasharray':'12 10','stroke-opacity':.6},g);   // 평상시 해수면
+  const t0=svgEl('text',{x:32,y:S4.y0+46,'font-size':32,'font-weight':700,fill:'#fff'},g);t0.textContent='평상시 해수면';
+  c.surf=svgEl('path',{fill:'none',stroke:'#0a5c94','stroke-width':5},g);
+  c.buoy=svgEl('g',{},g);                                                                 // 부표: 한 곳의 해수면이 오르내리는 모습
+  svgEl('line',{x1:0,y1:-6,x2:0,y2:-62,stroke:'#48484a','stroke-width':4},c.buoy);
+  svgEl('path',{d:'M0 -62 L26 -53 L0 -44Z',fill:'#FFD60A',stroke:'#b88a00','stroke-width':1.5},c.buoy);
+  svgEl('path',{d:'M-24 -4 A24 20 0 0 0 24 -4 Z',fill:'#e8543e'},c.buoy);
+  svgEl('rect',{x:-24,y:-12,width:48,height:10,rx:4,fill:'#e8543e'},c.buoy);
+  svgEl('rect',{x:-24,y:-6,width:48,height:6,fill:'#fff'},c.buoy);
+  const halo={stroke:'#fff','stroke-width':8,'stroke-linejoin':'round','paint-order':'stroke'};
+  c.slosh=svgEl('text',Object.assign({'text-anchor':'middle','font-size':32,'font-weight':800,fill:'#0a5c94',opacity:0},halo),g);c.slosh.textContent='물이 출렁';
+  c.storm=svgEl('g',{},g);const st=c.storm;                                               // 저기압 중심(태풍 기호)
+  svgEl('circle',{cx:0,cy:0,r:40,fill:'#fff',stroke:'#d9534f','stroke-width':7},st);
+  svgEl('path',{d:'M0 -40 C 55 -40, 64 -9, 58 16',fill:'none',stroke:'#d9534f','stroke-width':7,'stroke-linecap':'round'},st);
+  svgEl('path',{d:'M0 40 C -55 40, -64 9, -58 -16',fill:'none',stroke:'#d9534f','stroke-width':7,'stroke-linecap':'round'},st);
+  const tl=svgEl('text',{x:0,y:13,'text-anchor':'middle','font-size':36,'font-weight':800,fill:'#d9534f'},st);tl.textContent='저';
+  c.stormLab=svgEl('text',{x:0,y:-58,'text-anchor':'middle','font-size':32,'font-weight':700,fill:'#1d1d1f'},st);
+  c.rise=svgEl('g',{},g);
+  c.riseLine=svgEl('line',{stroke:'#d9534f','stroke-width':5},c.rise);
+  c.riseHead=svgEl('polygon',{fill:'#d9534f'},c.rise);
+  c.windLine=svgEl('line',{stroke:'#30a46c','stroke-width':5},c.rise);
+  c.windLab=svgEl('text',Object.assign({'font-size':30,'font-weight':800,fill:'#1E8B3E'},halo),c.rise);
+  c.riseLab=svgEl('text',Object.assign({'font-size':34,'font-weight':800,fill:'#C4391B'},halo),c.rise);
+  c.windG=svgEl('g',{},g);
+}
+function s4draw(c){
+  const p=c.p,dp=1013-p,s=c.s,{y0,S}=S4,E=c.E,n=E.length;
+  const yc=y0-E[n-1]*S;                                                              // 해안의 수위 → 땅 위로 밀려드는 범위
+  let xf=S4.shore;while(xf<1676&&s4land(xf)>yc)xf+=4;
+  const pts=[];for(let i=0;i<n;i++)pts.push(i*S4.dx+' '+f1(y0-E[i]*S));
+  const surf='M'+pts.join(' L');
+  c.sea.setAttribute('d',surf+' L'+S4.shore+' 600 L0 600Z');
+  c.surf.setAttribute('d',xf>S4.shore+6?surf+' L'+xf+' '+f1(yc):surf);
+  if(xf>S4.shore+6){
+    const fl=[];for(let x=S4.shore;x<=xf;x+=6)fl.push(x+' '+f1(s4land(x)));
+    c.flood.setAttribute('d','M'+(S4.shore-3)+' '+f1(yc)+' L'+xf+' '+f1(yc)+' L'+fl.reverse().join(' L')+' L'+(S4.shore-3)+' '+(y0+4)+'Z');
+  }else c.flood.setAttribute('d','');
+  // 부표와 '물이 출렁'(저기압이 지나간 뒤 부표 자리의 출렁임이 클 때)
+  const bx=S4.bx,by=y0-s4at(c,bx)*S,sl=(s4at(c,bx+12)-s4at(c,bx-12))/24*S;
+  c.buoy.setAttribute('transform','translate('+bx+' '+f1(by)+') rotate('+f1(-Math.atan(sl)*180/Math.PI*.8)+')');
+  const bi=Math.round(bx/S4.dx),dev=E[bi]-s4eq(c,bx),amp=Math.hypot(dev,c.V[bi]/S4.w);
+  c.slosh.setAttribute('x',bx);c.slosh.setAttribute('y',f1(by-84));c.slosh.setAttribute('opacity',s>bx+120?f1(clamp((amp-4)/8,0,1)):0);
+  c.storm.setAttribute('transform','translate('+f1(Math.min(s,S4.sEnd))+' '+S4.sy+')');
+  c.stormLab.textContent=p+' hPa';
+  // 빨간 화살표 = 기압에 의한 상승(계산값), 초록 = 바람에 밀려 더 높아진 몫(모식) — 둘 다 평형 수위 기준
+  const xa=Math.min(s,S4.shore-30),eP=dp*Math.exp(-Math.pow((xa-s)/S4.R,2)),top=y0-eP*S,topW=y0-s4eq(c,xa)*S,left=s>S4.shore-320;
+  if(dp>2){
+    c.rise.setAttribute('opacity',1);
+    c.riseLine.setAttribute('x1',xa);c.riseLine.setAttribute('x2',xa);c.riseLine.setAttribute('y1',y0);c.riseLine.setAttribute('y2',f1(top+16));
+    c.riseHead.setAttribute('points',xa+','+f1(top)+' '+(xa-12)+','+f1(top+22)+' '+(xa+12)+','+f1(top+22));
+    const lx=left?xa-22:xa+22,wv=top-topW>24;
+    c.riseLab.setAttribute('x',lx);c.riseLab.setAttribute('text-anchor',left?'end':'start');
+    c.riseLab.setAttribute('y',f1(wv?top+32:top-8));c.riseLab.textContent='약 '+dp+' cm';
+    c.windLine.setAttribute('x1',xa);c.windLine.setAttribute('x2',xa);c.windLine.setAttribute('y1',f1(top));c.windLine.setAttribute('y2',f1(topW));c.windLine.setAttribute('opacity',wv?1:0);
+    c.windLab.setAttribute('x',lx);c.windLab.setAttribute('text-anchor',left?'end':'start');c.windLab.setAttribute('y',f1((top+topW)/2+10));c.windLab.textContent=wv?'바람':'';
+  }else c.rise.setAttribute('opacity',0);
+  const wg=c.windG;wg.innerHTML='';                                                  // 강풍: 해안 쪽으로 부는 바람 화살표(수면 위)
+  if(c.wind)[[-500,0],[-370,1],[-620,2]].forEach(([dx,k])=>{const x=Math.min(s,S4.sEnd)+dx;if(x<30)return;const L=110,y=f1(y0-s4at(c,Math.min(x+L/2,S4.shore))*S-30-k*40);
+    svgEl('line',{x1:x,y1:y,x2:x+L-18,y2:y,stroke:'#30a46c','stroke-width':6,'stroke-linecap':'round'},wg);
+    svgEl('polygon',{points:(x+L)+','+y+' '+(x+L-22)+','+(y-12)+' '+(x+L-22)+','+(+y+12),fill:'#30a46c'},wg);});
+  $id('s05i-pv').textContent=p+' hPa';
+  $id('s05i-h').textContent=dp>0?'약 '+dp+' cm':'없음';
+}
+Deck.scene('s05i',{
+  enter(c){
+    s4build(c);c.p=950;c.s=S4.s0;c.wind=false;c.play=false;s4init(c);s4draw(c);iaIsolate(c);
+    const r=c.$('#s05i-range'),go=c.$('#s05i-go');
+    r.addEventListener('input',()=>{c.p=+r.value;});
+    go.addEventListener('click',()=>{if(c.s>=S4.sEnd){c.s=S4.s0;s4init(c);}c.play=!c.play;go.textContent=c.play?'멈춤 ❚❚':'폭풍 이동 ▶';});
+    c.$('#s05i-reset').addEventListener('click',()=>{c.s=S4.s0;c.play=false;go.textContent='폭풍 이동 ▶';s4init(c);s4draw(c);});
+    c.$('#s05i-wind').addEventListener('change',e=>{c.wind=e.target.checked;});
+    c.loop((t,dt)=>{
+      if(c.play){c.s=Math.min(S4.sEnd,c.s+S4.speed*dt);if(c.s>=S4.sEnd){c.play=false;go.textContent='폭풍 이동 ▶';}}
+      s4step(c,dt);s4draw(c);
+    });
+  }
+});
+
+/* ── 지진 해일 직접 해 보기(장면 상자 1680×600): 깊은 바다(4000 m) → 대륙붕(1000 m) → 해안(20 m) ──
+   속도 v = √(gh)(실제 값), 같은 시간 간격의 위치를 점으로 찍어 느려짐을 보임.
+   파고는 그린의 법칙(수심의 네제곱근에 반비례), 파장(폭)은 속도에 비례(주기가 같을 때). 그림 속 수심·거리·파고는 모식 */
+const S5={y0:250,x1:200,x2:1260,shore:1340,A0:14,W0:140,N:14};
+const s5smooth=(x,a,b,ha,hb)=>{const u=clamp((x-a)/(b-a),0,1);return ha+(hb-ha)*(1-Math.cos(Math.PI*u))/2;};
+function s5h(x){   // 수심(m)
+  if(x<560)return 4000;
+  if(x<760)return s5smooth(x,560,760,4000,1000);
+  if(x<980)return 1000;
+  if(x<1220)return s5smooth(x,980,1220,1000,20);
+  if(x<S5.shore)return 20*(S5.shore-x)/(S5.shore-1220);
+  return 0;
+}
+const s5dpx=h=>270*Math.pow(h/4000,.45);                    // 그림 속 깊이(px)
+const s5v=h=>Math.sqrt(9.8*h);                              // m/s
+const s5land=x=>S5.y0-Math.max(0,x-S5.shore)*0.42;          // 해안선 뒤 땅(화면 y)
+/* 위치 x까지 걸리는 시간 표(그림 1 px = 일정한 거리로 놓음) */
+const S5T=(()=>{const T=[0];for(let x=S5.x1+1;x<=S5.x2;x++){const h=s5h(x-.5);T.push(T[T.length-1]+1/s5v(h));}return T;})();
+const s5xAt=t=>{const T=S5T;let lo=0,hi=T.length-1;if(t>=T[hi])return S5.x2;while(hi-lo>1){const m=(lo+hi)>>1;if(T[m]<=t)lo=m;else hi=m;}const f=(t-T[lo])/((T[hi]-T[lo])||1);return S5.x1+lo+f;};
+function s5build(c){
+  const g=c.$('#s06i-svg');g.innerHTML='';
+  const defs=svgEl('defs',{},g);
+  const lg=svgEl('linearGradient',{id:'s06i-sea',gradientUnits:'userSpaceOnUse',x1:0,y1:200,x2:0,y2:540},defs);
+  svgEl('stop',{offset:0,'stop-color':'#5ec0ec'},lg);svgEl('stop',{offset:1,'stop-color':'#1b5f96'},lg);
+  svgEl('rect',{x:0,y:0,width:1680,height:600,fill:'#f4f9fd'},g);
+  c.sea=svgEl('path',{fill:'url(#s06i-sea)'},g);
+  const fl=[];for(let x=0;x<=S5.shore;x+=6)fl.push(x+' '+f1(S5.y0+s5dpx(s5h(x))));
+  const land=[];for(let x=S5.shore;x<=1680;x+=10)land.push(x+' '+f1(s5land(x)));
+  svgEl('path',{d:'M'+fl.join(' L')+' L'+land.join(' L')+' L1680 600 L0 600Z',fill:'#d8b98a'},g);
+  svgEl('path',{d:'M'+fl.join(' L')+' L'+land.join(' L'),fill:'none',stroke:'#a8875c','stroke-width':4},g);
+  c.flood=svgEl('path',{fill:'url(#s06i-sea)'},g);   // 육지로 밀려든 바닷물(땅 위)
+  [1470,1580].forEach(hx=>{const hy=s5land(hx);      // 집
+    svgEl('rect',{x:hx-34,y:f1(hy-50),width:68,height:50,fill:'#fff',stroke:'#6e6e73','stroke-width':3},g);
+    svgEl('path',{d:'M'+(hx-46)+' '+f1(hy-48)+' L'+hx+' '+f1(hy-92)+' L'+(hx+46)+' '+f1(hy-48)+'Z',fill:'#d9534f'},g);});
+  // 파동이 있는 곳의 수심 h(천해파의 전파 속도 v = √(gh)의 h): 해수면에서 해저까지 흰 치수선 + 보라 이름표
+  c.hm=svgEl('g',{},g);
+  c.hmL=svgEl('line',{stroke:'#fff','stroke-width':4},c.hm);
+  c.hmA=svgEl('polygon',{fill:'#fff'},c.hm);c.hmB=svgEl('polygon',{fill:'#fff'},c.hm);
+  c.hmP=svgEl('rect',{width:44,height:44,rx:12,fill:'#6f42c1'},c.hm);
+  c.hmT=svgEl('text',{'text-anchor':'middle','font-size':32,'font-weight':700,'font-style':'italic','font-family':"'Times New Roman',serif",fill:'#fff'},c.hm);c.hmT.textContent='h';
+  // 수심 이름표(교과서 그림과 같은 값)
+  [[380,4000,'#fff'],[870,1000,'#fff'],[1272,20,'#6b5233']].forEach(([x,h,col])=>{const y=h>=1000?S5.y0+s5dpx(h)/2+14:S5.y0+76;const t=svgEl('text',{x,y:f1(y),'text-anchor':'middle','font-size':30,'font-weight':700,fill:col},g);t.textContent='수심 '+h+' m';});
+  const ey=S5.y0+s5dpx(4000);                         // ① 해저 지진 발생
+  svgEl('path',{d:'M'+S5.x1+' '+(ey-4)+' l-16 18 l14 0 l-10 22 l26 -28 l-14 0 l10 -12Z',fill:'#ffd60a',stroke:'#b25000','stroke-width':2},g);
+  const te=svgEl('text',{x:S5.x1+28,y:ey+30,'font-size':30,'font-weight':700,fill:'#1d1d1f'},g);te.textContent='① 해저 지진 발생';
+  svgEl('line',{x1:0,y1:S5.y0,x2:S5.shore,y2:S5.y0,stroke:'#1d1d1f','stroke-width':2,'stroke-dasharray':'10 10','stroke-opacity':.35},g);
+  c.dots=svgEl('g',{},g);
+  c.surf=svgEl('path',{fill:'none',stroke:'#0a4f80','stroke-width':5},g);
+  c.vLab=svgEl('text',{'text-anchor':'middle','font-size':32,'font-weight':800,fill:'#C4391B',stroke:'#f4f9fd','stroke-width':8,'stroke-linejoin':'round','paint-order':'stroke'},g);
+  c.cap=svgEl('text',{x:36,y:70,'font-size':36,'font-weight':800,fill:'#1d1d1f'},g);
+  // 전파 속도 식 카드(오른쪽 아래 땅속 빈자리): 파동 자리의 h를 넣어 v를 계산해 보여 줌
+  const fc=svgEl('g',{},g);
+  svgEl('rect',{x:1010,y:412,width:640,height:168,rx:18,fill:'#fff',stroke:'#e0e0e0','stroke-width':2},fc);
+  const l0=svgEl('text',{x:1040,y:454,'font-size':26,'font-weight':600,fill:'#6e6e73'},fc);l0.textContent='천해파의 전파 속도';
+  const l1=svgEl('text',{x:1040,y:504,'font-size':34,'font-weight':700,fill:'#1d1d1f'},fc);
+  svgEl('tspan',{},l1).textContent='v = √(g';
+  svgEl('tspan',{fill:'#6f42c1','font-style':'italic','font-family':"'Times New Roman',serif"},l1).textContent='h';
+  svgEl('tspan',{},l1).textContent=') = √(9.8 × ';
+  c.fH=svgEl('tspan',{fill:'#6f42c1'},l1);
+  svgEl('tspan',{},l1).textContent=')';
+  const l2=svgEl('text',{x:1040,y:554,'font-size':34,'font-weight':700,fill:'#1d1d1f'},fc);
+  c.fM=svgEl('tspan',{},l2);
+  c.fV=svgEl('tspan',{fill:'#C4391B'},l2);
+}
+const s5vr=vk=>vk>=100?Math.round(vk/50)*50:Math.round(vk/10)*10;   // 4000 m 약 700, 1000 m 약 350, 20 m 약 50 km/h(교과서 그림의 값)
+function s5draw(c,t){
+  const T=S5T[S5T.length-1],tt=Math.min(t,T),xc=s5xAt(tt),h=s5h(xc),v=s5v(h),vk=v*3.6;
+  const A=S5.A0*Math.pow(4000/Math.max(h,8),.25),w=Math.max(20,S5.W0*v/s5v(4000));
+  const run=clamp((t-T)/(T*.18),0,1);                          // 해안에 닿은 뒤 바닷물이 육지로 밀려듦
+  const up=A*run*1.6;                                           // 해안에서 밀려 올라간 물 높이(px)
+  const eta=x=>Math.max(A*Math.exp(-Math.pow((x-xc)/w,2))*(1-.6*run),up*Math.pow(clamp((x-(S5.shore-260))/260,0,1),2));   // 파도 마루와 해안의 물이 이어지게
+  const pts=[];for(let x=0;x<=S5.shore;x+=4)pts.push(x+' '+f1(S5.y0-eta(x)));
+  c.sea.setAttribute('d','M'+pts.join(' L')+' L'+S5.shore+' 600 L0 600Z');
+  let surfD='M'+pts.join(' L');
+  if(run>0){const yc=S5.y0-up;let xf=S5.shore;while(xf<1676&&s5land(xf)>yc)xf+=4;surfD+=' L'+xf+' '+f1(yc);
+    const fl=[];for(let x=S5.shore;x<=xf;x+=6)fl.push(x+' '+f1(s5land(x)));
+    c.flood.setAttribute('d','M'+(S5.shore-3)+' '+f1(yc)+' L'+xf+' '+f1(yc)+' L'+fl.reverse().join(' L')+' L'+(S5.shore-3)+' '+(S5.y0+4)+'Z');}
+  else c.flood.setAttribute('d','');
+  c.surf.setAttribute('d',surfD);
+  const g=c.dots;g.innerHTML='';                               // 같은 시간 간격의 위치
+  if(c.showDots)for(let i=1;i<S5.N;i++){const ti=T*i/S5.N;if(ti>tt)break;const xi=s5xAt(ti);
+    svgEl('circle',{cx:f1(xi),cy:S5.y0+18,r:9,fill:'#d9534f'},g);
+    svgEl('line',{x1:f1(xi),y1:S5.y0+4,x2:f1(xi),y2:S5.y0+30,stroke:'#d9534f','stroke-width':2},g);}
+  const dpx=s5dpx(h),hy0=S5.y0+8,hy1=S5.y0+dpx-6,hd0=h>=100?Math.round(h/100)*100:Math.max(1,Math.round(h));   // 수심 치수선
+  c.hm.setAttribute('opacity',run>0||dpx<40?0:1);
+  c.hmL.setAttribute('x1',f1(xc));c.hmL.setAttribute('x2',f1(xc));c.hmL.setAttribute('y1',f1(hy0+10));c.hmL.setAttribute('y2',f1(hy1-10));
+  c.hmA.setAttribute('points',f1(xc)+','+f1(hy0)+' '+f1(xc-9)+','+f1(hy0+16)+' '+f1(xc+9)+','+f1(hy0+16));
+  c.hmB.setAttribute('points',f1(xc)+','+f1(hy1)+' '+f1(xc-9)+','+f1(hy1-16)+' '+f1(xc+9)+','+f1(hy1-16));
+  c.hmP.setAttribute('x',f1(xc+14));c.hmP.setAttribute('y',f1((hy0+hy1)/2-22));c.hmT.setAttribute('x',f1(xc+36));c.hmT.setAttribute('y',f1((hy0+hy1)/2+11));
+  const vms=Math.sqrt(9.8*hd0);
+  c.fH.textContent=hd0;c.fM.textContent='≈ '+(vms>=20?Math.round(vms):vms.toFixed(1))+' m/s ≈ ';c.fV.textContent=s5vr(vms*3.6)+' km/h';
+  c.vLab.setAttribute('x',f1(xc));c.vLab.setAttribute('y',f1(S5.y0-A-22));c.vLab.textContent=run>0?'':'약 '+s5vr(vk)+' km/h';
+  c.cap.textContent=run>0?'⑤ 해안 지역에 심각한 피해를 입힘':(xc<420?'② 해수면 진동':(xc<760?'③ 깊은 바다에서 전파 속도가 매우 빠름':'④ 얕은 바다에서는 파고가 상승함'));   // 교과서 그림의 번호 글 그대로
+  $id('s06i-a').textContent='처음의 '+(A/S5.A0).toFixed(1)+'배';
+}
+Deck.scene('s06i',{
+  enter(c){
+    s5build(c);const T=S5T[S5T.length-1],Tall=T*1.2,SEC=12;
+    c.t=0;c.play=false;c.showDots=true;s5draw(c,0);iaIsolate(c);
+    const r=c.$('#s06i-range'),go=c.$('#s06i-go');
+    const sync=()=>{r.value=Math.round(1000*c.t/Tall);};
+    r.addEventListener('input',()=>{c.t=Tall*r.value/1000;c.play=false;go.textContent='재생 ▶';s5draw(c,c.t);});
+    go.addEventListener('click',()=>{if(c.t>=Tall)c.t=0;c.play=!c.play;go.textContent=c.play?'멈춤 ❚❚':'재생 ▶';});
+    c.$('#s06i-dots').addEventListener('change',e=>{c.showDots=e.target.checked;s5draw(c,c.t);});
+    c.loop((t,dt)=>{if(!c.play)return;c.t=Math.min(Tall,c.t+Tall*dt/SEC);if(c.t>=Tall){c.play=false;go.textContent='다시 재생 ▶';}sync();s5draw(c,c.t);});
+  }
+});
+
+Deck.start();
+</script>
+</body>
+</html>

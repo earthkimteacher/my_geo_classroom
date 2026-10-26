@@ -242,6 +242,25 @@ html.print .was-dark [fill="#1c1c1e"]{fill:#f2f2f7}
 html.print .was-dark [fill="#3a3a3c"]{fill:#8e8e93}
 html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why{visibility:hidden!important}   /* ?ans=0: 빈칸 정답·문제 풀이 숨김(학생용 인쇄) */
 @media (prefers-reduced-motion: reduce){ .slide *{scroll-behavior:auto} }
+/* 그림 크게 보기(2026-10-26): 장 안의 그림 상자 .pic(figure > img)을 누르면 무대 가운데에 크게 띄움 */
+.pic{position:absolute;margin:0;border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.06),0 12px 30px rgba(0,0,0,.10);z-index:2;cursor:zoom-in}
+.pic img{display:block;width:100%;height:100%;object-fit:contain}
+.pic.cv img{object-fit:cover}   /* 사진만: 가장자리를 조금 잘라 칸을 채움(도표·글자 든 그림은 쓰지 않음) */
+.pic::after{content:'';position:absolute;right:16px;bottom:16px;width:52px;height:52px;border-radius:9999px;background:rgba(29,29,31,.62) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='M15.5 15.5L21 21M10.5 7.5v6M7.5 10.5h6'/%3E%3C/svg%3E") center/28px no-repeat;opacity:0;transition:opacity .25s;pointer-events:none}
+.pic:hover::after{opacity:1}
+html.still .pic,html.print .pic{cursor:default}
+html.still .pic::after,html.print .pic::after{display:none}
+#zoom{position:absolute;inset:0;z-index:60;display:none;background:rgba(0,0,0,0);transition:background .32s var(--ease-out);cursor:zoom-out}
+#zoom.on{display:block}
+#zoom.show{background:rgba(0,0,0,.8)}
+#zoom img{position:absolute;border-radius:18px;background:#fff;box-shadow:0 24px 80px rgba(0,0,0,.45);transform-origin:0 0}
+/* 부분 확대(2026-10-26): 브라우저 자체 확대·두 번 톡 확대를 막고 엔진이 직접 확대 */
+#viewport{touch-action:none}
+#zbadge{position:fixed;top:12px;left:50%;transform:translate(-50%,-8px);z-index:45;display:flex;align-items:center;gap:10px;padding:5px 6px 5px 16px;border-radius:9999px;background:rgba(28,28,30,.8);color:#f5f5f7;font-size:15px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
+#zbadge.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+#zbadge b{font-variant-numeric:tabular-nums}
+#zbadge button{border:0;border-radius:9999px;padding:6px 14px;font:inherit;font-weight:700;color:#1d1d1f;background:#f5f5f7;cursor:pointer}
+html.zoomed #viewport{cursor:grab}
 
 
 /* ── 지구 환경의 변화 수업에서 추가한 스타일 ── */
@@ -1124,6 +1143,7 @@ html.print #s03a text[fill="#FFD60A"]{fill:#9A7400}
   <tr><td><kbd>M</kbd></td><td>책갈피 목록 (반마다 저장 · 눌러서 이동)</td></tr>
   <tr><td><kbd>P</kbd></td><td>애니메이션 일시정지 · 이어서 재생 (멈춘 상태에서 → 도 재생)</td></tr>
   <tr><td><kbd>L</kbd></td><td>레이저 포인터 켜기·끄기 (누른 채 움직이면 선, 떼면 사라짐)</td></tr>
+  <tr><td>두 손가락 벌리기<br>트랙패드 핀치 · Ctrl+휠</td><td>부분 확대 (확대 중 끌어서 옮기기 · 두 번 톡이나 Esc로 원래대로)</td></tr>
   <tr><td><kbd>Esc</kbd></td><td>덮개 닫기</td></tr></table></div></div>
 <div id="blank"></div>
 
@@ -1299,6 +1319,8 @@ function runDecl(c,k){
 
 async function show(i,k=0,o={}){
   const n=Deck.list.length;if(!n)return;
+  if(ZM)zoomClose(true);
+  if(i!==Deck.i)zvReset();
   if(PAUSED)setPause(false);
   i=Math.max(0,Math.min(n-1,i));
   const to=Deck.list[i],from=Deck.i>=0?Deck.list[Deck.i]:null;
@@ -1448,6 +1470,32 @@ function syncKw(){
 }
 function closeOverlays(){helpEl.classList.remove('show');}
 
+/* 그림 크게 보기(2026-10-26 교사 요청): 장 안의 .pic 그림을 누르면 그 자리에서 무대 가운데로 커지며 떠오름(Push-in).
+   다시 누르거나 아무 키나 누르면 제자리로 돌아가며 닫힘. 여는 동안 장·단계는 넘어가지 않음. 정지 화면·인쇄에서는 쓰지 않음 */
+let ZM=null;
+const zoomEl=document.createElement('div');zoomEl.id='zoom';   // 무대에는 처음 열 때 붙임(stage는 Deck.start에서 정해짐)
+function zoomRect(el){const sr=stage.getBoundingClientRect(),sc=sr.width/SW,r=el.getBoundingClientRect();return {x:(r.left-sr.left)/sc,y:(r.top-sr.top)/sc,w:r.width/sc,h:r.height/sc};}
+function zoomOpen(fig){
+  const img=fig.querySelector('img');if(!img||ZM)return;
+  const a=zoomRect(fig),nw=img.naturalWidth||a.w,nh=img.naturalHeight||a.h,k=Math.min(1760/nw,960/nh);
+  const b={w:nw*k,h:nh*k};b.x=(SW-b.w)/2;b.y=(SH-b.h)/2;
+  const z=document.createElement('img');z.src=img.currentSrc||img.src;z.alt=img.alt||'';
+  Object.assign(z.style,{left:b.x+'px',top:b.y+'px',width:b.w+'px',height:b.h+'px'});
+  if(zoomEl.parentNode!==stage)stage.appendChild(zoomEl);
+  zoomEl.innerHTML='';zoomEl.appendChild(z);zoomEl.classList.add('on');
+  const from='translate('+(a.x-b.x)+'px,'+(a.y-b.y)+'px) scale('+(a.w/b.w)+','+(a.h/b.h)+')';
+  ZM={fig,from,z};
+  requestAnimationFrame(()=>zoomEl.classList.add('show'));
+  z.animate([{transform:from},{transform:'none'}],{duration:420,easing:EASE.out});
+}
+function zoomClose(now){
+  if(!ZM)return;const {from,z}=ZM;ZM=null;
+  const done=()=>{zoomEl.classList.remove('on','show');zoomEl.innerHTML='';};
+  if(now){done();return;}
+  zoomEl.classList.remove('show');
+  z.animate([{transform:'none'},{transform:from}],{duration:300,easing:EASE.inOut,fill:'forwards'}).onfinish=done;
+}
+
 /* 목차(O): 실제 슬라이드를 줄여 격자로 펼친다. 장 수에 맞춰 썸네일이 가장 커지는 열 수를 고른다 */
 let OV=0,ovSel=0,ovCols=1;   // OV: 0 닫힘 · 1 열림 · 2 닫히는 중
 function ovLayout(n){
@@ -1464,7 +1512,7 @@ function ovLayout(n){
 function ovMark(i){ovSel=i;Deck.list.forEach((s,j)=>s.classList.toggle('sel',j===i));}
 function openToc(){
   if(OV)return;
-  OV=1;closeOverlays();if(LZ.on)lzSet(false);
+  zvReset(false);OV=1;closeOverlays();if(LZ.on)lzSet(false);
   const L=ovLayout(Deck.list.length),K=window.KW;
   stage.style.setProperty('--ovw',(3/L.s).toFixed(1)+'px');
   stage.style.setProperty('--ovr',(12/L.s).toFixed(1)+'px');
@@ -1508,8 +1556,74 @@ function tocKey(e){
 }
 function toggleBlank(kind){blankEl.className=(blankEl.className===kind)?'':kind;}
 function fit(){
-  const s=Math.min(innerWidth/SW,innerHeight/SH);
-  stage.style.transform='translate(-50%,-50%) scale('+s+')';
+  FS=Math.min(innerWidth/SW,innerHeight/SH);zvClamp();stApply(false);
+}
+/* 부분 확대(2026-10-26 교사 요청): 아이패드는 두 손가락 벌리기·오므리기, 맥은 트랙패드 핀치(사파리 gesture, 크롬 등 ctrl+휠),
+   마우스는 Ctrl+휠로 손가락(포인터) 자리를 중심으로 1~4배 확대. 확대 중에는 한 손가락 끌기·두 손가락 스크롤로 옮기고,
+   눌러도 장이 넘어가지 않음. 두 번 톡·두 번 클릭·Esc·위쪽 [원래대로]로 되돌리고, 장을 옮기거나 목차를 열면 저절로 원래대로.
+   브라우저 자체 확대는 막음: 엔진이 창 크기에 맞춰 무대를 다시 줄이기 때문에 브라우저 확대는 바로 되돌려졌음 */
+let FS=1,zbadge=null;
+const ZV={z:1,x:0,y:0},ZMAX=4,PZ={p:null,d0:1,z0:1,pan:null,mv:0,used:false,tap:0,tx:0,ty:0,g:null,eat:0};
+function stApply(anim){
+  if(!stage)return;
+  stage.style.transition=anim?'transform .35s cubic-bezier(.2,.8,.2,1)':'';
+  stage.style.transform='translate(-50%,-50%) translate('+ZV.x.toFixed(1)+'px,'+ZV.y.toFixed(1)+'px) scale('+(FS*ZV.z)+')';
+  const on=ZV.z>1.01;rootEl.classList.toggle('zoomed',on);
+  if(zbadge){zbadge.classList.toggle('show',on);zbadge.querySelector('b').textContent=Math.round(ZV.z*100)+'%';}
+}
+function zvClamp(){const mx=SW*FS*(ZV.z-1)/2,my=SH*FS*(ZV.z-1)/2;ZV.x=Math.max(-mx,Math.min(mx,ZV.x));ZV.y=Math.max(-my,Math.min(my,ZV.y));}
+function zvPoint(sx,sy){const S=FS*ZV.z;return {x:(sx-innerWidth/2-ZV.x)/S,y:(sy-innerHeight/2-ZV.y)/S};}   // 화면 점 아래의 무대 점(무대 가운데 기준)
+function zvSet(z,p,sx,sy){   // 무대 점 p가 화면 (sx,sy)에 오도록 z배 확대
+  ZV.z=Math.max(1,Math.min(ZMAX,z));
+  if(ZV.z<1.001){ZV.z=1;ZV.x=0;ZV.y=0;}
+  else{const S=FS*ZV.z;ZV.x=sx-innerWidth/2-p.x*S;ZV.y=sy-innerHeight/2-p.y*S;zvClamp();}
+  stApply(false);
+}
+function zvReset(anim=true){if(ZV.z===1&&!ZV.x&&!ZV.y)return;ZV.z=1;ZV.x=0;ZV.y=0;stApply(anim);}
+const zvOK=()=>!STILL&&!OV&&!ZM&&!rootEl.classList.contains('print');
+function zoomInit(){
+  Deck.zoom=ZV;   // 확인용(콘솔에서 Deck.zoom)
+  zbadge=document.createElement('div');zbadge.id='zbadge';
+  zbadge.innerHTML='<span>확대 <b>100%</b></span><button type="button">원래대로</button>';
+  document.body.appendChild(zbadge);
+  zbadge.addEventListener('click',e=>{e.stopPropagation();zvReset();});
+  ['touchstart','touchend','pointerdown'].forEach(ev=>zbadge.addEventListener(ev,e=>e.stopPropagation(),{passive:true}));
+  // 아이패드: 두 손가락 = 확대, 확대 중 한 손가락 = 옮기기
+  addEventListener('touchstart',e=>{
+    if(!zvOK()||LZ.on)return;
+    const t=e.touches;
+    if(t.length===2){const a=t[0],b=t[1];PZ.used=true;PZ.d0=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY)||1;PZ.z0=ZV.z;
+      PZ.p=zvPoint((a.clientX+b.clientX)/2,(a.clientY+b.clientY)/2);PZ.pan=null;e.preventDefault();}
+    else if(t.length===1&&ZV.z>1.01){PZ.pan={x:t[0].clientX,y:t[0].clientY,ox:ZV.x,oy:ZV.y};PZ.mv=0;}
+  },{passive:false});
+  addEventListener('touchmove',e=>{
+    if(!zvOK()||LZ.on)return;
+    const t=e.touches;
+    if(t.length===2&&PZ.p){const a=t[0],b=t[1];zvSet(PZ.z0*Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY)/PZ.d0,PZ.p,(a.clientX+b.clientX)/2,(a.clientY+b.clientY)/2);e.preventDefault();}
+    else if(t.length===1&&PZ.pan){const dx=t[0].clientX-PZ.pan.x,dy=t[0].clientY-PZ.pan.y;PZ.mv=Math.max(PZ.mv,Math.hypot(dx,dy));
+      ZV.x=PZ.pan.ox+dx;ZV.y=PZ.pan.oy+dy;zvClamp();stApply(false);e.preventDefault();}
+  },{passive:false});
+  addEventListener('touchend',e=>{
+    if(e.touches.length===1&&PZ.p){PZ.p=null;if(ZV.z>1.01){const t=e.touches[0];PZ.pan={x:t.clientX,y:t.clientY,ox:ZV.x,oy:ZV.y};PZ.mv=99;}return;}   // 두 손가락 중 하나를 떼면 남은 손가락으로 옮기기
+    if(e.touches.length)return;
+    if(PZ.pan&&!PZ.used&&PZ.mv<10){   // 확대 중 톡 두 번 = 원래대로
+      const c=e.changedTouches[0],now=performance.now();
+      if(now-PZ.tap<350&&Math.hypot(c.clientX-PZ.tx,c.clientY-PZ.ty)<40){PZ.tap=0;PZ.eat=now;zvReset();}   // 뒤따르는 클릭은 버림(장이 넘어가지 않게)else{PZ.tap=now;PZ.tx=c.clientX;PZ.ty=c.clientY;}
+    }
+    PZ.pan=null;PZ.p=null;setTimeout(()=>{PZ.used=false;},0);   // 이 손동작이 끝날 때까지는 밀기(장 넘기기)로 보지 않음
+  },{passive:true});
+  // 맥 사파리 트랙패드 핀치(아이패드는 위 터치로 처리)
+  const touchDev=navigator.maxTouchPoints>0;
+  addEventListener('gesturestart',e=>{e.preventDefault();if(touchDev||!zvOK())return;PZ.g={z0:ZV.z,p:zvPoint(e.clientX,e.clientY)};},{passive:false});
+  addEventListener('gesturechange',e=>{e.preventDefault();if(touchDev||!PZ.g||!zvOK())return;zvSet(PZ.g.z0*e.scale,PZ.g.p,e.clientX,e.clientY);},{passive:false});
+  addEventListener('gestureend',e=>{e.preventDefault();PZ.g=null;},{passive:false});
+  // 크롬·엣지·파이어폭스: 트랙패드 핀치와 Ctrl+휠 = 확대, 확대 중 두 손가락 스크롤·휠 = 옮기기
+  addEventListener('wheel',e=>{
+    if(!zvOK())return;
+    if(e.ctrlKey){e.preventDefault();if(PZ.g)return;const d=Math.max(-50,Math.min(50,e.deltaY*(e.deltaMode?20:1)));zvSet(ZV.z*Math.exp(-d*0.01),zvPoint(e.clientX,e.clientY),e.clientX,e.clientY);}
+    else if(ZV.z>1.01){e.preventDefault();ZV.x-=e.deltaX;ZV.y-=e.deltaY;zvClamp();stApply(false);}
+  },{passive:false});
+  addEventListener('dblclick',e=>{if(ZV.z>1.01&&!e.target.closest('#hud,#zbadge,.ia-panel'))zvReset();});
 }
 function pokeHud(){
   hud.classList.add('show');clearTimeout(hudTimer);
@@ -1603,7 +1717,7 @@ Deck.start=function(){
   });
   buildKw();
   ovl=document.createElement('div');ovl.id='ovl';stage.appendChild(ovl);
-  fit();addEventListener('resize',fit);
+  fit();addEventListener('resize',fit);zoomInit();
   document.getElementById('b-prev').onclick=prev;
   document.getElementById('b-next').onclick=next;
   document.getElementById('b-mark').onclick=openMark;
@@ -1615,20 +1729,24 @@ Deck.start=function(){
   document.getElementById('b-fs').onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();else rootEl.requestFullscreen&&rootEl.requestFullscreen();};
   helpEl.addEventListener('click',e=>{if(e.target===helpEl)closeOverlays();});
   viewport.addEventListener('click',e=>{
+    if(ZM){zoomClose();return;}
+    if(ZV.z>1.01||performance.now()-PZ.eat<600)return;   // 부분 확대 중(또는 두 번 톡으로 막 되돌린 직후)에는 눌러도 넘어가지 않음
     if(OV){if(OV===1){const s=e.target.closest('.slide');closeToc(s?Deck.list.indexOf(s):-1);}return;}
     if(e.target.closest('#kwbar'))return;
+    const zp=e.target.closest('.slide .pic');if(zp&&!STILL&&!LZ.on){zoomOpen(zp);return;}   // 그림을 누르면 크게 보기
     (e.clientX/innerWidth<.28)?prev():next();
   });
   addEventListener('mousemove',pokeHud);addEventListener('touchstart',pokeHud,{passive:true});
   let tx=null;
   addEventListener('touchstart',e=>{tx=LZ.on?null:e.touches[0].clientX;},{passive:true});   // 레이저로 긋는 동안은 밀기(장 넘기기)로 보지 않는다
-  addEventListener('touchend',e=>{if(tx===null||OV||LZ.on){tx=null;return;}const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>60){dx<0?next():prev();}},{passive:true});
+  addEventListener('touchend',e=>{if(tx===null||OV||LZ.on||ZM||PZ.used||ZV.z>1.01){tx=null;return;}const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>60){dx<0?next():prev();}},{passive:true});
   addEventListener('keydown',e=>{
     if(e.metaKey||e.ctrlKey||e.altKey)return;
+    if(ZM){e.preventDefault();zoomClose();return;}   // 크게 보기 중에는 아무 키나 닫기만
     if(e.target.closest&&e.target.closest('#markbox,#resume'))return;
     if(OV){if(OV===1)tocKey(e);return;}
     const key=e.key;
-    if(key==='Escape'){if(LZ.on){lzSet(false);return;}closeOverlays();setNotes(false);blankEl.className='';return;}
+    if(key==='Escape'){if(LZ.on){lzSet(false);return;}if(ZV.z>1.01){zvReset();return;}closeOverlays();setNotes(false);blankEl.className='';return;}
     if(blankEl.className){blankEl.className='';return;}
     if(helpEl.classList.contains('show'))return;
     switch(key){

@@ -25,6 +25,7 @@
 ### 지구시스템과학 (고2)
 | 단원 | 자료 | 바로 열기 |
 |---|---|---|
+| II.04. 해일 | 슬라이드 | [열기](https://earth.esbest.net/지구시스템과학/II.04surge.html) |
 | II.05. 조석 | 슬라이드 | [열기](https://earth.esbest.net/지구시스템과학/II.05tide.html) · [학생용 PDF](https://earth.esbest.net/지구시스템과학/PDF/II.05tide_학생용.pdf) |
 
 ## 슬라이드 사용법
@@ -74,7 +75,10 @@ my_geo_classroom/
 │  ├─ 행성의 역행과 순행 시뮬레이터.html
 │  └─ 밀란코비치 시뮬레이터.html
 ├─ 지구시스템과학/
+│  ├─ II.04surge.html                 해일 슬라이드
 │  ├─ II.05tide.html                  조석 슬라이드
+│  ├─ img/
+│  │  └─ II.04/                       해일 슬라이드에 쓰는 그림(교사 PPT의 그림)
 │  └─ PDF/
 │     └─ II.05tide_학생용.pdf          조석 학생용 인쇄본
 ├─ index.html                         사이트 첫 화면 (수업 자료 목록)
