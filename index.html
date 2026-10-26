@@ -12,6 +12,8 @@
   - 과목 순서: 학년 순, 같은 학년은 가나다순
   - 과목 안 items: 단원 번호 순(I.01 → I.06 → II.01 …). 단원 번호가 없는 시뮬레이터는 unit을 비웁니다.
   - 학생용 PDF가 있으면 pdf에 경로를 적습니다(과목폴더/PDF/파일.pdf). 카드에 '학생용 PDF ↓' 단추가 생깁니다.
+  - 과목의 바깥 자료실(노션 등)은 links에 적습니다: {type,title,href,embed}. 그 과목 카드 아래에 구분선을 긋고
+    embed(노션은 https://워크스페이스.notion.site/ebd/페이지ID)를 늘 펼친 상자로 보여 줍니다(제목 줄 오른쪽에 '새 탭으로 열기').
   README.md의 '수업 자료' 목록도 같은 내용으로 함께 고칩니다.
 -->
 <style>
@@ -49,6 +51,12 @@ section h2 span{font-size:16px;font-weight:600;color:var(--t2)}
 .card .acts .go{margin:0;padding:0}
 .card .pdf{position:relative;z-index:1;font-size:14px;font-weight:600;padding:4px 12px;border-radius:9999px;border:1px solid var(--line);color:var(--ink)}
 .card .pdf:hover{border-color:var(--act);color:var(--act)}
+.ext{margin-top:28px;padding-top:22px;border-top:1px solid var(--line)}   /* 구분선 */
+.ext .hd{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:17px;font-weight:700}
+.ext .hd .tag{padding:2px 10px;border-radius:9999px;font-size:13px;background:color-mix(in srgb,var(--ink) 8%,transparent)}
+.ext .hd a{margin-left:auto;font-size:14px;font-weight:600;color:var(--act)}
+.ext .box{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card)}
+.ext iframe{display:block;width:100%;height:min(75vh,760px);border:0;background:var(--card)}
 .tips{margin-top:56px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 26px}
 .tips h3{font-size:18px;font-weight:700;margin-bottom:10px}
 .tips ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px 20px;font-size:15px;color:var(--t2)}
@@ -96,6 +104,8 @@ const SUBJECTS=[
   {name:'지구시스템과학',grade:'고2',items:[
     {unit:'II.04',type:'슬라이드',title:'해일',note:'',href:'지구시스템과학/II.04surge.html'},
     {unit:'II.05',type:'슬라이드',title:'조석',note:'',href:'지구시스템과학/II.05tide.html',pdf:'지구시스템과학/PDF/II.05tide_학생용.pdf'},
+  ],links:[
+    {type:'노션',title:'학생용 수업 자료 PDF',href:'https://esbest.notion.site/2-32d4a95fb28280e198bfd571eef92fec',embed:'https://esbest.notion.site/ebd/32d4a95fb28280e198bfd571eef92fec'},
   ]},
 ];
 const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;};
@@ -116,7 +126,15 @@ SUBJECTS.forEach(s=>{
     card.appendChild(acts);
     grid.appendChild(card);
   });
-  sec.appendChild(grid);list.appendChild(sec);
+  sec.appendChild(grid);
+  (s.links||[]).forEach(L=>{   // 바깥 자료실(노션 등): 구분선 아래 늘 펼친 상자
+    const w=el('div','ext'),hd=el('div','hd');
+    hd.appendChild(el('span','tag',L.type));hd.appendChild(el('span',null,L.title));
+    const out=el('a',null,'새 탭으로 열기 ↗');out.href=L.href;out.target='_blank';out.rel='noopener';hd.appendChild(out);w.appendChild(hd);
+    if(L.embed){const box=el('div','box'),f=el('iframe');f.src=L.embed;f.title=L.title;f.loading='lazy';box.appendChild(f);w.appendChild(box);}
+    sec.appendChild(w);
+  });
+  list.appendChild(sec);
 });
 </script>
 </body>

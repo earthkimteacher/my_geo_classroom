@@ -288,11 +288,11 @@ html.zoomed #viewport{cursor:grab}
 /* 그림 아래 이름 */
 .cap{position:absolute;font-size:30px;font-weight:700;color:var(--t2);z-index:3}
 /* 흐름 칩(원인 → 결과): 카드 안에서 줄마다 첫 칸(72px)을 비우거나 →·또는을 넣어 칩의 왼쪽 끝을 맞춤 */
-.ws-card.flow{display:flex;flex-direction:column;justify-content:center;gap:24px}
+.ws-card.flow{display:flex;flex-direction:column;justify-content:center;gap:18px}
 .flow .fr-row{display:flex;align-items:center;gap:16px;flex-wrap:nowrap}
-.flow .fr-row.alt{border-top:2px dashed var(--hl);padding-top:24px}
+.flow .fr-row.alt{border-top:2px dashed var(--hl);padding-top:18px}
 .flow .ld{flex:none;width:72px;text-align:center}
-.flow .ch{display:inline-flex;align-items:center;height:70px;padding:0 28px;border-radius:9999px;background:#f5f5f7;font-size:34px;font-weight:600;letter-spacing:-.015em;white-space:nowrap}
+.flow .ch{display:inline-flex;align-items:center;height:62px;padding:0 28px;border-radius:9999px;background:#f5f5f7;font-size:34px;font-weight:600;letter-spacing:-.015em;white-space:nowrap}
 .flow .ar{font-size:34px;font-weight:700;color:var(--t2)}
 .flow .or{font-size:34px;font-weight:700;color:var(--t2)}
 /* 식 */
@@ -320,6 +320,7 @@ html.zoomed #viewport{cursor:grab}
 .ia-stat .st b{font-size:36px;font-weight:800;color:var(--act);font-variant-numeric:tabular-nums}
 html.print .ia-panel{display:none}
 #s03-card .ws-row{padding:10px 0}
+#s05-card .ws-row{padding:8px 0}
 .ws-card .v-eq{font-size:64px;line-height:1.3;margin:10px 0 6px}
 /* 인쇄: 표지의 넓은 어두운 면을 연하게 */
 html.print #s01 .full-svg>rect{fill:#fff}
@@ -412,16 +413,17 @@ html.print #s01 #s01-cloud,html.print #s01 #s01-lamp{display:none}
     <div class="ws-row"><span class="tm">기압</span><span>해면 기압이 1hPa 낮아지면 해수면은 약 <span class="bk"><span class="a" data-step="3" data-fx="pop">1cm</span><span class="n">3</span></span> 높아진다.</span></div>
     <div class="ws-row"><span class="tm">성질</span><span>파장이 길어 <span class="bk"><span class="a" data-step="4" data-fx="pop">천해파</span><span class="n">4</span></span>의 성질을 띤다.</span></div>
   </div>
-  <figure class="pic" id="s05-pic" style="left:120px;top:644px;width:590px;height:346px" data-in="400" data-fx="fade"><img src="img/II.04/p4_기압과_해수면.png" alt="기압과 해수면 높이"></figure>
-  <div class="ws-card flow" id="s05-flow" style="left:750px;top:644px;width:1050px;height:346px" data-in="450">
-    <div class="fr-row"><span class="ld"></span><span class="ch" data-step="5" data-fx="left">저기압 중심</span><span class="ar" data-step="5" data-delay="150" data-fx="fade">→</span><span class="ch" data-step="5" data-delay="250" data-fx="left">상승 기류</span><span class="ar" data-step="5" data-delay="400" data-fx="fade">→</span><span class="ch" data-step="5" data-delay="500" data-fx="left">물을 빨아들임</span></div>
-    <div class="fr-row"><span class="ld ar" data-step="6" data-fx="fade">→</span><span class="ch" data-step="6" data-delay="100" data-fx="left">지나가면 다시 물이 하강</span><span class="ar" data-step="6" data-delay="250" data-fx="fade">→</span><span class="ch" data-step="6" data-delay="350" data-fx="left">물이 출렁</span></div>
-    <div class="fr-row alt"><span class="ld or" data-step="7" data-fx="fade">또는</span><span class="ch" data-step="7" data-delay="150" data-fx="left">바람이 불어서 물을 이동시킴</span></div>
+  <figure class="pic" id="s05-pic" style="left:120px;top:610px;width:590px;height:380px" data-in="400" data-fx="fade"><img src="img/II.04/p4_기압과_해수면.png" alt="기압과 해수면 높이"></figure>
+  <div class="ws-card flow" id="s05-flow" style="left:750px;top:610px;width:1050px;height:380px" data-in="450">
+    <div class="fr-row"><span class="ld"></span><span class="ch" data-step="5" data-fx="left">저기압 중심</span><span class="ar" data-step="5" data-delay="150" data-fx="fade">→</span><span class="ch" data-step="5" data-delay="250" data-fx="left">주위보다 기압이 낮음</span></div>
+    <div class="fr-row"><span class="ld ar" data-step="6" data-fx="fade">→</span><span class="ch" data-step="6" data-delay="100" data-fx="left">해수를 누르는 힘 작다</span><span class="ar" data-step="6" data-delay="250" data-fx="fade">→</span><span class="ch" data-step="6" data-delay="350" data-fx="left">해수면 상승</span></div>
+    <div class="fr-row"><span class="ld ar" data-step="7" data-fx="fade">→</span><span class="ch" data-step="7" data-delay="100" data-fx="left">지나가면 다시 물이 하강</span></div>
+    <div class="fr-row alt"><span class="ld or" data-step="8" data-fx="fade">또는</span><span class="ch" data-step="8" data-delay="150" data-fx="left">바람이 불어서 물을 이동시킴</span></div>
   </div>
 </section>
 
 <!-- ═══ s05i 폭풍 해일 — 직접 해 보기 (PPT 4쪽 인터랙티브 표기) ═══ -->
-<section class="slide" id="s05i" data-tile="light" data-title="폭풍 해일 — 직접 해 보기" data-notes="PPT 4쪽 표기(폭풍 이동과 해수면 변화, 중심 기압의 변화와 해수면 상승 정도를 조절할 수 있게)에 따라 만든 인터랙티브 자료입니다. 중심 기압 막대를 움직이면 저기압 아래 해수면이 1 hPa에 약 1 cm씩 높아집니다(1013 hPa 기준). [폭풍 이동]을 누르면 저기압이 해안으로 다가가고, 해수면이 높아진 곳도 함께 움직여 해안에 닿으면 바닷물이 육지로 밀려듭니다. [강풍]을 켜면 바람이 바닷물을 해안 쪽으로 밀어 해안의 해수면이 더 높아집니다(초록 화살표. 바람에 의한 몫은 바람의 세기와 해안 지형에 따라 크게 달라 숫자로 나타내지 않음). 해수면 높이는 그림에서 크게 과장했습니다.">
+<section class="slide" id="s05i" data-tile="light" data-title="폭풍 해일 — 직접 해 보기" data-notes="PPT 4쪽 표기(폭풍 이동과 해수면 변화, 중심 기압의 변화와 해수면 상승 정도를 조절할 수 있게)에 따라 만든 인터랙티브 자료입니다. 중심 기압 막대를 움직이면 저기압 아래 해수면이 1 hPa에 약 1 cm씩 높아집니다(1013 hPa 기준). [폭풍 이동]을 누르면 저기압이 해안으로 다가가고, 해수면이 높아진 곳도 함께 움직여 해안에 닿으면 바닷물이 육지로 밀려듭니다. [강풍]을 켜면 바람이 바닷물을 해안 쪽으로 밀어 해안의 해수면이 더 높아집니다(초록 화살표. 바람에 의한 몫은 바람의 세기와 해안 지형에 따라 크게 달라 숫자로 나타내지 않음). 해수면 높이는 그림에서 크게 과장했습니다. 회색 점선 화살표: 바람이 저기압 중심 쪽으로 불어 들어와 중심에서 위로 올라가는 상승 기류를 옆에서 본 모습입니다(점선이 흐르는 방향 = 공기가 움직이는 방향). 남색 아래 화살표: 공기가 해수면을 누르는 힘(기압)으로, 저기압 중심에 가까울수록 짧습니다. 해수면이 올라가는 까닭은 상승 기류가 물을 빨아올려서가 아니라, 중심에서 해수면을 누르는 힘이 주변보다 약해 주변 바닷물이 밀려오기 때문입니다(1 hPa당 약 1 cm). 강풍을 켜면 초록 ‘바람 몫’이 더해지는데, 얕은 해안에서는 바람에 의한 상승이 기압에 의한 상승보다 큰 경우가 많아 그림에서도 더 크게 그렸습니다(크기는 모식, 숫자 없음). 출렁임: 깊은 바다에서는 물결 속도(약 700 km/h)가 태풍 이동 속도보다 훨씬 빨라 부푼 바닷물이 저기압 바로 아래를 거의 그대로 따라가고, 크게 출렁이는 것은 주로 얕은 연안·만에서입니다. 그림의 뒤처짐과 출렁임은 보이게 하려고 키운 모식입니다.">
   <div class="hd" data-in><div class="eb"><b>2</b>폭풍 해일</div><h2>직접 해 보기 — 중심 기압과 해수면 높이</h2></div>
   <div class="ia-box" data-in="200" data-fx="fade"><svg id="s05i-svg" viewBox="0 0 1680 600"></svg></div>
   <div class="ia-panel" data-in="350">
@@ -431,7 +433,7 @@ html.print #s01 #s01-cloud,html.print #s01 #s01-lamp{display:none}
     <label class="ia-chk"><input id="s05i-wind" type="checkbox">강풍</label>
     <div class="ia-stat"><div class="st"><i>기압에 의한 해수면 상승</i><b id="s05i-h">약 63 cm</b></div></div>
   </div>
-  <div class="fine">모식 그림 · 해수면 높이는 크게 과장 · 기압에 의한 상승은 1 hPa당 약 1 cm(1013 hPa 기준)로 계산</div>
+  <div class="fine">모식 그림 · 높이는 크게 과장(기압 효과는 1 hPa당 약 1 cm로 계산, 바람 효과는 모식) · 출렁임은 실제로 연안·만에서 특히 크게 나타남</div>
 </section>
 
 <!-- ═══ s06 지진 해일 (PPT 5쪽) ═══ -->
@@ -1220,15 +1222,15 @@ Deck.scene('s01',{
 });
 
 /* ── 폭풍 해일 직접 해 보기(장면 상자 1680×600): 저기압 아래 해수면이 1 hPa에 약 1 cm 높아짐(1013 hPa 기준) ──
-   그림의 해수면 높이는 1 cm = 1 px로 크게 과장. 강풍은 해안 쪽으로 바닷물을 미는 효과(크기는 모식).
+   그림의 해수면 높이는 1 cm = 0.75 px로 크게 과장. 강풍은 해안 쪽으로 바닷물을 미는 효과(크기는 모식 — 얕은 해안에서는 기압 효과보다 큰 경우가 많아 그림에서도 더 크게).
    출렁임: 지점마다 해수면이 평형 수위(기압 + 바람)를 늦게 따라가다 지나치고 되돌아오며(감쇠 진동, 주기 약 3.2초),
    이웃 지점과 이어져 물결로 퍼짐 → 저기압이 지나간 뒤 물이 다시 내려가며 출렁인다(PPT 4쪽 흐름) */
-const S4={y0:330,S:1,R:190,shore:1320,s0:180,sEnd:1300,speed:150,sy:104,dx:8,w:2*Math.PI/3.2,g:.16,c2:3600,bx:600};
+const S4={y0:330,S:.75,R:190,shore:1320,s0:180,sEnd:1300,speed:150,sy:104,dx:8,w:2*Math.PI/3.2,g:.16,c2:3600,bx:600};
 const s4ss=u=>u*u*(3-2*u);
 const s4land=x=>x<820?560:(x<S4.shore?560-230*s4ss((x-820)/(S4.shore-820)):S4.y0-230*Math.pow((x-S4.shore)/360,1.3));   // 바다 밑 → 해안선(x 1320) → 육지가 끊김 없이 이어짐
 function s4eq(c,x){   // 평형 수위(cm) = 기압에 의한 상승 + (강풍일 때) 바람에 밀려 쌓인 물
   const dp=1013-c.p,s=c.s,wind=c.wind?Math.exp(-Math.pow((S4.shore-s)/400,2)):0;
-  return dp*Math.exp(-Math.pow((x-s)/S4.R,2))+(c.wind?0.5*Math.max(dp,25)*wind*Math.exp(-(S4.shore-x)/180):0);
+  return dp*Math.exp(-Math.pow((x-s)/S4.R,2))+(c.wind?1.2*Math.max(dp,30)*wind*Math.exp(-(S4.shore-x)/180):0);   // 바람 몫: 해안에서 기압 몫보다 크게(모식)
 }
 function s4init(c){const n=Math.round(S4.shore/S4.dx)+1;c.E=new Float64Array(n);c.V=new Float64Array(n);for(let i=0;i<n;i++)c.E[i]=s4eq(c,i*S4.dx);}
 function s4step(c,dt){
@@ -1264,7 +1266,14 @@ function s4build(c){
   svgEl('rect',{x:-24,y:-12,width:48,height:10,rx:4,fill:'#e8543e'},c.buoy);
   svgEl('rect',{x:-24,y:-6,width:48,height:6,fill:'#fff'},c.buoy);
   const halo={stroke:'#fff','stroke-width':8,'stroke-linejoin':'round','paint-order':'stroke'};
-  c.slosh=svgEl('text',Object.assign({'text-anchor':'middle','font-size':32,'font-weight':800,fill:'#0a5c94',opacity:0},halo),g);c.slosh.textContent='물이 출렁';
+  c.slosh=svgEl('text',Object.assign({'text-anchor':'middle','font-size':32,'font-weight':800,fill:'#0a3d66',opacity:0},halo),g);c.slosh.textContent='물이 출렁';
+  // 저기압 중심으로 불어 들어오는 바람 → 중심에서 상승 기류(점선이 흐르는 방향 = 공기가 움직이는 방향)
+  c.air=svgEl('g',{opacity:.9},g);
+  c.airL=svgEl('path',{fill:'none',stroke:'#8a94a6','stroke-width':5,'stroke-linecap':'round','stroke-dasharray':'16 12'},c.air);
+  c.airR=svgEl('path',{fill:'none',stroke:'#8a94a6','stroke-width':5,'stroke-linecap':'round','stroke-dasharray':'16 12'},c.air);
+  c.airH=[0,1,2,3].map(()=>svgEl('polygon',{fill:'#8a94a6'},c.air));
+  c.airT1=svgEl('text',Object.assign({'font-size':30,'font-weight':800,fill:'#4a5568'},halo),c.air);c.airT1.textContent='바람';
+  c.airT2=svgEl('text',Object.assign({'font-size':30,'font-weight':800,fill:'#4a5568'},halo),c.air);c.airT2.textContent='상승 기류';
   c.storm=svgEl('g',{},g);const st=c.storm;                                               // 저기압 중심(태풍 기호)
   svgEl('circle',{cx:0,cy:0,r:40,fill:'#fff',stroke:'#d9534f','stroke-width':7},st);
   svgEl('path',{d:'M0 -40 C 55 -40, 64 -9, 58 16',fill:'none',stroke:'#d9534f','stroke-width':7,'stroke-linecap':'round'},st);
@@ -1278,6 +1287,13 @@ function s4build(c){
   c.windLab=svgEl('text',Object.assign({'font-size':30,'font-weight':800,fill:'#1E8B3E'},halo),c.rise);
   c.riseLab=svgEl('text',Object.assign({'font-size':34,'font-weight':800,fill:'#C4391B'},halo),c.rise);
   c.windG=svgEl('g',{},g);
+  c.press=svgEl('g',{},g);                                                                 // 기압 화살표(공기가 해수면을 누르는 힘)
+  // 범례(왼쪽 아래 깊은 바다 위)
+  const lg2=svgEl('g',{},g);
+  svgEl('line',{x1:44,y1:470,x2:44,y2:500,stroke:'#fff','stroke-width':5},lg2);svgEl('polygon',{points:'44,512 34,494 54,494',fill:'#fff'},lg2);
+  const l1=svgEl('text',{x:72,y:500,'font-size':26,'font-weight':700,fill:'#fff'},lg2);l1.textContent='공기가 해수면을 누르는 힘(기압) — 저기압 중심일수록 약하다';
+  svgEl('path',{d:'M28 540 H62',stroke:'#fff','stroke-width':5,'stroke-dasharray':'10 7'},lg2);
+  const l2=svgEl('text',{x:72,y:548,'font-size':26,'font-weight':700,fill:'#fff'},lg2);l2.textContent='모여드는 바람과 상승 기류';
 }
 function s4draw(c){
   const p=c.p,dp=1013-p,s=c.s,{y0,S}=S4,E=c.E,n=E.length;
@@ -1295,7 +1311,20 @@ function s4draw(c){
   const bx=S4.bx,by=y0-s4at(c,bx)*S,sl=(s4at(c,bx+12)-s4at(c,bx-12))/24*S;
   c.buoy.setAttribute('transform','translate('+bx+' '+f1(by)+') rotate('+f1(-Math.atan(sl)*180/Math.PI*.8)+')');
   const bi=Math.round(bx/S4.dx),dev=E[bi]-s4eq(c,bx),amp=Math.hypot(dev,c.V[bi]/S4.w);
-  c.slosh.setAttribute('x',bx);c.slosh.setAttribute('y',f1(by-84));c.slosh.setAttribute('opacity',s>bx+120?f1(clamp((amp-4)/8,0,1)):0);
+  c.slosh.setAttribute('x',bx);c.slosh.setAttribute('y',f1(by+62));c.slosh.setAttribute('opacity',s>bx+120?f1(clamp((amp-4)/8,0,1)):0);   // '물이 출렁'은 물속(부표 아래) — 위쪽 하늘의 바람 화살표와 겹치지 않게
+  // 모여드는 바람과 상승 기류: 해수면(평형 수위)·땅 위 75 px로 불어 들어와 저기압 중심 양옆에서 위로 올라감
+  const sc=Math.min(s,S4.sEnd),yAir=x=>{const ws=y0-s4eq(c,Math.min(x,S4.shore))*S;return Math.max(80,(x<=S4.shore?ws:Math.min(ws,s4land(x)))-100-80*Math.exp(-Math.pow((x-1460)/80,2)));};   // 집 위로는 넘어가고, 언덕 위에서도 너무 높이 오르지 않게
+  const side=d=>{const pts=[],x0=clamp(sc+d*340,12,1560),xe=sc+d*160;   // 오른쪽 끝은 가파른 언덕 앞까지
+    for(let x=x0;d<0?x<xe:x>xe;x-=d*20)pts.push(f1(x)+' '+f1(yAir(x)));
+    const yb=yAir(sc+d*105);pts.push(f1(xe)+' '+f1(yAir(xe)));
+    return 'M'+pts.join(' L')+' Q'+f1(sc+d*105)+' '+f1(yAir(xe))+' '+f1(sc+d*105)+' '+f1(yb-45)+' L'+f1(sc+d*105)+' 40';};
+  c.airL.setAttribute('d',side(-1));c.airR.setAttribute('d',side(1));
+  const off=f1(-((c.tt||0)*60)%28);c.airL.setAttribute('stroke-dashoffset',off);c.airR.setAttribute('stroke-dashoffset',off);
+  [-1,1].forEach((d,i)=>{const xu=sc+d*105,xm=clamp(sc+d*250,40,1640),ym=yAir(xm);
+    c.airH[i*2].setAttribute('points',f1(xu)+',22 '+f1(xu-11)+',42 '+f1(xu+11)+',42');                       // 위쪽 끝: 올라감
+    c.airH[i*2+1].setAttribute('points',f1(xm-d*12)+','+f1(ym)+' '+f1(xm+d*10)+','+f1(ym-11)+' '+f1(xm+d*10)+','+f1(ym+11));});   // 가운데: 중심 쪽으로
+  const xl=sc+260<1250?sc+300:sc-200;c.airT1.setAttribute('x',f1(xl));c.airT1.setAttribute('text-anchor','middle');c.airT1.setAttribute('y',f1(yAir(xl)-18));   // '바람'은 바다 위 빈자리(오른쪽, 해안 가까우면 왼쪽)
+  const r2=sc<1100;c.airT2.setAttribute('x',f1(r2?sc+122:sc-122));c.airT2.setAttribute('text-anchor',r2?'start':'end');c.airT2.setAttribute('y','92');   // 해안 가까이에서는 왼쪽(오른쪽 산 위 바람과 겹치지 않게)
   c.storm.setAttribute('transform','translate('+f1(Math.min(s,S4.sEnd))+' '+S4.sy+')');
   c.stormLab.textContent=p+' hPa';
   // 빨간 화살표 = 기압에 의한 상승(계산값), 초록 = 바람에 밀려 더 높아진 몫(모식) — 둘 다 평형 수위 기준
@@ -1306,12 +1335,18 @@ function s4draw(c){
     c.riseHead.setAttribute('points',xa+','+f1(top)+' '+(xa-12)+','+f1(top+22)+' '+(xa+12)+','+f1(top+22));
     const lx=left?xa-22:xa+22,wv=top-topW>24;
     c.riseLab.setAttribute('x',lx);c.riseLab.setAttribute('text-anchor',left?'end':'start');
-    c.riseLab.setAttribute('y',f1(wv?top+32:top-8));c.riseLab.textContent='약 '+dp+' cm';
+    c.riseLab.setAttribute('y',f1(y0+42));c.riseLab.textContent='약 '+dp+' cm';   // 평상시 해수면 아래 물속, 화살표 밑동 옆(하늘의 기압 화살표와 겹치지 않게)
     c.windLine.setAttribute('x1',xa);c.windLine.setAttribute('x2',xa);c.windLine.setAttribute('y1',f1(top));c.windLine.setAttribute('y2',f1(topW));c.windLine.setAttribute('opacity',wv?1:0);
-    c.windLab.setAttribute('x',lx);c.windLab.setAttribute('text-anchor',left?'end':'start');c.windLab.setAttribute('y',f1((top+topW)/2+10));c.windLab.textContent=wv?'바람':'';
+    c.windLab.setAttribute('x',lx);c.windLab.setAttribute('text-anchor',left?'end':'start');c.windLab.setAttribute('y',f1((top+topW)/2+10));c.windLab.textContent=wv?'바람 몫':'';
   }else c.rise.setAttribute('opacity',0);
-  const wg=c.windG;wg.innerHTML='';                                                  // 강풍: 해안 쪽으로 부는 바람 화살표(수면 위)
-  if(c.wind)[[-500,0],[-370,1],[-620,2]].forEach(([dx,k])=>{const x=Math.min(s,S4.sEnd)+dx;if(x<30)return;const L=110,y=f1(y0-s4at(c,Math.min(x+L/2,S4.shore))*S-30-k*40);
+  // 기압 화살표: 저기압을 따라 160 px 간격, 해수면(실제 수면)에 끝이 닿음. 길이 = 그 자리 기압에 비례(중심일수록 짧음)
+  const pg=c.press;pg.innerHTML='';
+  for(let k=-9;k<=9;k++){const x=sc+k*160;if(x<26||x>S4.shore-24)continue;
+    const P=1013-dp*Math.exp(-Math.pow((x-sc)/S4.R,2)),L=14+60*Math.pow(clamp((P-900)/113,0,1),1.5),ys=y0-s4at(c,x)*S-4;
+    svgEl('line',{x1:x,y1:f1(ys-L),x2:x,y2:f1(ys-12),stroke:'#24408e','stroke-width':5,'stroke-linecap':'round'},pg);
+    svgEl('polygon',{points:x+','+f1(ys)+' '+(x-9)+','+f1(ys-15)+' '+(x+9)+','+f1(ys-15),fill:'#24408e'},pg);}
+  const wg=c.windG;wg.innerHTML='';                                                  // 강풍: 해안 쪽으로 부는 바람 화살표(수면 위, 기압 화살표보다 높이)
+  if(c.wind)[[-500,0],[-370,1],[-620,2]].forEach(([dx,k])=>{const x=Math.min(s,S4.sEnd)+dx;if(x<30)return;const L=110,y=f1(y0-s4at(c,Math.min(x+L/2,S4.shore))*S-125-k*38);
     svgEl('line',{x1:x,y1:y,x2:x+L-18,y2:y,stroke:'#30a46c','stroke-width':6,'stroke-linecap':'round'},wg);
     svgEl('polygon',{points:(x+L)+','+y+' '+(x+L-22)+','+(y-12)+' '+(x+L-22)+','+(+y+12),fill:'#30a46c'},wg);});
   $id('s05i-pv').textContent=p+' hPa';
@@ -1326,6 +1361,7 @@ Deck.scene('s05i',{
     c.$('#s05i-reset').addEventListener('click',()=>{c.s=S4.s0;c.play=false;go.textContent='폭풍 이동 ▶';s4init(c);s4draw(c);});
     c.$('#s05i-wind').addEventListener('change',e=>{c.wind=e.target.checked;});
     c.loop((t,dt)=>{
+      c.tt=t;
       if(c.play){c.s=Math.min(S4.sEnd,c.s+S4.speed*dt);if(c.s>=S4.sEnd){c.play=false;go.textContent='폭풍 이동 ▶';}}
       s4step(c,dt);s4draw(c);
     });
