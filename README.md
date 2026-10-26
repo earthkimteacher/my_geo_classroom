@@ -27,6 +27,7 @@
 |---|---|---|
 | II.04. 해일 | 슬라이드 | [열기](https://earth.esbest.net/지구시스템과학/II.04surge.html) |
 | II.05. 조석 | 슬라이드 | [열기](https://earth.esbest.net/지구시스템과학/II.05tide.html) · [학생용 PDF](https://earth.esbest.net/지구시스템과학/PDF/II.05tide_학생용.pdf) |
+| 학생용 수업 자료 PDF | 노션 — 단원별 수업 자료를 내려받는 페이지 | [열기](https://esbest.notion.site/2-32d4a95fb28280e198bfd571eef92fec) |
 
 ## 슬라이드 사용법
 
