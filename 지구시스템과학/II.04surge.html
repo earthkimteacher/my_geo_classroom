@@ -450,7 +450,7 @@ html.print #s01 #s01-cloud,html.print #s01 #s01-lamp{display:none}
 </section>
 
 <!-- ═══ s06i 지진 해일 — 직접 해 보기 (PPT 5쪽 인터랙티브 표기) ═══ -->
-<section class="slide" id="s06i" data-tile="light" data-title="지진 해일 — 직접 해 보기" data-notes="PPT 5쪽 표기(해안가로 파동이 밀려오면서 파고가 높아지고 속도가 느려지는 것이 잘 드러나도록)에 따라 만든 인터랙티브 자료입니다. [재생]을 누르면 해저 지진으로 생긴 파동이 해안으로 밀려옵니다. 속도는 천해파의 전파 속도 v = √(gh)로 계산했습니다(수심 4000 m 약 700 km/h, 1000 m 약 350 km/h, 20 m 약 50 km/h로 어림해 보여 줌 — 앞 장 교과서 그림의 값과 같음). 점들은 같은 시간 간격마다 파동의 위치를 찍은 것으로, 해안에 가까울수록 간격이 좁아져 속도가 느려지는 것이 보입니다. 파고는 수심의 네제곱근에 반비례한다고 놓고(그린의 법칙) 계산했고, 파장은 주기가 같을 때 속도에 비례하므로 폭이 좁아집니다. 그림 위쪽 글은 교과서 그림의 번호 글(②~⑤)을 그대로 씁니다. 시간 막대를 끌어 원하는 위치에서 멈춰 설명할 수 있습니다. 수심, 거리, 파고는 그림에서 실제 비율과 다릅니다.">
+<section class="slide" id="s06i" data-tile="light" data-title="지진 해일 — 직접 해 보기" data-notes="PPT 5쪽 표기(해안가로 파동이 밀려오면서 파고가 높아지고 속도가 느려지는 것이 잘 드러나도록)에 따라 만든 인터랙티브 자료입니다. [재생]을 누르면 해저 지진으로 생긴 파동이 해안으로 밀려옵니다. 속도는 천해파의 전파 속도 v = √(gh)로 계산했습니다(수심 4000 m 약 700 km/h, 1000 m 약 350 km/h, 20 m 약 50 km/h는 앞 장 교과서 그림의 값으로 어림해 보여 주고, 그 사이 수심은 식 카드의 m/s와 맞게 10 km/h 단위로 반올림). 점들은 같은 시간 간격마다 파동의 위치를 찍은 것으로, 해안에 가까울수록 간격이 좁아져 속도가 느려지는 것이 보입니다. 파고는 수심의 네제곱근에 반비례한다고 놓고(그린의 법칙) 계산했고, 파장은 주기가 같을 때 속도에 비례하므로 폭이 좁아집니다. 그린의 법칙은 곧은 해안에서 파도가 부서지기 전까지 맞는 값이라 조작 막대의 파고 배수(4000 m → 20 m에서 약 3.8배)는 이 계산의 값입니다. 실제 지진 해일은 깊은 바다에서 1 m 이하였다가 해안에서 수 m~수십 m가 되기도 합니다(좁은 만에 물이 모이고, 파도가 부서지며 육지로 밀려 올라가기 때문. 2011년 동일본 지진 해일은 육지로 밀려 올라간 높이가 최대 약 40 m). 그림 위쪽 글은 교과서 그림의 번호 글(②~⑤)을 그대로 씁니다. 시간 막대를 끌어 원하는 위치에서 멈춰 설명할 수 있습니다. 수심, 거리, 파고는 그림에서 실제 비율과 다릅니다.">
   <div class="hd" data-in><div class="eb"><b>3</b>지진 해일</div><h2>직접 해 보기 — 해안가로 밀려오는 지진 해일</h2></div>
   <div class="ia-box" data-in="200" data-fx="fade"><svg id="s06i-svg" viewBox="0 0 1680 600"></svg></div>
   <div class="ia-panel" data-in="350">
@@ -459,7 +459,7 @@ html.print #s01 #s01-cloud,html.print #s01 #s01-lamp{display:none}
     <label class="ia-chk"><input id="s06i-dots" type="checkbox" checked>같은 시간 간격 표시</label>
     <div class="ia-stat"><div class="st"><i>파고</i><b id="s06i-a">처음의 1.0배</b></div></div>
   </div>
-  <div class="fine">모식 그림 · 수심·거리·파고는 실제 비율과 다름 · 속도는 v = √(gh)로 계산</div>
+  <div class="fine">모식 그림 · 수심·거리·파고는 실제 비율과 다름 · 속도는 v = √(gh), 파고 배수는 그린의 법칙(곧은 해안 기준)으로 계산 — 실제 해안에서는 만의 모양 등에 따라 훨씬 높아지기도 함</div>
 </section>
 
 <!-- ═══ s07 해일로 인한 피해 (PPT 6쪽) ═══ -->
@@ -1432,9 +1432,9 @@ function s5build(c){
   c.fM=svgEl('tspan',{},l2);
   c.fV=svgEl('tspan',{fill:'#C4391B'},l2);
 }
-const s5vr=vk=>vk>=100?Math.round(vk/50)*50:Math.round(vk/10)*10;   // 4000 m 약 700, 1000 m 약 350, 20 m 약 50 km/h(교과서 그림의 값)
+const s5vr=hd=>{const k={4000:700,1000:350,20:50}[hd];if(k)return k;const vk=Math.sqrt(9.8*hd)*3.6;return vk>=100?Math.round(vk/10)*10:Math.round(vk);};   // 수심(m) → 보여 줄 속도(km/h): 교과서 수심은 교과서 그림 값, 그 밖은 m/s와 맞게 10 km/h(100 아래는 1 km/h) 단위
 function s5draw(c,t){
-  const T=S5T[S5T.length-1],tt=Math.min(t,T),xc=s5xAt(tt),h=s5h(xc),v=s5v(h),vk=v*3.6;
+  const T=S5T[S5T.length-1],tt=Math.min(t,T),xc=s5xAt(tt),h=s5h(xc),v=s5v(h);
   const A=S5.A0*Math.pow(4000/Math.max(h,8),.25),w=Math.max(20,S5.W0*v/s5v(4000));
   const run=clamp((t-T)/(T*.18),0,1);                          // 해안에 닿은 뒤 바닷물이 육지로 밀려듦
   const up=A*run*1.6;                                           // 해안에서 밀려 올라간 물 높이(px)
@@ -1458,8 +1458,8 @@ function s5draw(c,t){
   c.hmB.setAttribute('points',f1(xc)+','+f1(hy1)+' '+f1(xc-9)+','+f1(hy1-16)+' '+f1(xc+9)+','+f1(hy1-16));
   c.hmP.setAttribute('x',f1(xc+14));c.hmP.setAttribute('y',f1((hy0+hy1)/2-22));c.hmT.setAttribute('x',f1(xc+36));c.hmT.setAttribute('y',f1((hy0+hy1)/2+11));
   const vms=Math.sqrt(9.8*hd0);
-  c.fH.textContent=hd0;c.fM.textContent='≈ '+(vms>=20?Math.round(vms):vms.toFixed(1))+' m/s ≈ ';c.fV.textContent=s5vr(vms*3.6)+' km/h';
-  c.vLab.setAttribute('x',f1(xc));c.vLab.setAttribute('y',f1(S5.y0-A-22));c.vLab.textContent=run>0?'':'약 '+s5vr(vk)+' km/h';
+  c.fH.textContent=hd0;c.fM.textContent='≈ '+(vms>=20?Math.round(vms):vms.toFixed(1))+' m/s ≈ ';c.fV.textContent=s5vr(hd0)+' km/h';
+  c.vLab.setAttribute('x',f1(xc));c.vLab.setAttribute('y',f1(S5.y0-A-22));c.vLab.textContent=run>0?'':'약 '+s5vr(hd0)+' km/h';
   c.cap.textContent=run>0?'⑤ 해안 지역에 심각한 피해를 입힘':(xc<420?'② 해수면 진동':(xc<760?'③ 깊은 바다에서 전파 속도가 매우 빠름':'④ 얕은 바다에서는 파고가 상승함'));   // 교과서 그림의 번호 글 그대로
   $id('s06i-a').textContent='처음의 '+(A/S5.A0).toFixed(1)+'배';
 }
