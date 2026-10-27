@@ -22,8 +22,8 @@
     c.reveal / c.a / c.tween / c.count / c.loop / c.wait 사용 (장면을 떠나면 자동 정리)
  4) 오른쪽 위 키워드 표시는 window.KW 의 items(이름), at(슬라이드별 키워드 번호, 없으면 -1)
 
- [단축키]  → Space 다음 · ← 이전 · N 노트 · O 목차 · P 일시정지 · L 레이저 포인터 · B/W 검은/흰 화면 · F 전체 화면 · ? 도움말
- [주소 옵션] ?s=1 학생 모드(노트 숨김) · ?still=1 컨트롤 숨김 정지 화면 · #3 3번 슬라이드 · &k=2 2단계 상태
+ [단축키]  → Space 다음 · ← 이전 · N 노트 · O 목차 · P 일시정지 · L 레이저 포인터 · B/W 검은/흰 화면 · F 전체 화면 · V 발표자 보기 · ? 도움말
+ [주소 옵션] ?s=1 학생 모드(노트 숨김) · ?still=1 컨트롤 숨김 정지 화면 · ?screen=1 프로젝터 창(발표자 창을 따라감) · #3 3번 슬라이드 · &k=2 2단계 상태
 ═══════════════════════════════════════════════════════════════════
 -->
 <style>
@@ -261,6 +261,72 @@ html.still .pic::after,html.print .pic::after{display:none}
 #zbadge b{font-variant-numeric:tabular-nums}
 #zbadge button{border:0;border-radius:9999px;padding:6px 14px;font:inherit;font-weight:700;color:#1d1d1f;background:#f5f5f7;cursor:pointer}
 html.zoomed #viewport{cursor:grab}
+/* 발표자 보기(V) + 프로젝터 창 연결(2026-10-27): 이 창 = 발표자 보기(지금 장·이전/다음 장·노트), 프로젝터 창(?screen=1) = 슬라이드만, 두 창이 함께 움직임 */
+#pv{position:fixed;inset:0;z-index:8;background:#0b0b0d;color:#f5f5f7;font-family:var(--font)}
+#pv > *{position:absolute;box-sizing:border-box}
+html.pv #viewport{z-index:9;border-radius:14px;box-shadow:0 0 0 1px rgba(255,255,255,.12),0 12px 40px rgba(0,0,0,.55)}
+html.pv #laser{border-radius:14px}
+html.pv :is(#hud,#progress,#stepdots,#notes,#blank){display:none!important}   /* 화면 끄기(B)는 프로젝터 창에만 */
+#pv svg{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#pv .pv-top{display:flex;align-items:center;gap:10px}
+#pv .pv-link{display:flex;align-items:center;gap:8px;height:36px;padding:0 14px 0 13px;border-radius:9999px;background:#1c1c1e;font-size:14px;font-weight:600;color:#98989d;white-space:nowrap}
+#pv .pv-link i{width:9px;height:9px;border-radius:50%;background:#636366}
+#pv .pv-link.on{color:#f5f5f7} #pv .pv-link.on i{background:#30d158;box-shadow:0 0 0 4px rgba(48,209,88,.2)}
+#pv .pv-open{display:flex;align-items:center;gap:7px;height:36px;padding:0 15px 0 12px;border-radius:9999px;background:#0a84ff;color:#fff;font-size:14px;font-weight:700;text-decoration:none;white-space:nowrap;-webkit-touch-callout:default}
+#pv.linked .pv-open{background:#2c2c2e;color:#e5e5ea}
+#pv .pv-sp{flex:1}
+#pv .pv-time{display:flex;align-items:center;gap:6px;white-space:nowrap;font-variant-numeric:tabular-nums}
+#pv .pv-time > span:first-child{font-size:13px;font-weight:600;color:#98989d}
+#pv .pv-el{min-width:64px;height:36px;padding:0 8px;border-radius:10px;font-size:20px;font-weight:700;color:#f5f5f7}
+#pv .pv-clock{font-size:14px;font-weight:600;color:#98989d;margin-right:6px}
+#pv .pv-tools{display:flex;gap:6px}
+#pv .pv-tools button{display:flex;align-items:center;gap:6px;height:36px;padding:0 12px 0 10px;border-radius:10px;background:#1c1c1e;color:#e5e5ea;font-size:14px;font-weight:600;white-space:nowrap}
+#pv .pv-tools button.on{background:#f5f5f7;color:#1d1d1f}
+#pv .pv-tools .pv-lz.on{background:#ff2d55;color:#fff}
+#pv .pv-tools .pv-ps.on{background:#0a84ff;color:#fff}
+@media (max-width:1000px){#pv .pv-tools button span,#pv .pv-time > span:first-child{display:none} #pv .pv-tools button{padding:0 10px}}
+#pv .pv-lab{display:flex;align-items:center;gap:9px;padding-bottom:6px;font-size:14px;font-weight:600;color:#98989d;white-space:nowrap;overflow:hidden}
+#pv .pv-lab .k{flex:none;padding:3px 9px;border-radius:9999px;font-size:12px;font-weight:700;background:#2c2c2e;color:#e5e5ea}
+#pv .pv-lc .k{background:#0a84ff;color:#fff}
+#pv .pv-lab b{flex:none;color:#f5f5f7;font-weight:700;font-variant-numeric:tabular-nums}
+#pv .pv-lab em{min-width:0;overflow:hidden;text-overflow:ellipsis;font-style:normal;color:#d1d1d6}
+#pv .pv-badge{display:none;flex:none;padding:3px 10px;border-radius:9999px;font-size:12px;font-weight:700}
+#pv .pv-badge.show{display:inline-block}
+#pv .pv-badge.ps{background:#0a84ff;color:#fff} #pv .pv-badge.bk{background:#f5f5f7;color:#000}
+#pv .pv-dots{margin-left:auto;display:flex;align-items:center;gap:6px;flex:none}
+#pv .pv-dots i{width:8px;height:8px;border-radius:50%;background:#3a3a3c}
+#pv .pv-dots i.on{background:#f5f5f7}
+#pv .pv-dots span{margin-left:4px;font-size:13px;font-variant-numeric:tabular-nums}
+#pv .pv-fr{border-radius:10px;overflow:hidden;background:#000;box-shadow:0 0 0 1px rgba(255,255,255,.1);cursor:pointer;transition:box-shadow .2s}
+#pv .pv-fr:hover{box-shadow:0 0 0 2px #0a84ff}
+#pv .pv-fr iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none;opacity:0;transition:opacity .3s}
+#pv .pv-fr.ready iframe{opacity:1}
+#pv .pv-fr .none{position:absolute;inset:0;display:none;place-items:center;font-size:14px;font-weight:600;color:#636366;background:#141416}
+#pv .pv-fr.empty{cursor:default;box-shadow:0 0 0 1px rgba(255,255,255,.06)} #pv .pv-fr.empty .none{display:grid} #pv .pv-fr.empty iframe{visibility:hidden}
+#pv .pv-notes{display:flex;flex-direction:column;border-radius:14px;background:#1c1c1e;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+#pv .pv-nh{display:flex;align-items:baseline;gap:14px;padding:14px 22px 6px;font-size:13px;font-weight:700;color:#98989d;white-space:nowrap}
+#pv .pv-nh span{margin-left:auto;min-width:0;overflow:hidden;text-overflow:ellipsis;font-weight:600;color:#ffd60a}
+#pv.linked .pv-nh span{display:none}
+#pv .pv-nt{flex:1;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:2px 22px 30px;font-size:var(--pvf,19px);line-height:1.7;color:#f5f5f7;user-select:text;-webkit-user-select:text;-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 26px),transparent);mask-image:linear-gradient(to bottom,#000 calc(100% - 26px),transparent);scrollbar-width:thin;scrollbar-color:#48484a transparent}   /* 긴 노트는 아래 끝을 흐리게 */
+#pv .pv-nt::-webkit-scrollbar{width:8px} #pv .pv-nt::-webkit-scrollbar-thumb{background:#48484a;border-radius:8px}
+#pv .pv-nt.empty{color:#636366}
+#pv .pv-nav{display:flex;gap:10px}
+#pv .pv-nav.col{flex-direction:column}
+#pv .pv-nav button{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-radius:14px;background:#2c2c2e;color:#f5f5f7;font-size:20px;font-weight:700;transition:transform .12s var(--ease-out),opacity .2s}
+#pv .pv-nav button small{font-size:13px;font-weight:600;color:rgba(255,255,255,.75)}
+#pv .pv-nav button:active{transform:scale(.97)}
+#pv .pv-nav .pv-nx{flex:1.7;background:#0a84ff}
+#pv .pv-nav button:disabled{opacity:.35;cursor:default}
+#hud #b-pv.on{background:#0a84ff;color:#fff}
+html:is(.student,.screen,.thumb) #b-pv{display:none}
+/* 프로젝터 창(?screen=1): 도구 모음 없이 슬라이드만. 위쪽 알림은 연결되면 잠깐 보였다 사라짐 */
+html.screen #hud{display:none!important}
+html.screen #laser{pointer-events:none}
+html.screen #zbadge{display:none!important}   /* 확대 배율 알약은 발표자 창에만 */
+#scr{position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:65;display:flex;align-items:center;gap:12px;padding:8px 8px 8px 18px;border-radius:9999px;background:rgba(28,28,30,.92);color:#f5f5f7;font-size:16px;font-weight:600;white-space:nowrap;transition:opacity .6s}
+#scr i{width:9px;height:9px;border-radius:50%;background:#ff9f0a} #scr.on i{background:#30d158}
+#scr button{border-radius:9999px;padding:7px 15px;background:#f5f5f7;color:#1d1d1f;font-size:15px;font-weight:700}
+#scr.hide{opacity:0;pointer-events:none}
 
 
 /* ── 지구 환경의 변화 수업에서 추가한 스타일 ── */
@@ -1130,6 +1196,7 @@ html.print #s03a text[fill="#FFD60A"]{fill:#9A7400}
   <button id="b-notes" aria-label="발표자 노트 (N)"><svg viewBox="0 0 20 20"><path d="M4 5h12M4 10h12M4 15h7"/></svg></button>
   <button id="b-laser" aria-label="레이저 포인터 (L)"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="2.6"/><path d="M10 2.5v3M10 14.5v3M2.5 10h3M14.5 10h3"/></svg></button>
   <button id="b-ov" aria-label="목차 (O)"><svg viewBox="0 0 20 20"><rect x="3" y="3" width="5.5" height="5.5" rx="1"/><rect x="11.5" y="3" width="5.5" height="5.5" rx="1"/><rect x="3" y="11.5" width="5.5" height="5.5" rx="1"/><rect x="11.5" y="11.5" width="5.5" height="5.5" rx="1"/></svg></button>
+  <button id="b-pv" aria-label="발표자 보기 · 프로젝터 창 연결 (V)"><svg viewBox="0 0 20 20"><rect x="2.5" y="3.5" width="15" height="10" rx="1.5"/><path d="M7 17h6M10 13.5V17"/></svg></button>
   <button id="b-fs" aria-label="전체 화면 (F)"><svg viewBox="0 0 20 20"><path d="M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4"/></svg></button>
 </div>
 <div id="notes"><button id="notes-x" aria-label="노트 닫기 (N 또는 Esc)">✕</button><div class="nh"><b id="notes-t"></b>발표자 노트</div><p id="notes-p"></p></div>
@@ -1140,6 +1207,7 @@ html.print #s03a text[fill="#FFD60A"]{fill:#9A7400}
   <tr><td><kbd>O</kbd></td><td>목차 (누르면 그 장으로)</td></tr>
   <tr><td><kbd>B</kbd> <kbd>W</kbd></td><td>검은 화면 / 흰 화면</td></tr>
   <tr><td><kbd>F</kbd></td><td>전체 화면</td></tr>
+  <tr><td><kbd>V</kbd></td><td>발표자 보기 — 프로젝터 창을 따로 열고 이 창에서 조작 (노트·이전/다음 장 미리보기)</td></tr>
   <tr><td><kbd>M</kbd></td><td>책갈피 목록 (반마다 저장 · 눌러서 이동)</td></tr>
   <tr><td><kbd>P</kbd></td><td>애니메이션 일시정지 · 이어서 재생 (멈춘 상태에서 → 도 재생)</td></tr>
   <tr><td><kbd>L</kbd></td><td>레이저 포인터 켜기·끄기 (누른 채 움직이면 선, 떼면 사라짐)</td></tr>
@@ -1161,6 +1229,10 @@ if(STILL)rootEl.classList.add('still');
 if(STUDENT)rootEl.classList.add('student');
 if(Q.get('ans')==='0')rootEl.classList.add('noans');
 if(Q.get('print')==='1')rootEl.classList.add('print');
+const ROLE=Q.get('screen')==='1'?'screen':(Q.get('thumb')==='1'?'thumb':'main'),THUMB=ROLE==='thumb';   // screen = 프로젝터 창, thumb = 발표자 보기의 미리보기
+if(ROLE!=='main')rootEl.classList.add(ROLE);
+let REMOTE=false,QUIET=0,PV=false;   // REMOTE: 다른 창의 명령을 따라 하는 중(다시 보내지 않음) · QUIET: 보내지 않는 내부 동작 · PV: 발표자 보기
+const LINK={on:false,id:Math.random().toString(36).slice(2,10),n:0,last:{},peers:{},ch:null,ls:true,at:0,was:false,key:'deck-link:'+location.pathname};
 
 const EASE={out:'cubic-bezier(.2,.8,.2,1)',inOut:'cubic-bezier(.65,0,.35,1)',in:'cubic-bezier(.55,0,.75,.1)',spring:'cubic-bezier(.34,1.56,.64,1)',linear:'linear'};
 const JE={linear:t=>t,out:t=>1-Math.pow(1-t,3),inOut:t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,in:t=>t*t*t,quad:t=>t*t};
@@ -1193,6 +1265,7 @@ function setPause(v){
   }else{pausedAnims.forEach(a=>{try{a.play();}catch(e){}});pausedAnims=[];}
   rootEl.classList.toggle('paused',v);
   const b=document.getElementById('b-pause');if(b){b.classList.toggle('on',v);b.setAttribute('aria-label',v?'이어서 재생 (P)':'애니메이션 일시정지 (P)');}
+  lkTx({t:'pause',v});pvSync();
 }
 
 /* 장면 도구 상자: 장면을 떠나면 dispose 로 타이머·루프·애니메이션이 한꺼번에 정리된다 */
@@ -1319,12 +1392,11 @@ function runDecl(c,k){
 
 async function show(i,k=0,o={}){
   const n=Deck.list.length;if(!n)return;
-  if(ZM)zoomClose(true);
-  if(i!==Deck.i)zvReset();
-  if(PAUSED)setPause(false);
+  QUIET++;try{if(ZM)zoomClose(true);if(i!==Deck.i)zvReset();if(PAUSED)setPause(false);}finally{QUIET--;}   // 다른 창도 show에서 같은 일을 하므로 따로 보내지 않음
   i=Math.max(0,Math.min(n-1,i));
   const to=Deck.list[i],from=Deck.i>=0?Deck.list[Deck.i]:null;
   k=Math.max(0,Math.min(stepsOf(to),k));
+  lkTx({t:'show',i,k,o:{instant:!!o.instant,noFade:!!o.noFade}});
   const instant=!!o.instant||STILL, fade=!instant&&!o.noFade;   // noFade: 목차에서 확대해 들어갈 때(장면 등장은 그대로)
   if(Deck.ctx){Deck.ctx.hurry();Deck.ctx.dispose();}
   const token=++Deck.token;
@@ -1353,10 +1425,12 @@ async function show(i,k=0,o={}){
   }
   if(token!==Deck.token)return;
   c.instant=instant;
+  if(THUMB)setTimeout(()=>{if(token===Deck.token)setPause(true);},250);   // 미리보기는 다 그린 뒤 멈춤(움직이는 장면도 힘을 쓰지 않게)
 }
 function stepTo(k){
   const c=Deck.ctx,sec=Deck.list[Deck.i],def=scenes[sec.id]||{};
-  if(PAUSED)setPause(false);
+  QUIET++;try{if(PAUSED)setPause(false);}finally{QUIET--;}
+  lkTx({t:'step',i:Deck.i,k});
   c.instant=false;Deck.k=k;updateChrome();
   safe(async()=>{runDecl(c,k);if(def.go)await def.go(c,k);},c);
 }
@@ -1364,7 +1438,7 @@ function next(){
   if(OV)return;
   if(PAUSED){setPause(false);return;}   // 멈춘 상태에서 다음(→·클릭) = 이어서 재생
   const c=Deck.ctx;
-  if(c&&c.isBusy()){c.hurry();return;}
+  if(c&&c.isBusy()){c.hurry();lkTx({t:'hurry'});return;}
   const sec=Deck.list[Deck.i];
   if(Deck.k<stepsOf(sec))stepTo(Deck.k+1);
   else if(Deck.i<Deck.list.length-1)show(Deck.i+1,0);
@@ -1389,6 +1463,7 @@ function updateChrome(){
   syncKw();
   try{history.replaceState(null,'','#'+(i+1));}catch(e){}
   const mb=document.getElementById('b-mark');if(mb)mb.classList.toggle('on',readMarks().some(p=>p.i===i));   // 이 장에 책갈피가 있으면 노란 버튼
+  pvSync();
 }
 /* 책갈피(여러 개): 반마다 이름을 붙여 지금 장·단계를 저장해 두고, 목록에서 눌러 이동한다(직접 누를 때만 저장).
    이 브라우저(localStorage)에만 저장되므로 기기·브라우저가 다르면 따로 저장된다. 다음에 열 때 이어 보기를 제안 */
@@ -1487,9 +1562,10 @@ function zoomOpen(fig){
   ZM={fig,from,z};
   requestAnimationFrame(()=>zoomEl.classList.add('show'));
   z.animate([{transform:from},{transform:'none'}],{duration:420,easing:EASE.out});
+  lkTx({t:'pic',i:Deck.i,n:Array.from(Deck.list[Deck.i].querySelectorAll('.pic')).indexOf(fig)});
 }
 function zoomClose(now){
-  if(!ZM)return;const {from,z}=ZM;ZM=null;
+  if(!ZM)return;const {from,z}=ZM;ZM=null;lkTx({t:'picx',now:!!now});
   const done=()=>{zoomEl.classList.remove('on','show');zoomEl.innerHTML='';};
   if(now){done();return;}
   zoomEl.classList.remove('show');
@@ -1554,9 +1630,13 @@ function tocKey(e){
   const d={ArrowRight:1,ArrowLeft:-1,ArrowDown:ovCols,ArrowUp:-ovCols}[k];
   if(d){e.preventDefault();ovMark(Math.max(0,Math.min(n-1,ovSel+d)));}
 }
-function toggleBlank(kind){blankEl.className=(blankEl.className===kind)?'':kind;}
+function setBlank(c){if(blankEl.className===c)return;blankEl.className=c;lkTx({t:'blank',c});pvSync();}
+function toggleBlank(kind){setBlank(blankEl.className===kind?'':kind);}
+const vpR=()=>viewport.getBoundingClientRect();   // 무대가 들어가는 칸(평소 = 창 전체, 발표자 보기 = 지금 장 칸)
 function fit(){
-  FS=Math.min(innerWidth/SW,innerHeight/SH);zvClamp();stApply(false);
+  const r=vpR();FS=Math.min(r.width/SW,r.height/SH);
+  QUIET++;try{zvClamp();stApply(false);}finally{QUIET--;}
+  if(LZ.cv&&LZ.on)lzSize();
 }
 /* 부분 확대(2026-10-26 교사 요청): 아이패드는 두 손가락 벌리기·오므리기, 맥은 트랙패드 핀치(사파리 gesture, 크롬 등 ctrl+휠),
    마우스는 Ctrl+휠로 손가락(포인터) 자리를 중심으로 1~4배 확대. 확대 중에는 한 손가락 끌기·두 손가락 스크롤로 옮기고,
@@ -1570,17 +1650,22 @@ function stApply(anim){
   stage.style.transform='translate(-50%,-50%) translate('+ZV.x.toFixed(1)+'px,'+ZV.y.toFixed(1)+'px) scale('+(FS*ZV.z)+')';
   const on=ZV.z>1.01;rootEl.classList.toggle('zoomed',on);
   if(zbadge){zbadge.classList.toggle('show',on);zbadge.querySelector('b').textContent=Math.round(ZV.z*100)+'%';}
+  if(LZ.on)lzPaint();   // 레이저 선은 무대 좌표라 확대가 바뀌면 다시 그림
+  zvTx(anim);
 }
+let zvLast='1,0,0';
+function zvTx(a){const z=+ZV.z.toFixed(3),x=+(ZV.x/FS).toFixed(1),y=+(ZV.y/FS).toFixed(1),k=z+','+x+','+y;if(k===zvLast)return;zvLast=k;lkTx({t:'zv',z,x,y,a:!!a});}   // 확대·이동은 무대 단위로 보냄(창 크기가 달라도 같은 곳)
 function zvClamp(){const mx=SW*FS*(ZV.z-1)/2,my=SH*FS*(ZV.z-1)/2;ZV.x=Math.max(-mx,Math.min(mx,ZV.x));ZV.y=Math.max(-my,Math.min(my,ZV.y));}
-function zvPoint(sx,sy){const S=FS*ZV.z;return {x:(sx-innerWidth/2-ZV.x)/S,y:(sy-innerHeight/2-ZV.y)/S};}   // 화면 점 아래의 무대 점(무대 가운데 기준)
+function zvPoint(sx,sy){const r=vpR(),S=FS*ZV.z;return {x:(sx-r.left-r.width/2-ZV.x)/S,y:(sy-r.top-r.height/2-ZV.y)/S};}   // 화면 점 아래의 무대 점(무대 가운데 기준)
 function zvSet(z,p,sx,sy){   // 무대 점 p가 화면 (sx,sy)에 오도록 z배 확대
   ZV.z=Math.max(1,Math.min(ZMAX,z));
   if(ZV.z<1.001){ZV.z=1;ZV.x=0;ZV.y=0;}
-  else{const S=FS*ZV.z;ZV.x=sx-innerWidth/2-p.x*S;ZV.y=sy-innerHeight/2-p.y*S;zvClamp();}
+  else{const r=vpR(),S=FS*ZV.z;ZV.x=sx-r.left-r.width/2-p.x*S;ZV.y=sy-r.top-r.height/2-p.y*S;zvClamp();}
   stApply(false);
 }
 function zvReset(anim=true){if(ZV.z===1&&!ZV.x&&!ZV.y)return;ZV.z=1;ZV.x=0;ZV.y=0;stApply(anim);}
 const zvOK=()=>!STILL&&!OV&&!ZM&&!rootEl.classList.contains('print');
+const inVp=e=>!PV||!!(e.target&&e.target.closest&&e.target.closest('#viewport,#laser'));   // 발표자 보기에서는 지금 장 칸(과 그 위 레이저 캔버스) 안의 손동작만
 function zoomInit(){
   Deck.zoom=ZV;   // 확인용(콘솔에서 Deck.zoom)
   zbadge=document.createElement('div');zbadge.id='zbadge';
@@ -1590,7 +1675,7 @@ function zoomInit(){
   ['touchstart','touchend','pointerdown'].forEach(ev=>zbadge.addEventListener(ev,e=>e.stopPropagation(),{passive:true}));
   // 아이패드: 두 손가락 = 확대, 확대 중 한 손가락 = 옮기기
   addEventListener('touchstart',e=>{
-    if(!zvOK()||LZ.on)return;
+    if(!zvOK()||LZ.on||!inVp(e))return;
     const t=e.touches;
     if(t.length===2){const a=t[0],b=t[1];PZ.used=true;PZ.d0=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY)||1;PZ.z0=ZV.z;
       PZ.p=zvPoint((a.clientX+b.clientX)/2,(a.clientY+b.clientY)/2);PZ.pan=null;e.preventDefault();}
@@ -1608,7 +1693,7 @@ function zoomInit(){
     if(e.touches.length)return;
     if(PZ.pan&&!PZ.used&&PZ.mv<10){   // 확대 중 톡 두 번 = 원래대로
       const c=e.changedTouches[0],now=performance.now();
-      if(now-PZ.tap<350&&Math.hypot(c.clientX-PZ.tx,c.clientY-PZ.ty)<40){PZ.tap=0;PZ.eat=now;zvReset();}   // 뒤따르는 클릭은 버림(장이 넘어가지 않게)else{PZ.tap=now;PZ.tx=c.clientX;PZ.ty=c.clientY;}
+      if(now-PZ.tap<350&&Math.hypot(c.clientX-PZ.tx,c.clientY-PZ.ty)<40){PZ.tap=0;PZ.eat=now;zvReset();}else{PZ.tap=now;PZ.tx=c.clientX;PZ.ty=c.clientY;}   // 두 번째 톡이면 원래대로, 뒤따르는 클릭은 버림(장이 넘어가지 않게)
     }
     PZ.pan=null;PZ.p=null;setTimeout(()=>{PZ.used=false;},0);   // 이 손동작이 끝날 때까지는 밀기(장 넘기기)로 보지 않음
   },{passive:true});
@@ -1619,11 +1704,11 @@ function zoomInit(){
   addEventListener('gestureend',e=>{e.preventDefault();PZ.g=null;},{passive:false});
   // 크롬·엣지·파이어폭스: 트랙패드 핀치와 Ctrl+휠 = 확대, 확대 중 두 손가락 스크롤·휠 = 옮기기
   addEventListener('wheel',e=>{
-    if(!zvOK())return;
+    if(!zvOK()||!inVp(e))return;
     if(e.ctrlKey){e.preventDefault();if(PZ.g)return;const d=Math.max(-50,Math.min(50,e.deltaY*(e.deltaMode?20:1)));zvSet(ZV.z*Math.exp(-d*0.01),zvPoint(e.clientX,e.clientY),e.clientX,e.clientY);}
     else if(ZV.z>1.01){e.preventDefault();ZV.x-=e.deltaX;ZV.y-=e.deltaY;zvClamp();stApply(false);}
   },{passive:false});
-  addEventListener('dblclick',e=>{if(ZV.z>1.01&&!e.target.closest('#hud,#zbadge,.ia-panel'))zvReset();});
+  addEventListener('dblclick',e=>{if(ZV.z>1.01&&!e.target.closest('#hud,#zbadge,.ia-panel,#pv'))zvReset();});
 }
 function pokeHud(){
   hud.classList.add('show');clearTimeout(hudTimer);
@@ -1636,29 +1721,34 @@ function setNotes(v){
 
 /* 레이저 포인터(L): 켜면 빨간 점이 마우스를 따라가고, 누른 채 움직이면 선이 그려졌다가 떼면 서서히 사라진다.
    켜져 있어도 방향키로 넘길 수 있고, 장·단계가 바뀌면 그려 둔 선은 지운다. Esc로 끈다. */
-const LZ={on:false,cv:null,g:null,pt:null,pts:[],down:null,seq:0,raf:0},LZ_FADE=1100,LZ_ALPHA=.7;   // 선의 기본 투명도
+const LZ={on:false,cv:null,g:null,pt:null,pts:[],down:null,seq:0,raf:0,r:null,q:[],qr:0},LZ_FADE=1100,LZ_ALPHA=.7;   // 선의 기본 투명도
+/* 점은 무대 좌표(무대 가운데 기준)로 저장한다 → 부분 확대·발표자 보기·프로젝터 창에서도 슬라이드의 같은 자리에 그려짐 */
 function lzPaint(){if(!LZ.raf)LZ.raf=requestAnimationFrame(lzDraw);}
 function lzClear(){if(LZ.pts.length){LZ.pts=[];lzPaint();}}
 function lzSize(){
-  const d=Math.min(devicePixelRatio||1,2);
-  LZ.cv.width=Math.round(innerWidth*d);LZ.cv.height=Math.round(innerHeight*d);
+  const r=LZ.r=vpR(),d=Math.min(devicePixelRatio||1,2);
+  Object.assign(LZ.cv.style,{left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px'});   // 캔버스 = 무대 칸
+  LZ.cv.width=Math.round(r.width*d);LZ.cv.height=Math.round(r.height*d);
   LZ.g.setTransform(d,0,0,d,0,0);lzPaint();
 }
 function lzSet(v){
+  if(LZ.on!==v)lkTx({t:'lzon',v});
   LZ.on=v;LZ.pts=[];LZ.pt=null;LZ.down=null;
   LZ.cv.classList.toggle('on',v);document.getElementById('b-laser').classList.toggle('on',v);
   if(v)lzSize();else lzPaint();
+  pvSync();
 }
 function lzDraw(now){
-  const g=LZ.g;LZ.raf=0;g.clearRect(0,0,innerWidth,innerHeight);
+  const g=LZ.g,r=LZ.r||vpR();LZ.raf=0;g.clearRect(0,0,r.width,r.height);
   if(!LZ.on)return;
   LZ.pts=LZ.pts.filter(p=>p.t==null||now-p.t<LZ_FADE);
+  const S=FS*ZV.z,cx=r.width/2+ZV.x,cy=r.height/2+ZV.y,X=p=>cx+p.x*S,Y=p=>cy+p.y*S;
   g.lineCap=g.lineJoin='round';
   // 획마다 하나의 경로로 그린다(반투명 선분이 겹치는 이음매가 진해지지 않게)
   for(let i=0;i<LZ.pts.length;){
     const s=LZ.pts[i].s,t=LZ.pts[i].t;let j=i;
-    g.beginPath();g.moveTo(LZ.pts[i].x,LZ.pts[i].y);
-    while(j+1<LZ.pts.length&&LZ.pts[j+1].s===s){j++;g.lineTo(LZ.pts[j].x,LZ.pts[j].y);}
+    g.beginPath();g.moveTo(X(LZ.pts[i]),Y(LZ.pts[i]));
+    while(j+1<LZ.pts.length&&LZ.pts[j+1].s===s){j++;g.lineTo(X(LZ.pts[j]),Y(LZ.pts[j]));}
     if(j>i){
       g.globalAlpha=LZ_ALPHA*(t==null?1:Math.max(0,1-(now-t)/LZ_FADE));
       g.lineWidth=6;g.strokeStyle='rgba(255,45,85,.22)';g.stroke();
@@ -1668,35 +1758,282 @@ function lzDraw(now){
   }
   g.globalAlpha=1;
   if(LZ.pt){
-    const {x,y}=LZ.pt,gl=g.createRadialGradient(x,y,2,x,y,22);
+    const x=X(LZ.pt),y=Y(LZ.pt),gl=g.createRadialGradient(x,y,2,x,y,22);
     gl.addColorStop(0,'rgba(255,45,85,.75)');gl.addColorStop(1,'rgba(255,45,85,0)');
     g.fillStyle=gl;g.beginPath();g.arc(x,y,22,0,Math.PI*2);g.fill();
     g.fillStyle='#ff2d55';g.strokeStyle='#fff';g.lineWidth=2;g.beginPath();g.arc(x,y,6.5,0,Math.PI*2);g.fill();g.stroke();
   }
   if(LZ.pts.some(p=>p.t!=null))lzPaint();   // 사라지는 중인 선이 있으면 계속 그린다
 }
-function lzAdd(e){
-  LZ.pt={x:e.clientX,y:e.clientY};
-  if(LZ.down!=null){
-    const l=LZ.pts[LZ.pts.length-1];
-    if(!l||l.s!==LZ.seq||Math.hypot(l.x-e.clientX,l.y-e.clientY)>=2)LZ.pts.push({x:e.clientX,y:e.clientY,t:null,s:LZ.seq});
-  }
+function lzAt(p,draw){   // p: 무대 좌표
+  LZ.pt=p;
+  if(draw){const l=LZ.pts[LZ.pts.length-1];if(!l||l.s!==LZ.seq||Math.hypot(l.x-p.x,l.y-p.y)*FS*ZV.z>=2)LZ.pts.push({x:p.x,y:p.y,t:null,s:LZ.seq});}
   lzPaint();
+}
+function lzUp(touch){const t=performance.now();LZ.pts.forEach(p=>{if(p.t==null)p.t=t;});LZ.down=null;if(touch)LZ.pt=null;lzPaint();}
+function lzTx(a,p){   // 레이저 움직임은 한 프레임씩 모아 다른 창에 보냄
+  if(REMOTE||!LINK.on)return;
+  LZ.q.push(p?[a,Math.round(p.x),Math.round(p.y)]:[a]);
+  if(!LZ.qr)LZ.qr=requestAnimationFrame(()=>{LZ.qr=0;const q=LZ.q;LZ.q=[];lkTx({t:'lz',q});});
+}
+function lzRx(q){
+  q.forEach(([a,x,y])=>{const p={x,y};
+    if(a==='d'){LZ.seq++;LZ.down='r';lzAt(p,true);}
+    else if(a==='m')lzAt(p,LZ.down!=null);
+    else if(a==='u'||a==='U')lzUp(a==='U');
+    else if(a==='l'){LZ.pt=null;lzPaint();}
+  });
 }
 function lzMount(){
   const cv=LZ.cv=document.createElement('canvas');cv.id='laser';document.body.appendChild(cv);
   LZ.g=cv.getContext('2d');
-  cv.addEventListener('pointerdown',e=>{if(e.button!==0)return;e.preventDefault();LZ.down=e.pointerId;LZ.seq++;cv.setPointerCapture(e.pointerId);lzAdd(e);});
-  cv.addEventListener('pointermove',lzAdd);
+  const pt=e=>zvPoint(e.clientX,e.clientY);
+  cv.addEventListener('pointerdown',e=>{if(e.button!==0)return;e.preventDefault();LZ.down=e.pointerId;LZ.seq++;cv.setPointerCapture(e.pointerId);const p=pt(e);lzAt(p,true);lzTx('d',p);});
+  cv.addEventListener('pointermove',e=>{const p=pt(e);lzAt(p,LZ.down!=null);lzTx('m',p);});
   const up=e=>{
     if(e.pointerId!==LZ.down)return;
-    lzAdd(e);const t=performance.now();LZ.pts.forEach(p=>{if(p.t==null)p.t=t;});
-    LZ.down=null;if(e.pointerType!=='mouse')LZ.pt=null;lzPaint();
+    const p=pt(e),touch=e.pointerType!=='mouse';lzAt(p,true);lzTx('m',p);lzUp(touch);lzTx(touch?'U':'u');
   };
   cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
-  cv.addEventListener('pointerleave',()=>{if(LZ.down==null){LZ.pt=null;lzPaint();}});
+  cv.addEventListener('pointerleave',()=>{if(LZ.down==null){LZ.pt=null;lzPaint();lzTx('l');}});
   cv.addEventListener('contextmenu',e=>e.preventDefault());
   addEventListener('resize',()=>{if(LZ.on)lzSize();});
+}
+
+/* ═══ 프로젝터 창 연결(2026-10-27 교사 요청) ═══
+   아이패드를 HDMI로 프로젝터에 이으면 아이패드 화면이 그대로 미러링되어(아이패드 화면 비율) 16:9 슬라이드가 작게 나온다.
+   아이패드의 Safari·Chrome(둘 다 WebKit) 웹페이지는 외부 화면에만 따로 그릴 수 없으므로(Presentation API 없음),
+   스테이지 매니저로 창 두 개를 쓴다: 프로젝터 창(?screen=1) = 슬라이드만, 이 창 = 발표자 보기.
+   한 창에서 한 일(장·단계 넘기기, 장 안의 단추·막대·체크, 레이저, 그림 크게 보기, 부분 확대, 일시정지, 검은 화면)을
+   다른 창이 그대로 따라 한다. 같은 브라우저의 같은 수업 창끼리 BroadcastChannel로 주고받고(서버 없음),
+   그것이 안 되는 브라우저를 위해 localStorage 'storage' 이벤트를 예비 길로 함께 쓴다(BroadcastChannel로 받으면 예비 길은 끔). */
+const ENG_CLS=['still','student','noans','print','paused','zoomed','pv','screen','thumb'];
+function lkPost(m){
+  if(!LINK.on)return;
+  m.$f=LINK.id;m.$n=++LINK.n;m.$r=ROLE;   // 봉투(보낸 창·순번·역할)는 $ 이름으로 — 내용 칸과 겹치지 않게
+  if(LINK.ch)try{LINK.ch.postMessage(m);}catch(e){}
+  if(LINK.ls)try{localStorage.setItem(LINK.key,JSON.stringify(m));}catch(e){}
+}
+function lkTx(m){if(REMOTE||QUIET||!LINK.on)return;LINK.at=performance.now();lkPost(m);}
+function lkLinked(){const want=ROLE==='screen'?'main':'screen',now=Date.now();return Object.keys(LINK.peers).some(id=>{const p=LINK.peers[id];return p.r===want&&now-p.t<6500;});}
+function lkCheck(){const on=lkLinked();if(on===LINK.was)return;LINK.was=on;
+  if(ROLE==='main'&&on&&!PV)pvSet(true);   // 프로젝터 창이 연결되면 이 창은 발표자 보기로
+  if(ROLE==='screen')scrSync(on);
+  pvSync();
+}
+function uiPath(el){const sec=el.closest('.slide');if(!sec)return null;const p=[];for(let n=el;n&&n!==sec;n=n.parentElement)p.unshift(Array.prototype.indexOf.call(n.parentElement.children,n));return {i:Deck.list.indexOf(sec),p};}
+function uiEl(i,p){let n=Deck.list[i];for(const j of p){if(!n)return null;n=n.children[j];}return n||null;}
+function uiTx(el,ev){   // 장 안의 단추·막대·체크(직접 해 보기 등)를 다른 창에서도 똑같이
+  if(REMOTE||QUIET||!LINK.on||!el||!el.closest||!el.closest('#stage > .slide'))return;
+  if(ev!=='click'&&!/^(INPUT|SELECT|TEXTAREA)$/.test(el.tagName))return;
+  const P=uiPath(el);if(!P||P.i!==Deck.i)return;
+  const m={t:'ui',i:P.i,p:P.p,e:ev};
+  if(ev!=='click')m.v=(el.type==='checkbox'||el.type==='radio')?el.checked:el.value;
+  lkTx(m);
+}
+function uiRx(m){
+  if(m.i!==Deck.i)return;const el=uiEl(m.i,m.p);if(!el)return;
+  if(m.e==='click'){el.click();return;}
+  if(typeof m.v==='boolean')el.checked=m.v;else if(m.v!=null)el.value=m.v;
+  el.dispatchEvent(new Event(m.e,{bubbles:true}));
+}
+function lkState(to){   // 새로 연 프로젝터 창이 지금 상태를 한 번에 맞추도록
+  const sec=Deck.list[Deck.i];
+  const ui=Array.from(sec.querySelectorAll('input,select,textarea')).map(el=>{const ck=el.type==='checkbox'||el.type==='radio';return {p:uiPath(el).p,e:(ck||el.tagName==='SELECT')?'change':'input',v:ck?el.checked:el.value};});
+  return {t:'state',to,i:Deck.i,k:Deck.k,ps:PAUSED,bk:blankEl.className,lz:LZ.on,zv:[ZV.z,ZV.x/FS,ZV.y/FS],
+    pic:ZM?Array.from(sec.querySelectorAll('.pic')).indexOf(ZM.fig):-1,hc:Array.from(rootEl.classList).filter(c=>!ENG_CLS.includes(c)),ui};
+}
+async function lkApplyState(m){
+  let pr;REMOTE=true;try{pr=show(m.i,m.k,{instant:true});}finally{REMOTE=false;}
+  await pr;
+  REMOTE=true;
+  try{
+    Array.from(rootEl.classList).forEach(c=>{if(!ENG_CLS.includes(c)&&!m.hc.includes(c))rootEl.classList.remove(c);});   // 수업 전용 상태(예: 조석 [실제 바다])
+    m.hc.forEach(c=>rootEl.classList.add(c));
+    (m.ui||[]).forEach(u=>uiRx({i:m.i,p:u.p,e:u.e,v:u.v}));
+    setPause(!!m.ps);setBlank(m.bk||'');if(LZ.on!==!!m.lz)lzSet(!!m.lz);
+    if(m.zv){ZV.z=m.zv[0];ZV.x=m.zv[1]*FS;ZV.y=m.zv[2]*FS;zvClamp();stApply(false);}
+    if(m.pic>=0){const f=Deck.list[Deck.i].querySelectorAll('.pic')[m.pic];if(f)zoomOpen(f);}
+  }finally{REMOTE=false;}
+}
+function lkDo(m){
+  switch(m.t){
+    case 'show':show(m.i,m.k,m.o||{});break;
+    case 'step':if(m.i===Deck.i&&m.k===Deck.k+1)stepTo(m.k);else if(m.i!==Deck.i||m.k!==Deck.k)show(m.i,m.k,{instant:true});break;
+    case 'hurry':if(Deck.ctx&&Deck.ctx.isBusy())Deck.ctx.hurry();break;
+    case 'pause':setPause(!!m.v);break;
+    case 'blank':setBlank(m.c||'');break;
+    case 'lzon':if(LZ.on!==!!m.v)lzSet(!!m.v);break;
+    case 'lz':lzRx(m.q||[]);break;
+    case 'zv':ZV.z=m.z;ZV.x=m.x*FS;ZV.y=m.y*FS;zvClamp();stApply(m.a);break;
+    case 'pic':if(m.i===Deck.i&&!ZM){const f=Deck.list[Deck.i].querySelectorAll('.pic')[m.n];if(f)zoomOpen(f);}break;
+    case 'picx':zoomClose(m.now);break;
+    case 'ui':uiRx(m);break;
+  }
+}
+function lkRx(m,bc){
+  if(!m||typeof m!=='object'||m.$f===LINK.id||!LINK.on)return;
+  if(bc)LINK.ls=false;   // BroadcastChannel로 받았으면 예비 길(localStorage)은 그만 씀
+  if(m.$n<=(LINK.last[m.$f]||0))return;LINK.last[m.$f]=m.$n;   // 두 길로 온 같은 메시지는 한 번만
+  if(m.t==='bye')delete LINK.peers[m.$f];else LINK.peers[m.$f]={r:m.$r,t:Date.now()};
+  if(m.t==='hello'){if(ROLE==='main'&&m.$r==='screen')lkPost(lkState(m.$f));}
+  else if(m.t==='state'){if(m.to===LINK.id)lkApplyState(m);}
+  else if(m.t==='beat'){   // 혹시 놓친 명령이 있으면 발표자 창의 장·단계로 맞춤
+    if(ROLE==='screen'&&m.$r==='main'&&(m.i!==Deck.i||m.k!==Deck.k)&&performance.now()-LINK.at>2500&&!OV){REMOTE=true;try{show(m.i,m.k,{instant:true});}finally{REMOTE=false;}}
+  }
+  else if(m.t!=='bye'){LINK.at=performance.now();REMOTE=true;try{lkDo(m);}catch(e){console.error(e);}finally{REMOTE=false;}}
+  lkCheck();
+}
+let scrEl=null,scrT=0;
+function scrSync(on){
+  if(!scrEl)return;
+  scrEl.classList.toggle('on',on);
+  scrEl.querySelector('span').textContent=on?'발표자 창과 연결됨 · 이 창은 발표자 창을 따라 움직입니다':'발표자 창을 찾는 중…';
+  scrEl.classList.remove('hide');clearTimeout(scrT);if(on)scrT=setTimeout(()=>scrEl.classList.add('hide'),4000);
+}
+function lkInit(){
+  if(THUMB||STILL||STUDENT||rootEl.classList.contains('print'))return;
+  LINK.on=true;
+  try{LINK.ch=new BroadcastChannel(LINK.key);LINK.ch.onmessage=e=>lkRx(e.data,true);}catch(e){LINK.ch=null;}
+  addEventListener('storage',e=>{if(e.key!==LINK.key||!e.newValue)return;let m=null;try{m=JSON.parse(e.newValue);}catch(_){}lkRx(m,false);});
+  document.addEventListener('input',e=>uiTx(e.target,'input'),true);
+  document.addEventListener('change',e=>uiTx(e.target,'change'),true);
+  document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('button');if(b)uiTx(b,'click');},true);
+  setInterval(()=>{lkPost({t:'beat',i:Deck.i,k:Deck.k});lkCheck();},2000);
+  addEventListener('pagehide',()=>lkPost({t:'bye'}));
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)lkPost({t:'hello'});});   // 숨어 있던 창이 다시 보이면 상태를 다시 맞춤
+  if(ROLE==='screen'){
+    scrEl=document.createElement('div');scrEl.id='scr';
+    scrEl.innerHTML='<i></i><span></span><button type="button">전체 화면</button>';
+    const fsb=scrEl.querySelector('button'),rq=rootEl.requestFullscreen||rootEl.webkitRequestFullscreen;
+    if(!rq)fsb.remove();else fsb.onclick=e=>{e.stopPropagation();try{rq.call(rootEl);}catch(_){}scrEl.classList.add('hide');};
+    ['click','pointerdown','touchstart','touchend'].forEach(ev=>scrEl.addEventListener(ev,e=>e.stopPropagation(),{passive:true}));
+    document.body.appendChild(scrEl);scrSync(false);
+  }
+  lkPost({t:'hello'});
+}
+
+/* ═══ 발표자 보기(V, 2026-10-27 교사 요청) ═══
+   이 창(아이패드)에 위 도구 줄, 지금 장(그대로 누르고 조작), 다음·이전 장 미리보기, 발표자 노트, 큰 넘기기 단추를 놓는다.
+   지금 장은 무대 칸(#viewport)을 그 자리로 옮겨 그리고, 미리보기는 같은 수업을 ?thumb=1(정지 화면, 다 그린 뒤 멈춤)로 띄운 작은 창.
+   프로젝터 창이 연결되면 저절로 켜지고, V·도구 모음 단추로 켜고 끈다. 가로 창은 지금 장 | 다음·이전 장, 세로 창은 위아래로 쌓음 */
+let pvEl=null,pvT0=0,pvIv=0,pvLastI=-1;
+const PVI={
+  scr:'<svg viewBox="0 0 20 20"><rect x="2.5" y="3.5" width="15" height="10" rx="1.5"/><path d="M7 17h6M10 13.5V17"/></svg>',
+  ov:'<svg viewBox="0 0 20 20"><rect x="3" y="3" width="5.5" height="5.5" rx="1"/><rect x="11.5" y="3" width="5.5" height="5.5" rx="1"/><rect x="3" y="11.5" width="5.5" height="5.5" rx="1"/><rect x="11.5" y="11.5" width="5.5" height="5.5" rx="1"/></svg>',
+  lz:'<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="2.6"/><path d="M10 2.5v3M10 14.5v3M2.5 10h3M14.5 10h3"/></svg>',
+  ps:'<svg viewBox="0 0 20 20"><path d="M7 4.5v11M13 4.5v11"/></svg>',
+  bk:'<svg viewBox="0 0 20 20"><rect x="3" y="4.5" width="14" height="11" rx="1.5"/><path d="M6 8l8 4M14 8l-8 4"/></svg>',
+  x:'<svg viewBox="0 0 20 20"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9"/></svg>'
+};
+function pvBuild(){
+  pvEl=document.createElement('div');pvEl.id='pv';
+  const tool=(c,t,ic)=>'<button type="button" class="'+c+'" title="'+t+'">'+PVI[ic]+'<span>'+t+'</span></button>';
+  const touch=navigator.maxTouchPoints>0;
+  pvEl.innerHTML=
+    '<div class="pv-top"><div class="pv-link"><i></i><span></span></div>'+
+    '<a class="pv-open" target="_blank">'+PVI.scr+'<span>프로젝터 창 열기</span></a><span class="pv-sp"></span>'+
+    '<div class="pv-time"><span>경과</span><button type="button" class="pv-el" title="누르면 0부터 다시">0:00</button><span class="pv-clock"></span></div>'+
+    '<div class="pv-tools">'+tool('pv-ov','목차','ov')+tool('pv-lz','레이저','lz')+tool('pv-ps','멈춤','ps')+tool('pv-bk','화면 끄기','bk')+tool('pv-x','닫기','x')+'</div></div>'+
+    '<div class="pv-lab pv-lc"><span class="k">지금</span><b class="pv-pos"></b><em class="pv-t"></em><span class="pv-badge ps">멈춤</span><span class="pv-badge bk">프로젝터 화면 꺼짐</span><span class="pv-dots"></span></div>'+
+    '<div class="pv-lab pv-ln"><span class="k">다음 장</span><em></em></div>'+
+    '<div class="pv-fr pv-fn"><iframe title="다음 장 미리보기" tabindex="-1" aria-hidden="true"></iframe><div class="none">마지막 장입니다</div></div>'+
+    '<div class="pv-lab pv-lp"><span class="k">이전 장</span><em></em></div>'+
+    '<div class="pv-fr pv-fp"><iframe title="이전 장 미리보기" tabindex="-1" aria-hidden="true"></iframe><div class="none">첫 장입니다</div></div>'+
+    '<div class="pv-notes"><div class="pv-nh">발표자 노트<span>'+(touch?'프로젝터 창: 위 ‘프로젝터 창 열기’를 길게 눌러 ‘새 창에서 열기’ → 그 창을 외부 화면으로':'프로젝터 창: 위 ‘프로젝터 창 열기’ → 새 창을 프로젝터 화면으로 옮기고 F(전체 화면)')+'</span></div><div class="pv-nt"></div></div>'+
+    '<div class="pv-nav"><button type="button" class="pv-pr"><span>◀ 이전</span></button><button type="button" class="pv-nx"><span>다음 ▶</span><small></small></button></div>';
+  document.body.appendChild(pvEl);
+  const $=q=>pvEl.querySelector(q);
+  $('.pv-open').addEventListener('click',e=>{   // 컴퓨터: 따로 떨어진 창으로 열기 · 아이패드: 길게 눌러 ‘새 창에서 열기’(그냥 누르면 새 탭)
+    if(touch)return;
+    e.preventDefault();window.open(e.currentTarget.href,'deck-screen','popup=yes,width=1280,height=720');
+  });
+  $('.pv-el').onclick=()=>{pvT0=Date.now();pvTick();};
+  $('.pv-ov').onclick=()=>{OV?closeToc():openToc();};
+  $('.pv-lz').onclick=()=>lzSet(!LZ.on);
+  $('.pv-ps').onclick=()=>setPause(!PAUSED);
+  $('.pv-bk').onclick=()=>setBlank(blankEl.className?'':'black');
+  $('.pv-x').onclick=()=>pvSet(false);
+  $('.pv-pr').onclick=()=>prev();
+  $('.pv-nx').onclick=()=>next();
+  pvEl.addEventListener('click',e=>{const b=e.target.closest('button');if(b)b.blur();});   // 누른 단추에 초점이 남아 Space가 단추를 다시 누르지 않게
+  [['.pv-fn',1],['.pv-fp',-1]].forEach(([q,d])=>{
+    const box=$(q),fr=box.querySelector('iframe');
+    fr.addEventListener('load',()=>{if(!fr.getAttribute('src'))return;box.__ready=true;box.__busy=false;box.classList.add('ready');
+      const j=box.__want;box.__want=null;if(j!=null&&j!==box.__at)pvThumb(box,j);});
+    box.onclick=()=>{const j=+box.dataset.j;if(!(j>=0))return;if(d>0)show(j,0);else show(j,stepsOf(Deck.list[j]),{instant:true});};   // 다음 장은 처음부터, 이전 장은 다 나온 상태로
+  });
+}
+function pvThumb(box,j){
+  const ok=j>=0&&j<Deck.list.length;
+  box.classList.toggle('empty',!ok);box.dataset.j=ok?j:-1;
+  if(!ok)return;
+  if(box.__busy){box.__want=j;return;}
+  if(box.__at===j)return;
+  const fr=box.querySelector('iframe'),w=box.__ready&&fr.contentWindow;
+  if(w&&w.Deck&&w.Deck.go){box.__at=j;try{w.Deck.go(j,99,{instant:true});}catch(e){}}
+  else{box.__busy=true;box.__at=j;fr.src=location.pathname+'?thumb=1&still=1&s=1&k=99#'+(j+1);}
+}
+function pvTick(){
+  if(!pvEl)return;
+  const s=Math.floor((Date.now()-pvT0)/1000),hh=Math.floor(s/3600),mm=Math.floor(s/60)%60,ss=s%60,d=new Date(),p2=v=>String(v).padStart(2,'0');
+  pvEl.querySelector('.pv-el').textContent=(hh?hh+':'+p2(mm):mm)+':'+p2(ss);
+  pvEl.querySelector('.pv-clock').textContent=p2(d.getHours())+':'+p2(d.getMinutes());
+}
+function pvSync(){
+  if(!pvEl||Deck.i<0)return;
+  const $=q=>pvEl.querySelector(q),n=Deck.list.length,i=Deck.i,sec=Deck.list[i],st=stepsOf(sec),T=j=>(j+1)+'. '+(Deck.list[j].dataset.title||''),on=lkLinked();
+  pvEl.classList.toggle('linked',on);
+  $('.pv-link').classList.toggle('on',on);$('.pv-link span').textContent=on?'프로젝터 연결됨':'프로젝터 창 없음';
+  $('.pv-open').href=location.pathname+'?screen=1#'+(i+1);
+  $('.pv-pos').textContent=(i+1)+' / '+n;$('.pv-t').textContent=sec.dataset.title||'';
+  let d='';for(let j=0;j<st;j++)d+='<i'+(j<Deck.k?' class="on"':'')+'></i>';
+  $('.pv-dots').innerHTML=st?d+'<span>단계 '+Deck.k+' / '+st+'</span>':'';
+  $('.pv-badge.ps').classList.toggle('show',PAUSED);$('.pv-badge.bk').classList.toggle('show',!!blankEl.className);
+  $('.pv-ln em').textContent=i<n-1?T(i+1):'';$('.pv-lp em').textContent=i>0?T(i-1):'';
+  pvThumb($('.pv-fn'),i+1);pvThumb($('.pv-fp'),i-1);
+  if(i!==pvLastI){pvLastI=i;const t=sec.dataset.notes||'',nt=$('.pv-nt');nt.textContent=t||'이 장에는 노트가 없습니다.';nt.classList.toggle('empty',!t);nt.scrollTop=0;}
+  const last=i===n-1&&Deck.k>=st;
+  $('.pv-pr').disabled=i===0&&Deck.k===0;$('.pv-nx').disabled=last;
+  $('.pv-nx small').textContent=Deck.k<st?'단계 '+(Deck.k+1)+' / '+st:(last?'마지막 장':'다음 장으로');
+  $('.pv-lz').classList.toggle('on',LZ.on);$('.pv-ps').classList.toggle('on',PAUSED);$('.pv-bk').classList.toggle('on',!!blankEl.className);
+}
+function pvLayout(){
+  if(!PV||!pvEl)return;
+  const W=innerWidth,H=innerHeight,P=Math.round(Math.min(20,Math.max(10,W*.014))),G=Math.round(P*.8),TB=56,L=32,f=v=>v.toFixed(1)+'px';
+  const put=(q,x,y,w,h)=>{const e=pvEl.querySelector(q);e.style.left=f(x);e.style.top=f(y);e.style.width=f(w);e.style.height=f(h);};
+  let cur;
+  if(W/H>=1.15){   // 가로 창: 지금 장(왼쪽, 크게) | 다음·이전 장(오른쪽 위아래, 위·아래 끝을 지금 장과 맞춤) · 아래 노트 | 넘기기 단추
+    const NM=Math.max(140,H*.2);
+    let R=(W-2*P-G-(L+G)*16/9)/3,C=W-2*P-G-R,ch=C*9/16;
+    const mx=H-TB-L-G-NM-P;if(ch>mx){ch=mx;C=ch*16/9;R=(C-(L+G)*16/9)/2;}
+    const x0=(W-C-G-R)/2,xr=x0+C+G,rh=R*9/16,yb=TB+L+ch+G;
+    cur={x:x0,y:TB+L,w:C,h:ch};
+    put('.pv-top',x0,0,C+G+R,TB);put('.pv-lc',x0,TB,C,L);
+    put('.pv-ln',xr,TB,R,L);put('.pv-fn',xr,TB+L,R,rh);
+    put('.pv-lp',xr,TB+L+rh+G,R,L);put('.pv-fp',xr,TB+2*L+rh+G,R,rh);
+    put('.pv-notes',x0,yb,C,H-P-yb);put('.pv-nav',xr,yb,R,H-P-yb);pvEl.querySelector('.pv-nav').classList.add('col');
+  }else{   // 세로 창: 지금 장 → 이전·다음 장(나란히) → 노트 → 넘기기 단추
+    const NV=72,NM=Math.max(140,H*.18),fixed=TB+2*L+3*G+NV+P+NM;
+    const C=Math.min(W-2*P,(H-fixed+G*9/32)/(1.5*9/16)),ch=C*9/16,pw=(C-G)/2,ph=pw*9/16,x0=(W-C)/2;
+    let y=TB;put('.pv-top',x0,0,C,TB);put('.pv-lc',x0,y,C,L);y+=L;cur={x:x0,y,w:C,h:ch};y+=ch+G;
+    put('.pv-lp',x0,y,pw,L);put('.pv-ln',x0+pw+G,y,pw,L);y+=L;
+    put('.pv-fp',x0,y,pw,ph);put('.pv-fn',x0+pw+G,y,pw,ph);y+=ph+G;
+    put('.pv-notes',x0,y,C,H-P-NV-G-y);put('.pv-nav',x0,H-P-NV,C,NV);pvEl.querySelector('.pv-nav').classList.remove('col');
+  }
+  Object.assign(viewport.style,{left:f(cur.x),top:f(cur.y),width:f(cur.w),height:f(cur.h),right:'auto',bottom:'auto'});
+  if(zbadge){zbadge.style.left=f(cur.x+cur.w/2);zbadge.style.top=f(cur.y+10);}
+  pvEl.style.setProperty('--pvf',Math.round(Math.max(16,Math.min(22,cur.w/46)))+'px');
+}
+function pvSet(v){
+  if(v===PV)return;
+  if(v&&(ROLE!=='main'||STUDENT||STILL))return;
+  if(OV===1)closeToc();
+  PV=v;rootEl.classList.toggle('pv',v);
+  if(v){pvBuild();pvLastI=-1;pvT0=Date.now();pvIv=setInterval(pvTick,1000);pvTick();}
+  else{clearInterval(pvIv);pvEl.remove();pvEl=null;viewport.style.cssText='';if(zbadge){zbadge.style.left='';zbadge.style.top='';}}
+  pvLayout();fit();if(LZ.on)lzSize();pvSync();
+  const b=document.getElementById('b-pv');if(b)b.classList.toggle('on',v);
 }
 
 Deck.start=function(){
@@ -1717,7 +2054,7 @@ Deck.start=function(){
   });
   buildKw();
   ovl=document.createElement('div');ovl.id='ovl';stage.appendChild(ovl);
-  fit();addEventListener('resize',fit);zoomInit();
+  fit();addEventListener('resize',()=>{pvLayout();fit();});zoomInit();
   document.getElementById('b-prev').onclick=prev;
   document.getElementById('b-next').onclick=next;
   document.getElementById('b-mark').onclick=openMark;
@@ -1726,19 +2063,21 @@ Deck.start=function(){
   document.getElementById('notes-x').onclick=()=>setNotes(false);
   lzMount();document.getElementById('b-laser').onclick=e=>{e.stopPropagation();lzSet(!LZ.on);e.currentTarget.blur();};
   document.getElementById('b-ov').onclick=e=>{e.stopPropagation();OV?closeToc():openToc();};
+  document.getElementById('b-pv').onclick=e=>{e.stopPropagation();pvSet(!PV);e.currentTarget.blur();};
   document.getElementById('b-fs').onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();else rootEl.requestFullscreen&&rootEl.requestFullscreen();};
   helpEl.addEventListener('click',e=>{if(e.target===helpEl)closeOverlays();});
   viewport.addEventListener('click',e=>{
+    if(REMOTE)return;   // 프로젝터 창에서 따라 누른 단추의 클릭이 올라온 것
     if(ZM){zoomClose();return;}
     if(ZV.z>1.01||performance.now()-PZ.eat<600)return;   // 부분 확대 중(또는 두 번 톡으로 막 되돌린 직후)에는 눌러도 넘어가지 않음
     if(OV){if(OV===1){const s=e.target.closest('.slide');closeToc(s?Deck.list.indexOf(s):-1);}return;}
     if(e.target.closest('#kwbar'))return;
     const zp=e.target.closest('.slide .pic');if(zp&&!STILL&&!LZ.on){zoomOpen(zp);return;}   // 그림을 누르면 크게 보기
-    (e.clientX/innerWidth<.28)?prev():next();
+    const r=vpR();((e.clientX-r.left)/r.width<.28)?prev():next();
   });
   addEventListener('mousemove',pokeHud);addEventListener('touchstart',pokeHud,{passive:true});
   let tx=null;
-  addEventListener('touchstart',e=>{tx=LZ.on?null:e.touches[0].clientX;},{passive:true});   // 레이저로 긋는 동안은 밀기(장 넘기기)로 보지 않는다
+  addEventListener('touchstart',e=>{tx=(LZ.on||!inVp(e))?null:e.touches[0].clientX;},{passive:true});   // 레이저로 긋는 동안·발표자 보기의 지금 장 밖에서는 밀기(장 넘기기)로 보지 않는다
   addEventListener('touchend',e=>{if(tx===null||OV||LZ.on||ZM||PZ.used||ZV.z>1.01){tx=null;return;}const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>60){dx<0?next():prev();}},{passive:true});
   addEventListener('keydown',e=>{
     if(e.metaKey||e.ctrlKey||e.altKey)return;
@@ -1746,15 +2085,16 @@ Deck.start=function(){
     if(e.target.closest&&e.target.closest('#markbox,#resume'))return;
     if(OV){if(OV===1)tocKey(e);return;}
     const key=e.key;
-    if(key==='Escape'){if(LZ.on){lzSet(false);return;}if(ZV.z>1.01){zvReset();return;}closeOverlays();setNotes(false);blankEl.className='';return;}
-    if(blankEl.className){blankEl.className='';return;}
+    if(key==='Escape'){if(LZ.on){lzSet(false);return;}if(ZV.z>1.01){zvReset();return;}closeOverlays();setNotes(false);setBlank('');return;}
+    if(blankEl.className){setBlank('');return;}
     if(helpEl.classList.contains('show'))return;
     switch(key){
       case 'ArrowRight':case 'ArrowDown':case ' ':case 'PageDown':case 'Enter':e.preventDefault();next();break;
       case 'ArrowLeft':case 'ArrowUp':case 'PageUp':case 'Backspace':e.preventDefault();prev();break;
       case 'Home':show(0,0);break;
       case 'End':show(Deck.list.length-1,0);break;
-      case 'n':case 'N':setNotes(!notesEl.classList.contains('show'));break;
+      case 'n':case 'N':if(!PV)setNotes(!notesEl.classList.contains('show'));break;   // 발표자 보기에는 노트가 늘 보임
+      case 'v':case 'V':pvSet(!PV);break;
       case 'l':case 'L':if(!e.repeat)lzSet(!LZ.on);break;
       case 'p':case 'P':if(!e.repeat)setPause(!PAUSED);break;
       case 'o':case 'O':openToc();break;
@@ -1766,9 +2106,11 @@ Deck.start=function(){
     }
   });
   try{localStorage.removeItem('deck-pos:'+location.pathname);}catch(e){}   // 예전 자동 저장 값 정리
+  Deck.go=(i,k,o)=>show(i,k||0,o||{});Deck.pause=setPause;Deck.laser=LZ;   // 발표자 보기의 미리보기 창이 부름 · 확인용
   const marks=readMarks(),h=parseInt(location.hash.slice(1))||1,kk=parseInt(Q.get('k'))||0;
-  show(h-1,kk,{instant:kk>0||STILL});
-  if(!STILL&&!Q.has('k')&&h===1&&marks.length)offerResume(marks);
+  QUIET++;try{show(h-1,kk,{instant:kk>0||STILL});}finally{QUIET--;}   // 처음 여는 것은 다른 창에 보내지 않음
+  if(ROLE==='main'&&!STILL&&!Q.has('k')&&h===1&&marks.length)offerResume(marks);
+  lkInit();
   pokeHud();
 };
 })();
