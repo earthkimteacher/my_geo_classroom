@@ -326,6 +326,7 @@ html.screen #zbadge{display:none!important}   /* 확대 배율 알약은 발표�
 #scr{position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:65;display:flex;align-items:center;gap:12px;padding:8px 8px 8px 18px;border-radius:9999px;background:rgba(28,28,30,.92);color:#f5f5f7;font-size:16px;font-weight:600;white-space:nowrap;transition:opacity .6s}
 #scr i{width:9px;height:9px;border-radius:50%;background:#ff9f0a} #scr.on i{background:#30d158}
 #scr button{border-radius:9999px;padding:7px 15px;background:#f5f5f7;color:#1d1d1f;font-size:15px;font-weight:700}
+#scr button:disabled{background:#3a3a3c;color:#98989d;cursor:default}
 #scr.hide{opacity:0;pointer-events:none}
 
 
@@ -1634,7 +1635,8 @@ function setBlank(c){if(blankEl.className===c)return;blankEl.className=c;lkTx({t
 function toggleBlank(kind){setBlank(blankEl.className===kind?'':kind);}
 const vpR=()=>viewport.getBoundingClientRect();   // 무대가 들어가는 칸(평소 = 창 전체, 발표자 보기 = 지금 장 칸)
 function fit(){
-  const r=vpR();FS=Math.min(r.width/SW,r.height/SH);
+  const r=vpR();if(!r.width||!r.height)return;   // 크기가 0인 칸(뒤쪽 탭, 아직 크기를 못 받은 창)은 건너뜀: 배율 0으로 나눈 값이 프로젝터 창으로 가면 그 창이 멈춤
+  FS=Math.min(r.width/SW,r.height/SH);
   QUIET++;try{zvClamp();stApply(false);}finally{QUIET--;}
   if(LZ.cv&&LZ.on)lzSize();
 }
@@ -1889,7 +1891,15 @@ function scrSync(on){
   if(!scrEl)return;
   scrEl.classList.toggle('on',on);
   scrEl.querySelector('span').textContent=on?'발표자 창과 연결됨 · 이 창은 발표자 창을 따라 움직입니다':'발표자 창을 찾는 중…';
-  scrEl.classList.remove('hide');clearTimeout(scrT);if(on)scrT=setTimeout(()=>scrEl.classList.add('hide'),4000);
+  scrShow();
+}
+/* 프로젝터 창 알림(전체 화면 단추가 들어 있음): 연결되면 4초 뒤 숨고, 이 창 위에서 포인터를 움직이거나 누르면 다시 나옴.
+   연결 전이거나 포인터가 전체 화면 단추가 있는 알림 위에 있으면 숨지 않음. 이미 전체 화면이면 단추는 숨김 */
+function scrShow(){
+  if(!scrEl)return;
+  const fsb=scrEl.querySelector('button'),fs=!!(document.fullscreenElement||document.webkitFullscreenElement);fsb.style.display=fs?'none':'';
+  scrEl.classList.remove('hide');clearTimeout(scrT);
+  if(scrEl.classList.contains('on')&&(fs||!scrEl.matches(':hover')))scrT=setTimeout(()=>scrEl.classList.add('hide'),4000);
 }
 function lkInit(){
   if(THUMB||STILL||STUDENT||rootEl.classList.contains('print'))return;
@@ -1906,8 +1916,11 @@ function lkInit(){
     scrEl=document.createElement('div');scrEl.id='scr';
     scrEl.innerHTML='<i></i><span></span><button type="button">전체 화면</button>';
     const fsb=scrEl.querySelector('button'),rq=rootEl.requestFullscreen||rootEl.webkitRequestFullscreen;
-    if(!rq)fsb.remove();else fsb.onclick=e=>{e.stopPropagation();try{rq.call(rootEl);}catch(_){}scrEl.classList.add('hide');};
+    if(!rq){fsb.disabled=true;fsb.textContent='이 브라우저는 전체 화면 안 됨';}   // 전체 화면 기능이 없는 브라우저: 단추를 빼지 않고 안 된다고 보여 줌
+    else fsb.onclick=e=>{e.stopPropagation();try{rq.call(rootEl);}catch(_){}clearTimeout(scrT);scrEl.classList.add('hide');};
     ['click','pointerdown','touchstart','touchend'].forEach(ev=>scrEl.addEventListener(ev,e=>e.stopPropagation(),{passive:true}));
+    scrEl.addEventListener('pointerleave',()=>{if(!scrEl.classList.contains('hide'))scrShow();});   // 숨으면서 생긴 '나감'에는 다시 띄우지 않음(깜빡임 방지)
+    ['pointermove','pointerdown'].forEach(ev=>addEventListener(ev,scrShow,{passive:true}));   // 포인터를 움직이거나 누르면 알림이 다시 나옴
     document.body.appendChild(scrEl);scrSync(false);
   }
   lkPost({t:'hello'});
