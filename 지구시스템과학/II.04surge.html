@@ -387,6 +387,9 @@ html.screen #zbadge{display:none!important}   /* 확대 배율 알약은 발표�
 .ia-stat .st b{font-size:36px;font-weight:800;color:var(--act);font-variant-numeric:tabular-nums}
 html.print .ia-panel{display:none}
 #s03-card .ws-row{padding:10px 0}
+/* 3장 그림: 교과서 그림(천해파에서 물 입자의 운동)을 모션 그래픽으로(2026-10-28) — 그림 상자와 같은 모서리·그림자 */
+#s03-fig{position:absolute;border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.06),0 12px 30px rgba(0,0,0,.10);z-index:2}
+#s03-fig svg{display:block;width:640px;height:476px}
 #s05-card .ws-row{padding:8px 0}
 .ws-card .v-eq{font-size:64px;line-height:1.3;margin:10px 0 6px}
 /* 인쇄: 표지의 넓은 어두운 면을 연하게 */
@@ -451,7 +454,7 @@ html.print #s01 #s01-cloud,html.print #s01 #s01-lamp{display:none}
 <section class="slide" id="s03" data-tile="parchment" data-title="지난 시간에 배운 내용 — 해파의 분류" data-notes="">
   <div class="hd" data-in><div class="eb">지난 시간에 배운 내용</div><h2>해파의 분류</h2></div>
   <div class="lead mu" data-in="200">파장과 수심의 관계에 따라 심해파, 전이파(천이파), 천해파로 나눈다.</div>
-  <figure class="pic" id="s03-pic" style="left:120px;top:346px;width:640px;height:476px" data-in="350" data-fx="fade"><img src="img/II.04/p2_해파의_운동.png" alt="천해파에서 물 입자의 운동"></figure>
+  <div id="s03-fig" style="left:120px;top:346px;width:640px;height:476px" data-in="350" data-fx="fade"><svg id="s03-svg" viewBox="0 0 640 476" role="img" aria-label="천해파에서 물 입자의 운동"></svg></div>
   <div class="ws-card st eq" id="s03-card" style="left:800px;top:346px;width:1000px;height:476px;padding-top:20px;padding-bottom:20px" data-in="450">
     <div class="ws-row"><span class="tm term">천해파</span><span>수심이 파장의 <span class="bk"><span class="a" data-step="1" data-fx="pop"><span class="fr"><i>1</i><b>20</b></span></span><span class="n">1</span></span>보다 얕은 곳에서 전달되는 해파<br><span class="mu">수심<span class="mr">(</span><span class="m">h</span><span class="mr">) &lt; </span><span class="fr"><i>1</i><b>20</b></span>파장<span class="mr">(</span><span class="m">L</span><span class="mr">)</span></span></span></div>
     <div class="ws-row"><span class="tm term">물 입자의 운동</span><span>해저면의 영향으로 물 입자는 <span class="bk"><span class="a" data-step="2" data-fx="pop">타원</span><span class="n">2</span></span> 운동을 한다.<br>→ 수심이 깊어질수록 타원이 납작해지고,<br>해저면에서는 <span class="bk"><span class="a" data-step="3" data-fx="pop">직선 왕복</span><span class="n">3</span></span> 운동을 한다.</span></div>
@@ -459,6 +462,7 @@ html.print #s01 #s01-cloud,html.print #s01 #s01-lamp{display:none}
   <div class="ws-card side" id="s03-v" style="left:120px;top:862px;width:1680px;padding-top:20px;padding-bottom:20px" data-in="550">
     <div class="ws-row"><span class="tm term">전파 속도</span><span>천해파의 전파 속도<span class="mr">(v) = </span><span class="bk"><span class="a" data-step="4" data-fx="pop"><span class="sq">√<span class="in">gh</span></span></span><span class="n">4</span></span> <span class="mu">(g: 중력 가속도, h: 수심)</span></span></div>
   </div>
+  <div class="fine">모식 그림 · 수심과 물결 높이는 실제보다 크게 그림(실제 천해파는 수심이 파장의 1/20보다 얕음) · 물 입자의 움직임은 천해파 식으로 계산</div>
 </section>
 
 <!-- ═══ s04 해일이란? (PPT 3쪽) ═══ -->
@@ -1573,6 +1577,91 @@ Deck.scene('s01',{
       else{c.tw+=dt;if(c.tw>1.2)c.ph='go';}
       s1draw(c,t);
     });
+  }
+});
+
+/* ── 3장 해파의 분류: 천해파에서 물 입자의 운동(교과서 그림을 모션 그래픽으로, 2026-10-28 교사 요청) ──
+   천해파 식(수심 ≪ 파장): 물 입자가 앞뒤로 움직이는 폭은 깊이와 관계없이 같고, 위아래로 움직이는 폭은 해저면으로 갈수록
+   일정하게 줄어 해저면에서 0 → 위는 타원, 깊어질수록 납작, 해저면 가까이는 직선 왕복. 물결이 오른쪽으로 가면 입자는 시계 방향으로 돎.
+   해수면 선 = 수면 입자들을 이은 선(입자가 늘 수면 위에 있음). 배치·크기는 교과서 그림과 같게(한 파장, 기둥 3개 = 마루·골·마루, 4층).
+   수심·물결 높이는 실제보다 크게(각주). 물결은 일정한 속도로(4초 = 한 파장) — 이징 없음 */
+const S3={ys:150,D:250,lam:520,U:36,V0:34,T:4,cols:[60,320,580],rows:[0,80,160,244],hx:452,navy:'#0a4f80',pur:'#6f42c1',red:'#C4391B'};
+const s3ry=d=>S3.V0*(1-d/S3.D);                                            // 깊이 d에서 위아래 반지름(해저면에서 0)
+const s3th=(x0,t)=>2*Math.PI*((x0-S3.cols[0])/S3.lam-t/S3.T);              // 위상: 오른쪽으로 진행, 처음에는 교과서 그림처럼 첫째·셋째 기둥이 마루
+const s3pos=(x0,d,t)=>{const th=s3th(x0,t);return [x0-S3.U*Math.sin(th),S3.ys+d-s3ry(d)*Math.cos(th)];};   // 시계 방향 타원
+function s3head(par,x,y,ux,uy,col,s=6){   // 끝(x,y)이 (ux,uy) 쪽을 향하는 작은 화살 머리
+  const L=Math.hypot(ux,uy);ux/=L;uy/=L;
+  return svgEl('polygon',{points:f1(x)+','+f1(y)+' '+f1(x-ux*s*1.9-uy*s)+','+f1(y-uy*s*1.9+ux*s)+' '+f1(x-ux*s*1.9+uy*s)+','+f1(y-uy*s*1.9-ux*s),fill:col},par);
+}
+function s3build(g){
+  g.innerHTML='';
+  const N=S3.navy,yb=S3.ys+S3.D,halo={stroke:'#fff','stroke-width':7,'stroke-linejoin':'round','paint-order':'stroke'};
+  const T=(p,x,y,str,a)=>{const t=svgEl('text',Object.assign({x,y,'font-size':28,'font-weight':800},a||{}),p);t.textContent=str;return t;};
+  const M=(t,str,a)=>{const s2=svgEl('tspan',Object.assign({'font-style':'italic','font-family':"'Times New Roman',serif",'font-weight':700},a||{}),t);s2.textContent=str;return s2;};
+  const defs=svgEl('defs',{},g),wg=svgEl('linearGradient',{id:'s03-wg',x1:0,y1:0,x2:0,y2:1},defs);
+  svgEl('stop',{offset:0,'stop-color':'#8fcdf0'},wg);svgEl('stop',{offset:1,'stop-color':'#e4f3fb'},wg);
+  svgEl('rect',{width:640,height:476,fill:'#fff'},g);
+  svgEl('path',{id:'s03-water',fill:'url(#s03-wg)'},g);
+  svgEl('rect',{x:0,y:yb,width:640,height:476-yb,fill:'#d8b98a'},g);                                 // 해저면(다른 장과 같은 모래색)
+  svgEl('line',{x1:0,y1:yb,x2:640,y2:yb,stroke:'#a8875c','stroke-width':3},g);
+  svgEl('line',{x1:0,y1:S3.ys,x2:640,y2:S3.ys,stroke:'#1d1d1f','stroke-width':2,'stroke-opacity':.6},g);   // 평상시 해수면
+  // 물 입자의 경로: 처음에는 흐리게, 2단계(타원)·3단계(직선 왕복)에서 진하게
+  const orb=svgEl('g',{id:'s03-orb',opacity:.35},g),orbB=svgEl('g',{id:'s03-orbB',opacity:.35},g);
+  S3.cols.forEach(x=>S3.rows.forEach(d=>{
+    const cy=S3.ys+d,ry=s3ry(d);
+    if(ry<3){const a=x-S3.U,b=x+S3.U;svgEl('line',{x1:a+9,y1:cy,x2:b-9,y2:cy,stroke:N,'stroke-width':3},orbB);s3head(orbB,a,cy,-1,0,N);s3head(orbB,b,cy,1,0,N);}
+    else{svgEl('ellipse',{cx:x,cy,rx:S3.U,ry:f1(ry),fill:'none',stroke:N,'stroke-width':3},orb);
+      const th=Math.PI/4;s3head(orb,x-S3.U*Math.sin(th),cy-ry*Math.cos(th),S3.U*Math.cos(th),-ry*Math.sin(th),N);}   // 왼쪽 위에서 오른쪽 위로(시계 방향)
+  }));
+  svgEl('path',{id:'s03-surf',fill:'none',stroke:'#1d8fd0','stroke-width':4,'stroke-linejoin':'round'},g);
+  S3.cols.forEach((x,i)=>S3.rows.forEach((d,j)=>svgEl('circle',{id:'s03-p'+i+'_'+j,r:j?6:8,fill:'#1d1d1f'},g)));
+  // 1단계: 파장 L(같은 위상으로 움직이는 첫째·셋째 기둥 사이) · 수심 h(평상시 해수면 ~ 해저면)
+  const gL=svgEl('g',{id:'s03-gL',opacity:0},g);
+  svgEl('line',{x1:66,y1:86,x2:574,y2:86,stroke:N,'stroke-width':3},gL);s3head(gL,60,86,-1,0,N);s3head(gL,580,86,1,0,N);
+  [60,580].forEach(x=>svgEl('line',{x1:x,y1:74,x2:x,y2:100,stroke:N,'stroke-width':3},gL));
+  const tL=T(gL,320,96,'파장 ',Object.assign({'text-anchor':'middle',fill:N},halo));M(tL,'L',{'font-size':32});
+  const gH=svgEl('g',{id:'s03-gH',opacity:0},g);
+  svgEl('line',{x1:S3.hx,y1:S3.ys+10,x2:S3.hx,y2:yb-10,stroke:S3.pur,'stroke-width':3},gH);s3head(gH,S3.hx,S3.ys,0,-1,S3.pur);s3head(gH,S3.hx,yb,0,1,S3.pur);
+  const tH=T(gH,S3.hx+12,(S3.ys+yb)/2+10,'수심 ',Object.assign({fill:S3.pur},halo));M(tH,'h',{'font-size':32});
+  // 2단계 '타원 운동', 3단계 '직선 왕복 운동'(첫째와 둘째 기둥 사이 빈자리)
+  const gE=svgEl('g',{id:'s03-gE',opacity:0},g);T(gE,190,240,'타원 운동',Object.assign({'text-anchor':'middle',fill:N},halo));
+  const gS=svgEl('g',{id:'s03-gS',opacity:0},g);T(gS,190,384,'직선 왕복 운동',Object.assign({'text-anchor':'middle',fill:N,'font-size':26},halo));
+  // 4단계: 마루를 따라가는 전파 속도 v
+  const gV=svgEl('g',{id:'s03-gV',opacity:0},g);
+  [0,1].forEach(i=>{const m=svgEl('g',{id:'s03-v'+i},gV);
+    svgEl('line',{x1:-30,y1:100,x2:30,y2:100,stroke:S3.red,'stroke-width':5,'stroke-linecap':'round'},m);s3head(m,46,100,1,0,S3.red,8);
+    const tv=T(m,52,110,'',Object.assign({fill:S3.red},halo));M(tv,'v',{'font-size':34});});
+  // 교과서 그림의 글자
+  svgEl('line',{x1:30,y1:38,x2:132,y2:38,stroke:'#d9534f','stroke-width':9},g);s3head(g,152,38,1,0,'#d9534f',10);
+  T(g,168,49,'파의 진행 방향',{'font-size':30,fill:'#1d1d1f'});
+  T(g,20,452,'해저면',{'font-size':30,fill:'#5a4630'});
+}
+const s3els=r=>({water:r.querySelector('#s03-water'),surf:r.querySelector('#s03-surf'),
+  dots:S3.cols.flatMap((x,i)=>S3.rows.map((d,j)=>({x,d,e:r.querySelector('#s03-p'+i+'_'+j)}))),v:[0,1].map(i=>r.querySelector('#s03-v'+i))});
+function s3draw(E,t){
+  const pts=[];for(let x0=-60;x0<=700;x0+=5){const [X,Y]=s3pos(x0,0,t);pts.push(f1(X)+' '+f1(Y));}
+  const yb=S3.ys+S3.D;
+  E.water.setAttribute('d','M'+pts.join(' L')+' L700 '+(yb+2)+' L-60 '+(yb+2)+'Z');
+  E.surf.setAttribute('d','M'+pts.join(' L'));
+  E.dots.forEach(o=>{const [X,Y]=s3pos(o.x,o.d,t);o.e.setAttribute('cx',f1(X));o.e.setAttribute('cy',f1(Y));});
+  const ph=((t/S3.T)%1+1)%1,x1=S3.cols[0]+ph*S3.lam,cr=[x1-S3.lam,x1,x1+S3.lam].filter(x=>x>36&&x<594);   // 화면 안의 마루(위상 0인 곳)
+  E.v.forEach((m,i)=>{if(i<cr.length){m.setAttribute('transform','translate('+f1(cr[i])+' 0)');m.setAttribute('opacity',1);}else m.setAttribute('opacity',0);});
+}
+s3build($id('s03-svg'));s3draw(s3els(document),0);   // 원본에 넣어 둠(목차 썸네일에도 보이게)
+Deck.scene('s03',{
+  enter(c){
+    c.E=s3els(c.root);c.k=0;s3draw(c.E,0);
+    if(document.documentElement.classList.contains('print'))return;   // 인쇄는 교과서 그림과 같은 순간(첫째 기둥이 마루)
+    c.loop(t=>s3draw(c.E,t));
+  },
+  go(c,k){
+    c.k=k;
+    const fade=(id,to,o)=>c.a(c.$('#'+id),[{opacity:1-to},{opacity:to}],Object.assign({dur:600},o||{}));
+    const bold=id=>{const e=c.$('#'+id);c.tween(700,p=>e.setAttribute('opacity',f1(.35+.65*p)));};
+    if(k===1){fade('s03-gL',1);fade('s03-gH',1,{delay:250});}              // 빈칸 1/20 ↔ 파장 L·수심 h
+    if(k===2){bold('s03-orb');fade('s03-gE',1,{delay:200});}               // 빈칸 타원 ↔ 타원 경로
+    if(k===3){bold('s03-orbB');fade('s03-gS',1,{delay:200});}              // 빈칸 직선 왕복 ↔ 해저면 가까이의 경로
+    if(k===4){fade('s03-gL',0,{dur:400});fade('s03-gV',1,{delay:200});}    // 빈칸 √gh ↔ 마루를 따라가는 속도 v(수심 h는 그대로)
   }
 });
 
