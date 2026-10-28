@@ -9,7 +9,7 @@
 ### 과학탐구실험2 (고1)
 | 단원 | 자료 | 바로 열기 |
 |---|---|---|
-| I.06. 생활 속 문제를 과학으로 해결해 볼까? | 슬라이드 — 학교 주변 환경 탐구 | [열기](https://earth.esbest.net/과학탐구실험2/I.06environment.html) · [학생용 PDF](https://earth.esbest.net/과학탐구실험2/PDF/I.06environment_학생용.pdf) |
+| I.06. 생활 속 문제를 과학으로 해결해 볼까? | 슬라이드 — 학교 주변 환경 탐구 | [열기](https://earth.esbest.net/과학탐구실험2/I.06environment.html) |
 
 ### 통합과학2 (고1)
 | 단원 | 자료 | 바로 열기 |
@@ -26,7 +26,7 @@
 | 단원 | 자료 | 바로 열기 |
 |---|---|---|
 | II.04. 해일 | 슬라이드 | [열기](https://earth.esbest.net/지구시스템과학/II.04surge.html) |
-| II.05. 조석 | 슬라이드 | [열기](https://earth.esbest.net/지구시스템과학/II.05tide.html) · [학생용 PDF](https://earth.esbest.net/지구시스템과학/PDF/II.05tide_학생용.pdf) |
+| II.05. 조석 | 슬라이드 | [열기](https://earth.esbest.net/지구시스템과학/II.05tide.html) |
 | 학생용 수업 자료 PDF | 노션 — 단원별 수업 자료를 내려받는 페이지 | [열기](https://esbest.notion.site/2-32d4a95fb28280e198bfd571eef92fec) |
 
 ## 슬라이드 사용법
@@ -82,9 +82,7 @@
 ```
 my_geo_classroom/
 ├─ 과학탐구실험2/
-│  ├─ I.06environment.html            학교 주변 환경 탐구 슬라이드
-│  └─ PDF/
-│     └─ I.06environment_학생용.pdf   학교 주변 환경 탐구 학생용 인쇄본
+│  └─ I.06environment.html            학교 주변 환경 탐구 슬라이드
 ├─ 통합과학2/
 │  └─ II.1.3climate.html              지구 환경의 변화 슬라이드
 ├─ 지구과학/
@@ -93,10 +91,8 @@ my_geo_classroom/
 ├─ 지구시스템과학/
 │  ├─ II.04surge.html                 해일 슬라이드
 │  ├─ II.05tide.html                  조석 슬라이드
-│  ├─ img/
-│  │  └─ II.04/                       해일 슬라이드에 쓰는 그림(교사 PPT의 그림)
-│  └─ PDF/
-│     └─ II.05tide_학생용.pdf          조석 학생용 인쇄본
+│  └─ img/
+│     └─ II.04/                       해일 슬라이드에 쓰는 그림(교사 PPT의 그림)
 ├─ index.html                         사이트 첫 화면 (수업 자료 목록)
 ├─ CLAUDE.md                          슬라이드 제작 안내 (Claude용)
 └─ CNAME                              earth.esbest.net 연결
