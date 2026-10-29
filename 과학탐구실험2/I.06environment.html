@@ -285,6 +285,8 @@ html.pv :is(#hud,#progress,#stepdots,#notes,#blank){display:none!important}   /*
 #pv .pv-tools button.on{background:#f5f5f7;color:#1d1d1f}
 #pv .pv-tools .pv-lz.on{background:#ff2d55;color:#fff}
 #pv .pv-tools .pv-ps.on{background:#0a84ff;color:#fff}
+#pv .pv-tools .pv-mk.on{background:#ffd60a;color:#1d1d1f}
+html.pv #resume,html.pv #markbox{top:64px}   /* 발표자 보기: 위 도구 줄(56px)을 가리지 않게 */
 @media (max-width:1000px){#pv .pv-tools button span,#pv .pv-time > span:first-child{display:none} #pv .pv-tools button{padding:0 10px}}
 #pv .pv-lab{display:flex;align-items:center;gap:9px;padding-bottom:6px;font-size:14px;font-weight:600;color:#98989d;white-space:nowrap;overflow:hidden}
 #pv .pv-lab .k{flex:none;padding:3px 9px;border-radius:9999px;font-size:12px;font-weight:700;background:#2c2c2e;color:#e5e5ea}
@@ -1622,6 +1624,7 @@ function lkInit(){
 let pvEl=null,pvT0=0,pvIv=0,pvLastI=-1;
 const PVI={
   scr:'<svg viewBox="0 0 20 20"><rect x="2.5" y="3.5" width="15" height="10" rx="1.5"/><path d="M7 17h6M10 13.5V17"/></svg>',
+  mk:'<svg viewBox="0 0 20 20"><path d="M5.5 3h9v14l-4.5-3.5L5.5 17z"/></svg>',
   ov:'<svg viewBox="0 0 20 20"><rect x="3" y="3" width="5.5" height="5.5" rx="1"/><rect x="11.5" y="3" width="5.5" height="5.5" rx="1"/><rect x="3" y="11.5" width="5.5" height="5.5" rx="1"/><rect x="11.5" y="11.5" width="5.5" height="5.5" rx="1"/></svg>',
   lz:'<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="2.6"/><path d="M10 2.5v3M10 14.5v3M2.5 10h3M14.5 10h3"/></svg>',
   ps:'<svg viewBox="0 0 20 20"><path d="M7 4.5v11M13 4.5v11"/></svg>',
@@ -1636,7 +1639,7 @@ function pvBuild(){
     '<div class="pv-top"><div class="pv-link"><i></i><span></span></div>'+
     '<a class="pv-open" target="_blank">'+PVI.scr+'<span>프로젝터 창 열기</span></a><span class="pv-sp"></span>'+
     '<div class="pv-time"><span>경과</span><button type="button" class="pv-el" title="누르면 0부터 다시">0:00</button><span class="pv-clock"></span></div>'+
-    '<div class="pv-tools">'+tool('pv-ov','목차','ov')+tool('pv-lz','레이저','lz')+tool('pv-ps','멈춤','ps')+tool('pv-bk','화면 끄기','bk')+tool('pv-x','닫기','x')+'</div></div>'+
+    '<div class="pv-tools">'+tool('pv-ov','목차','ov')+tool('pv-mk','책갈피','mk')+tool('pv-lz','레이저','lz')+tool('pv-ps','멈춤','ps')+tool('pv-bk','화면 끄기','bk')+tool('pv-x','닫기','x')+'</div></div>'+
     '<div class="pv-lab pv-lc"><span class="k">지금</span><b class="pv-pos"></b><em class="pv-t"></em><span class="pv-badge ps">멈춤</span><span class="pv-badge bk">프로젝터 화면 꺼짐</span><span class="pv-dots"></span></div>'+
     '<div class="pv-lab pv-ln"><span class="k">다음 장</span><em></em></div>'+
     '<div class="pv-fr pv-fn"><iframe title="다음 장 미리보기" tabindex="-1" aria-hidden="true"></iframe><div class="none">마지막 장입니다</div></div>'+
@@ -1652,6 +1655,7 @@ function pvBuild(){
   });
   $('.pv-el').onclick=()=>{pvT0=Date.now();pvTick();};
   $('.pv-ov').onclick=()=>{OV?closeToc():openToc();};
+  $('.pv-mk').onclick=()=>openMark();   // 책갈피(2026-10-29: 아이패드에는 M 키가 없어 발표자 보기에서도 버튼으로)
   $('.pv-lz').onclick=()=>lzSet(!LZ.on);
   $('.pv-ps').onclick=()=>setPause(!PAUSED);
   $('.pv-bk').onclick=()=>setBlank(blankEl.className?'':'black');
@@ -1689,6 +1693,7 @@ function pvSync(){
   $('.pv-link').classList.toggle('on',on);$('.pv-link span').textContent=on?'프로젝터 연결됨':'프로젝터 창 없음';
   $('.pv-open').href=location.pathname+'?screen=1#'+(i+1);
   $('.pv-pos').textContent=(i+1)+' / '+n;$('.pv-t').textContent=sec.dataset.title||'';
+  $('.pv-mk').classList.toggle('on',readMarks().some(p=>p.i===i));   // 이 장에 책갈피가 있으면 노랗게(아래 메뉴와 같음)
   let d='';for(let j=0;j<st;j++)d+='<i'+(j<Deck.k?' class="on"':'')+'></i>';
   $('.pv-dots').innerHTML=st?d+'<span>단계 '+Deck.k+' / '+st+'</span>':'';
   $('.pv-badge.ps').classList.toggle('show',PAUSED);$('.pv-badge.bk').classList.toggle('show',!!blankEl.className);
