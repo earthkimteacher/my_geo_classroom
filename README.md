@@ -27,6 +27,7 @@
 |---|---|---|
 | II.04. 해일 | 슬라이드 | [열기](https://earth.esbest.net/지구시스템과학/II.04surge.html) |
 | II.05. 조석 | 슬라이드 | [열기](https://earth.esbest.net/지구시스템과학/II.05tide.html) |
+| III.01~02. 지구의 대기와 생명체 · 지구 열수지 | 슬라이드 | [열기](https://earth.esbest.net/지구시스템과학/III.01-02atmosphere.html) |
 | 학생용 수업 자료 PDF | 노션 — 단원별 수업 자료를 내려받는 페이지 | [열기](https://esbest.notion.site/2-32d4a95fb28280e198bfd571eef92fec) |
 
 ## 슬라이드 사용법
@@ -92,8 +93,12 @@ my_geo_classroom/
 ├─ 지구시스템과학/
 │  ├─ II.04surge.html                 해일 슬라이드
 │  ├─ II.05tide.html                  조석 슬라이드
+│  ├─ III.01-02atmosphere.html        지구의 대기와 생명체 · 지구 열수지 슬라이드
 │  └─ img/
-│     └─ II.04/                       해일 슬라이드에 쓰는 그림(교사 PPT의 그림)
+│     ├─ II.04/                       해일 슬라이드에 쓰는 그림(교사 PPT의 그림)
+│     ├─ III.01/                      대기·열수지 슬라이드에 쓰는 교과서 그림(01 단원)
+│     └─ III.02/                      대기·열수지 슬라이드에 쓰는 교과서 그림(02 단원)
+├─ 작업메모/                          다른 PC에서 이어서 작업할 때 읽는 메모
 ├─ index.html                         사이트 첫 화면 (수업 자료 목록)
 ├─ CLAUDE.md                          슬라이드 제작 안내 (Claude용)
 └─ CNAME                              earth.esbest.net 연결
