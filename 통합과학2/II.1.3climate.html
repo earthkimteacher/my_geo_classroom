@@ -22,7 +22,7 @@
     c.reveal / c.a / c.tween / c.count / c.loop / c.wait 사용 (장면을 떠나면 자동 정리)
  4) 오른쪽 위 키워드 표시는 window.KW 의 items(이름), at(슬라이드별 키워드 번호, 없으면 -1)
 
- [단축키]  → Space 다음 · ← 이전 · N 노트 · O 목차 · P 일시정지 · L 레이저 포인터 · B/W 검은/흰 화면 · F 전체 화면 · V 발표자 보기 · ? 도움말
+ [단축키]  → Space 다음 · ← 이전 · 휠·아래 ◀ ▶ 버튼 장 넘기기(단계 건너뜀) · N 노트 · O 목차 · P 일시정지 · L 레이저 포인터 · B/W 검은/흰 화면 · F 전체 화면 · V 발표자 보기 · ? 도움말
  [주소 옵션] ?s=1 학생 모드(노트 숨김) · ?still=1 컨트롤 숨김 정지 화면 · ?screen=1 프로젝터 창(발표자 창을 따라감) · #3 3번 슬라이드 · &k=2 2단계 상태
 ═══════════════════════════════════════════════════════════════════
 -->
@@ -90,7 +90,8 @@ svg [data-in],svg [data-step]{transform-box:fill-box;transform-origin:center}
 .ws-card .ws-h span{font-size:28px;color:var(--t2)}
 .ws-row{display:grid;grid-template-columns:130px 1fr;gap:22px;align-items:baseline;font-size:38px;line-height:1.55;padding:12px 0;border-top:1px solid var(--hl)}
 .ws-row:first-of-type{border-top:0}
-.ws-row .tm{font-size:26px;font-weight:600;color:var(--t2)}
+.ws-row .tm{font-size:max(26px,.89em);font-weight:600;color:var(--t2)}
+.slide:is([data-tile="light"],[data-tile="parchment"]) .ws-row .tm:not(.term){color:#5c5c61}   /* 항목 이름(2026-10-29 교사 요청): 설명 글자의 약 0.9배(최소 26px, 줄 글자 36px이면 32px)로 키우고 회색을 조금 진하게(#6e6e73 → #5c5c61) */
 .ws-row .tm.term{font-size:1.1em;font-weight:800;color:inherit;line-height:1.3;letter-spacing:-.01em}   /* 용어 이름표: 설명보다 크고 진하게(개념 색은 style로) */
 .bk{position:relative;display:inline-block;min-width:3.2em;margin:0 .2em 0 42px;padding:0 .3em;text-align:center;line-height:1.3;white-space:nowrap;border-bottom:4px solid #c7c7cc}
 .slide[data-tile="black"] .bk,.slide[data-tile="dark"] .bk,.slide[data-tile="graphite"] .bk{border-bottom-color:#48484a}
@@ -544,8 +545,8 @@ html.print #s03a text[fill="#FFD60A"]{fill:#9A7400}
     <g id="s04-pts"></g>
   </svg>
   <div class="ws-card" style="left:120px;top:770px;width:1680px;padding:12px 36px">
-    <div class="ws-row" data-step="1" style="grid-template-columns:330px 1fr;font-size:32px;padding:8px 0"><span class="tm term c-warm">① 온도 상승 구간</span><span>흡수하는 복사 에너지양 <b class="c-warm">&gt;</b> 방출하는 복사 에너지양</span></div>
-    <div class="ws-row" data-step="2" style="grid-template-columns:330px 1fr;font-size:32px;padding:8px 0"><span class="tm term act">② 온도 일정 구간</span><span>흡수하는 복사 에너지양 <b class="act">=</b> 방출하는 복사 에너지양</span></div>
+    <div class="ws-row" data-step="1" style="grid-template-columns:330px 1fr;font-size:32px;padding:8px 0"><span class="tm">① 온도 상승 구간</span><span>흡수하는 복사 에너지양 <b class="c-warm">&gt;</b> 방출하는 복사 에너지양</span></div>
+    <div class="ws-row" data-step="2" style="grid-template-columns:330px 1fr;font-size:32px;padding:8px 0"><span class="tm">② 온도 일정 구간</span><span>흡수하는 복사 에너지양 <b class="act">=</b> 방출하는 복사 에너지양</span></div>
     <div class="ws-row" data-step="3" style="grid-template-columns:330px 1fr;font-size:32px;padding:8px 0"><span class="tm term">복사 평형</span><span>흡수하는 복사 에너지양과 방출하는 복사 에너지양이 <span class="bk"><span class="a" data-step="4" data-fx="pop">같은</span><span class="n">2</span></span> 상태</span></div>
   </div>
 </section>
@@ -934,7 +935,7 @@ html.print #s03a text[fill="#FFD60A"]{fill:#9A7400}
     <span class="mute" style="font-weight:600;margin-top:6px">+ 자연적 원인: 대기 대순환 변화 → 강수량 감소, 지속적인 가뭄</span>
   </div>
   <div class="ws-card narrow" style="left:1060px;top:250px;width:740px;padding:14px 28px">
-    <div class="ws-row" data-r="1" style="grid-template-columns:110px 1fr;font-size:29px;line-height:1.45"><span class="tm term c-sand">정의</span><span>사막 주변 지역의 토지가 황폐해져 점차 <span class="bk"><span class="a" data-step="1" data-fx="pop">사막</span><span class="n">15</span></span>으로 변하는 현상</span></div>
+    <div class="ws-row" data-r="1" style="grid-template-columns:110px 1fr;font-size:29px;line-height:1.45"><span class="tm">정의</span><span>사막 주변 지역의 토지가 황폐해져 점차 <span class="bk"><span class="a" data-step="1" data-fx="pop">사막</span><span class="n">15</span></span>으로 변하는 현상</span></div>
     <div class="ws-row" data-r="2" data-step="2" style="grid-template-columns:110px 1fr;font-size:28px;line-height:1.45"><span class="tm">원인</span><span><b>자연적</b>: 강수량 감소, 지속적인 가뭄<br><b>인위적</b>: 과잉 방목, 과도한 경작, 무분별한 삼림 벌채</span></div>
     <div class="ws-row" data-r="3" data-step="3" style="grid-template-columns:110px 1fr;font-size:28px;line-height:1.45"><span class="tm">피해</span><span>식량 부족, 생물다양성 감소, 토양 침식,<br><b>황사 증가</b> (중국·몽골 → 우리나라)</span></div>
     <div class="ws-row" data-r="4" data-step="7" style="grid-template-columns:110px 1fr;font-size:28px;line-height:1.45"><span class="tm">대책</span><span>방목·경작 줄이기, 나무 심기, 위성으로 감시, <b>사막화 방지 협약</b> 준수</span></div>
@@ -1189,9 +1190,9 @@ html.print #s03a text[fill="#FFD60A"]{fill:#9A7400}
 <div id="progress"><i></i></div>
 <div id="stepdots"></div>
 <div id="hud">
-  <button id="b-prev" aria-label="이전"><svg viewBox="0 0 20 20"><path d="M12.5 4 6.5 10l6 6"/></svg></button>
+  <button id="b-prev" aria-label="이전 장"><svg viewBox="0 0 20 20"><path d="M12.5 4 6.5 10l6 6"/></svg></button>
   <div class="count" id="count">1 / 1</div>
-  <button id="b-next" aria-label="다음"><svg viewBox="0 0 20 20"><path d="M7.5 4l6 6-6 6"/></svg></button>
+  <button id="b-next" aria-label="다음 장 (남은 단계 건너뜀)"><svg viewBox="0 0 20 20"><path d="M7.5 4l6 6-6 6"/></svg></button>
   <button id="b-pause" aria-label="애니메이션 일시정지 (P)"><svg class="i-pause" viewBox="0 0 20 20"><path d="M7 4.5v11M13 4.5v11"/></svg><svg class="i-play" viewBox="0 0 20 20"><path d="M7 4.5l9 5.5-9 5.5z"/></svg></button>
   <button id="b-mark" aria-label="책갈피 (M)"><svg viewBox="0 0 20 20"><path d="M5.5 3h9v14l-4.5-3.5L5.5 17z"/></svg></button>
   <button id="b-notes" aria-label="발표자 노트 (N)"><svg viewBox="0 0 20 20"><path d="M4 5h12M4 10h12M4 15h7"/></svg></button>
@@ -1204,6 +1205,8 @@ html.print #s03a text[fill="#FFD60A"]{fill:#9A7400}
 <div class="overlay" id="help"><div class="box"><h3>단축키</h3><table>
   <tr><td><kbd>→</kbd> <kbd>Space</kbd></td><td>다음 (클릭도 가능)</td></tr>
   <tr><td><kbd>←</kbd></td><td>이전</td></tr>
+  <tr><td>휠 아래로 · 아래 ▶ 버튼</td><td>다음 장 (남은 단계 건너뜀)</td></tr>
+  <tr><td>휠 위로 · 아래 ◀ 버튼</td><td>이전 장</td></tr>
   <tr><td><kbd>N</kbd></td><td>발표자 노트</td></tr>
   <tr><td><kbd>O</kbd></td><td>목차 (누르면 그 장으로)</td></tr>
   <tr><td><kbd>B</kbd> <kbd>W</kbd></td><td>검은 화면 / 흰 화면</td></tr>
@@ -1448,6 +1451,24 @@ function prev(){
   if(OV)return;
   if(Deck.k>0)show(Deck.i,Deck.k-1,{instant:true});
   else if(Deck.i>0){const p=Deck.list[Deck.i-1];show(Deck.i-1,stepsOf(p),{instant:true});}
+}
+/* 장 단위 넘기기(2026-10-29 교사 요청): 아래 메뉴 ◀ ▶ 버튼과 휠은 단계를 건너뛰고 장을 넘긴다(화면 누르기·방향키는 단계씩).
+   다음 장은 처음부터, 이전 장은 다 나온 상태로(← 키로 앞 장에 갈 때와 같음) */
+function nextPage(){if(OV)return;if(Deck.i<Deck.list.length-1)show(Deck.i+1,0);}
+function prevPage(){if(OV)return;if(Deck.i>0){const p=Deck.list[Deck.i-1];show(Deck.i-1,stepsOf(p),{instant:true});}else if(Deck.k>0)show(0,0,{instant:true});}
+/* 휠: 아래로 굴리면 다음 장, 위로 굴리면 이전 장. 트랙패드처럼 휠 신호가 길게 이어져도 한 번만 넘기고, 휠이 0.25초 멈춘 뒤에 다시 받는다.
+   노트·책갈피 창처럼 스스로 스크롤되는 곳 위, 도움말·화면 끄기 중에는 넘기지 않음. 옆으로 미는 휠은 무시 */
+const WH={sum:0,lock:false,t:0};
+function whScrolls(el,dy){for(let n=el;n&&n.nodeType===1&&n!==document.body;n=n.parentElement){const s=getComputedStyle(n).overflowY;if((s==='auto'||s==='scroll')&&n.scrollHeight>n.clientHeight+1&&(dy>0?n.scrollTop+n.clientHeight<n.scrollHeight-1:n.scrollTop>0))return true;}return false;}
+function whNav(e){
+  if(Math.abs(e.deltaX)>Math.abs(e.deltaY))return;
+  if((e.target.closest&&e.target.closest('#markbox,#resume,#help,#notes'))||helpEl.classList.contains('show')||blankEl.className||whScrolls(e.target,e.deltaY))return;
+  e.preventDefault();
+  clearTimeout(WH.t);WH.t=setTimeout(()=>{WH.lock=false;WH.sum=0;},250);
+  if(WH.lock)return;
+  WH.sum+=e.deltaY*(e.deltaMode?40:1);
+  if(Math.abs(WH.sum)<30)return;
+  WH.lock=true;if(WH.sum>0)nextPage();else prevPage();
 }
 
 /* 크롬(컨트롤) */
@@ -1704,11 +1725,12 @@ function zoomInit(){
   addEventListener('gesturestart',e=>{e.preventDefault();if(touchDev||!zvOK())return;PZ.g={z0:ZV.z,p:zvPoint(e.clientX,e.clientY)};},{passive:false});
   addEventListener('gesturechange',e=>{e.preventDefault();if(touchDev||!PZ.g||!zvOK())return;zvSet(PZ.g.z0*e.scale,PZ.g.p,e.clientX,e.clientY);},{passive:false});
   addEventListener('gestureend',e=>{e.preventDefault();PZ.g=null;},{passive:false});
-  // 크롬·엣지·파이어폭스: 트랙패드 핀치와 Ctrl+휠 = 확대, 확대 중 두 손가락 스크롤·휠 = 옮기기
+  // 크롬·엣지·파이어폭스: 트랙패드 핀치와 Ctrl+휠 = 확대, 확대 중 두 손가락 스크롤·휠 = 옮기기, 그 밖의 휠 = 장 넘기기(whNav)
   addEventListener('wheel',e=>{
     if(!zvOK()||!inVp(e))return;
     if(e.ctrlKey){e.preventDefault();if(PZ.g)return;const d=Math.max(-50,Math.min(50,e.deltaY*(e.deltaMode?20:1)));zvSet(ZV.z*Math.exp(-d*0.01),zvPoint(e.clientX,e.clientY),e.clientX,e.clientY);}
     else if(ZV.z>1.01){e.preventDefault();ZV.x-=e.deltaX;ZV.y-=e.deltaY;zvClamp();stApply(false);}
+    else whNav(e);
   },{passive:false});
   addEventListener('dblclick',e=>{if(ZV.z>1.01&&!e.target.closest('#hud,#zbadge,.ia-panel,#pv'))zvReset();});
 }
@@ -2068,8 +2090,8 @@ Deck.start=function(){
   buildKw();
   ovl=document.createElement('div');ovl.id='ovl';stage.appendChild(ovl);
   fit();addEventListener('resize',()=>{pvLayout();fit();});zoomInit();
-  document.getElementById('b-prev').onclick=prev;
-  document.getElementById('b-next').onclick=next;
+  document.getElementById('b-prev').onclick=prevPage;   // 아래 메뉴 ◀ ▶ = 장 단위(단계 건너뜀)
+  document.getElementById('b-next').onclick=nextPage;
   document.getElementById('b-mark').onclick=openMark;
   document.getElementById('b-pause').onclick=e=>{e.stopPropagation();setPause(!PAUSED);e.currentTarget.blur();};
   document.getElementById('b-notes').onclick=()=>setNotes(!notesEl.classList.contains('show'));

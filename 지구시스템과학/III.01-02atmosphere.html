@@ -22,7 +22,7 @@
     c.reveal / c.a / c.tween / c.count / c.loop / c.wait 사용 (장면을 떠나면 자동 정리)
  4) 오른쪽 위 키워드 표시는 window.KW 의 items(이름), at(슬라이드별 키워드 번호, 없으면 -1)
 
- [단축키]  → Space 다음 · ← 이전 · N 노트 · O 목차 · P 일시정지 · L 레이저 포인터 · B/W 검은/흰 화면 · F 전체 화면 · V 발표자 보기 · ? 도움말
+ [단축키]  → Space 다음 · ← 이전 · 휠·아래 ◀ ▶ 버튼 장 넘기기(단계 건너뜀) · N 노트 · O 목차 · P 일시정지 · L 레이저 포인터 · B/W 검은/흰 화면 · F 전체 화면 · V 발표자 보기 · ? 도움말
  [주소 옵션] ?s=1 학생 모드(노트 숨김) · ?still=1 컨트롤 숨김 정지 화면 · ?screen=1 프로젝터 창(발표자 창을 따라감) · #3 3번 슬라이드 · &k=2 2단계 상태
 ═══════════════════════════════════════════════════════════════════
 -->
@@ -90,7 +90,8 @@ svg [data-in],svg [data-step]{transform-box:fill-box;transform-origin:center}
 .ws-card .ws-h span{font-size:28px;color:var(--t2)}
 .ws-row{display:grid;grid-template-columns:130px 1fr;gap:22px;align-items:baseline;font-size:38px;line-height:1.55;padding:12px 0;border-top:1px solid var(--hl)}
 .ws-row:first-of-type{border-top:0}
-.ws-row .tm{font-size:26px;font-weight:600;color:var(--t2)}
+.ws-row .tm{font-size:max(26px,.89em);font-weight:600;color:var(--t2)}
+.slide:is([data-tile="light"],[data-tile="parchment"]) .ws-row .tm:not(.term){color:#5c5c61}   /* 항목 이름(2026-10-29 교사 요청): 설명 글자의 약 0.9배(최소 26px, 줄 글자 36px이면 32px)로 키우고 회색을 조금 진하게(#6e6e73 → #5c5c61) */
 .ws-row .tm.term{font-size:1.1em;font-weight:800;color:inherit;line-height:1.3;letter-spacing:-.01em}   /* 용어 이름표: 설명보다 크고 진하게(개념 색은 style로) */
 .bk{position:relative;display:inline-block;min-width:3.2em;margin:0 .2em 0 42px;padding:0 .3em;text-align:center;line-height:1.3;white-space:nowrap;border-bottom:4px solid #c7c7cc}
 .slide[data-tile="black"] .bk,.slide[data-tile="dark"] .bk,.slide[data-tile="graphite"] .bk{border-bottom-color:#48484a}
@@ -119,6 +120,22 @@ svg [data-in],svg [data-step]{transform-box:fill-box;transform-origin:center}
 .qz-why-h{font-size:26px;font-weight:700;color:var(--act);margin-bottom:6px}
 .qz-why-t{font-size:32px;line-height:1.5}
 .qz-why b{color:var(--act)}
+/* 스스로 확인하기(2026-10-29 교사 요청): 문제 세 개가 먼저 나오고, 클릭마다 그 문제의 예시 답안(해설 상자 .qz-why 모양) */
+.sc-list{position:absolute;left:120px;top:250px;width:1680px;display:flex;flex-direction:column;gap:30px;z-index:3;word-break:keep-all}
+.sc-q{display:grid;grid-template-columns:52px 1fr;font-size:36px;font-weight:600;line-height:1.4;letter-spacing:-.015em}
+.sc-q .no{font-weight:800;color:var(--act)}
+.sc-q .cr{font-weight:800;color:var(--act);margin-right:6px}
+.sc-a{grid-column:2;margin-top:12px;border-radius:16px;background:#fff;border-left:6px solid var(--act);padding:12px 28px 14px;font-size:30px;font-weight:500;line-height:1.5;letter-spacing:-.01em}
+.sc-a .h{display:inline-block;font-size:24px;font-weight:700;line-height:1.5;color:#fff;background:var(--act);border-radius:9999px;padding:0 14px;margin-right:12px;vertical-align:3px}
+.slide[data-tile="light"] .sc-a{background:#f5f5f7}
+html.print .sc-a{background:#f5f5f7}
+/* 1학년 통합과학 복습 장(2026-10-29 교사 PPT 2~5·11쪽): 머리의 복습 표시, 그림 상자, 밑줄 */
+.hd .eb .rv{display:inline-block;margin-left:18px;font-size:24px;font-weight:700;line-height:1.5;padding:0 14px;border-radius:9999px;border:2px solid var(--hl);color:var(--t2);vertical-align:2px}
+.rv-scene{position:absolute;border-radius:18px;overflow:hidden;z-index:2;background:#f5f5f7}
+.slide[data-tile="parchment"] .rv-scene{background:#fff}
+.rv-scene svg{display:block;width:100%;height:100%}
+html.print .rv-scene{background:#fff;outline:2px solid #e0e0e0}
+.rv-u{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:7px}
 
 /* 정리 카드 */
 .rc{position:absolute;top:290px;width:520px;height:560px;border-radius:18px;background:#fff;padding:34px 34px;display:flex;flex-direction:column;gap:14px}
@@ -340,11 +357,11 @@ html.screen #zbadge{display:none!important}   /* 확대 배율 알약은 발표�
 .lead b{font-weight:700;color:var(--ink)}
 /* 그림 상자 .pic(누르면 크게 보기)는 엔진에 있음. 그림 위 이름표만 여기서 */
 .pic .tag{position:absolute;left:20px;top:20px;display:inline-flex;align-items:center;height:56px;padding:0 24px;border-radius:9999px;background:rgba(29,29,31,.8);color:#fff;font-size:30px;font-weight:700;letter-spacing:-.01em}
-/* 학습지 카드: 줄 글자 36px, 용어는 1.1배 굵게(엔진 .tm.term), 항목 이름(.tm)은 28px 회색 */
+/* 학습지 카드: 줄 글자 36px, 용어는 1.1배 굵게(엔진 .tm.term), 항목 이름(.tm)은 설명의 약 0.9배(36px이면 32px) 진한 회색 */
 .ws-card{padding:26px 36px}
 .ws-card.eq{display:flex;flex-direction:column;justify-content:center}
 .ws-card .ws-row{font-size:36px;line-height:1.5;padding:14px 0}
-.ws-card .ws-row .tm{font-size:28px}
+.ws-card .ws-row .tm{font-size:max(26px,.89em)}
 .ws-card .ws-row .tm.term{font-size:1.1em}
 .ws-card.st .ws-row{grid-template-columns:1fr;gap:2px}
 .ws-card.side .ws-row{grid-template-columns:180px 1fr;gap:24px}
@@ -411,6 +428,12 @@ html.print .ia-panel{display:none}
 html.print .tbl tr.cur td,html.print .tbl tr.cur th,html.print .ws-card .ws-row.cur{background:none}
 html.print .dim{filter:none}
 html.print .slide[data-tile="parchment"] .note-box{background:#f5f5f7}
+/* s05 빈의 변위 법칙 상자(그래프 오른쪽 위 빈 곳). 아래 첨자도 24px 이상 */
+#s05-wien{padding:20px 30px;box-shadow:0 0 0 1px var(--hl)}
+#s05-wien .s05-wh{font-size:30px;font-weight:800;letter-spacing:-.01em}
+#s05-wien .s05-wf{font-size:40px;font-weight:700;line-height:1.4;margin-top:2px}
+#s05-wien .s05-wd{font-size:28px;line-height:1.45;color:var(--t2);margin-top:4px}
+#s05-wien sub{font-size:26px;vertical-align:-.2em;line-height:0}
 /* ── g1 ── */
 /* s01 표지 — 인쇄(?print=1)에서는 넓은 검은 하늘·지구를 연하게 */
 html.print #s01 #s01-bg{fill:#fff}
@@ -419,20 +442,8 @@ html.print #s01 #s01-earth{fill:#dbe7f1}
 html.print #s01 #s01-atmos{opacity:.45}
 html.print #s01 [stroke="#FFD60A"]{stroke:#C9A100}
 /* s02 키워드 다섯 개(점 간격 340) */
-#s02 .kw-n{width:320px;top:650px;font-size:40px}
-#s02 .kw-s{width:320px;top:712px;font-size:28px;line-height:1.4}
-/* s03 도입: 단서 카드 세 장 + 예시 답안 */
-#s03 .s03-clue{position:absolute;top:402px;width:533px;height:400px;border-radius:18px;background:#fff;padding:30px 36px;z-index:3;display:flex;flex-direction:column;align-items:center;text-align:center}
-#s03 #s03-c2{width:534px}
-#s03 .s03-clue svg{width:412px;height:170px;flex:none;overflow:visible}
-#s03 .s03-clue .t{font-size:38px;font-weight:700;letter-spacing:-.02em;margin-top:18px}
-#s03 .s03-clue .d{font-size:30px;line-height:1.4;color:var(--t2);margin-top:8px}
-#s03 #s03-ans{font-size:34px;line-height:1.5;font-weight:500;padding-top:22px;padding-bottom:22px}
-#s03 .s03-ah{display:inline-block;font-size:28px;font-weight:700;line-height:1.5;color:#fff;background:var(--act);border-radius:9999px;padding:0 16px;margin-right:14px;vertical-align:2px}
-html.print #s03 .s03-clue{background:#f5f5f7}
-/* s04 대기의 조성 */
-#s04 #s04-chart{overflow:visible;z-index:2}
-#s04-card .ws-row{padding:16px 0}
+#s02 .kw-n{width:400px;top:650px;font-size:40px}
+#s02 .kw-s{width:400px;top:712px;font-size:28px;line-height:1.4}
 /* s05 그래프 */
 #s05 #s05-graph{overflow:visible;z-index:2}
 #s05-card .ws-row{padding:12px 0}
@@ -473,27 +484,17 @@ html.print #s10 .ia-box{background:#fff;box-shadow:inset 0 0 0 2px #e0e0e0}
 #s12-card .ws-row .mu{font-size:28px}
 html.print #s11 .s11-scene{box-shadow:none;outline:2px solid #e0e0e0}
 html.print #s12 .s12-scene{background:#fff;outline:2px solid #e0e0e0}
-/* s13 해 보기 */
-#s13-facts .ws-row{grid-template-columns:1fr;padding:10px 0}
-#s13-flow .ch{background:#f5f5f7}
-#s13-flow .ch.s13-end{background:var(--act);color:#fff}
-html.print #s13-flow .ch.s13-end{background:#f5f5f7;color:var(--act)}
 /* s14 금성 · 지구 · 화성 */
-#s14 .s14-tb{position:absolute;left:120px;top:250px;width:860px;height:640px;border-radius:18px;background:#f5f5f7;padding:12px 24px;z-index:3}
+#s14 .s14-tb{position:absolute;left:120px;top:250px;width:860px;height:640px;border-radius:18px;background:#fff;padding:12px 24px;z-index:3}
 #s14 .tbl{position:static;width:100%;height:100%;font-size:28px;line-height:1.3}
 #s14 .tbl th,#s14 .tbl td{padding:6px 10px}
 #s14 .tbl thead th{font-size:30px;color:var(--ink)}
 #s14 .tbl tbody th{width:180px;font-size:26px;font-weight:700;color:var(--t2)}
 #s14 .tbl tbody td{font-weight:600}
 #s14 .tbl tr.cur td,#s14 .tbl tr.cur th{background:rgba(0,102,204,.10)}
-#s14 .s14-ch{position:absolute;left:1020px;top:250px;width:780px;height:640px;border-radius:18px;background:#f5f5f7;z-index:2}
+#s14 .s14-ch{position:absolute;left:1020px;top:250px;width:780px;height:640px;border-radius:18px;background:#fff;z-index:2}
+html.print #s14 :is(.s14-tb,.s14-ch){background:#f5f5f7}   /* 미색 면 위 흰 상자(2026-10-29 면 색 번갈아 맞춤). 인쇄는 흰 종이라 연한 회색 */
 #s14 .s14-ch svg{display:block;width:100%;height:100%}
-/* s15 확인 문제(조석 수업의 보기 상자·가로 선택지와 같은 모양) */
-#s15 .qz-eb span:not(.qz-lv){font-weight:600}
-#s15 .qz-box{border:2px solid var(--hl);border-radius:16px;padding:16px 28px;font-size:34px;line-height:1.6;background:#fff}
-#s15 .qz-ch.row{flex-direction:row;flex-wrap:wrap;gap:16px}
-#s15 .qz-ch.row li{padding:12px 30px;border:2px solid var(--hl);background:#fff}
-#s15 .qz-ch.row .qz-mark{top:-26px;right:-14px;margin-top:0;font-size:24px;padding:2px 14px}
 /* ── g3 ── */
 /* s16 들어가기: 까닭 카드는 한 줄 */
 #s16-card .ws-row{padding:0}
@@ -503,26 +504,12 @@ html.print #s13-flow .ch.s13-end{background:#f5f5f7;color:var(--act)}
 #s17-card .ws-row{padding:0}
 #s17 .s17-dyn{opacity:0}
 #stage.ov #s17:not(.is-on) .s17-dyn{opacity:1!important}   /* 목차 썸네일은 다 나온 상태로 */
-/* s18 산란: 장면 상자는 왼쪽 800px, 카드는 오른쪽 */
-#s18-card .ws-row{padding:12px 0}
-#s18 .ia-panel .val{min-width:90px}
-#s18 .ia-stat{gap:40px}
 /* s20 흡수: 카드 줄이 카드 안에 들어가게 */
 #s20-card{padding-top:20px;padding-bottom:20px}
 #s20-card .ws-row{padding:8px 0}
-/* s19 반사율 막대 */
-#s19 .s19-row{transition:filter .5s}
-/* s21 굴절 모식도 상자(사진 아래, x 120~1000, y 560~990) */
-#s21-box{position:absolute;left:120px;top:560px;width:880px;height:430px;border-radius:18px;overflow:hidden;z-index:1;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.06),0 12px 30px rgba(0,0,0,.10)}
-#s21-box svg{display:block;width:880px;height:430px}
-#s21 .s21-ray{stroke-dasharray:1 1;stroke-dashoffset:1}
-#s21 .s21-dyn{opacity:0}
-#stage.ov #s21:not(.is-on) .s21-ray{stroke-dashoffset:0!important}
-#stage.ov #s21:not(.is-on) .s21-dyn{opacity:1!important}
-html.print #s21-box{box-shadow:none;border:2px solid #d1d1d6}
 /* ── g4 ── */
-/* 지구 열수지(s22~s28) — 띠 그림 색: 넓은 띠는 선명한 색(--b*), 이름표 글자는 밝은 면에서 진해지는 변수(--sun·--ir·--water·--heat) */
-:is(#s22,#s23,#s24,#s25,#s26,#s27){--bSun:#F5B800;--bIr:#FF6A3D;--bWat:#14B8A6;--bHeat:#a1a1a6;--bAir:#64D2FF}
+/* 지구 열수지(s22~s27) — 띠 그림 색: 넓은 띠는 선명한 색(--b*), 이름표 글자는 밝은 면에서 진해지는 변수(--sun·--ir·--water·--heat) */
+:is(#s22,#s23,#s24,#s26,#s27){--bSun:#F5B800;--bIr:#FF6A3D;--bWat:#14B8A6;--bHeat:#a1a1a6;--bAir:#64D2FF}
 /* s22 지구 열수지 */
 #s22-card .ws-row{padding:12px 0}
 #s22-card.side .ws-row{grid-template-columns:220px 1fr}
@@ -537,8 +524,6 @@ html.print #s21-box{box-shadow:none;border:2px solid #d1d1d6}
 #s24 .tbl td span.eq{color:var(--t2)}
 #s24 .bk.nn{margin-left:.2em;min-width:2.6em}
 #s24-card .ws-row{line-height:1.4;padding:6px 0}
-/* s25 */
-#s25-card .ws-row{padding:10px 0}
 /* s26 */
 #s26 .ia-panel input[type=range]{width:300px}
 #s26 .ia-panel .val{min-width:120px}
@@ -548,16 +533,10 @@ html.print #s21-box{box-shadow:none;border:2px solid #d1d1d6}
 #s27 .flow .ch b{font-weight:800}
 #s27 .flow{gap:16px}
 #s27 .s27-sub{font-size:28px;font-weight:600;color:var(--t2);margin-top:-6px}
-/* s28 확인 문제(조석 수업과 같은 모양) */
-#s28 .qz-box{border:2px solid var(--hl);border-radius:16px;padding:16px 28px;font-size:34px;line-height:1.6;background:#f5f5f7}
-#s28 .qz-ch.row{flex-direction:row;flex-wrap:wrap;gap:16px}
-#s28 .qz-ch.row li{padding:12px 30px;border:2px solid var(--hl);background:#fff}
-#s28 .qz-ch.row .qz-mark{top:-26px;right:-14px;margin-top:0;font-size:24px;padding:2px 14px}
-#s28 .qz-why{background:#f5f5f7}
 /* 인쇄 */
 html.print #s26 .ia-panel{display:none}
 html.print #s23-sum{background:#f5f5f7}
-html.print #s23-hb .dim,html.print #s24-hb .dim,html.print #s25 .dim{filter:none}
+html.print #s23-hb .dim,html.print #s24-hb .dim{filter:none}
 </style>
 </head>
 <body>
@@ -589,99 +568,80 @@ html.print #s23-hb .dim,html.print #s24-hb .dim,html.print #s25 .dim{filter:none
 </section>
 
 <!-- ═══ s02 오늘의 키워드 ═══ -->
-<section class="slide" id="s02" data-tile="light" data-title="오늘의 키워드" data-notes="두 단원에서 따라갈 키워드 다섯 개입니다. 1~3은 01. 지구의 대기와 생명체, 4~5는 02. 지구 열수지입니다. 다음 장부터 오른쪽 위에 지금 배우는 키워드가 표시됩니다.">
+<section class="slide" id="s02" data-tile="parchment" data-title="오늘의 키워드" data-notes="두 단원에서 따라갈 키워드 네 개입니다. 1~2는 01. 지구의 대기와 생명체, 3~4는 02. 지구 열수지입니다. 다음 장부터 오른쪽 위에 지금 배우는 키워드가 표시됩니다.">
   <div class="hd" data-in><div class="eb">학습 안내</div><h2>오늘의 키워드</h2></div>
   <svg class="full-svg" viewBox="0 0 1920 1080">
     <g data-in="300" data-fx="fade">
-      <path d="M200 452V432H1040V452" fill="none" stroke="#c7c7cc" stroke-width="3"/>
-      <text x="620" y="410" text-anchor="middle" font-size="30" font-weight="700" fill="#6e6e73">01. 지구의 대기와 생명체</text>
-      <path d="M1220 452V432H1720V452" fill="none" stroke="#c7c7cc" stroke-width="3"/>
-      <text x="1470" y="410" text-anchor="middle" font-size="30" font-weight="700" fill="#6e6e73">02. 지구 열수지</text>
+      <path d="M200 452V432H813V452" fill="none" stroke="#c7c7cc" stroke-width="3"/>
+      <text x="506" y="410" text-anchor="middle" font-size="30" font-weight="700" fill="#6e6e73">01. 지구의 대기와 생명체</text>
+      <path d="M1107 452V432H1720V452" fill="none" stroke="#c7c7cc" stroke-width="3"/>
+      <text x="1413" y="410" text-anchor="middle" font-size="30" font-weight="700" fill="#6e6e73">02. 지구 열수지</text>
     </g>
     <path d="M280 560H1640" stroke="#e8e8ed" stroke-width="12" stroke-linecap="round" fill="none"/>
-    <path d="M280 560H1640" stroke="var(--act)" stroke-width="12" stroke-linecap="round" fill="none" data-in="500" data-fx="draw" data-dur="2200"/>
+    <path d="M280 560H1640" stroke="var(--act)" stroke-width="12" stroke-linecap="round" fill="none" data-in="500" data-fx="draw" data-dur="1800"/>
     <g data-in="500" data-fx="pop"><circle cx="280" cy="560" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="280" y="577" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">1</text></g>
-    <g data-in="900" data-fx="pop"><circle cx="620" cy="560" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="620" y="577" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">2</text></g>
-    <g data-in="1300" data-fx="pop"><circle cx="960" cy="560" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="960" y="577" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">3</text></g>
-    <g data-in="1700" data-fx="pop"><circle cx="1300" cy="560" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="1300" y="577" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">4</text></g>
-    <g data-in="2100" data-fx="pop"><circle cx="1640" cy="560" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="1640" y="577" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">5</text></g>
+    <g data-in="1000" data-fx="pop"><circle cx="733" cy="560" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="733" y="577" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">2</text></g>
+    <g data-in="1500" data-fx="pop"><circle cx="1187" cy="560" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="1187" y="577" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">3</text></g>
+    <g data-in="2000" data-fx="pop"><circle cx="1640" cy="560" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="1640" y="577" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">4</text></g>
   </svg>
-  <div class="abs center kw-n" style="left:120px" data-in="650">대기의 조성</div>
-  <div class="abs center mute kw-s" style="left:120px" data-in="750">질소 · 산소 · 수증기</div>
-  <div class="abs center kw-n" style="left:460px" data-in="1050">선택적 흡수</div>
-  <div class="abs center mute kw-s" style="left:460px" data-in="1150">자외선 · 적외선 · 대기의 창</div>
-  <div class="abs center kw-n" style="left:800px" data-in="1450">생명체의 존재 조건</div>
-  <div class="abs center mute kw-s" style="left:800px" data-in="1550">생명 가능 지대 · 물 · 오존층</div>
-  <div class="abs center kw-n" style="left:1140px" data-in="1850">열 출입</div>
-  <div class="abs center mute kw-s" style="left:1140px" data-in="1950">산란 · 반사 · 흡수 · 굴절</div>
-  <div class="abs center kw-n" style="left:1480px" data-in="2250">지구 열수지</div>
-  <div class="abs center mute kw-s" style="left:1480px" data-in="2350">흡수량 = 방출량</div>
+  <div class="abs center kw-n" style="left:80px" data-in="650">선택적 흡수</div>
+  <div class="abs center mute kw-s" style="left:80px" data-in="750">자외선 · 적외선 · 대기의 창</div>
+  <div class="abs center kw-n" style="left:533px" data-in="1150">생명체의 존재 조건</div>
+  <div class="abs center mute kw-s" style="left:533px" data-in="1250">생명 가능 지대 · 물 · 오존층</div>
+  <div class="abs center kw-n" style="left:987px" data-in="1650">열 출입</div>
+  <div class="abs center mute kw-s" style="left:987px" data-in="1750">산란 · 반사 · 흡수 · 굴절</div>
+  <div class="abs center kw-n" style="left:1440px" data-in="2150">지구 열수지</div>
+  <div class="abs center mute kw-s" style="left:1440px" data-in="2250">흡수량 = 방출량</div>
 </section>
 
-<!-- ═══ s03 도입 — 대기는 어떻게 생명체를 보호할까? ═══ -->
-<section class="slide" id="s03" data-tile="parchment" data-title="대기는 어떻게 생명체를 보호할까?" data-notes="교과서 소단원 들어가기 질문입니다. 지도서 지도 방안: 생명체의 호흡과 광합성에 필요한 성분, 그리고 우주에서 오는 복사처럼 생명체에게 위협이 되는 요소를 생각해 보게 합니다. 클릭할 때마다 단서가 하나씩 나옵니다(숨 쉬기·광합성 → 자외선 → 알맞은 온도). 학생 답을 몇 개 들은 뒤 마지막 클릭으로 예시 답안을 보여 줍니다. 예시 답안의 자외선 차단과 온실 효과는 이번 단원에서 차례로 자세히 배웁니다.">
-  <div class="hd" data-in><div class="eb">01. 지구의 대기와 생명체</div><h2>대기는 어떻게 생명체를 보호할까?</h2></div>
-  <div class="lead mu" id="s03-lead" data-in="200">지구의 대기는 눈에 보이지 않지만 우리가 살고 있는 지구 주위를 둘러싸고 있으며<br>생명체를 보호한다. <b>대기는 어떤 물질로 이루어져 있으며 어떻게 생명체를 보호할까?</b></div>
-  <div class="s03-clue" id="s03-c1" style="left:120px" data-step="1">
-    <svg viewBox="0 0 461 190">
-      <path d="M230 182 C228 140 226 110 232 70" fill="none" stroke="#1E8B3E" stroke-width="7" stroke-linecap="round"/>
-      <path d="M231 112 C180 112 150 80 150 40 C200 40 228 70 231 112Z" fill="#30D158"/>
-      <path d="M232 92 C280 92 312 62 314 22 C262 22 234 52 232 92Z" fill="#30D158"/>
-      <path d="M150 40 L231 112 M314 22 L232 92" stroke="#1E8B3E" stroke-width="3" fill="none"/>
-      <g fill="none" stroke="#0077B6" stroke-width="5" stroke-linecap="round"><path d="M330 110 H400"/><path d="M386 98 L402 110 L386 122"/></g>
-      <text x="410" y="122" font-size="32" font-weight="800" fill="#0077B6">O₂</text>
-      <g fill="none" stroke="#6e6e73" stroke-width="5" stroke-linecap="round"><path d="M68 110 H138"/><path d="M124 98 L140 110 L124 122"/></g>
-      <text x="58" y="122" text-anchor="end" font-size="32" font-weight="800" fill="#6e6e73">CO₂</text>
-    </svg>
-    <div class="t">숨 쉬기 · 광합성</div>
-    <div class="d">생명 활동에 필요한 기체<br>산소 · 이산화 탄소</div>
+<!-- ═══ s31 들어가기 전에… — 복사(1학년 통합과학 복습, 교사 PPT 2쪽) ═══ -->
+<section class="slide" id="s31" data-tile="light" data-title="들어가기 전에… — 복사" data-notes="">
+  <div class="hd" data-in><div class="eb"><b>1</b>선택적 흡수<span class="rv">1학년 통합과학 복습</span></div><h2>들어가기 전에…</h2></div>
+  <div class="ws-card side" id="s31-card" style="left:120px;top:250px;width:1680px" data-in="200">
+    <div class="ws-row"><span class="tm term">복사</span><span>열이 물질의 도움 없이 직접 전달되는 방법</span></div>
   </div>
-  <div class="s03-clue" id="s03-c2" style="left:693px" data-step="2">
-    <svg viewBox="0 0 461 190">
-      <circle cx="58" cy="44" r="24" fill="#FFD60A"/>
-      <g stroke="#FFD60A" stroke-width="5" stroke-linecap="round"><path d="M58 8v8M58 72v8M22 44h8M86 44h8M33 19l6 6M77 63l6 6M83 19l-6 6M39 63l-6 6"/></g>
-      <rect x="0" y="96" width="461" height="34" rx="12" fill="#BF5AF2" fill-opacity=".22"/>
-      <g fill="none" stroke="#8944AB" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M150 18 l12 14 l-12 14 l12 14 l-12 14 l12 14 l-6 8"/>
-        <path d="M240 18 l12 14 l-12 14 l12 14 l-12 14 l12 14 l-6 8"/>
-        <path d="M330 18 l12 14 l-12 14 l12 14 l-12 14 l12 14 l-6 8"/>
-      </g>
-      <path d="M200 186 C200 166 204 156 214 150 M214 150 C226 150 234 158 234 170 C220 170 212 162 214 150Z M200 166 C192 156 180 154 172 158 C176 170 188 174 200 172" fill="#30D158" stroke="#1E8B3E" stroke-width="3"/>
-    </svg>
-    <div class="t">자외선</div>
-    <div class="d">생명체에게 해로운<br>태양에서 오는 복사 에너지</div>
-  </div>
-  <div class="s03-clue" id="s03-c3" style="left:1267px" data-step="3">
-    <svg viewBox="0 0 461 190">
-      <path d="M40 190 A190 190 0 0 1 420 190Z" fill="#1f6aa0"/>
-      <path d="M40 190 A190 190 0 0 1 420 190" fill="none" stroke="#64D2FF" stroke-width="16" stroke-opacity=".45"/>
-      <g fill="none" stroke="#FF6A3D" stroke-width="5" stroke-linecap="round"><path d="M150 96 c10 -12 20 -12 30 0 s20 12 30 0 s20 -12 30 0"/><path d="M226 66 c10 -12 20 -12 30 0 s20 12 30 0 s20 -12 30 0"/></g>
-      <rect x="392" y="14" width="22" height="120" rx="11" fill="#fff" stroke="#6e6e73" stroke-width="4"/>
-      <rect x="398" y="62" width="10" height="70" rx="5" fill="#FF6A3D"/>
-      <circle cx="403" cy="146" r="20" fill="#FF6A3D" stroke="#6e6e73" stroke-width="4"/>
-    </svg>
-    <div class="t">알맞은 온도</div>
-    <div class="d">생명체가 살아가기에<br>알맞은 지구의 평균 기온</div>
-  </div>
-  <div class="note-box" id="s03-ans" style="left:120px;top:842px;width:1680px" data-step="4" data-fx="up"><b class="s03-ah">예시 답안</b> 지구 대기는 질소, 산소, 아르곤, 이산화 탄소, 수증기 등 다양한 기체로 이루어져 있으며,<br><span class="c-uv" style="font-weight:700">자외선을 차단</span>하고 <span class="c-ir" style="font-weight:700">온실 효과</span>를 일으켜 지구상의 생명체를 보호한다.</div>
+  <div class="rv-scene" id="s31-box" style="left:120px;top:424px;width:1680px;height:566px" data-in="350" data-fx="fade"><svg id="s31-svg" viewBox="0 0 1680 566"></svg></div>
+  <div class="fine">모식 그림 · 주황 물결은 난로에서 나오는 복사</div>
 </section>
 
-<!-- ═══ s04 지구 대기의 조성 ═══ -->
-<section class="slide" id="s04" data-tile="light" data-title="지구 대기의 조성" data-notes="교과서 그림 III-1(지구 대기의 조성, 부피비)을 다시 그린 도넛 그래프입니다. 조성비는 수증기를 제외한 건조 공기의 비율이고, 수증기는 시간과 장소에 따라 비율이 크게 변해 공기 중에서 약 0 %~4 %를 차지합니다. 클릭 순서: 질소 → 산소 → 수증기 → 이산화 탄소(아래 확대 막대가 나타남: 도넛의 마지막 1 % 부분을 100배로 늘려 0.04 %가 보이게 함) → 오존. 기타 0.03 %에는 메테인, 산화 이질소 등 온실 효과를 일으키는 기체가 들어 있습니다(교과서 날개). 지도서 유의점: 수증기, 이산화 탄소, 오존 등은 대기 중에서 차지하는 양은 적지만 지구시스템에 큰 영향을 미친다는 것을 이해하도록 지도합니다. 학생 질문 대비 — 오존은 왜 그래프에 따로 없나요? 오존은 기타에 들어갈 만큼 아주 적지만, 성층권에서 자외선을 흡수해 생명체를 보호합니다(뒤에서 자세히).">
-  <div class="hd" data-in><div class="eb"><b>1</b>대기의 조성</div><h2>지구 대기의 조성</h2></div>
-  <svg class="abs" id="s04-chart" style="left:120px;top:250px;width:680px;height:740px" viewBox="0 0 680 740"></svg>
-  <div class="ws-card st eq" id="s04-card" style="left:840px;top:250px;width:960px;height:740px" data-in="400">
-    <div class="ws-row"><span class="tm">대부분을 차지하는 성분</span><span>대기의 구성 성분은 시간과 장소에 따라 다르지만<br>대기의 대부분은 <span class="bk"><span class="a" data-step="1" data-fx="pop">질소</span><span class="n">1</span></span>와 <span class="bk"><span class="a" data-step="2" data-fx="pop">산소</span><span class="n">2</span></span>가 차지한다.</span></div>
-    <div class="ws-row"><span class="tm term" style="color:var(--water)">수증기</span><span>시간과 장소에 따라 비율이 크게 변화하며,<br>공기 중에서 약 <span class="bk"><span class="a" data-step="3" data-fx="pop">0 %~4 %</span><span class="n">3</span></span>를 차지한다.</span></div>
-    <div class="ws-row"><span class="tm">양은 적지만 큰 영향을 미치는 성분</span><span>대기 중에서 차지하는 양은 적지만 지구시스템에<br>큰 영향을 미치는 수증기, <span class="bk"><span class="a" data-step="4" data-fx="pop">이산화 탄소</span><span class="n">4</span></span>,<br><span class="bk"><span class="a" data-step="5" data-fx="pop">오존</span><span class="n">5</span></span> 등이 포함되어 있다.</span></div>
-  </div>
-  <div class="fine">교과서 그림 III-1을 다시 그림 · 출처: 《알기 쉬운 대기과학》, 2020 · 조성비는 수증기를 제외한 건조 공기의 부피비</div>
+<!-- ═══ s32 복사 평형?(1학년 통합과학 복습, 교사 PPT 3쪽) ═══ -->
+<section class="slide" id="s32" data-tile="parchment" data-title="복사 평형?" data-notes="">
+  <div class="hd" data-in><div class="eb"><b>1</b>선택적 흡수<span class="rv">1학년 통합과학 복습</span></div><h2>복사 평형?</h2></div>
+  <div class="rv-scene" id="s32-box" style="left:120px;top:250px;width:1680px;height:740px" data-in="200" data-fx="fade"><svg id="s32-svg" viewBox="0 0 1680 740"></svg></div>
+  <div class="fine">실험 장치는 모식 그림 · 온도는 통합과학 교과서 탐구의 측정값(2분 간격, 25.4 ℃ → 50.0 ℃) · 24분을 몇 초로 줄여 보임</div>
 </section>
 
-<!-- ═══ s05 태양 복사와 지구 복사 ═══ -->
-<section class="slide" id="s05" data-tile="parchment" data-title="태양 복사와 지구 복사" data-notes="교과서 그림 III-2와 같은 축에 흑체의 복사 에너지 세기(플랑크 곡선)를 태양 5800 K, 지구 288 K로 계산해 그렸습니다(태양 곡선은 0.1~2.4 μm, 지구 곡선은 5~30 μm 부분. 두 그래프의 세로축 눈금은 서로 다름 — 태양 쪽은 1억 배 단위). 계산한 태양 곡선의 꼭대기는 약 8.4×10⁷으로 교과서 그림(약 9.7×10⁷)보다 조금 낮지만, 최대 세기가 나타나는 파장(약 0.5 μm, 약 10 μm)과 곡선 모양은 같습니다. 교과서 보충: 모든 물질은 빛을 흡수하고 방출하는 성질이 있고, 입사하는 모든 파장의 빛을 흡수하고 흡수한 만큼 완전히 방출하는 이상적인 물체를 흑체라고 합니다. 흑체가 방출하는 에너지를 파장에 따라 나타낸 것이 플랑크 곡선이며, 표면 온도가 높을수록 최대 에너지를 방출하는 파장이 짧아집니다. 그래서 태양 복사를 단파 복사, 지구 복사를 장파 복사라고도 합니다. 학생 질문 대비 — 지구도 빛을 내나요? 지구도 복사 에너지를 방출하지만 대부분 눈에 보이지 않는 적외선입니다.">
-  <div class="hd" data-in><div class="eb"><b>2</b>선택적 흡수</div><h2>태양 복사와 지구 복사</h2></div>
+<!-- ═══ s33 복사 평형(1학년 통합과학 복습, 교사 PPT 4쪽) ═══ -->
+<section class="slide" id="s33" data-tile="light" data-title="복사 평형" data-notes="">
+  <div class="hd" data-in><div class="eb"><b>1</b>선택적 흡수<span class="rv">1학년 통합과학 복습</span></div><h2>복사 평형</h2></div>
+  <div class="ws-card side" id="s33-card" style="left:120px;top:250px;width:1680px" data-in="200">
+    <div class="ws-row"><span class="tm term">복사 평형</span><span>어떤 물체가 <b>흡수</b>하는 복사 에너지양과 <b>방출</b>하는 복사 에너지양이 같은 상태</span></div>
+  </div>
+  <div class="rv-scene" id="s33-box" style="left:120px;top:424px;width:820px;height:566px" data-in="300" data-fx="fade"><svg id="s33-svg" viewBox="0 0 820 566"></svg></div>
+  <div class="ws-card st eq" id="s33-c2" style="left:980px;top:424px;width:820px;height:566px" data-in="400">
+    <div class="ws-row" data-step="1" data-fx="up"><span class="tm">1) 온도가 상승하는 구간</span><span><b>흡수</b>하는 복사 에너지양 <b class="c-ir">&gt;</b> <b>방출</b>하는 복사 에너지양</span></div>
+    <div class="ws-row" data-step="2" data-fx="up"><span class="tm">2) 온도가 일정한 구간</span><span><b>흡수</b>하는 복사 에너지양 <b style="color:var(--act)">=</b> <b>방출</b>하는 복사 에너지양</span></div>
+  </div>
+  <div class="fine">모식 그래프</div>
+</section>
+
+<!-- ═══ s34 지구의 복사 평형(1학년 통합과학 복습, 교사 PPT 5쪽) ═══ -->
+<section class="slide" id="s34" data-tile="parchment" data-title="지구의 복사 평형" data-notes="">
+  <div class="hd" data-in><div class="eb"><b>1</b>선택적 흡수<span class="rv">1학년 통합과학 복습</span></div><h2>지구의 복사 평형</h2></div>
+  <div class="ws-card side" id="s34-card" style="left:120px;top:250px;width:1680px" data-in="200">
+    <div class="ws-row" style="grid-template-columns:230px 1fr"><span class="tm term">복사 에너지</span><span>물체의 표면에서 복사에 의해 방출되는 에너지</span></div>
+    <div class="ws-row" style="grid-template-columns:230px 1fr"><span class="tm term">복사 평형</span><span>물체가 <span class="rv-u">흡수하는 복사E의 양</span>과 <span class="rv-u">방출하는 복사E의 양</span>이 같아서<br>온도가 일정하게 유지되는 상태</span></div>
+  </div>
+  <div class="rv-scene" id="s34-a" style="left:120px;top:560px;width:840px;height:430px" data-in="350" data-fx="fade"><svg id="s34-sa" viewBox="0 0 840 430"></svg></div>
+  <div class="rv-scene" id="s34-b" style="left:1000px;top:560px;width:800px;height:430px" data-in="450" data-fx="fade"><svg id="s34-sb" viewBox="0 0 800 430"></svg></div>
+  <div class="fine">모식 그림 · 크기와 거리는 실제 비율과 다름</div>
+</section>
+
+<!-- ═══ s05 태양 복사 에너지와 지구 복사 에너지 ═══ -->
+<section class="slide" id="s05" data-tile="light" data-title="태양 복사 에너지와 지구 복사 에너지" data-notes="교과서 그림 III-2와 같은 축에 흑체의 복사 에너지 세기(플랑크 곡선)를 태양 5800 K, 지구 288 K로 계산해 그렸습니다(태양 곡선은 0.1~2.4 μm, 지구 곡선은 5~30 μm 부분. 두 그래프의 세로축 눈금은 서로 다름 — 태양 쪽은 1억 배 단위). 계산한 태양 곡선의 꼭대기는 약 8.4×10⁷으로 교과서 그림(약 9.7×10⁷)보다 조금 낮지만, 최대 세기가 나타나는 파장(약 0.5 μm, 약 10 μm)과 곡선 모양은 같습니다. 교과서 보충: 모든 물질은 빛을 흡수하고 방출하는 성질이 있고, 입사하는 모든 파장의 빛을 흡수하고 흡수한 만큼 완전히 방출하는 이상적인 물체를 흑체라고 합니다. 흑체가 방출하는 에너지를 파장에 따라 나타낸 것이 플랑크 곡선이며, 표면 온도가 높을수록 최대 에너지를 방출하는 파장이 짧아집니다(빈의 변위 법칙, 학생들이 이미 배운 내용이라 간단히 복습: λmax = a/T, a ≈ 2898 μm·K → 태양 2898 ÷ 5800 ≈ 0.50 μm, 지구 2898 ÷ 288 ≈ 10.1 μm로 그래프의 최대 위치와 같음). 그래서 태양 복사를 단파 복사, 지구 복사를 장파 복사라고도 합니다. 학생 질문 대비 — 지구도 빛을 내나요? 지구도 복사 에너지를 방출하지만 대부분 눈에 보이지 않는 적외선입니다.">
+  <div class="hd" data-in><div class="eb"><b>1</b>선택적 흡수</div><h2>태양 복사 에너지와 지구 복사 에너지</h2></div>
   <svg class="abs" id="s05-graph" style="left:120px;top:250px;width:1680px;height:376px" viewBox="0 0 1680 376"></svg>
+  <div class="note-box" id="s05-wien" style="left:930px;top:262px;width:410px" data-in="600"><b class="s05-wh">빈의 변위 법칙</b><div class="s05-wf">λ<sub>max</sub> = a / T</div><div class="s05-wd">표면 온도가 높을수록<br>λ<sub>max</sub>가 짧다</div></div>
   <div class="ws-card side" id="s05-card" style="left:120px;top:666px;width:1680px;height:324px" data-in="400">
     <div class="ws-row"><span class="tm term" style="color:var(--sun)">태양 복사</span><span>표면 온도 약 5800 K인 태양은 <span class="bk"><span class="a" data-step="1" data-fx="pop">가시광선</span><span class="n">1</span></span> 영역의 <span class="bk"><span class="a" data-step="2" data-fx="pop">0.5 μm</span><span class="n">2</span></span> 부근에서<br>복사 에너지의 세기가 최대 → 파장이 짧은 <span class="bk"><span class="a" data-step="3" data-fx="pop">단파 복사</span><span class="n">3</span></span></span></div>
     <div class="ws-row"><span class="tm term" style="color:var(--ir)">지구 복사</span><span>표면 온도 약 288 K인 지구는 <span class="bk"><span class="a" data-step="4" data-fx="pop">적외선</span><span class="n">4</span></span> 영역의 <span class="bk"><span class="a" data-step="5" data-fx="pop">10 μm</span><span class="n">5</span></span> 부근에서<br>복사 에너지의 세기가 최대 → 파장이 긴 <span class="bk"><span class="a" data-step="6" data-fx="pop">장파 복사</span><span class="n">6</span></span></span></div>
@@ -690,8 +650,8 @@ html.print #s23-hb .dim,html.print #s24-hb .dim,html.print #s25 .dim{filter:none
 </section>
 
 <!-- ═══ s06 지구 대기의 선택적 흡수 ═══ -->
-<section class="slide" id="s06" data-tile="light" data-title="지구 대기의 선택적 흡수" data-notes="교과서 그림 III-3(대기 성분별 복사 에너지 흡수율)입니다. 클릭할 때마다 그림에서 해당하는 곳에 테두리가 그려집니다. 1 선택적 흡수체 → 2 오존·산소 줄의 자외선(파장이 짧은 쪽) → 3 이산화 탄소·수증기 줄의 적외선(파장이 긴 쪽) → 4 전체 대기 줄의 가시광선(거의 흡수되지 않아 지표까지 도달) → 5 대기의 창(8 μm~13 μm, 지구 복사 에너지가 대부분 우주 공간으로 빠져나감). 지도서 해설: 태양 복사 에너지 중 파장 0.3 μm~0.7 μm인 가시광선은 대기에 거의 흡수되지 않고 지구에 도달하고, 지구 복사 에너지 중 파장 약 13 μm 이상인 적외선은 대부분 수증기와 이산화 탄소 등에 흡수됩니다. 지도서 유의점: 지구 대기가 특정 파장의 에너지를 흡수하기 때문에 나타나는 현상을 이해하도록 지도합니다. 학생 질문 대비 — 대기의 창 가운데에 솟은 봉우리는? 오존이 약 9.6 μm 부근의 적외선을 흡수하기 때문입니다(오존·산소 줄에도 같은 봉우리가 있음). 그림을 누르면 크게 볼 수 있습니다.">
-  <div class="hd" data-in><div class="eb"><b>2</b>선택적 흡수</div><h2>지구 대기의 선택적 흡수</h2></div>
+<section class="slide" id="s06" data-tile="parchment" data-title="지구 대기의 선택적 흡수" data-notes="교과서 그림 III-3(대기 성분별 복사 에너지 흡수율)입니다. 클릭할 때마다 그림에서 해당하는 곳에 테두리가 그려집니다. 1 선택적 흡수체 → 2 오존·산소 줄의 자외선(파장이 짧은 쪽) → 3 이산화 탄소·수증기 줄의 적외선(파장이 긴 쪽) → 4 전체 대기 줄의 가시광선(거의 흡수되지 않아 지표까지 도달) → 5 대기의 창(8 μm~13 μm, 지구 복사 에너지가 대부분 우주 공간으로 빠져나감). 지도서 해설: 태양 복사 에너지 중 파장 0.3 μm~0.7 μm인 가시광선은 대기에 거의 흡수되지 않고 지구에 도달하고, 지구 복사 에너지 중 파장 약 13 μm 이상인 적외선은 대부분 수증기와 이산화 탄소 등에 흡수됩니다. 지도서 유의점: 지구 대기가 특정 파장의 에너지를 흡수하기 때문에 나타나는 현상을 이해하도록 지도합니다. 학생 질문 대비 — 대기의 창 가운데에 솟은 봉우리는? 오존이 약 9.6 μm 부근의 적외선을 흡수하기 때문입니다(오존·산소 줄에도 같은 봉우리가 있음). 그림을 누르면 크게 볼 수 있습니다.">
+  <div class="hd" data-in><div class="eb"><b>1</b>선택적 흡수</div><h2>지구 대기의 선택적 흡수</h2></div>
   <div class="lead" id="s06-lead" data-in="200">지구의 대기는 특정 파장의 복사 에너지는 흡수하고 다른 파장의 복사 에너지는<br>투과시키는 <span class="bk"><span class="a" data-step="1" data-fx="pop">선택적 흡수체</span><span class="n">1</span></span>이다.</div>
   <figure class="pic" id="s06-pic" style="left:120px;top:404px;width:764px;height:586px" data-in="350" data-fx="fade"><img src="img/III.01/p85_대기_성분별_흡수율.png" alt="대기 성분별 복사 에너지 흡수율 (교과서 그림 III-3)"></figure>
   <svg class="abs" id="s06-ov" style="left:120px;top:404px;width:764px;height:586px;pointer-events:none;z-index:4" viewBox="0 0 1440 1108">
@@ -709,8 +669,8 @@ html.print #s23-hb .dim,html.print #s24-hb .dim,html.print #s25 .dim{filter:none
 </section>
 
 <!-- ═══ s07 직접 해 보기 — 대기를 지나는 빛 ═══ -->
-<section class="slide" id="s07" data-tile="parchment" data-title="직접 해 보기 — 대기를 지나는 빛" data-notes="조작 방법: 아래 [태양에서 오는 빛] / [지표에서 나가는 빛]을 고르고 파장 막대를 움직입니다. 고른 파장의 복사 에너지가 물결로 대기를 지나가다가, 그 파장을 흡수하는 곳(자외선은 위쪽 오존층, 적외선은 아래쪽 대기의 수증기·이산화 탄소 등)에서 흡수되어 빛나며 약해지거나 사라집니다. 오른쪽 그래프는 앞 장 교과서 그림의 전체 대기 흡수율 곡선을 어림해 다시 그린 것이고, 세로선이 지금 고른 파장입니다. 해 볼 것: 태양 빛에서 자외선(0.2 μm) → 가시광선(0.5 μm) → 적외선(1.4 μm), 지표 복사에서 대기의 창(10 μm 부근) → 15 μm. 대기의 창 안에서 약 9.6 μm는 위쪽 오존층의 오존이 흡수합니다. 단순화한 점: 태양에서 오는 빛은 0.1~3 μm, 지표에서 나가는 빛은 4~30 μm만 고를 수 있게 했습니다(태양 복사와 지구 복사가 대부분 이 범위에 있음). 흡수율은 그래프에서 어림한 값이고, 대기층의 두께와 물결의 파장은 실제 비율과 다릅니다. 흡수가 일부만 일어나는 파장은 지나간 물결의 진폭을 줄여 나타냈습니다.">
-  <div class="hd" data-in><div class="eb"><b>2</b>선택적 흡수</div><h2>직접 해 보기 — 대기를 지나는 빛</h2></div>
+<section class="slide" id="s07" data-tile="light" data-title="직접 해 보기 — 대기를 지나는 빛" data-notes="조작 방법: 아래 [태양에서 오는 빛] / [지표에서 나가는 빛]을 고르고 파장 막대를 움직입니다. 고른 파장의 복사 에너지가 물결로 대기를 지나가다가, 그 파장을 흡수하는 곳(자외선은 위쪽 오존층, 적외선은 아래쪽 대기의 수증기·이산화 탄소 등)에서 흡수되어 빛나며 약해지거나 사라집니다. 오른쪽 그래프는 앞 장 교과서 그림의 전체 대기 흡수율 곡선을 어림해 다시 그린 것이고, 세로선이 지금 고른 파장입니다. 해 볼 것: 태양 빛에서 자외선(0.2 μm) → 가시광선(0.5 μm) → 적외선(1.4 μm), 지표 복사에서 대기의 창(10 μm 부근) → 15 μm. 대기의 창 안에서 약 9.6 μm는 위쪽 오존층의 오존이 흡수합니다. 단순화한 점: 태양에서 오는 빛은 0.1~3 μm, 지표에서 나가는 빛은 4~30 μm만 고를 수 있게 했습니다(태양 복사와 지구 복사가 대부분 이 범위에 있음). 흡수율은 그래프에서 어림한 값이고, 대기층의 두께와 물결의 파장은 실제 비율과 다릅니다. 흡수가 일부만 일어나는 파장은 지나간 물결의 진폭을 줄여 나타냈습니다.">
+  <div class="hd" data-in><div class="eb"><b>1</b>선택적 흡수</div><h2>직접 해 보기 — 대기를 지나는 빛</h2></div>
   <div class="ia-box" id="s07-box" data-in="200" data-fx="fade"><svg id="s07-svg" viewBox="0 0 1680 600"></svg></div>
   <div class="ia-panel" id="s07-panel" data-in="350">
     <button class="ia-btn" id="s07-sun" type="button">태양에서 오는 빛</button>
@@ -721,21 +681,34 @@ html.print #s23-hb .dim,html.print #s24-hb .dim,html.print #s25 .dim{filter:none
   <div class="fine">모식 그림 · 흡수율은 교과서 그림 III-3의 전체 대기 곡선을 어림한 값 · 대기층 두께와 물결의 파장은 실제 비율과 다름</div>
 </section>
 
-<!-- ═══ s08 온실 효과 ═══ -->
-<section class="slide" id="s08" data-tile="light" data-title="온실 효과" data-notes="교과서 그림 III-5(온실 효과가 일어나지 않을 때와 일어날 때)를 움직이는 그림으로 나타냈습니다. 왼쪽: 대기가 없으면 지표가 방출한 적외선이 그대로 우주로 빠져나가 평균 표면 온도가 약 −18 °C. 오른쪽: 대기 중 온실 기체가 적외선을 흡수했다가 지표로 재복사해 지표의 온도를 높이므로 약 15 °C(−18 °C와 15 °C는 참고서 값). 클릭 순서: 1 적외선(오른쪽 대기에서 적외선 흡수가 빛남) → 2 재복사(대기에서 지표로 향하는 주황 물결과 우주로 나가는 물결이 나타나고 15 °C 표시) → 3 수증기 → 4 이산화 탄소. 교과서: 온실 기체는 지표에서 방출된 적외선이 우주 공간으로 직접 빠져나가는 것을 막아 지구의 평균 표면 온도를 약 15 °C로 유지시켜 준다. 메테인, 산화 이질소 등도 온실 효과를 일으킵니다. 교과서 보충: 온실 효과를 일으키려면 기체 분자가 적외선을 흡수해 진동 에너지가 높아져야 하는데, 이산화 탄소나 메테인은 진동할 때 쌍극자 모멘트가 변하는 경우가 있어 적외선을 흡수합니다(질소·산소는 거의 흡수하지 못함). 학생 질문 대비 — 온실 효과는 나쁜 것인가요? 온실 효과 덕분에 액체 상태의 물이 있을 만큼 따뜻하므로 생명체에게 꼭 필요합니다. 문제는 온실 기체가 늘어 온실 효과가 강해지는 것입니다. 대기층 두께는 실제보다 크게 그렸습니다.">
-  <div class="hd" data-in><div class="eb"><b>2</b>선택적 흡수</div><h2>온실 효과</h2></div>
-  <div class="s08-pan" id="s08-pa" style="left:120px" data-in="200" data-fx="fade"><svg id="s08-sa" viewBox="0 0 820 376"></svg></div>
-  <div class="s08-pan" id="s08-pb" style="left:980px" data-in="350" data-fx="fade"><svg id="s08-sb" viewBox="0 0 820 376"></svg></div>
-  <div class="ws-card side" id="s08-card" style="left:120px;top:666px;width:1680px;height:324px" data-in="500">
-    <div class="ws-row"><span class="tm term" style="color:var(--ir)">온실 효과</span><span>대기 중의 기체가 <span class="bk"><span class="a" data-step="1" data-fx="pop">적외선</span><span class="n">1</span></span> 영역의 지구 복사 에너지를 흡수했다가<br>지표로 <span class="bk"><span class="a" data-step="2" data-fx="pop">재복사</span><span class="n">2</span></span>해 지표의 온도를 높이는 현상</span></div>
-    <div class="ws-row"><span class="tm term">온실 기체</span><span>적외선을 흡수해 온실 효과를 일으키는 기체 —<br>대표적으로 <span class="bk"><span class="a" data-step="3" data-fx="pop">수증기</span><span class="n">3</span></span>와 <span class="bk"><span class="a" data-step="4" data-fx="pop">이산화 탄소</span><span class="n">4</span></span> (메테인, 산화 이질소 등도)</span></div>
+<!-- ═══ s11 액체 상태의 물 ═══ -->
+<section class="slide" id="s11" data-tile="parchment" data-title="지구 생명체의 존재 조건 ① 액체 상태의 물" data-notes="교과서 87쪽, 해 보기 1. 물의 세 가지 성질을 빈칸으로 채우고, 마지막 빈칸에서 오른쪽 호수 그림의 기온이 내려가며 수면부터 얼음이 업니다(얼음 아래의 물고기는 계속 헤엄침). 비열: 같은 양의 열을 받아도 온도가 잘 변하지 않는다는 뜻 → 생명체가 사는 환경의 온도가 크게 바뀌지 않습니다. 용매: 다양한 물질을 녹여서 포함할 수 있어 생명체의 탄생과 진화에 필요한 물질이 물속에서 만나고 반응할 수 있습니다. 밀도: 액체 상태의 물이 얼음보다 밀도가 커서 얼음이 물 위에 뜨므로 수면부터 얼고, 얼음 아래의 물은 액체로 남습니다. 해 보기 1 예시 답안: 물은 좋은 용매로 다양한 물질을 녹일 수 있고, 비열이 커서 온도가 쉽게 변하지 않는다. 또 고체(얼음)일 때가 액체일 때보다 밀도가 작아 물이 얼 때 표면부터 얼기 때문에 생명체가 출현하고 진화하기에 좋은 환경을 제공한다. 지도 방안: 물의 상태 변화와 물의 비열, 밀도 등이 지구 환경에서 생명체의 출현과 진화에 어떤 영향을 주었는지 추론해 보게 합니다. 참고(교과서 여백): 물은 수소 결합을 하고 있어 비열이 크고, 극성 분자라 이온 결합 물질과 극성 물질을 잘 녹이며, 얼 때 물 분자가 안쪽에 공간이 있는 육각형 고리 모양으로 배열해 밀도가 작아집니다.">
+  <div class="hd" data-in><div class="eb"><b>2</b>생명체의 존재 조건</div><h2>지구 생명체의 존재 조건 ① 액체 상태의 물</h2></div>
+  <div class="lead" data-in="200">지구는 표면에 <b class="c-water">액체 상태의 물</b>이 풍부하게 존재한다.</div>
+  <div class="ws-card num eq" id="s11-card" style="left:120px;top:346px;width:960px;height:644px" data-in="350">
+    <div class="ws-row"><span class="no">1.</span><span>물은 <span class="bk"><span class="a" data-step="1" data-fx="pop">비열</span><span class="n">1</span></span>이 커서 쉽게 가열되거나<br>냉각되지 않는다.</span></div>
+    <div class="ws-row"><span class="no">2.</span><span>물은 다양한 물질을 쉽게 <span class="bk"><span class="a" data-step="2" data-fx="pop">녹인다</span><span class="n">2</span></span>.</span></div>
+    <div class="ws-row"><span class="no">3.</span><span>액체 상태의 물은 얼음보다 <span class="bk"><span class="a" data-step="3" data-fx="pop">밀도</span><span class="n">3</span></span>가 커서<br>강이나 호수의 물이 <span class="bk"><span class="a" data-step="4" data-fx="pop">수면</span><span class="n">4</span></span>부터 언다.<br><span class="mu">→ 기온이 낮은 겨울에도 수중 생명체가 생존할 수 있다.</span></span></div>
+    <div class="ws-row"><span class="no"></span><span class="mu">⇒ 생명체가 발생하고 진화하기에 적당한 환경을 제공한다.</span></div>
   </div>
-  <div class="fine">교과서 그림 III-5를 움직이는 그림으로 · −18 °C와 15 °C는 참고서 값 · 대기층 두께는 실제보다 크게 그림</div>
+  <div class="s11-scene" id="s11-scene" style="left:1120px;top:346px;width:680px;height:644px" data-in="450" data-fx="fade"><svg id="s11-svg" viewBox="0 0 680 644"></svg></div>
+</section>
+
+<!-- ═══ s12 대기와 오존층 ═══ -->
+<section class="slide" id="s12" data-tile="light" data-title="지구 생명체의 존재 조건 ② 대기와 오존층" data-notes="교과서 87쪽, 해 보기 2. 오른쪽 그림은 대기를 옆에서 본 모식도입니다(높이·두께는 실제와 다름). 빈칸 1 중력 → 2 성층권(그림의 보라 띠 = 오존층 옆에 ‘성층권’ 표시) → 3 자외선(태양에서 오는 보라 물결이 오존층에서 흡수되어 빛남. 노란 물결 가시광선은 대기를 지나 지표까지 닿음) → 4 15 °C(지표가 내보낸 주황 물결 적외선을 온실 기체가 흡수했다가 지표로 재복사). 오존은 성층권에서 산소 분자가 자외선을 받아 분해·결합하며 만들어지고, 이 과정에서 자외선을 흡수해 지표까지 들어오는 자외선이 줄어듭니다(교과서 여백 그림). 파장이 짧은 자외선은 동물의 유전자를 변형시키고 식물의 엽록소를 파괴하는 등 생명체에 해롭습니다. 해 보기 2 예시 답안: 대기 중에 오존층이 형성되어 자외선을 흡수함에 따라 생명체가 육지로 진출하게 되었다. 또 대기의 온실 효과로 지구의 평균 기온이 생명체가 살기에 적당하게 유지된다. 온실 효과: 수증기, 이산화 탄소와 같은 온실 기체가 지표에서 방출된 적외선이 우주 공간으로 직접 빠져나가는 것을 막아 지구의 평균 표면 온도를 약 15 °C로 유지시켜 줍니다(대기가 없다면 약 −18 °C, 완자). 학생 질문 대비: ‘오존은 산소인데 왜 따로 이름이 있나요?’ → 산소 원자 2개가 결합한 것이 산소 분자(O₂), 3개가 결합한 것이 오존(O₃)으로 서로 다른 물질입니다.">
+  <div class="hd" data-in><div class="eb"><b>2</b>생명체의 존재 조건</div><h2>지구 생명체의 존재 조건 ② 대기와 오존층</h2></div>
+  <div class="lead" data-in="200">지구의 대기는 생명 활동에 필요하고, 유해한 복사 에너지로부터 생명체를 보호한다.</div>
+  <div class="ws-card side eq" id="s12-card" style="left:120px;top:346px;width:960px;height:644px" data-in="350">
+    <div class="ws-row" style="grid-template-columns:1fr"><span>지구는 크기가 적당하고 <span class="bk"><span class="a" data-step="1" data-fx="pop">중력</span><span class="n">1</span></span>을 가지고 있어<br>대기를 유지할 수 있다.</span></div>
+    <div class="ws-row"><span class="tm term c-uv">오존층</span><span><span class="bk"><span class="a" data-step="2" data-fx="pop">성층권</span><span class="n">2</span></span>에 존재하며,<br>태양 복사 에너지 중 <span class="bk"><span class="a" data-step="3" data-fx="pop">자외선</span><span class="n">3</span></span>을 흡수해<br>지표까지 들어오는 것을 막는다.<br><span class="mu">자외선: 동물의 유전자 변형, 식물의 엽록소 파괴</span></span></div>
+    <div class="ws-row"><span class="tm term c-ir">온실 효과</span><span>온실 기체가 지표에서 방출된 적외선이<br>우주로 직접 빠져나가는 것을 막아<br>평균 표면 온도를 약 <span class="bk"><span class="a" data-step="4" data-fx="pop">15 °C</span><span class="n">4</span></span>로 유지한다.</span></div>
+  </div>
+  <div class="s12-scene" id="s12-scene" style="left:1120px;top:346px;width:680px;height:644px" data-in="450" data-fx="fade"><svg id="s12-svg" viewBox="0 0 680 644"></svg></div>
 </section>
 
 <!-- ═══ s09 생명 가능 지대 ═══ -->
 <section class="slide" id="s09" data-tile="parchment" data-title="생명 가능 지대" data-notes="교과서 86쪽. 행성에 생명체가 존재하려면 에너지를 안정적으로 공급해 주는 별과 표면의 액체 상태의 물이 있어야 합니다. 과학자들은 액체 상태의 물을 생명체가 존재하기 위한 가장 필수적인 요소로 보고, 이를 기준으로 생명 가능 지대의 범위를 정합니다. 그림 읽기: 세로축은 주계열성의 질량(태양 = 1), 가로축은 공전 궤도 반지름(지구 = 1)입니다. 질량이 큰 별일수록 광도가 커서 같은 양의 에너지를 받는 거리가 멀어지므로 띠가 오른쪽(먼 곳)으로 갑니다. 가로축은 눈금 간격마다 10배씩 커지는 눈금이라 그림에서는 띠의 폭이 거의 같아 보이지만, 실제 거리로는 폭이 넓어집니다(다음 직접 해 보기에서 확인). 학생 질문 대비: ‘생명 가능 지대 안에 있으면 생명체가 있나요?’ → 아닙니다. 생명 가능 지대는 액체 상태의 물이 있을 수 있는 거리일 뿐이고, 대기 등 다른 조건도 맞아야 합니다. ‘질량이 아주 큰 별은 생명 가능 지대가 넓으니 더 좋은가요?’ → 질량이 너무 큰 별은 수명이 짧아 생명체가 탄생하고 진화할 시간이 충분하지 않아 생명체가 존재할 가능성이 작아집니다(교과서 보충). 태양계의 생명 가능 지대는 태양으로부터의 거리, 행성의 대기 성분 등에 따라 달라질 수 있지만 현재는 금성과 화성 사이에 있습니다.">
-  <div class="hd" data-in><div class="eb"><b>3</b>생명체의 존재 조건</div><h2>생명 가능 지대</h2></div>
+  <div class="hd" data-in><div class="eb"><b>2</b>생명체의 존재 조건</div><h2>생명 가능 지대</h2></div>
   <div class="lead" data-in="200">생명체가 존재하려면 에너지를 안정적으로 공급하는 별과 표면의 <span class="bk"><span class="a" data-step="1" data-fx="pop">액체 상태의 물</span><span class="n">1</span></span>이 있어야 한다.</div>
   <figure class="pic" id="s09-pic" style="left:120px;top:346px;width:683px;height:644px" data-in="350" data-fx="fade"><img src="img/III.01/p86_생명_가능_지대.png" alt="주계열성의 질량에 따른 생명 가능 지대(교과서 그림 III-4)">
     <svg class="s09-ov" viewBox="0 0 772 728" aria-hidden="true">
@@ -759,7 +732,7 @@ html.print #s23-hb .dim,html.print #s24-hb .dim,html.print #s25 .dim{filter:none
 
 <!-- ═══ s10 직접 해 보기 — 별이 밝아지면? ═══ -->
 <section class="slide" id="s10" data-tile="light" data-title="직접 해 보기 — 별이 밝아지면?" data-notes="교과서 87쪽 창의력 더하기(태양의 광도가 현재보다 증가한다면 태양계의 생명 가능 지대는 현재와 비교해 어떻게 달라질까?)를 직접 확인하는 인터랙티브 자료입니다. 조작: 아래 막대로 중심별의 광도를 현재 태양의 0.25배~4배로 바꿉니다. [현재 태양]을 누르면 처음으로 돌아갑니다. 별이 밝아지면 별의 그림이 커지고 하얗게 되며, 초록 띠(생명 가능 지대)가 바깥쪽으로 옮겨 가고, 아래 실제 거리 비율 그림에서 폭이 넓어집니다. 점선 상자는 현재 태양일 때의 생명 가능 지대입니다. 예시 답안: 태양의 광도가 현재보다 증가하면 생명 가능 지대는 현재보다 태양에서 더 먼 곳으로 이동하고, 폭도 더 넓어진다. 계산: 행성이 받는 복사 에너지는 거리의 제곱에 반비례하므로, 같은 양의 에너지를 받는 거리는 광도의 제곱근에 비례합니다. 그래서 안쪽 경계와 바깥쪽 경계가 모두 √광도 배로 멀어지고, 폭도 √광도 배가 됩니다(광도 4배 → 2배 멀어지고 폭 2배). 위 그림은 교과서 그림처럼 눈금 간격마다 10배씩 커지는 눈금이라 띠의 폭이 같아 보이고, 아래 그림은 실제 거리 비율이라 폭이 넓어지는 것이 보입니다. 단순화: 현재 태양의 생명 가능 지대 경계는 교과서 그림 III-4에 맞춰 지구 궤도 반지름의 약 0.8배~1.27배로 놓았습니다(교과서 그림처럼 금성과 화성 사이에 있고 지구가 띠의 가운데쯤에 옴. 경계 값은 연구마다 다르고 교과서에는 숫자가 없어 화면에 넣지 않음). 행성의 크기와 색은 실제 비율과 다릅니다. 학생 질문 대비: ‘태양이 밝아지면 지구는 어떻게 되나요?’ → 광도가 충분히 커지면(이 그림에서는 현재의 약 1.6배보다 크면) 지구가 생명 가능 지대의 안쪽 경계보다 안쪽에 놓이게 되어 액체 상태의 물이 유지되기 어려워집니다.">
-  <div class="hd" data-in><div class="eb"><b>3</b>생명체의 존재 조건</div><h2>직접 해 보기 — 별이 밝아지면 생명 가능 지대는?</h2></div>
+  <div class="hd" data-in><div class="eb"><b>2</b>생명체의 존재 조건</div><h2>직접 해 보기 — 별이 밝아지면 생명 가능 지대는?</h2></div>
   <div class="ia-box" data-in="200" data-fx="fade"><svg id="s10-svg" viewBox="0 0 1680 600"></svg></div>
   <div class="ia-panel" data-in="350">
     <label>중심별의 광도 <input id="s10-range" type="range" min="0" max="100" step="1" value="50"><span class="val" id="s10-lv">현재의 1.0배</span></label>
@@ -769,51 +742,9 @@ html.print #s23-hb .dim,html.print #s24-hb .dim,html.print #s25 .dim{filter:none
   <div class="fine">모식 그림 · 현재 태양일 때의 범위는 교과서 그림 III-4에 맞춤 · 경계 거리는 광도의 제곱근에 비례하도록 계산 · 위: 10배씩 커지는 눈금, 아래: 실제 거리 비율</div>
 </section>
 
-<!-- ═══ s11 액체 상태의 물 ═══ -->
-<section class="slide" id="s11" data-tile="parchment" data-title="지구 생명체의 존재 조건 ① 액체 상태의 물" data-notes="교과서 87쪽, 해 보기 1. 물의 세 가지 성질을 빈칸으로 채우고, 마지막 빈칸에서 오른쪽 호수 그림의 기온이 내려가며 수면부터 얼음이 업니다(얼음 아래의 물고기는 계속 헤엄침). 비열: 같은 양의 열을 받아도 온도가 잘 변하지 않는다는 뜻 → 생명체가 사는 환경의 온도가 크게 바뀌지 않습니다. 용매: 다양한 물질을 녹여서 포함할 수 있어 생명체의 탄생과 진화에 필요한 물질이 물속에서 만나고 반응할 수 있습니다. 밀도: 액체 상태의 물이 얼음보다 밀도가 커서 얼음이 물 위에 뜨므로 수면부터 얼고, 얼음 아래의 물은 액체로 남습니다. 해 보기 1 예시 답안: 물은 좋은 용매로 다양한 물질을 녹일 수 있고, 비열이 커서 온도가 쉽게 변하지 않는다. 또 고체(얼음)일 때가 액체일 때보다 밀도가 작아 물이 얼 때 표면부터 얼기 때문에 생명체가 출현하고 진화하기에 좋은 환경을 제공한다. 지도 방안: 물의 상태 변화와 물의 비열, 밀도 등이 지구 환경에서 생명체의 출현과 진화에 어떤 영향을 주었는지 추론해 보게 합니다. 참고(교과서 여백): 물은 수소 결합을 하고 있어 비열이 크고, 극성 분자라 이온 결합 물질과 극성 물질을 잘 녹이며, 얼 때 물 분자가 안쪽에 공간이 있는 육각형 고리 모양으로 배열해 밀도가 작아집니다.">
-  <div class="hd" data-in><div class="eb"><b>3</b>생명체의 존재 조건</div><h2>지구 생명체의 존재 조건 ① 액체 상태의 물</h2></div>
-  <div class="lead" data-in="200">지구는 표면에 <b class="c-water">액체 상태의 물</b>이 풍부하게 존재한다.</div>
-  <div class="ws-card num eq" id="s11-card" style="left:120px;top:346px;width:960px;height:644px" data-in="350">
-    <div class="ws-row"><span class="no">1.</span><span>물은 <span class="bk"><span class="a" data-step="1" data-fx="pop">비열</span><span class="n">1</span></span>이 커서 쉽게 가열되거나<br>냉각되지 않는다.</span></div>
-    <div class="ws-row"><span class="no">2.</span><span>물은 다양한 물질을 쉽게 <span class="bk"><span class="a" data-step="2" data-fx="pop">녹인다</span><span class="n">2</span></span>.</span></div>
-    <div class="ws-row"><span class="no">3.</span><span>액체 상태의 물은 얼음보다 <span class="bk"><span class="a" data-step="3" data-fx="pop">밀도</span><span class="n">3</span></span>가 커서<br>강이나 호수의 물이 <span class="bk"><span class="a" data-step="4" data-fx="pop">수면</span><span class="n">4</span></span>부터 언다.<br><span class="mu">→ 기온이 낮은 겨울에도 수중 생명체가 생존할 수 있다.</span></span></div>
-    <div class="ws-row"><span class="no"></span><span class="mu">⇒ 생명체가 발생하고 진화하기에 적당한 환경을 제공한다.</span></div>
-  </div>
-  <div class="s11-scene" id="s11-scene" style="left:1120px;top:346px;width:680px;height:644px" data-in="450" data-fx="fade"><svg id="s11-svg" viewBox="0 0 680 644"></svg></div>
-</section>
-
-<!-- ═══ s12 대기와 오존층 ═══ -->
-<section class="slide" id="s12" data-tile="light" data-title="지구 생명체의 존재 조건 ② 대기와 오존층" data-notes="교과서 87쪽, 해 보기 2. 빈칸 1·2를 채우고, 빈칸 3(자외선)에서 오른쪽 그림의 오존 생성·소멸 과정이 차례로 움직이기 시작합니다(교과서 여백 그림: 산소 분자가 자외선을 흡수해 산소 원자로 분해 → 산소 원자가 산소 분자와 결합해 오존 생성 → 오존이 다시 자외선을 흡수해 산소 원자와 산소 분자로 분해). 이 과정이 되풀이되면서 자외선의 에너지가 흡수되어 지표까지 들어오는 자외선이 줄어듭니다. 파장이 짧은 자외선은 동물의 유전자를 변형시키고 식물의 엽록소를 파괴하는 등 생명체에 해롭습니다. 해 보기 2 예시 답안: 대기 중에 오존층이 형성되어 자외선을 흡수함에 따라 생명체가 육지로 진출하게 되었다. 또 대기의 온실 효과로 지구의 평균 기온이 생명체가 살기에 적당하게 유지된다. 온실 효과: 수증기, 이산화 탄소와 같은 온실 기체가 지표에서 방출된 적외선이 우주 공간으로 직접 빠져나가는 것을 막아 지구의 평균 표면 온도를 약 15 °C로 유지시켜 줍니다(대기가 없다면 약 −18 °C, 완자). 학생 질문 대비: ‘오존은 산소인데 왜 따로 이름이 있나요?’ → 산소 원자 2개가 결합한 것이 산소 분자(O₂), 3개가 결합한 것이 오존(O₃)으로 서로 다른 물질입니다.">
-  <div class="hd" data-in><div class="eb"><b>3</b>생명체의 존재 조건</div><h2>지구 생명체의 존재 조건 ② 대기와 오존층</h2></div>
-  <div class="lead" data-in="200">지구의 대기는 생명 활동에 필요하고, 유해한 복사 에너지로부터 생명체를 보호한다.</div>
-  <div class="ws-card side eq" id="s12-card" style="left:120px;top:346px;width:960px;height:644px" data-in="350">
-    <div class="ws-row"><span class="tm">대기의 유지</span><span>지구는 크기가 적당하고 <span class="bk"><span class="a" data-step="1" data-fx="pop">중력</span><span class="n">1</span></span>을<br>가지고 있어 대기를 유지할 수 있다.</span></div>
-    <div class="ws-row"><span class="tm term c-uv">오존층</span><span><span class="bk"><span class="a" data-step="2" data-fx="pop">성층권</span><span class="n">2</span></span>에 존재하며,<br>태양 복사 에너지 중 <span class="bk"><span class="a" data-step="3" data-fx="pop">자외선</span><span class="n">3</span></span>을 흡수해<br>지표까지 들어오는 것을 막는다.<br><span class="mu">자외선: 동물의 유전자 변형, 식물의 엽록소 파괴</span></span></div>
-    <div class="ws-row"><span class="tm term c-ir">온실 효과</span><span>온실 기체가 지표에서 방출된 적외선이<br>우주로 직접 빠져나가는 것을 막아<br>평균 표면 온도를 약 <span class="bk"><span class="a" data-step="4" data-fx="pop">15 °C</span><span class="n">4</span></span>로 유지한다.</span></div>
-  </div>
-  <div class="s12-scene" id="s12-scene" style="left:1120px;top:346px;width:680px;height:644px" data-in="450" data-fx="fade"><svg id="s12-svg" viewBox="0 0 680 644"></svg></div>
-</section>
-
-<!-- ═══ s13 해 보기 — 지구 생명체의 존재 조건 ═══ -->
-<section class="slide" id="s13" data-tile="parchment" data-title="해 보기 — 지구 생명체의 존재 조건 추론하기" data-notes="교과서 86쪽 해 보기 3(지구에서 생명체가 발생하고 존재할 수 있는 조건을 추론해 보자). 위 카드는 교과서가 준 지구의 특징 세 가지입니다. 학생이 먼저 추론해 말하게 한 뒤 클릭할 때마다 조건이 한 줄씩 나타납니다. 예시 답안: 지구는 태양으로부터 적당한 거리에 있어 풍부한 액체 상태의 물이 존재하고, 오존층이 형성되어 있어 태양에서 오는 유해한 자외선이 차단된다. 또 대기의 온실 효과로 생명체가 살기에 적당한 온도를 유지하고 있어 지구에서 생명체가 발생하고 존재할 수 있게 되었다. 지도 방안(교과서·지도서): 활동 과정에서 학생들이 지구에만 생명체가 존재할 수 있다고 생각하지 않도록 주의합니다. 이 조건들은 생명체가 존재할 가능성을 높이는 조건이며, 과학자들은 같은 조건을 갖춘 다른 행성(외계 행성)도 찾고 있습니다.">
-  <div class="hd" data-in><div class="eb"><b>3</b>생명체의 존재 조건</div><h2>해 보기 — 지구 생명체의 존재 조건 추론하기</h2></div>
-  <div class="ws-card" id="s13-facts" style="left:120px;top:250px;width:1680px" data-in="200">
-    <div class="ws-h"><b>지구의 특징</b><span>교과서 해 보기</span></div>
-    <div class="ws-row"><span>• 지구에는 <b class="c-water">액체 상태의 물</b>이 풍부하게 존재한다.</span></div>
-    <div class="ws-row"><span>• 지구는 여러 종류의 기체로 이루어진 <b class="c-air">적당한 두께의 대기</b>를 가지고 있다.</span></div>
-    <div class="ws-row"><span>• 지구에서 최초의 생명체는 <b>바다</b>에서 출현했으며, 이후 <b>육지</b>로 진출했다.</span></div>
-  </div>
-  <div class="ws-card flow" id="s13-flow" style="left:120px;top:621px;width:1680px;height:369px" data-in="350">
-    <div class="fr-row"><span class="ld"></span><span class="ch c-water" data-step="1" data-fx="left">태양으로부터 적당한 거리</span><span class="ar" data-step="1" data-delay="150" data-fx="fade">→</span><span class="ch c-water" data-step="1" data-delay="250" data-fx="left">풍부한 액체 상태의 물</span></div>
-    <div class="fr-row"><span class="ld"></span><span class="ch c-uv" data-step="2" data-fx="left">오존층 형성</span><span class="ar" data-step="2" data-delay="150" data-fx="fade">→</span><span class="ch c-uv" data-step="2" data-delay="250" data-fx="left">유해한 자외선 차단</span><span class="ar" data-step="2" data-delay="400" data-fx="fade">→</span><span class="ch" data-step="2" data-delay="500" data-fx="left">생명체가 육지로 진출</span></div>
-    <div class="fr-row"><span class="ld"></span><span class="ch c-ir" data-step="3" data-fx="left">대기의 온실 효과</span><span class="ar" data-step="3" data-delay="150" data-fx="fade">→</span><span class="ch c-ir" data-step="3" data-delay="250" data-fx="left">생명체가 살기에 적당한 온도</span></div>
-    <div class="fr-row alt"><span class="ld ar" data-step="4" data-fx="fade">⇒</span><span class="ch s13-end" data-step="4" data-delay="150" data-fx="left">지구에서 생명체가 발생하고 존재할 수 있다</span></div>
-  </div>
-</section>
-
 <!-- ═══ s14 흥미: 금성 · 지구 · 화성 ═══ -->
-<section class="slide" id="s14" data-tile="light" data-title="금성 · 지구 · 화성 — 생명 가능 지대만으로 충분할까?" data-notes="완자 141쪽 탐구 자료창(생명체의 존재 조건 추론하기). 왼쪽 표는 완자의 표 그대로입니다. 오른쪽 그래프: 속이 빈 막대는 반사도를 고려한 복사 평형 온도(행성이 흡수하는 태양 복사 에너지와 방출하는 복사 에너지가 평형을 이룰 때의 온도), 색칠한 막대는 실제 표면 온도입니다. 복사 평형 온도는 표의 거리와 반사도로 계산했습니다(금성 약 −45 °C, 지구 약 −18 °C, 화성 약 −56 °C). 클릭 단계: 1 복사 평형 온도 → 2 실제 표면 온도 → 3 금성: 대기압이 매우 크고 대기의 대부분이 이산화 탄소라 강한 온실 효과가 나타나 실제 표면 온도가 복사 평형 온도보다 훨씬 높다 → 4 지구: 대기에 의한 온실 효과로 실제 표면 온도가 복사 평형 온도보다 높고, 평균 표면 온도가 0 °C와 100 °C 사이라 액체 상태의 물이 존재할 수 있다 → 5 정리. 화성: 대기압이 지구의 0.01배로 대기가 매우 얇아 온실 효과가 거의 없어 두 온도가 비슷합니다(표의 약 −63 °C는 계산한 복사 평형 온도보다 조금 낮은데, 반사도·관측값에 따라 몇 도 차이는 날 수 있습니다). 학생 질문 대비: ‘금성이 태양에 더 가까워서 뜨거운 것 아닌가요?’ → 거리만 보면 금성의 복사 평형 온도는 약 −45 °C로 생각보다 낮습니다(반사도가 0.78로 커서 햇빛을 많이 반사). 실제 453 °C가 된 까닭은 두꺼운 이산화 탄소 대기의 온실 효과입니다. 지도서 유의점: 지구에만 생명체가 존재할 수 있다고 생각하지 않도록 합니다.">
-  <div class="hd" data-in><div class="eb"><b>3</b>생명체의 존재 조건</div><h2>금성 · 지구 · 화성 — 생명 가능 지대만으로 충분할까?</h2></div>
+<section class="slide" id="s14" data-tile="parchment" data-title="금성 · 지구 · 화성 — 생명 가능 지대만으로 충분할까?" data-notes="완자 141쪽 탐구 자료창(생명체의 존재 조건 추론하기). 왼쪽 표는 완자의 표 그대로입니다. 오른쪽 그래프: 속이 빈 막대는 반사도를 고려한 복사 평형 온도(행성이 흡수하는 태양 복사 에너지와 방출하는 복사 에너지가 평형을 이룰 때의 온도), 색칠한 막대는 실제 표면 온도입니다. 복사 평형 온도는 표의 거리와 반사도로 계산했습니다(금성 약 −45 °C, 지구 약 −18 °C, 화성 약 −56 °C). 클릭 단계: 1 복사 평형 온도 → 2 실제 표면 온도 → 3 금성: 대기압이 매우 크고 대기의 대부분이 이산화 탄소라 강한 온실 효과가 나타나 실제 표면 온도가 복사 평형 온도보다 훨씬 높다 → 4 지구: 대기에 의한 온실 효과로 실제 표면 온도가 복사 평형 온도보다 높고, 평균 표면 온도가 0 °C와 100 °C 사이라 액체 상태의 물이 존재할 수 있다 → 5 정리. 화성: 대기압이 지구의 0.01배로 대기가 매우 얇아 온실 효과가 거의 없어 두 온도가 비슷합니다(표의 약 −63 °C는 계산한 복사 평형 온도보다 조금 낮은데, 반사도·관측값에 따라 몇 도 차이는 날 수 있습니다). 학생 질문 대비: ‘금성이 태양에 더 가까워서 뜨거운 것 아닌가요?’ → 거리만 보면 금성의 복사 평형 온도는 약 −45 °C로 생각보다 낮습니다(반사도가 0.78로 커서 햇빛을 많이 반사). 실제 453 °C가 된 까닭은 두꺼운 이산화 탄소 대기의 온실 효과입니다. 지도서 유의점: 지구에만 생명체가 존재할 수 있다고 생각하지 않도록 합니다.">
+  <div class="hd" data-in><div class="eb"><b>2</b>생명체의 존재 조건</div><h2>금성 · 지구 · 화성 — 생명 가능 지대만으로 충분할까?</h2></div>
   <div class="s14-tb" id="s14-tb" data-in="200">
     <table class="tbl" id="s14-tbl">
       <thead><tr><th>구분</th><th>금성</th><th>지구</th><th>화성</th></tr></thead>
@@ -830,33 +761,35 @@ html.print #s23-hb .dim,html.print #s24-hb .dim,html.print #s25 .dim{filter:none
   <div class="say-line" id="s14-say" style="top:930px;font-size:36px" data-step="5">생명 가능 지대에 있으면서 <b class="c-ir">적절한 온실 효과</b>를 일으키는 대기가 있어야 <b class="c-water">액체 상태의 물</b>이 존재할 수 있다</div>
 </section>
 
-<!-- ═══ s15 확인 문제 — 지구의 대기와 생명체 ═══ -->
-<section class="slide" id="s15" data-tile="parchment" data-title="확인 문제 — 지구의 대기와 생명체" data-notes="학생이 먼저 풀게 한 뒤 클릭하면 정답과 풀이가 나옵니다. ㄱ. 오존과 산소 분자는 자외선을, 수증기와 이산화 탄소 등은 적외선을 선택적으로 흡수하고 가시광선은 대기에 거의 흡수되지 않고 지표까지 도달하므로 옳다(교과서 스스로 확인하기 1). ㄴ. 오존층은 태양 복사 에너지 중 자외선을 흡수해 생명체를 보호하므로 틀리다(스스로 확인하기 2). 지구 복사 에너지(적외선)를 흡수해 온실 효과를 일으키는 것은 수증기, 이산화 탄소 등 온실 기체이다. ㄷ. 중심별의 광도가 클수록 생명 가능 지대는 중심별에서 멀어지고 폭이 넓어지므로 옳다(완자 핵심 체크, 창의력 더하기). 오답 분석: ①·⑤를 고른 학생은 오존층이 흡수하는 것이 자외선인지 적외선인지 헷갈린 경우가 많습니다.">
-  <div class="qz" style="gap:22px">
-    <div class="qz-eb" data-in><b>확인 문제</b><span>지구의 대기와 생명체</span><span class="qz-lv">기본</span></div>
-    <div class="qz-stem" data-in="150">지구의 대기와 생명체에 대한 설명으로 옳은 것만을 &lt;보기&gt;에서 있는 대로 고른 것은?</div>
-    <div class="qz-box" data-in="300">
-      <div>ㄱ. 지구 대기는 자외선과 적외선은 선택적으로 흡수하지만, 가시광선은 거의 흡수하지 않는다.</div>
-      <div>ㄴ. 오존층은 지구 복사 에너지 중 적외선을 흡수하여 생명체를 보호한다.</div>
-      <div>ㄷ. 중심별의 광도가 클수록 생명 가능 지대는 중심별에서 멀어지고 폭이 넓어진다.</div>
-    </div>
-    <ol class="qz-ch row" data-in="450">
-      <li><span class="qz-n">①</span><span>ㄱ</span></li>
-      <li><span class="qz-n">②</span><span>ㄴ</span></li>
-      <li><span class="qz-n">③</span><span>ㄱ, ㄴ</span></li>
-      <li><span class="qz-hl" data-step="1" data-fx="fade"></span><span class="qz-n">④</span><span>ㄱ, ㄷ</span><span class="qz-mark" data-step="1" data-fx="pop">정답</span></li>
-      <li><span class="qz-n">⑤</span><span>ㄴ, ㄷ</span></li>
-    </ol>
-    <div class="qz-why" data-step="1" data-fx="up">
-      <div class="qz-why-h">정답 ④ · 풀이</div>
-      <div class="qz-why-t">ㄱ. 오존·산소는 <b>자외선</b>, 수증기·이산화 탄소는 <b>적외선</b>을 흡수, 가시광선은 거의 통과 → 선택적 흡수(옳음)<br>ㄴ. 오존층이 흡수하는 것은 <b>태양 복사 에너지 중 자외선</b>(틀림)<br>ㄷ. 광도가 클수록 생명 가능 지대는 <b>멀어지고 넓어진다</b>(옳음)</div>
-    </div>
+<!-- ═══ s08 온실 효과 ═══ -->
+<section class="slide" id="s08" data-tile="light" data-title="온실 효과" data-notes="교과서 그림 III-5(온실 효과가 일어나지 않을 때와 일어날 때)를 움직이는 그림으로 나타냈습니다. 왼쪽: 대기가 없으면 지표가 방출한 적외선이 그대로 우주로 빠져나가 평균 표면 온도가 약 −18 °C. 오른쪽: 대기 중 온실 기체가 적외선을 흡수했다가 지표로 재복사해 지표의 온도를 높이므로 약 15 °C(−18 °C와 15 °C는 참고서 값). 클릭 순서: 1 적외선(오른쪽 대기에서 적외선 흡수가 빛남) → 2 재복사(대기에서 지표로 향하는 주황 물결과 우주로 나가는 물결이 나타나고 15 °C 표시) → 3 수증기 → 4 이산화 탄소. 교과서: 온실 기체는 지표에서 방출된 적외선이 우주 공간으로 직접 빠져나가는 것을 막아 지구의 평균 표면 온도를 약 15 °C로 유지시켜 준다. 메테인, 산화 이질소 등도 온실 효과를 일으킵니다. 교과서 보충: 온실 효과를 일으키려면 기체 분자가 적외선을 흡수해 진동 에너지가 높아져야 하는데, 이산화 탄소나 메테인은 진동할 때 쌍극자 모멘트가 변하는 경우가 있어 적외선을 흡수합니다(질소·산소는 거의 흡수하지 못함). 학생 질문 대비 — 온실 효과는 나쁜 것인가요? 온실 효과 덕분에 액체 상태의 물이 있을 만큼 따뜻하므로 생명체에게 꼭 필요합니다. 문제는 온실 기체가 늘어 온실 효과가 강해지는 것입니다. 대기층 두께는 실제보다 크게 그렸습니다.">
+  <div class="hd" data-in><div class="eb"><b>2</b>생명체의 존재 조건</div><h2>온실 효과</h2></div>
+  <div class="s08-pan" id="s08-pa" style="left:120px" data-in="200" data-fx="fade"><svg id="s08-sa" viewBox="0 0 820 376"></svg></div>
+  <div class="s08-pan" id="s08-pb" style="left:980px" data-in="350" data-fx="fade"><svg id="s08-sb" viewBox="0 0 820 376"></svg></div>
+  <div class="ws-card side" id="s08-card" style="left:120px;top:666px;width:1680px;height:324px" data-in="500">
+    <div class="ws-row"><span class="tm term" style="color:var(--ir)">온실 효과</span><span>대기 중의 기체가 <span class="bk"><span class="a" data-step="1" data-fx="pop">적외선</span><span class="n">1</span></span> 영역의 지구 복사 에너지를 흡수했다가<br>지표로 <span class="bk"><span class="a" data-step="2" data-fx="pop">재복사</span><span class="n">2</span></span>해 지표의 온도를 높이는 현상</span></div>
+    <div class="ws-row"><span class="tm term">온실 기체</span><span>적외선을 흡수해 온실 효과를 일으키는 기체 —<br>대표적으로 <span class="bk"><span class="a" data-step="3" data-fx="pop">수증기</span><span class="n">3</span></span>와 <span class="bk"><span class="a" data-step="4" data-fx="pop">이산화 탄소</span><span class="n">4</span></span> (메테인, 산화 이질소 등도)</span></div>
   </div>
+  <div class="fine">교과서 그림 III-5를 움직이는 그림으로 · −18 °C와 15 °C는 참고서 값 · 대기층 두께는 실제보다 크게 그림</div>
+</section>
+
+<!-- ═══ s29 스스로 확인하기 — 지구의 대기와 생명체 ═══ -->
+<section class="slide" id="s29" data-tile="parchment" data-title="스스로 확인하기 — 지구의 대기와 생명체" data-notes="교과서 87쪽 스스로 확인하기. 장에 들어가면 문제 세 개가 먼저 나오고, 클릭할 때마다 예시 답안이 1 → 2 → 3번 순서로 나옵니다. 학생들이 먼저 답해 보게 한 뒤 하나씩 보여 주세요. 관련 장: 1번은 ‘지구 대기의 선택적 흡수’·‘직접 해 보기 — 대기를 지나는 빛’, 2번은 ‘지구 생명체의 존재 조건 ② 대기와 오존층’, 3번은 ‘직접 해 보기 — 별이 밝아지면?’. 예시 답안은 교과서 교사용 그대로입니다.">
+  <div class="hd" data-in><div class="eb"><b>2</b>생명체의 존재 조건</div><h2>스스로 확인하기 — 지구의 대기와 생명체</h2></div>
+  <div class="sc-list">
+    <div class="sc-q" data-in="300"><span class="no">1</span><span>지구의 대기를 구성하는 기체들이 선택적 흡수체임을 설명해 보자.</span>
+      <div class="sc-a" data-step="1" data-fx="up"><span class="h">예시 답안</span>대기 중 오존과 산소 분자는 자외선을, 수증기와 이산화 탄소 등은 적외선을 선택적으로 흡수한다. 가시광선은 대기에 거의 흡수되지 않고 지표까지 도달한다. 이와 같이 지구의 대기는 특정 파장의 복사 에너지는 흡수하고 다른 파장의 복사 에너지는 투과시키는 선택적 흡수체이다.</div></div>
+    <div class="sc-q" data-in="450"><span class="no">2</span><span>오존층이 지구 생명체의 존재에 어떤 역할을 하는지 설명해 보자.</span>
+      <div class="sc-a" data-step="2" data-fx="up"><span class="h">예시 답안</span>오존층은 동물의 유전자를 변형시키고 식물의 엽록소를 파괴하는 등 생명체에 해로운 영향을 주는 자외선을 흡수해 자외선이 지표까지 들어오는 것을 막아 지구의 생명체를 보호한다.</div></div>
+    <div class="sc-q" data-in="600"><span class="no">3</span><span><span class="cr">| 창의력 더하기 |</span>태양의 광도가 현재보다 증가한다면 태양계의 생명 가능 지대는 현재와 비교해 어떻게 달라질지 설명해 보자.</span>
+      <div class="sc-a" data-step="3" data-fx="up"><span class="h">예시 답안</span>태양의 광도가 현재보다 증가하면 태양계의 생명 가능 지대는 현재보다 태양에서 더 먼 곳으로 이동하고, 생명 가능 지대의 폭도 더 넓어질 것이다.</div></div>
+  </div>
+  <div class="fine">교과서 87쪽 스스로 확인하기 · 예시 답안: 교과서(교사용)</div>
 </section>
 
 <!-- ═══ s16 지구의 기온은 왜 계속 오르지 않을까? (02 들어가기) ═══ -->
 <section class="slide" id="s16" data-tile="light" data-title="지구의 기온은 왜 계속 오르지 않을까?" data-notes="교과서 소단원 들어가기 질문입니다. 왼쪽 그래프는 지구가 태양에서 받은 에너지가 시간이 지날수록 계속 쌓이는 모습, 오른쪽은 그동안 지구의 평균 기온이 약 15 °C에서 거의 변하지 않는 모습입니다(둘 다 모식 그래프, 숫자 없음). 먼저 ‘에너지를 계속 받는데 왜 계속 뜨거워지지 않을까?’를 묻고 예측하게 합니다. 1단계: 받은 막대 옆에 우주로 내보낸 에너지 막대가 같은 높이로 자라고, 아래 ‘까닭’ 카드가 나타납니다. 2단계: 빈칸 ‘방출’. 예시 답안(지도서): 지구는 태양으로부터 받는 만큼의 에너지를 우주 공간으로 방출하기 때문에 평균 기온이 거의 일정하게 유지된다. 내보내는 에너지에는 반사·산란되어 그대로 나가는 태양 빛과 지구가 방출하는 지구 복사 에너지가 모두 들어 있으며, 각각의 양은 지구 평균 열수지에서 다룹니다. 덧붙일 사실(교과서 88쪽): 태양은 매 순간 엄청난 양의 에너지(초당 약 4×10²⁶ J)를 우주 공간으로 방출하며, 지구에는 그 약 20억분의 1이 도달합니다. 이 에너지가 대기를 지나는 동안 여러 가지 상호작용을 하며 지구시스템에 영향을 줍니다.">
-  <div class="hd" data-in><div class="eb">02. 지구 열수지</div><h2>지구의 기온은 왜 계속 오르지 않을까?</h2></div>
+  <div class="hd" data-in><div class="eb"><b>3</b>열 출입</div><h2>지구의 기온은 왜 계속 오르지 않을까?</h2></div>
   <div class="lead" data-in="200">지구는 태양으로부터 끊임없이 에너지를 받고 있지만<br>지구의 평균 기온은 거의 일정하게 유지되고 있다.</div>
   <svg class="full-svg" viewBox="0 0 1920 1080" id="s16-svg" data-in="350" data-fx="fade"></svg>
   <div class="ws-card side" id="s16-card" style="left:120px;top:856px;width:1680px;height:134px;display:flex;flex-direction:column;justify-content:center" data-step="1" data-delay="900">
@@ -866,8 +799,8 @@ html.print #s23-hb .dim,html.print #s24-hb .dim,html.print #s25 .dim{filter:none
 </section>
 
 <!-- ═══ s17 지표와 대기의 열 출입 ═══ -->
-<section class="slide" id="s17" data-tile="parchment" data-title="지표와 대기의 열 출입" data-notes="교과서 그림 III-6을 다시 그린 장면입니다. 태양 복사 에너지가 지구의 대기에 도달하면 산란, 반사, 흡수, 굴절이 일어나 지표와 대기의 열 출입에 영향을 줍니다. 클릭할 때마다 빛줄기가 하나씩 들어옵니다. 1단계 대기 중 산란: 기체나 미세한 먼지 입자를 만나 여러 방향으로 흩어집니다(일부는 우주로 되돌아가고 일부는 지표로 향함). 2단계 구름의 반사: 구름 윗면에서 반사되어 우주 공간으로 되돌아갑니다. 3단계 대기와 구름의 흡수: 구름이나 대기 중 오존, 수증기 등에 흡수되어 대기를 데웁니다. 4단계 지표의 흡수: 지표에 흡수되어 지표를 데웁니다. 5단계 지표의 반사: 지표에서 반사되어 되돌아갑니다. 6단계 빈칸 ‘굴절’: 굴절은 이 그림에는 없고, 일몰 때 태양이 수평선 아래로 내려간 뒤에도 보이는 현상으로 뒤에서 다룹니다. 학생 질문 대비: 산란·반사는 빛의 방향만 바꾸고 온도를 직접 높이지 않지만, 흡수는 대기와 지표의 온도를 직접 높입니다. 빛줄기의 굵기는 에너지양을 나타내지 않습니다(양은 지구 평균 열수지에서).">
-  <div class="hd" data-in><div class="eb"><b>4</b>열 출입</div><h2>지표와 대기의 열 출입</h2></div>
+<section class="slide" id="s17" data-tile="parchment" data-title="지표와 대기의 열 출입" data-notes="교과서 그림 III-6을 다시 그린 장면입니다. 태양 복사 에너지가 지구의 대기에 도달하면 산란, 반사, 흡수, 굴절이 일어나 지표와 대기의 열 출입에 영향을 줍니다. 클릭할 때마다 빛줄기가 하나씩 들어옵니다. 1단계 대기 중 산란: 기체나 미세한 먼지 입자를 만나 여러 방향으로 흩어집니다(일부는 우주로 되돌아가고 일부는 지표로 향함). 2단계 구름의 반사: 구름 윗면에서 반사되어 우주 공간으로 되돌아갑니다. 3단계 대기와 구름의 흡수: 구름이나 대기 중 오존, 수증기 등에 흡수되어 대기를 데웁니다. 4단계 지표의 흡수: 지표에 흡수되어 지표를 데웁니다. 5단계 지표의 반사: 지표에서 반사되어 되돌아갑니다. 6단계 빈칸 ‘굴절’: 굴절은 이 그림에는 없고, 일몰 때 태양이 수평선 아래로 내려간 뒤에도 보이는 현상이 굴절 때문입니다. 학생 질문 대비: 산란·반사는 빛의 방향만 바꾸고 온도를 직접 높이지 않지만, 흡수는 대기와 지표의 온도를 직접 높입니다. 빛줄기의 굵기는 에너지양을 나타내지 않습니다(양은 지구 평균 열수지에서).">
+  <div class="hd" data-in><div class="eb"><b>3</b>열 출입</div><h2>지표와 대기의 열 출입</h2></div>
   <div class="ws-card eq" id="s17-card" style="left:120px;top:250px;width:1680px;height:188px" data-in="200">
     <div class="ws-row" style="grid-template-columns:1fr"><span>태양 복사 에너지가 지구의 대기에 도달하면 <span class="bk"><span class="a" data-step="1" data-fx="pop">산란</span><span class="n">1</span></span>, <span class="bk"><span class="a" data-step="2" data-fx="pop">반사</span><span class="n">2</span></span>,<br><span class="bk"><span class="a" data-step="3" data-fx="pop">흡수</span><span class="n">3</span></span>, <span class="bk"><span class="a" data-step="6" data-fx="pop">굴절</span><span class="n">4</span></span>과 같은 물리 과정이 일어나면서 지표와 대기의 열 출입에 영향을 준다.</span></div>
   </div>
@@ -875,83 +808,49 @@ html.print #s23-hb .dim,html.print #s24-hb .dim,html.print #s25 .dim{filter:none
   <div class="fine">모식 그림(교과서 그림 III-6을 다시 그림) · 빛줄기의 굵기는 에너지양과 관계없음</div>
 </section>
 
-<!-- ═══ s18 산란 — 직접 해 보기 ═══ -->
-<section class="slide" id="s18" data-tile="light" data-title="산란 — 직접 해 보기" data-notes="조작 방법: 아래 태양 고도 막대를 움직이면 태양이 하늘에서 오르내리고, 태양 빛이 통과하는 대기의 두께(치수선)와 관측자에게 보이는 하늘·태양의 색(오른쪽 위 ‘관측자가 본 하늘’)이 함께 바뀝니다. 빛줄기를 따라 움직이는 파란 점은 파란색 빛, 빨간 점은 붉은색 빛입니다. 대기 속에서 옆으로 튕겨 나가는 점이 산란된 빛입니다. 클릭 단계: 1 빈칸 ‘흩어지는’, 2 빈칸 ‘파란색’, 3 태양이 높이 올라가며(고도 70°) 빈칸 ‘파랗게’, 4 태양이 지평선 가까이 내려가며(고도 1°) 빈칸 ‘붉게’. 계산: 공기 분자에 의한 산란(레일리 산란)의 실제 광학 두께(파란색 450 nm 약 0.22, 붉은색 650 nm 약 0.05)와 태양 고도에 따라 빛이 통과하는 대기의 두께(태양이 머리 위일 때의 몇 배인지, 지평선 근처에서 약 38배)를 써서 남는 빛의 비율과 색을 정했습니다. 그림 속 대기의 두께는 크게 과장했으므로 치수선의 길이 비율은 실제보다 작고, 실제 비율은 아래 숫자(통과하는 대기의 두께 ×)로 보여 줍니다. 하늘이 파란 까닭: 태양 고도가 높을 때는 파란색 빛이 많이 산란되어 하늘 여러 방향에서 눈에 들어옵니다. 저녁 태양이 붉은 까닭: 태양 고도가 낮으면 빛이 통과하는 대기가 두꺼워져 파란색 빛은 대부분 산란되어 사라지고 붉은색 빛만 눈에 들어옵니다. 참고(지도서): 입자가 파장보다 훨씬 작으면 앞뒤로 같은 양이 산란되는 레일리 산란(파장이 짧을수록 강함, 파장의 네제곱에 반비례), 안개 입자처럼 파장과 비슷하거나 크면 앞쪽으로 더 많이 산란되는 미 산란이 일어나며, 미 산란은 파장에 따라 거의 다르지 않아 구름이 흰색으로 보입니다.">
-  <div class="hd" data-in><div class="eb"><b>4</b>열 출입</div><h2>산란 — 하늘은 왜 파랗고, 저녁 태양은 왜 붉을까?</h2></div>
-  <div class="ia-box" id="s18-box" style="width:800px" data-in="200" data-fx="fade"><svg id="s18-svg" viewBox="0 0 800 600" style="width:800px"></svg></div>
-  <div class="ws-card st eq" id="s18-card" style="left:960px;top:250px;width:840px;height:600px" data-in="300">
-    <div class="ws-row"><span class="tm term">산란</span><span>태양 빛이 기체나 미세한 먼지 입자 등을 만나<br>여러 방향으로 <span class="bk"><span class="a" data-step="1" data-fx="pop">흩어지는</span><span class="n">1</span></span> 현상</span></div>
-    <div class="ws-row"><span class="tm">파장과 산란</span><span>파장이 짧은 <span class="bk"><span class="a" data-step="2" data-fx="pop">파란색</span><span class="n">2</span></span> 빛은<br>파장이 긴 붉은색 빛보다 산란이 잘 일어난다.</span></div>
-    <div class="ws-row"><span class="tm">태양 고도</span><span>높을 때 하늘이 <span class="bk"><span class="a" data-step="3" data-fx="pop">파랗게</span><span class="n">3</span></span> 보이고,<br>낮을 때 태양이 <span class="bk"><span class="a" data-step="4" data-fx="pop">붉게</span><span class="n">4</span></span> 보인다.</span></div>
-  </div>
-  <div class="ia-panel" data-in="400">
-    <label>태양 고도 <input id="s18-range" type="range" min="0" max="90" step="1" value="60"><span class="val" id="s18-hv">60°</span></label>
-    <div class="ia-stat">
-      <div class="st"><i>통과하는 대기의 두께</i><b id="s18-m">×1.2</b></div>
-      <div class="st"><i>남은 파란색 빛</i><b id="s18-tb" style="color:#0a6bd6">78 %</b></div>
-      <div class="st"><i>남은 붉은색 빛</i><b id="s18-tr" style="color:#d0342c">94 %</b></div>
-    </div>
-  </div>
-  <div class="fine">모식 그림 · 대기 두께는 크게 과장(실제 비율은 아래 숫자) · 남은 빛과 태양의 색은 공기 분자의 산란(레일리 산란) 실제 값으로 계산, 하늘 색은 모식</div>
-</section>
-
-<!-- ═══ s19 반사 ═══ -->
-<section class="slide" id="s19" data-tile="parchment" data-title="반사 — 반사율" data-notes="교과서 89쪽 표(출처 《대기과학》, 2016)를 범위 막대로 나타냈습니다. 막대의 왼쪽 끝과 오른쪽 끝이 표의 두 값입니다. 1단계 빈칸 ‘반사’(반사율의 뜻). 2단계: 반사율이 높은 금방 내린 눈과 두꺼운 구름만 진하게. 3단계: 반사율이 낮은 젖은 흙, 풀, 얇은 구름만 진하게. 학생 질문 대비: 반사된 태양 빛은 그대로 우주로 되돌아가므로 대기와 지표를 데우지 않습니다. 그래서 눈이나 구름이 많아지면 지구가 흡수하는 에너지가 줄어듭니다. 참고(완자): 지구에 입사한 태양 복사 에너지가 반사되는 비율을 반사율(알베도)이라 하며, 현재 지구의 평균 반사율은 약 29.4 %입니다. 지표면이 무엇으로 덮여 있는지에 따라 반사율이 달라져 그 지역의 기후에 영향을 줍니다. 참고서(완자)의 표는 값이 조금 다릅니다(눈 80~90, 구름 55~80 등 — 자료마다 다름).">
-  <div class="hd" data-in><div class="eb"><b>4</b>열 출입</div><h2>반사 — 반사율</h2></div>
-  <div class="lead" data-in="200">태양 빛은 구름이나 지표에서 반사되어 우주 공간으로 되돌아 나가기도 한다.<br><span style="font-weight:500;color:var(--t2)">반사율은 구름의 양이나 지표가 눈, 흙, 식물 등으로 덮인 정도에 따라 달라진다.</span></div>
-  <svg class="full-svg" viewBox="0 0 1920 1080" id="s19-svg"></svg>
-  <div class="ws-card st eq" id="s19-card" style="left:840px;top:402px;width:960px;height:588px" data-in="500">
-    <div class="ws-row"><span class="tm term">반사율</span><span>물체가 빛을 받았을 때 <span class="bk"><span class="a" data-step="1" data-fx="pop">반사</span><span class="n">1</span></span>하는 정도</span></div>
-    <div class="ws-row"><span class="tm">반사율이 높은 것</span><span>금방 내린 눈이나 두꺼운 구름은<br>반사율이 <span class="bk"><span class="a" data-step="2" data-fx="pop">높다</span><span class="n">2</span></span>.</span></div>
-    <div class="ws-row"><span class="tm">반사율이 낮은 것</span><span>어두운색을 띠는 흙이나 풀, 두께가 얇은 구름은<br>반사율이 <span class="bk"><span class="a" data-step="3" data-fx="pop">낮다</span><span class="n">3</span></span>.</span></div>
-  </div>
-  <div class="fine">출처: 《대기과학》, 2016(교과서 89쪽 표) · 막대 = 반사율의 범위</div>
-</section>
-
 <!-- ═══ s20 흡수 ═══ -->
 <section class="slide" id="s20" data-tile="light" data-title="흡수" data-notes="교과서 그림 III-7입니다. 진한 주황 곡선은 대기 최상부에, 연한 곡선은 지표면에 도달하는 태양 복사 에너지의 세기입니다. 1단계 빈칸 ‘온도’: 산란이나 반사와 달리 흡수는 대기와 지표의 온도를 직접적으로 상승시킵니다. 2단계: 두 곡선의 차이를 표시하고 빈칸 ‘작다’ — 지표면에 도달하는 세기가 대기 최상부보다 작습니다. 3단계: 지표면 곡선이 깊게 파인 파장들을 표시하고 빈칸 ‘선택적’ — 대기 중 오존, 산소, 수증기, 이산화 탄소 등이 특정 파장의 빛을 흡수하기 때문입니다(앞에서 배운 선택적 흡수). 4단계 빈칸 ‘모든’: 지표는 거의 모든 파장의 태양 복사 에너지를 흡수합니다. 학생 질문 대비: 두 곡선의 차이에는 흡수뿐 아니라 산란·반사로 되돌아간 몫도 들어 있습니다. 교과서 보충: 대기를 투과해 지표에 도달하는 태양 복사 에너지는 대기의 온도에 직접 영향을 주지 않고, 지표에 흡수되어 지표면을 가열한 뒤 가열된 지표면이 대기 하층을 가열합니다.">
-  <div class="hd" data-in><div class="eb"><b>4</b>열 출입</div><h2>흡수</h2></div>
+  <div class="hd" data-in><div class="eb"><b>3</b>열 출입</div><h2>흡수</h2></div>
   <div class="lead" data-in="200">태양 복사 에너지는 구름이나 대기 중 오존, 수증기 등에 흡수되거나 지표에 흡수된다.<br><span style="font-weight:500">산란이나 반사와 달리 흡수는 대기와 지표의 <span class="bk"><span class="a" data-step="1" data-fx="pop">온도</span><span class="n">1</span></span>를 직접적으로 상승시킨다.</span></div>
   <figure class="pic" id="s20-pic" style="left:120px;top:402px;width:945px;height:588px" data-in="350" data-fx="fade"><img src="img/III.02/p89_태양_복사_에너지의_세기.png" alt="지구 대기 최상부와 지표면에 도달하는 태양 복사 에너지의 세기"></figure>
   <svg id="s20-ov" viewBox="0 0 1164 724" style="position:absolute;left:120px;top:402px;width:945px;height:588px;z-index:3;pointer-events:none;overflow:visible"></svg>
   <div class="ws-card st eq" id="s20-card" style="left:1105px;top:402px;width:695px;height:588px" data-in="450">
     <div class="ws-row"><span class="tm">그래프</span><span>지표면에 도달하는 세기는<br>대기 최상부보다 <span class="bk"><span class="a" data-step="2" data-fx="pop">작다</span><span class="n">2</span></span>.</span></div>
-    <div class="ws-row"><span class="tm term" style="color:var(--air)">대기</span><span>파장에 따라 태양 복사 에너지를<br><span class="bk"><span class="a" data-step="3" data-fx="pop">선택적</span><span class="n">3</span></span>으로 흡수한다.</span></div>
-    <div class="ws-row"><span class="tm term">지표</span><span>거의 <span class="bk"><span class="a" data-step="4" data-fx="pop">모든</span><span class="n">4</span></span> 파장의<br>태양 복사 에너지를 흡수한다.</span></div>
+    <div class="ws-row"><span class="tm">대기</span><span>파장에 따라 태양 복사 에너지를<br><span class="bk"><span class="a" data-step="3" data-fx="pop">선택적</span><span class="n">3</span></span>으로 흡수한다.</span></div>
+    <div class="ws-row"><span class="tm">지표</span><span>거의 <span class="bk"><span class="a" data-step="4" data-fx="pop">모든</span><span class="n">4</span></span> 파장의<br>태양 복사 에너지를 흡수한다.</span></div>
   </div>
   <div class="fine">그림: 교과서 그림 III-7(출처: 《알기 쉬운 대기과학》, 2020)</div>
 </section>
 
-<!-- ═══ s21 굴절 ═══ -->
-<section class="slide" id="s21" data-tile="parchment" data-title="굴절" data-notes="교과서 89쪽 그림 III-8과 굴절 모식도입니다. 1단계 빈칸 ‘속도’: 빛은 밀도가 서로 다른 매질을 통과하면 빛의 속도가 달라져 굴절됩니다(보충: 빛의 속도는 진공에서 가장 빠르고, 대기의 밀도가 클수록 대기 분자와 상호작용하며 느려집니다). 2단계: 실제 태양에서 온 빛이 밀도가 작은 상층에서 밀도가 큰 지표 쪽으로 진행하며 느려져 지표를 향해 휘어 관측자에게 들어오고, 빈칸 ‘지표’. 3단계: 눈은 빛이 들어온 방향의 연장선 위에 태양이 있다고 느끼므로, 태양이 실제보다 높은 곳(보이는 위치)에 보입니다. 4단계 빈칸 ‘보인다’와 사진의 태양: 실제 태양은 이미 수평선 아래로 내려갔지만 굴절 때문에 수평선에 걸려 있는 것처럼 보입니다. 그림은 휘는 정도를 약 10°로 크게 과장했습니다. 실제로 수평선 근처에서 빛이 휘는 정도는 약 0.5°로 태양의 지름 정도이며, 그래서 해가 진 뒤 몇 분 동안 태양이 더 보입니다. 대기 두께도 과장했습니다. 완자에서는 무지개도 굴절로 나타나는 현상의 예로 듭니다.">
-  <div class="hd" data-in><div class="eb"><b>4</b>열 출입</div><h2>굴절</h2></div>
-  <figure class="pic cv" id="s21-pic" style="left:120px;top:250px;width:880px;height:270px" data-in="200" data-fx="fade"><img src="img/III.02/p89_수평선_위로_보이는_태양.jpg" alt="수평선 위로 보이는 태양"><span class="tag">수평선 위로 보이는 태양</span></figure>
-  <svg id="s21-ring" viewBox="0 0 880 270" style="position:absolute;left:120px;top:250px;width:880px;height:270px;z-index:3;pointer-events:none;overflow:visible"><g data-step="4" data-fx="fade"><circle id="s21-ringc" cx="420" cy="150" r="58" fill="none" stroke="#fff" stroke-width="6" stroke-dasharray="14 10"/></g></svg>
-  <div id="s21-box" data-in="300" data-fx="fade"><svg id="s21-svg" viewBox="0 0 880 430"></svg></div>
-  <div class="ws-card st eq" id="s21-card" style="left:1040px;top:250px;width:760px;height:740px" data-in="400">
-    <div class="ws-row"><span class="tm term">굴절</span><span>빛은 밀도가 서로 다른 매질을 통과하면<br>빛의 <span class="bk"><span class="a" data-step="1" data-fx="pop">속도</span><span class="n">1</span></span>가 달라져 굴절된다.</span></div>
-    <div class="ws-row"><span class="tm">대기를 지날 때</span><span>대기의 밀도는 지표에 가까워질수록<br>커지므로, 태양 빛은 <span class="bk"><span class="a" data-step="2" data-fx="pop">지표</span><span class="n">2</span></span>를 향해<br>굴절된다.</span></div>
-    <div class="ws-row"><span class="tm">일몰 때</span><span>태양이 수평선 아래로 내려간 뒤에도<br>한동안 태양이 <span class="bk"><span class="a" data-step="4" data-fx="pop">보인다</span><span class="n">3</span></span>.</span></div>
-  </div>
-  <div class="fine">모식 그림 · 굴절 각도와 대기 두께는 크게 과장(실제로 수평선 근처에서 빛이 휘는 정도는 약 0.5°, 태양 지름 정도)</div>
-</section>
-
 <!-- ═══ s22 지구 열수지 ═══ -->
-<section class="slide" id="s22" data-tile="light" data-title="지구 열수지" data-notes="교과서 90쪽 첫 문단과 지도서 179쪽 교과서 내용 해설입니다. 1단계: 지구에 도달한 태양 복사 에너지 100 중 30은 대기에서 산란되거나 구름과 지표에서 반사되어 우주로 되돌아가고, 나머지 70 중 23은 대기와 구름에, 47은 지표에 흡수됩니다(왼쪽 막대). 2·3단계: 지구는 흡수한 70만큼을 지구 복사 에너지로 우주에 방출합니다. 받는 만큼 내보내므로 저울이 수평을 이룹니다. 4단계: 그래서 지구 전체의 평균 기온은 거의 일정하게 유지됩니다(오른쪽 작은 그래프는 모식). 학생 질문 대비: ‘태양이 계속 에너지를 주는데 왜 지구가 계속 뜨거워지지 않나요?’ → 받는 만큼 우주로 내보내기 때문입니다. 받은 에너지가 쌓이기만 한다면 기온은 계속 오를 것입니다.">
-  <div class="hd" data-in><div class="eb"><b>5</b>지구 열수지</div><h2>지구 열수지</h2></div>
+<section class="slide" id="s22" data-tile="parchment" data-title="지구 열수지" data-notes="교과서 90쪽 첫 문단과 지도서 179쪽 교과서 내용 해설입니다. 1단계: 지구에 도달한 태양 복사 에너지 100 중 30은 대기에서 산란되거나 구름과 지표에서 반사되어 우주로 되돌아가고, 나머지 70 중 23은 대기와 구름에, 47은 지표에 흡수됩니다(왼쪽 막대). 2·3단계: 지구는 흡수한 70만큼을 지구 복사 에너지로 우주에 방출합니다. 받는 만큼 내보내므로 저울이 수평을 이룹니다. 4단계: 그래서 지구 전체의 평균 기온은 거의 일정하게 유지됩니다(오른쪽 작은 그래프는 모식). 학생 질문 대비: ‘태양이 계속 에너지를 주는데 왜 지구가 계속 뜨거워지지 않나요?’ → 받는 만큼 우주로 내보내기 때문입니다. 받은 에너지가 쌓이기만 한다면 기온은 계속 오를 것입니다.">
+  <div class="hd" data-in><div class="eb"><b>4</b>지구 열수지</div><h2>지구 열수지</h2></div>
   <div class="ws-card side" id="s22-card" style="left:120px;top:250px;width:1680px" data-in="200">
     <div class="ws-row"><span class="tm term">지구 열수지</span><span>지구가 태양으로부터 <span class="bk"><span class="a" data-step="1" data-fx="pop">흡수</span><span class="n">1</span></span>하고 <span class="bk"><span class="a" data-step="2" data-fx="pop">방출</span><span class="n">2</span></span>하는 에너지의 양</span></div>
-    <div class="ws-row"><span class="tm">균형</span><span>지구는 태양으로부터 <span class="bk"><span class="a" data-step="3" data-fx="pop">받는 만큼</span><span class="n">3</span></span>의 에너지를 우주 공간으로 방출해 균형을 이룬다.<br>→ 지구 전체의 평균 기온이 거의 <span class="bk"><span class="a" data-step="4" data-fx="pop">일정하게</span><span class="n">4</span></span> 유지된다.</span></div>
+    <div class="ws-row"><span class="tm term">복사 평형</span><span>지구는 태양으로부터 <span class="bk"><span class="a" data-step="3" data-fx="pop">받는 만큼</span><span class="n">3</span></span>의 에너지를 우주 공간으로 방출해 균형을 이룬다.<br>→ 지구 전체의 평균 기온이 거의 <span class="bk"><span class="a" data-step="4" data-fx="pop">일정하게</span><span class="n">4</span></span> 유지된다.</span></div>
   </div>
   <div class="ws-card" id="s22-bar" style="left:120px;top:555px;width:740px;height:435px;padding:0" data-in="350"><svg id="s22-bsvg" viewBox="0 0 740 435" width="740" height="435"></svg></div>
   <div class="ws-card" id="s22-bal" style="left:900px;top:555px;width:900px;height:435px;padding:0" data-in="450"><svg id="s22-lsvg" viewBox="0 0 900 435" width="900" height="435"></svg></div>
 </section>
 
+<!-- ═══ s35 복사 평형과 온실 효과(1학년 통합과학 복습, 교사 PPT 11쪽) ═══ -->
+<section class="slide" id="s35" data-tile="light" data-title="복사 평형과 온실 효과" data-notes="">
+  <div class="hd" data-in><div class="eb"><b>4</b>지구 열수지<span class="rv">1학년 통합과학 복습</span></div><h2>복사 평형과 온실 효과</h2></div>
+  <div class="ws-card side" id="s35-card" style="left:120px;top:250px;width:1680px" data-in="200">
+    <div class="ws-row"><span class="tm term">온실 효과</span><span><b>지표에서 방출</b>하는 지구 복사 에너지(적외선)의 일부를 <b>대기의 온실 기체가 흡수</b>했다가<br><b>지표로 다시 방출(재복사)</b>하여 <b>대기가 없을 때보다 지구의 평균 기온이 높게 유지</b>되는 현상</span></div>
+    <div class="ws-row"><span class="tm term">온실 기체</span><span><b>온실 효과를 일으키는 기체</b><br><b>예) 수증기, 이산화 탄소, 메테인, 산화 이질소, 오존 등</b></span></div>
+  </div>
+  <div class="rv-scene" id="s35-a" style="left:120px;top:615px;width:533px;height:375px" data-step="1" data-fx="fade"><svg id="s35-sa" viewBox="0 0 533 375"></svg></div>
+  <div class="rv-scene" id="s35-b" style="left:693px;top:615px;width:533px;height:375px" data-step="2" data-fx="fade"><svg id="s35-sb" viewBox="0 0 533 375"></svg></div>
+  <div class="rv-scene" id="s35-c" style="left:1266px;top:615px;width:534px;height:375px" data-step="3" data-fx="fade"><svg id="s35-sc" viewBox="0 0 534 375"></svg></div>
+  <div class="fine">모식 그림 · 대기층 두께는 실제보다 크게 그림</div>
+</section>
+
 <!-- ═══ s23 지구 평균 열수지 ═══ -->
-<section class="slide" id="s23" data-tile="parchment" data-title="지구 평균 열수지 해석하기" data-notes="교과서 90쪽 해 보기(지구 평균 열수지 해석하기)의 그림을 띠 그림으로 다시 그렸습니다. 숫자는 교과서와 같고(미국해양대기청 2023), 지구에 도달하는 태양 복사 에너지를 100으로 놓은 값입니다. 띠의 굵기는 에너지양에 비례하고, 한 띠가 갈라지고 합쳐지는 모양으로 에너지가 어디로 나뉘는지 보입니다. 띠가 꺾이거나 나란히 놓인 모양은 흐름을 나눠 보인 것이지 빛이 실제로 지나가는 길이 아닙니다. 1단계: 입사된 태양 복사 에너지 100. 2단계: 30은 대기와 구름의 산란·반사(23)와 지표의 반사(7)로 우주로 되돌아갑니다(해 보기 1번 답 30). 3단계: 나머지 70 중 23은 대기와 구름이, 47은 지표가 흡수합니다. 4단계: 지표의 복사 116 중 104는 대기가 흡수하고, 12는 대기의 창으로 우주에 바로 나갑니다. 5단계: 지표는 잠열 24와 대류·전도 5로도 대기에 에너지를 줍니다(회색·청록 띠: 복사가 아닌 열의 이동). 6단계: 대기는 지표로 98을 재복사하고, 우주로 58을 방출합니다. 58과 12가 합쳐져 방출된 지구 복사 에너지 70이 됩니다. 7단계: 대기 윗면(점선)을 지나는 띠만 보면 들어온 100 = 되돌아간 30 + 나간 70으로 지구 전체가 균형을 이룹니다. 지도서 유의점: 지구 전체뿐 아니라 지표와 대기 각각에서도 에너지 평형이 이루어짐을 다음 장에서 확인합니다.">
-  <div class="hd" data-in><div class="eb"><b>5</b>지구 열수지</div><h2>해 보기 — 지구 평균 열수지 해석하기</h2></div>
+<section class="slide" id="s23" data-tile="parchment" data-title="지구 평균 열수지 해석하기" data-notes="교과서 90쪽 해 보기(지구 평균 열수지 해석하기)의 그림을 띠 그림으로 다시 그렸습니다. 숫자는 교과서와 같고(미국해양대기청 2023), 지구에 도달하는 태양 복사 에너지를 100으로 놓은 값입니다. 띠의 굵기는 에너지양에 비례하고, 한 띠가 갈라지고 합쳐지는 모양으로 에너지가 어디로 나뉘는지 보입니다. 띠가 꺾이거나 나란히 놓인 모양은 흐름을 나눠 보인 것이지 빛이 실제로 지나가는 길이 아닙니다. 1단계(한 번 누르면 아래 순서로 띠가 이어서 그려짐, 그리는 중에 누르면 바로 완성): ① 입사된 태양 복사 에너지 100. ② 30은 대기와 구름의 산란·반사(23)와 지표의 반사(7)로 우주로 되돌아갑니다(해 보기 1번 답 30). ③ 나머지 70 중 23은 대기와 구름이, 47은 지표가 흡수합니다. ④ 지표의 복사 116 중 104는 대기가 흡수하고, 12는 대기의 창으로 우주에 바로 나갑니다. ⑤ 지표는 잠열 24와 대류·전도 5로도 대기에 에너지를 줍니다(회색·청록 띠: 복사가 아닌 열의 이동). ⑥ 대기는 지표로 98을 재복사하고, 우주로 58을 방출합니다. 58과 12가 합쳐져 방출된 지구 복사 에너지 70이 됩니다. 2단계: 대기 윗면(점선)을 지나는 띠만 보면 들어온 100 = 되돌아간 30 + 나간 70으로 지구 전체가 균형을 이룹니다. 지도서 유의점: 지구 전체뿐 아니라 지표와 대기 각각에서도 에너지 평형이 이루어짐을 다음 장에서 확인합니다.">
+  <div class="hd" data-in><div class="eb"><b>4</b>지구 열수지</div><h2>해 보기 — 지구 평균 열수지 해석하기</h2></div>
   <svg class="full-svg" viewBox="0 0 1920 1080"><g id="s23-hb"></g></svg>
-  <div class="note-box" id="s23-sum" style="left:120px;top:850px;width:900px;height:118px;padding:16px 30px" data-step="7" data-fx="up">
+  <div class="note-box" id="s23-sum" style="left:120px;top:850px;width:900px;height:118px;padding:16px 30px" data-step="2" data-fx="up">
     <div style="font-size:28px;font-weight:600;color:var(--t2)">대기 윗면(점선)을 지나는 에너지</div>
     <div style="font-size:38px;font-weight:700;line-height:1.35">들어온 <span class="c-sun">100</span> = 되돌아간 <span class="c-sun">30</span> + 방출된 <span class="c-ir">70</span></div>
   </div>
@@ -960,7 +859,7 @@ html.print #s23-hb .dim,html.print #s24-hb .dim,html.print #s25 .dim{filter:none
 
 <!-- ═══ s24 대기와 지표의 열수지 ═══ -->
 <section class="slide" id="s24" data-tile="light" data-title="대기와 지표의 열수지" data-notes="교과서 91쪽 대기에서의 열수지·지표에서의 열수지와 해 보기 2번입니다. 클릭할 때마다 합계가 0부터 세어 올라가고, 그 칸에 들어가는 띠만 왼쪽 그림에서 진하게 보입니다. 대기: 흡수 = 대기와 구름의 흡수 23 + 잠열 24 + 대류·전도 5 + 지표의 복사 104 = 156(교과서는 지표로부터 받는 24 + 5 + 104를 묶어 133으로 씀), 방출 = 대기와 구름의 방출 58 + 대기의 재복사 98 = 156. 지표: 흡수 = 지표의 흡수 47 + 대기의 재복사 98 = 145, 방출 = 잠열 24 + 대류·전도 5 + 지표의 복사 116 = 145(교과서는 우주로 12 + 대기로 133으로 씀). 지구 전체: 흡수 100 − 30 = 70, 방출 대기의 창 12 + 대기와 구름의 방출 58 = 70. 지도서 유의점: 지구 전체뿐 아니라 지표와 대기에서 각각 에너지 평형이 이루어짐을 알게 합니다. 7·8단계는 교과서 91쪽 문장입니다. 대기가 흡수한 에너지 일부가 지표로 재복사되고, 지표가 이를 다시 대기로 방출하는 과정이 되풀이되어 대기가 없을 때보다 지표 온도가 높게 유지됩니다(온실 효과).">
-  <div class="hd" data-in><div class="eb"><b>5</b>지구 열수지</div><h2>대기와 지표의 열수지</h2></div>
+  <div class="hd" data-in><div class="eb"><b>4</b>지구 열수지</div><h2>대기와 지표의 열수지</h2></div>
   <svg class="full-svg" viewBox="0 0 1920 1080"><g id="s24-hb" data-in="200" data-fx="fade"></g></svg>
   <div class="ws-card eq" id="s24-card" style="left:1034px;top:250px;width:766px;height:335px" data-in="300">
     <div class="ws-row" style="grid-template-columns:1fr"><span>대기에서 흡수하는 에너지 중 일부는<br>온실 효과 때문에 지표로 <span class="bk"><span class="a" data-step="7" data-fx="pop">재복사</span><span class="n">1</span></span>되어<br>지표의 온도를 높이고, 지표는 이 에너지를<br>다시 대기로 방출한다.<br>→ 대기가 없을 때보다 <span class="bk"><span class="a" data-step="8" data-fx="pop">높은</span><span class="n">2</span></span> 온도 유지</span></div>
@@ -976,33 +875,21 @@ html.print #s23-hb .dim,html.print #s24-hb .dim,html.print #s25 .dim{filter:none
   <div class="fine">태양 복사 에너지를 100으로 놓은 값(교과서 90~91쪽) · 왼쪽 그림은 앞 장 띠 그림을 줄인 것 · 각 칸에 들어가는 띠만 진하게 표시</div>
 </section>
 
-<!-- ═══ s25 잠열의 효과 ═══ -->
-<section class="slide" id="s25" data-tile="parchment" data-title="지표에서 대기로 — 잠열" data-notes="교과서 91쪽 문단입니다. 1단계: 지표에서 대기로 이동하는 에너지 중 24는 잠열, 6은 복사, 5는 대류와 전도의 형태로 이동합니다. 복사 6은 지표에서 대기로 복사된 104에서 대기에서 지표로 재복사된 98을 뺀 값입니다(교과서 날개 글). 2단계: 그래서 잠열의 효과가 가장 큽니다. 3·4단계: 잠열은 물이 수증기로 증발할 때 흡수하는 열과 수증기가 물로 응결할 때 방출하는 열입니다. 지표의 물이 증발하며 지표의 열을 가져가고, 하늘에서 수증기가 응결해 구름이 될 때 그 열을 대기에 내놓습니다. 5단계: 이 과정에서 구름이 생기고 비나 눈이 내리는 기상 현상이 일어납니다. 참고서(완자)는 잠열을 숨은열이라고도 부르며, 숨은열 때문에 지표는 냉각되고 상층 대기는 가열되어 위아래 기온 차가 줄어든다고 설명합니다. 지도서 유의점: 잠열의 효과가 가장 크다는 것을 파악해 다음 차시의 구름 생성 과정(단열 변화)으로 연결합니다.">
-  <div class="hd" data-in><div class="eb"><b>5</b>지구 열수지</div><h2>지표에서 대기로 이동하는 에너지</h2></div>
-  <div class="ws-card side" id="s25-card" style="left:120px;top:250px;width:1680px" data-in="200">
-    <div class="ws-row"><span class="tm">효과</span><span>지표에서 대기로 이동하는 에너지 중 <span class="bk"><span class="a" data-step="2" data-fx="pop">잠열</span><span class="n">1</span></span>의 효과가 가장 크다.</span></div>
-    <div class="ws-row"><span class="tm term c-water">잠열</span><span>물이 수증기로 <span class="bk"><span class="a" data-step="3" data-fx="pop">증발</span><span class="n">2</span></span>할 때 흡수하는 열과<br>수증기가 물로 <span class="bk"><span class="a" data-step="4" data-fx="pop">응결</span><span class="n">3</span></span>할 때 방출하는 열</span></div>
-    <div class="ws-row"><span class="tm">기상 현상</span><span>이러한 에너지의 이동 과정에서 <span class="bk"><span class="a" data-step="5" data-fx="pop">구름</span><span class="n">4</span></span>이 생성되고<br>비나 눈이 내리는 기상 현상이 일어난다.</span></div>
-  </div>
-  <div class="ws-card" id="s25-chart" style="left:120px;top:677px;width:820px;height:313px;padding:0" data-in="350"><svg id="s25-csvg" viewBox="0 0 820 313" width="820" height="313"></svg></div>
-  <div class="ws-card" id="s25-scene" style="left:980px;top:677px;width:820px;height:313px;padding:0;overflow:hidden" data-in="450"><svg id="s25-ssvg" viewBox="0 0 820 313" width="820" height="313"></svg></div>
-</section>
-
 <!-- ═══ s26 직접 해 보기 — 온실 기체가 늘면? ═══ -->
-<section class="slide" id="s26" data-tile="light" data-title="직접 해 보기 — 온실 기체가 늘면?" data-notes="교과서 90쪽 해 보기 3번(대기 중 온실 기체의 농도가 증가한다면 지구 표면 온도가 어떻게 달라질지 시뮬레이션해 보자)을 위한 인터랙티브 자료입니다. 조작: 온실 기체의 양 막대를 움직이면 대기(파란 층)의 온실 기체가 늘거나 줄고, 대기가 흡수하는 지표 복사(주황)의 몫이 달라집니다. 늘리는 순간 우주로 나가는 에너지가 들어오는 70보다 적어져(불균형) 지표 온도가 올라가고, 온도가 오르면 지표의 복사가 늘어 나가는 에너지가 다시 70이 되면서 더 높은 온도에서 균형을 이룹니다. 줄이면 반대로 내려갑니다. [지금으로]는 지금의 온실 기체 양으로 되돌립니다. 해 보기 3번 예시 답안: 대기의 재복사 양이 늘어나므로 지구 표면 온도가 높아질 것이다. 단순화한 점: 대기를 한 층으로 놓고, 태양 복사는 대기를 그대로 지나 지표에 흡수된다고 보았으며, 잠열·대류·전도는 뺐습니다. 그래서 화살표 굵기는 에너지양에 비례하지만 앞 장의 교과서 숫자(116, 98 등)와 같지 않아 숫자는 적지 않았습니다. 온실 기체가 없을 때 약 −18 °C, 지금 양일 때 약 15 °C가 되도록 맞췄습니다(완자: 대기가 없을 때 약 −18 °C, 있을 때 약 15 °C). 온도가 바뀌는 빠르기는 보기 좋게 몇 초로 줄였습니다.">
-  <div class="hd" data-in><div class="eb"><b>5</b>지구 열수지</div><h2>직접 해 보기 — 온실 기체가 늘면?</h2></div>
+<section class="slide" id="s26" data-tile="parchment" data-title="직접 해 보기 — 온실 기체가 늘면?" data-notes="교과서 90쪽 해 보기 3번(대기 중 온실 기체의 농도가 증가한다면 지구 표면 온도가 어떻게 달라질지 시뮬레이션해 보자)을 위한 인터랙티브 자료입니다. 조작: 온실 기체의 양 막대를 움직이면 대기(파란 층)의 온실 기체가 늘거나 줄고, 대기가 흡수하는 지표 복사(주황)의 몫이 달라집니다. 늘리는 순간 우주로 나가는 에너지가 들어오는 70보다 적어져(불균형) 지표 온도가 올라가고, 온도가 오르면 지표의 복사가 늘어 나가는 에너지가 다시 70이 되면서 더 높은 온도에서 균형을 이룹니다. 줄이면 반대로 내려갑니다. [지금으로]는 지금의 온실 기체 양으로 되돌립니다. 막대 가운데가 지금의 양입니다(왼쪽 끝 = 없음, 오른쪽 끝 = 지금의 2배, 대기 속 파란 점 수가 양에 비례). 대기가 흡수하는 비율은 왼쪽 반에서 0에서 0.78까지, 오른쪽 반에서 0.78에서 1까지 늘도록 맞췄습니다(양이 늘수록 흡수가 덜 늘어나는 모양). 그래서 가운데에서 오른쪽 끝으로 끌면 지표 온도가 15 °C에서 약 30 °C까지 오릅니다(한 층 모형에서 대기가 지표의 복사를 모두 흡수할 때). 해 보기 3번 예시 답안: 대기의 재복사 양이 늘어나므로 지구 표면 온도가 높아질 것이다. 단순화한 점: 대기를 한 층으로 놓고, 태양 복사는 대기를 그대로 지나 지표에 흡수된다고 보았으며, 잠열·대류·전도는 뺐습니다. 그래서 화살표 굵기는 에너지양에 비례하지만 앞 장의 교과서 숫자(116, 98 등)와 같지 않아 숫자는 적지 않았습니다. 온실 기체가 없을 때 약 −18 °C, 지금 양일 때 약 15 °C가 되도록 맞췄습니다(완자: 대기가 없을 때 약 −18 °C, 있을 때 약 15 °C). 온도가 바뀌는 빠르기는 보기 좋게 몇 초로 줄였습니다.">
+  <div class="hd" data-in><div class="eb"><b>4</b>지구 열수지</div><h2>직접 해 보기 — 온실 기체가 늘면?</h2></div>
   <div class="ia-box" data-in="200" data-fx="fade"><svg id="s26-svg" viewBox="0 0 1680 600"></svg></div>
   <div class="ia-panel" data-in="350">
-    <label>온실 기체의 양 <input id="s26-range" type="range" min="0" max="100" step="1" value="78"><span class="val" id="s26-gv">지금</span></label>
+    <label>온실 기체의 양 <input id="s26-range" type="range" min="0" max="100" step="1" value="50"><span class="val" id="s26-gv">지금</span></label>
     <button class="ia-btn sub" id="s26-reset" type="button">지금으로</button>
     <div class="ia-stat"><div class="st"><i>지표 평균 온도</i><b id="s26-t">15 °C</b></div><div class="st"><i>나가는 / 들어오는 에너지</i><b id="s26-o">70 / 70</b></div></div>
   </div>
-  <div class="fine">대기를 한 층으로 단순화한 모형(모식) · 온실 기체가 없을 때 약 −18 °C, 지금 약 15 °C가 되도록 맞춤 · 화살표 굵기 ∝ 에너지양 · 온도가 바뀌는 시간은 줄여서 보임</div>
+  <div class="fine">대기를 한 층으로 단순화한 모형(모식) · 온실 기체가 없을 때 약 −18 °C, 지금(막대 가운데) 약 15 °C가 되도록 맞춤 · 화살표 굵기 ∝ 에너지양 · 온도가 바뀌는 시간은 줄여서 보임</div>
 </section>
 
 <!-- ═══ s27 열수지 균형과 기후 변화 ═══ -->
-<section class="slide" id="s27" data-tile="parchment" data-title="지구 열수지의 균형과 기후 변화" data-notes="교과서 91쪽 마지막 두 문단과 참고서(완자) 144쪽입니다. 1단계: 대기와 지표는 서로 에너지를 주고받으며 균형을 이루는데, 이 균형이 깨지면 기후 변화가 일어날 수 있습니다. 2~6단계: 최근의 지구 온난화는 산업 혁명 이후 화석 연료 사용량이 늘어 대기 중 온실 기체의 농도가 높아진 것이 주요 원인입니다. 온실 효과가 강화되어 대기가 흡수하는 지구 복사 에너지가 늘고 우주로 나가는 지구 복사 에너지가 줄어(입사하는 태양 복사 에너지 &gt; 방출하는 지구 복사 에너지) 평균 온도가 오릅니다. 7단계: 완자 자료 — 1971년~2020년에 관측한 지구 에너지 불균형(과잉 에너지 약 0.48 ± 0.1 W/m²)과 그 과잉 에너지를 각 권역이 흡수한 비율(바다 89 %, 대륙 6 %, 빙하 4 %, 대기 1 %). 남는 에너지의 대부분은 바다가 흡수합니다. 학생 질문 대비: ‘온실 기체가 더 늘지 않으면 기온이 원래대로 돌아가나요?’ → 완자: 온실 기체 농도가 지금 수준으로 유지되면 지구는 다시 복사 평형에 이르지만, 그때의 평균 기온은 산업화 이전보다 높은 수준에서 유지됩니다.">
-  <div class="hd" data-in><div class="eb"><b>5</b>지구 열수지</div><h2>지구 열수지의 균형과 기후 변화</h2></div>
+<section class="slide" id="s27" data-tile="light" data-title="지구 열수지의 균형과 기후 변화" data-notes="교과서 91쪽 마지막 두 문단과 참고서(완자) 144쪽입니다. 1단계: 대기와 지표는 서로 에너지를 주고받으며 균형을 이루는데, 이 균형이 깨지면 기후 변화가 일어날 수 있습니다. 2~6단계: 최근의 지구 온난화는 산업 혁명 이후 화석 연료 사용량이 늘어 대기 중 온실 기체의 농도가 높아진 것이 주요 원인입니다. 온실 효과가 강화되어 대기가 흡수하는 지구 복사 에너지가 늘고 우주로 나가는 지구 복사 에너지가 줄어(입사하는 태양 복사 에너지 &gt; 방출하는 지구 복사 에너지) 평균 온도가 오릅니다. 7단계: 완자 자료 — 1971년~2020년에 관측한 지구 에너지 불균형(과잉 에너지 약 0.48 ± 0.1 W/m²)과 그 과잉 에너지를 각 권역이 흡수한 비율(바다 89 %, 대륙 6 %, 빙하 4 %, 대기 1 %). 남는 에너지의 대부분은 바다가 흡수합니다. 학생 질문 대비: ‘온실 기체가 더 늘지 않으면 기온이 원래대로 돌아가나요?’ → 완자: 온실 기체 농도가 지금 수준으로 유지되면 지구는 다시 복사 평형에 이르지만, 그때의 평균 기온은 산업화 이전보다 높은 수준에서 유지됩니다.">
+  <div class="hd" data-in><div class="eb"><b>4</b>지구 열수지</div><h2>지구 열수지의 균형과 기후 변화</h2></div>
   <div class="ws-card side" id="s27-card" style="left:120px;top:250px;width:1680px" data-in="200">
     <div class="ws-row"><span class="tm">균형</span><span>대기와 지표는 에너지를 흡수·방출하며 서로 주고받아 균형을 이루는데,<br>이러한 열수지의 균형이 깨지면 <span class="bk"><span class="a" data-step="1" data-fx="pop">기후 변화</span><span class="n">1</span></span>가 일어날 수 있다.</span></div>
   </div>
@@ -1018,28 +905,18 @@ html.print #s23-hb .dim,html.print #s24-hb .dim,html.print #s25 .dim{filter:none
   <div class="fine">오른쪽: 참고서(완자) 144쪽 — 1971년~2020년에 관측한 지구 에너지 불균형과 각 권역이 과잉 에너지를 흡수한 비율</div>
 </section>
 
-<!-- ═══ s28 확인 문제 — 지구 열수지 ═══ -->
-<section class="slide" id="s28" data-tile="light" data-title="확인 문제 — 지구 열수지" data-notes="학생이 먼저 풀게 한 뒤 클릭하면 정답과 풀이가 나옵니다. ㄱ. 해 보기 1번: 대기와 구름의 산란·반사 23 + 지표의 반사 7 = 30(옳음). ㄴ. 해 보기 2번: 대기는 흡수 156 = 방출 156으로 균형(틀림). 흡수가 더 많다면 대기의 온도가 계속 올라갈 것입니다. ㄷ. 스스로 확인하기 창의력 더하기: 구름은 지표에서 방출되는 에너지를 흡수했다가 다시 지표로 방출하므로, 이 과정이 반복되면 지표가 냉각되는 속도가 느려집니다(옳음). 그래서 바람이 불지 않고 구름이 두껍게 낀 밤이 구름 없는 밤보다 기온이 높습니다. ①은 ㄷ을, ③·⑤는 ㄴ을 옳다고 본 경우입니다.">
-  <div class="qz" style="gap:22px">
-    <div class="qz-eb" data-in><b>확인 문제</b><span class="qz-lv">지구 열수지</span></div>
-    <div class="qz-stem" data-in="150">지구에 도달하는 태양 복사 에너지의 양을 100이라고 할 때, 지구의 평균 열수지에 대한<br>설명으로 옳은 것만을 &lt;보기&gt;에서 있는 대로 고른 것은?</div>
-    <div class="qz-box" data-in="300">
-      <div>ㄱ. 지구에 도달한 태양 복사 에너지 중 대기와 지표에서 반사되는 에너지는 30이다.</div>
-      <div>ㄴ. 대기가 흡수하는 에너지의 양은 대기가 방출하는 에너지의 양보다 많다.</div>
-      <div>ㄷ. 바람이 불지 않는 밤에 구름이 두껍게 끼면 구름이 없을 때보다 지표가 냉각되는 속도가 느리다.</div>
-    </div>
-    <ol class="qz-ch row" data-in="450">
-      <li><span class="qz-n">①</span><span>ㄱ</span></li>
-      <li><span class="qz-n">②</span><span>ㄴ</span></li>
-      <li><span class="qz-n">③</span><span>ㄱ, ㄴ</span></li>
-      <li><span class="qz-hl" data-step="1" data-fx="fade"></span><span class="qz-n">④</span><span>ㄱ, ㄷ</span><span class="qz-mark" data-step="1" data-fx="pop">정답</span></li>
-      <li><span class="qz-n">⑤</span><span>ㄴ, ㄷ</span></li>
-    </ol>
-    <div class="qz-why" data-step="1" data-fx="up">
-      <div class="qz-why-h">정답 ④ · 풀이</div>
-      <div class="qz-why-t">ㄱ. 대기와 구름의 산란·반사 <b>23</b> + 지표의 반사 <b>7</b> = <b>30</b>(옳음)<br>ㄴ. 대기는 흡수 <b>156</b> = 방출 <b>156</b>으로 균형을 이룬다(틀림)<br>ㄷ. 구름이 지표에서 방출된 에너지를 흡수했다가 다시 지표로 방출 → 냉각이 <b>느려진다</b>(옳음)</div>
-    </div>
+<!-- ═══ s30 스스로 확인하기 — 지구 열수지 ═══ -->
+<section class="slide" id="s30" data-tile="parchment" data-title="스스로 확인하기 — 지구 열수지" data-notes="교과서 91쪽 스스로 확인하기. 장에 들어가면 문제 세 개가 먼저 나오고, 클릭할 때마다 예시 답안이 1 → 2 → 3번 순서로 나옵니다. 학생들이 먼저 답해 보게 한 뒤 하나씩 보여 주세요. 관련 장: 1번은 ‘지표와 대기의 열 출입’, 2번은 ‘지구의 기온은 왜 계속 오르지 않을까?’와 ‘지구 열수지’, 3번은 ‘온실 효과’와 ‘대기와 지표의 열수지’(재복사). 예시 답안은 교과서 교사용 그대로입니다.">
+  <div class="hd" data-in><div class="eb"><b>4</b>지구 열수지</div><h2>스스로 확인하기 — 지구 열수지</h2></div>
+  <div class="sc-list">
+    <div class="sc-q" data-in="300"><span class="no">1</span><span>태양 복사 에너지가 지구의 대기에 도달할 때 일어나는 물리 과정을 설명해 보자.</span>
+      <div class="sc-a" data-step="1" data-fx="up"><span class="h">예시 답안</span>지구의 대기에 도달한 태양 빛은 기체나 미세한 먼지 입자 등에 의해 산란되거나, 구름이나 지표에서 반사되어 우주 공간으로 되돌아 나가기도 한다. 또 구름이나 지표, 대기에 흡수되기도 하고, 대기의 밀도가 큰 지표를 향해 굴절되기도 한다.</div></div>
+    <div class="sc-q" data-in="450"><span class="no">2</span><span>지구 전체의 평균 기온이 거의 일정하게 유지되는 까닭을 설명해 보자.</span>
+      <div class="sc-a" data-step="2" data-fx="up"><span class="h">예시 답안</span>지구가 태양으로부터 받는 만큼의 에너지를 우주 공간으로 방출해 균형을 이루고 있기 때문이다.</div></div>
+    <div class="sc-q" data-in="600"><span class="no">3</span><span><span class="cr">| 창의력 더하기 |</span>밤에 바람이 불지 않고 구름이 두껍게 낀 경우가 구름이 없는 경우보다 기온이 높다. 그 까닭을 설명해 보자.</span>
+      <div class="sc-a" data-step="3" data-fx="up"><span class="h">예시 답안</span>구름은 지표에서 방출되는 에너지를 흡수했다가 다시 지표로 방출한다. 이러한 과정이 반복되면 지표가 냉각되는 속도는 느려지므로 밤에 바람이 불지 않고 구름이 두껍게 낀 경우가 구름이 없는 경우보다 기온이 높다.</div></div>
   </div>
+  <div class="fine">교과서 91쪽 스스로 확인하기 · 예시 답안: 교과서(교사용)</div>
 </section>
 
 <div id="kwbar-host"></div>
@@ -1049,9 +926,9 @@ html.print #s23-hb .dim,html.print #s24-hb .dim,html.print #s25 .dim{filter:none
 <div id="progress"><i></i></div>
 <div id="stepdots"></div>
 <div id="hud">
-  <button id="b-prev" aria-label="이전"><svg viewBox="0 0 20 20"><path d="M12.5 4 6.5 10l6 6"/></svg></button>
+  <button id="b-prev" aria-label="이전 장"><svg viewBox="0 0 20 20"><path d="M12.5 4 6.5 10l6 6"/></svg></button>
   <div class="count" id="count">1 / 1</div>
-  <button id="b-next" aria-label="다음"><svg viewBox="0 0 20 20"><path d="M7.5 4l6 6-6 6"/></svg></button>
+  <button id="b-next" aria-label="다음 장 (남은 단계 건너뜀)"><svg viewBox="0 0 20 20"><path d="M7.5 4l6 6-6 6"/></svg></button>
   <button id="b-pause" aria-label="애니메이션 일시정지 (P)"><svg class="i-pause" viewBox="0 0 20 20"><path d="M7 4.5v11M13 4.5v11"/></svg><svg class="i-play" viewBox="0 0 20 20"><path d="M7 4.5l9 5.5-9 5.5z"/></svg></button>
   <button id="b-mark" aria-label="책갈피 (M)"><svg viewBox="0 0 20 20"><path d="M5.5 3h9v14l-4.5-3.5L5.5 17z"/></svg></button>
   <button id="b-notes" aria-label="발표자 노트 (N)"><svg viewBox="0 0 20 20"><path d="M4 5h12M4 10h12M4 15h7"/></svg></button>
@@ -1064,6 +941,8 @@ html.print #s23-hb .dim,html.print #s24-hb .dim,html.print #s25 .dim{filter:none
 <div class="overlay" id="help"><div class="box"><h3>단축키</h3><table>
   <tr><td><kbd>→</kbd> <kbd>Space</kbd></td><td>다음 (클릭도 가능)</td></tr>
   <tr><td><kbd>←</kbd></td><td>이전</td></tr>
+  <tr><td>휠 아래로 · 아래 ▶ 버튼</td><td>다음 장 (남은 단계 건너뜀)</td></tr>
+  <tr><td>휠 위로 · 아래 ◀ 버튼</td><td>이전 장</td></tr>
   <tr><td><kbd>N</kbd></td><td>발표자 노트</td></tr>
   <tr><td><kbd>O</kbd></td><td>목차 (누르면 그 장으로)</td></tr>
   <tr><td><kbd>B</kbd> <kbd>W</kbd></td><td>검은 화면 / 흰 화면</td></tr>
@@ -1308,6 +1187,24 @@ function prev(){
   if(OV)return;
   if(Deck.k>0)show(Deck.i,Deck.k-1,{instant:true});
   else if(Deck.i>0){const p=Deck.list[Deck.i-1];show(Deck.i-1,stepsOf(p),{instant:true});}
+}
+/* 장 단위 넘기기(2026-10-29 교사 요청): 아래 메뉴 ◀ ▶ 버튼과 휠은 단계를 건너뛰고 장을 넘긴다(화면 누르기·방향키는 단계씩).
+   다음 장은 처음부터, 이전 장은 다 나온 상태로(← 키로 앞 장에 갈 때와 같음) */
+function nextPage(){if(OV)return;if(Deck.i<Deck.list.length-1)show(Deck.i+1,0);}
+function prevPage(){if(OV)return;if(Deck.i>0){const p=Deck.list[Deck.i-1];show(Deck.i-1,stepsOf(p),{instant:true});}else if(Deck.k>0)show(0,0,{instant:true});}
+/* 휠: 아래로 굴리면 다음 장, 위로 굴리면 이전 장. 트랙패드처럼 휠 신호가 길게 이어져도 한 번만 넘기고, 휠이 0.25초 멈춘 뒤에 다시 받는다.
+   노트·책갈피 창처럼 스스로 스크롤되는 곳 위, 도움말·화면 끄기 중에는 넘기지 않음. 옆으로 미는 휠은 무시 */
+const WH={sum:0,lock:false,t:0};
+function whScrolls(el,dy){for(let n=el;n&&n.nodeType===1&&n!==document.body;n=n.parentElement){const s=getComputedStyle(n).overflowY;if((s==='auto'||s==='scroll')&&n.scrollHeight>n.clientHeight+1&&(dy>0?n.scrollTop+n.clientHeight<n.scrollHeight-1:n.scrollTop>0))return true;}return false;}
+function whNav(e){
+  if(Math.abs(e.deltaX)>Math.abs(e.deltaY))return;
+  if((e.target.closest&&e.target.closest('#markbox,#resume,#help,#notes'))||helpEl.classList.contains('show')||blankEl.className||whScrolls(e.target,e.deltaY))return;
+  e.preventDefault();
+  clearTimeout(WH.t);WH.t=setTimeout(()=>{WH.lock=false;WH.sum=0;},250);
+  if(WH.lock)return;
+  WH.sum+=e.deltaY*(e.deltaMode?40:1);
+  if(Math.abs(WH.sum)<30)return;
+  WH.lock=true;if(WH.sum>0)nextPage();else prevPage();
 }
 
 /* 크롬(컨트롤) */
@@ -1564,11 +1461,12 @@ function zoomInit(){
   addEventListener('gesturestart',e=>{e.preventDefault();if(touchDev||!zvOK())return;PZ.g={z0:ZV.z,p:zvPoint(e.clientX,e.clientY)};},{passive:false});
   addEventListener('gesturechange',e=>{e.preventDefault();if(touchDev||!PZ.g||!zvOK())return;zvSet(PZ.g.z0*e.scale,PZ.g.p,e.clientX,e.clientY);},{passive:false});
   addEventListener('gestureend',e=>{e.preventDefault();PZ.g=null;},{passive:false});
-  // 크롬·엣지·파이어폭스: 트랙패드 핀치와 Ctrl+휠 = 확대, 확대 중 두 손가락 스크롤·휠 = 옮기기
+  // 크롬·엣지·파이어폭스: 트랙패드 핀치와 Ctrl+휠 = 확대, 확대 중 두 손가락 스크롤·휠 = 옮기기, 그 밖의 휠 = 장 넘기기(whNav)
   addEventListener('wheel',e=>{
     if(!zvOK()||!inVp(e))return;
     if(e.ctrlKey){e.preventDefault();if(PZ.g)return;const d=Math.max(-50,Math.min(50,e.deltaY*(e.deltaMode?20:1)));zvSet(ZV.z*Math.exp(-d*0.01),zvPoint(e.clientX,e.clientY),e.clientX,e.clientY);}
     else if(ZV.z>1.01){e.preventDefault();ZV.x-=e.deltaX;ZV.y-=e.deltaY;zvClamp();stApply(false);}
+    else whNav(e);
   },{passive:false});
   addEventListener('dblclick',e=>{if(ZV.z>1.01&&!e.target.closest('#hud,#zbadge,.ia-panel,#pv'))zvReset();});
 }
@@ -1928,8 +1826,8 @@ Deck.start=function(){
   buildKw();
   ovl=document.createElement('div');ovl.id='ovl';stage.appendChild(ovl);
   fit();addEventListener('resize',()=>{pvLayout();fit();});zoomInit();
-  document.getElementById('b-prev').onclick=prev;
-  document.getElementById('b-next').onclick=next;
+  document.getElementById('b-prev').onclick=prevPage;   // 아래 메뉴 ◀ ▶ = 장 단위(단계 건너뜀)
+  document.getElementById('b-next').onclick=nextPage;
   document.getElementById('b-mark').onclick=openMark;
   document.getElementById('b-pause').onclick=e=>{e.stopPropagation();setPause(!PAUSED);e.currentTarget.blur();};
   document.getElementById('b-notes').onclick=()=>setNotes(!notesEl.classList.contains('show'));
@@ -1992,8 +1890,8 @@ Deck.start=function(){
 <script>
 /* ═══ 장면: 지구의 대기와 생명체 · 지구 열수지 수업 ═══ */
 const {U}=Deck;
-window.KW={items:['대기의 조성','선택적 흡수','생명체의 존재 조건','열 출입','지구 열수지'],
-  at:[-1,-1,-1,0,1,1,1,1,2,2,2,2,2,2,-1,-1,3,3,3,3,3,4,4,4,4,4,4,-1]};
+window.KW={items:['선택적 흡수','생명체의 존재 조건','열 출입','지구 열수지'],
+  at:[-1,-1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,2,2,2,3,3,3,3,3,3,3]};
 const $id=id=>document.getElementById(id);
 const TAU=Math.PI*2, D2R=Math.PI/180;
 const f1=v=>(+v).toFixed(1);
@@ -2099,63 +1997,6 @@ Deck.scene('s01',{enter(c){
   if(PRINT)return;
   c.loop(t=>s01draw(c,t+2.6));
 }});
-
-/* ── s04 지구 대기의 조성: 도넛 그래프(부피비, 건조 공기) + 마지막 1 %를 100배로 늘린 확대 막대 ──
-   조각은 맨 아래(90°)에서 시계 방향으로: 질소 78 · 산소 21 · 아르곤 0.93 · 이산화 탄소 0.04 · 기타 0.03 */
-const S04={cx:330,cy:285,R:255,r:140,a0:90,sl:[
-  {k:'n2',name:'질소',v:78,fill:'#64D2FF'},{k:'o2',name:'산소',v:21,fill:'#0077B6'},
-  {k:'ar',name:'아르곤',v:.93,fill:'#6e6e73'},{k:'co2',name:'이산화 탄소',v:.04,fill:'#24408e'},{k:'etc',name:'기타',v:.03,fill:'#c7c7cc'}]};
-function s04arc(R,r,a1,a2){
-  const {cx,cy}=S04,p=(rad,a)=>f1(cx+rad*Math.cos(a*D2R))+' '+f1(cy+rad*Math.sin(a*D2R)),big=(a2-a1)>180?1:0;
-  return 'M'+p(R,a1)+' A'+R+' '+R+' 0 '+big+' 1 '+p(R,a2)+' L'+p(r,a2)+' A'+r+' '+r+' 0 '+big+' 0 '+p(r,a1)+'Z';
-}
-function s04build(c){
-  const g=c.$('#s04-chart');g.innerHTML='';
-  let a=S04.a0;
-  c.sl=S04.sl.map(s=>{const o=Object.assign({},s);o.a1=a;a+=s.v*3.6;o.a2=a;
-    o.el=svgEl('path',{fill:s.fill,stroke:'#fff','stroke-width':s.v>=1?3:0,'stroke-linejoin':'round'},g);return o;});
-  const lab=(s,col)=>{const am=(s.a1+s.a2)/2*D2R,x=S04.cx+197*Math.cos(am),y=S04.cy+197*Math.sin(am);
-    const t=svgEl('text',{'text-anchor':'middle','font-size':34,'font-weight':800,fill:col,opacity:0},g);
-    svgEl('tspan',{x:f1(x),y:f1(y-4)},t).textContent=s.name;svgEl('tspan',{x:f1(x),y:f1(y+36)},t).textContent=s.v+' %';return t;};
-  c.lN=lab(c.sl[0],'#1d1d1f');c.lO=lab(c.sl[1],'#fff');
-  const h=svgEl('text',{'text-anchor':'middle','font-size':30,'font-weight':700,fill:'#6e6e73'},g);
-  svgEl('tspan',{x:S04.cx,y:S04.cy-6},h).textContent='건조 공기';svgEl('tspan',{x:S04.cx,y:S04.cy+32},h).textContent='(부피비)';
-  c.hw=txt(g,S04.cx,S04.cy+74,'수증기 제외',{'text-anchor':'middle','font-size':28,'font-weight':800,style:'fill:var(--water)',opacity:0});
-  // 확대: 도넛 맨 아래의 마지막 1 %(86.4°~90°)를 막대(폭 640 = 1 %)로. 90° 끝(x 330) → 막대 왼쪽, 86.4° 끝 → 막대 오른쪽
-  const z=c.zoom=svgEl('g',{opacity:0},g);
-  const pa=deg=>[S04.cx+S04.R*Math.cos(deg*D2R),S04.cy+S04.R*Math.sin(deg*D2R)];
-  const [x1,y1]=pa(90),[x2,y2]=pa(86.4);
-  svgEl('polygon',{points:f1(x1)+','+f1(y1)+' 20,590 660,590 '+f1(x2)+','+f1(y2),fill:'#1d1d1f','fill-opacity':.05},z);
-  svgEl('line',{x1:f1(x1),y1:f1(y1),x2:20,y2:590,stroke:'#8e8e93','stroke-width':2,'stroke-dasharray':'7 6'},z);
-  svgEl('line',{x1:f1(x2),y1:f1(y2),x2:660,y2:590,stroke:'#8e8e93','stroke-width':2,'stroke-dasharray':'7 6'},z);
-  txt(z,340,578,'100배 확대',{'text-anchor':'middle','font-size':26,'font-weight':700,fill:'#6e6e73'});
-  svgEl('rect',{x:20,y:590,width:19.2,height:52,fill:'#c7c7cc'},z);
-  c.bC=svgEl('rect',{x:39.2,y:590,width:25.6,height:52,fill:'#24408e'},z);
-  svgEl('rect',{x:64.8,y:590,width:595.2,height:52,fill:'#6e6e73'},z);
-  txt(z,362,627,'아르곤 0.93 %',{'text-anchor':'middle','font-size':28,'font-weight':800,fill:'#fff'});
-  svgEl('rect',{x:20,y:668,width:26,height:26,rx:5,fill:'#c7c7cc'},z);
-  txt(z,56,692,'기타 0.03 %',{'font-size':28,'font-weight':700,fill:'#6e6e73'});
-  svgEl('rect',{x:236,y:668,width:26,height:26,rx:5,fill:'#24408e'},z);
-  c.lC=txt(z,272,692,'이산화 탄소 0.04 %',{'font-size':28,'font-weight':800,fill:'#24408e'});
-}
-function s04draw(c,p){
-  const lim=S04.a0+360*p;
-  c.sl.forEach(s=>{const e=Math.min(s.a2,lim);s.el.setAttribute('d',e>s.a1+.001?s04arc(S04.R,S04.r,s.a1,e):'');});
-}
-Deck.scene('s04',{
-  enter(c){
-    s04build(c);s04draw(c,0);
-    c.a(c.$('#s04-chart'),[{opacity:0},{opacity:1}],{dur:400,delay:150});
-    c.tween(1800,p=>s04draw(c,p),{ease:'inOut',delay:250}).then(()=>{c.a(c.lN,[{opacity:0},{opacity:1}],{dur:500});c.a(c.lO,[{opacity:0},{opacity:1}],{dur:500,delay:120});});
-  },
-  go(c,k){
-    const foc={1:'n2',2:'o2',4:'co2'}[k];
-    c.sl.forEach(s=>s.el.classList.toggle('dim',!!foc&&s.k!==foc));
-    c.lN.classList.toggle('dim',!!foc&&foc!=='n2');c.lO.classList.toggle('dim',!!foc&&foc!=='o2');
-    if(k===3)c.a(c.hw,[{opacity:0},{opacity:1}],{dur:500});
-    if(k===4){c.a(c.zoom,[{opacity:0},{opacity:1}],{dur:700});c.bC.setAttribute('stroke','#1d1d1f');c.bC.setAttribute('stroke-width','3');}
-  }
-});
 
 /* ── s05 태양 복사와 지구 복사: 교과서 그림 III-2와 같은 축에 흑체 복사(플랑크 곡선)를 계산해 그림 ──
    M(λ,T) = 2πhc² / λ⁵ / (e^(hc/λkT) − 1)  [W/(m²·μm)], λ는 μm. 태양 5800 K(0.1~2.4 μm), 지구 288 K(5~30 μm) */
@@ -2407,7 +2248,7 @@ Deck.scene('s08',{enter(c){
 }});
 
 /* ═════ g2 ═════ */
-/* ═══ ③ 생명체의 존재 조건(s09~s15) ═══ */
+/* ═══ ③ 생명체의 존재 조건(s09~s14) ═══ */
 
 /* ── s10 직접 해 보기 — 별이 밝아지면? ──
    생명 가능 지대 경계 = 현재 태양일 때의 경계(지구 궤도 반지름의 0.8배~1.27배 — 교과서 그림 III-4에서 잰 값: 금성과 화성 사이, 지구가 띠의 가운데쯤) × √광도
@@ -2556,70 +2397,82 @@ Deck.scene('s11',{
   }
 });
 
-/* ── s12 오존의 생성과 소멸(교과서 87쪽 여백 그림) ──
-   ① O₂ + 자외선 → O + O  ② O + O₂ → O₃  ③ O₃ + 자외선 → O₂ + O
-   점선 원 = 반응 전, 색칠한 원 = 움직이는 원자. 빈칸 3(자외선)부터 세 반응이 차례로 움직이며 되풀이(한 번에 10초).
-   그 전과 인쇄에서는 반응이 끝난 모습(반응식 전체)을 보인다 */
-const S12={R:28,rows:[170,346,522],T:10,
-  A:[[[150,0,440,0],[205,0,590,0]],
-     [[100,0,470,14],[210,0,525,-18],[265,0,580,14]],
-     [[130,14,430,0],[185,-18,485,0],[240,14,610,0]]],
-  B0:[[[0,1]],[[1,2]],[[0,1],[1,2]]],B1:[[],[[0,1],[1,2]],[[0,1]]],
-  S0:[[['O₂',177]],[['O',100],['O₂',237]],[['O₃',185]]],
-  S1:[[['O',440],['O',590]],[['O₃',525]],[['O₂',457],['O',610]]],
-  P0:[[],[155],[]],P1:[[515],[],[548]],
-  UV:[[30,-58,124,-24],null,[30,-58,152,-36]]};
-function s12build(c){
-  const g=c.$('#s12-svg');g.innerHTML='';const R=S12.R;
-  txt(g,340,48,'오존층에서 자외선을 흡수하는 과정',{'font-size':30,'font-weight':800,fill:'#1d1d1f','text-anchor':'middle'});
-  c.rw=S12.rows.map((cy,i)=>{
-    const o={cy,bg:svgEl('rect',{x:16,y:cy-86,width:648,height:162,rx:18,fill:'#fff'},g)};
-    const sym=(s,x,y,col,parent)=>txt(parent||g,x,y,s,{'font-size':26,'font-weight':800,fill:col,'text-anchor':'middle'});
-    const atom=(p,x,y,dash)=>{if(dash)svgEl('circle',{cx:x,cy:y,r:R,fill:'none',stroke:'#0077B6','stroke-width':2.5,'stroke-dasharray':'6 6',opacity:.6},p);
-      else{svgEl('circle',{cx:x,cy:y,r:R,fill:'#bfe3fb',stroke:'#0077B6','stroke-width':3},p);txt(p,x,y+9,'O',{'font-size':26,'font-weight':800,fill:'#0b4f73','text-anchor':'middle'});}};
-    // 반응 전(점선) — 결합선과 원, 기호
-    S12.B0[i].forEach(([a,b])=>{const A=S12.A[i][a],B=S12.A[i][b];svgEl('line',{x1:A[0],y1:cy+A[1],x2:B[0],y2:cy+B[1],stroke:'#0077B6','stroke-width':5,'stroke-dasharray':'6 6',opacity:.6},g);});
-    S12.A[i].forEach(A=>atom(g,A[0],cy+A[1],true));
-    S12.S0[i].forEach(([s,x])=>sym(s,x,cy+62,s==='O₃'?'#8944AB':'#0b4f73'));
-    S12.P0[i].forEach(x=>txt(g,x,cy+12,'+',{'font-size':40,'font-weight':700,fill:'#6e6e73','text-anchor':'middle'}));
-    txt(g,345,cy+14,'→',{'font-size':48,'font-weight':700,fill:'#6e6e73','text-anchor':'middle'});
-    // 자외선(보라 물결)
-    if(S12.UV[i]){const u=S12.UV[i];o.uv=svgEl('path',{fill:'none',stroke:'#8944AB','stroke-width':4,'stroke-linecap':'round'},g);
-      o.uvh=svgEl('polygon',{fill:'#8944AB'},g);o.uvL=txt(g,u[0],cy+u[1]-10,'자외선',{'font-size':26,'font-weight':800,fill:'#8944AB'});}
-    // 반응 후 기호와 + (원자가 도착하면 나타남)
-    o.s1=svgEl('g',{},g);S12.S1[i].forEach(([s,x])=>sym(s,x,cy+62,s==='O₃'?'#8944AB':'#0b4f73',o.s1));
-    S12.P1[i].forEach(x=>txt(o.s1,x,cy+12,'+',{'font-size':40,'font-weight':700,fill:'#6e6e73','text-anchor':'middle'}));
-    // 움직이는 원자와 결합선
-    o.mv=svgEl('g',{},g);
-    o.bd0=S12.B0[i].map(()=>svgEl('line',{stroke:'#0077B6','stroke-width':7},o.mv));
-    o.bd1=S12.B1[i].map(()=>svgEl('line',{stroke:'#0077B6','stroke-width':7},o.mv));
-    o.at=S12.A[i].map(()=>{const a=svgEl('g',{},o.mv);atom(a,0,0,false);return a;});
-    return o;});
-  txt(g,340,630,'O₂ 산소 분자 · O 산소 원자 · O₃ 오존',{'font-size':26,'font-weight':700,fill:'#6e6e73','text-anchor':'middle'});
+/* ── s12 대기와 오존층 일러스트(2026-10-29 교사 요청: 오존 반응 그림 대신 오존층·온실 효과 그림, 칸 680×644) ──
+   대기를 옆에서 본 모식 단면: 위에 태양, 보라 띠 = 오존층(성층권), 파란 점 층 = 온실 기체, 아래 지표와 나무.
+   노란 짧은 물결 = 가시광선(대기를 지나 지표에 닿음), 보라 더 짧은 물결 = 자외선(오존층에서 흡수), 주황 긴 물결 = 적외선(지구 복사).
+   빈칸과 함께: 2단계 '성층권' 표시, 3단계 자외선 흡수, 4단계 적외선 흡수·지표로 재복사와 15 °C. 높이·두께는 실제와 다름 */
+const S12={W:680,oz:[112,196],gh:[300,450],gy:540,hl:22,hw:12,
+  G:{vis:[604,94,530,536],uv:[588,86,352,150],up:[196,538,196,326],back:[286,404,286,536]}};
+/* 끝에 화살 머리가 붙는 물결(물결은 머리 밑동까지, 끝 반 파장 동안 진폭이 0으로 줄어 머리와 이어짐) */
+function s12wv(x1,y1,x2,y2,lam,amp,ph){
+  const dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L,nx=-uy,ny=ux,Lb=L-S12.hl+2,p=[];
+  const at=s=>{const e=clamp((Lb-s)/(lam*.5),0,1),o=amp*e*Math.sin(TAU*(s/lam-ph));return f1(x1+ux*s+nx*o)+' '+f1(y1+uy*s+ny*o);};
+  for(let s=0;s<Lb;s+=3)p.push(at(s));
+  p.push(at(Lb));
+  return 'M'+p.join(' L');
 }
+function s12head(par,x1,y1,x2,y2,col){
+  const dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L,bx=x2-ux*S12.hl,by=y2-uy*S12.hl,hw=S12.hw;
+  return svgEl('polygon',{points:f1(x2)+','+f1(y2)+' '+f1(bx-uy*hw)+','+f1(by+ux*hw)+' '+f1(bx+uy*hw)+','+f1(by-ux*hw),fill:col},par);
+}
+(function(){
+  const g=$id('s12-svg');if(!g)return;const {W,oz,gh,gy,G}=S12;
+  const defs=svgEl('defs',{},g),sk=svgEl('linearGradient',{id:'s12-sky',x1:0,y1:0,x2:0,y2:1},defs);
+  svgEl('stop',{offset:0,'stop-color':'#cfdaf0'},sk);svgEl('stop',{offset:1,'stop-color':'#f4f9fe'},sk);
+  const fl=svgEl('filter',{id:'s12-gl',x:'-100%',y:'-100%',width:'300%',height:'300%'},defs);svgEl('feGaussianBlur',{stdDeviation:10},fl);
+  svgEl('rect',{width:W,height:644,fill:'url(#s12-sky)'},g);
+  // 오존층(성층권): 보라 띠 + 오존(점)
+  svgEl('rect',{x:0,y:oz[0],width:W,height:oz[1]-oz[0],fill:'#8944AB','fill-opacity':.15},g);
+  oz.forEach(y=>svgEl('line',{x1:0,y1:y,x2:W,y2:y,stroke:'#8944AB','stroke-width':2,'stroke-dasharray':'10 8','stroke-opacity':.45},g));
+  for(let i=0;i<20;i++)svgEl('circle',{cx:f1(170+rnd(i*11+3)*490),cy:f1(oz[0]+14+rnd(i*5+8)*(oz[1]-oz[0]-28)),r:5,fill:'#8944AB','fill-opacity':.5},g);
+  // 온실 기체가 들어 있는 층(이름표 자리는 비움)
+  svgEl('rect',{x:0,y:gh[0],width:W,height:gh[1]-gh[0],fill:'#64D2FF','fill-opacity':.24},g);
+  for(let i=0,n=0;n<30&&i<200;i++){const x=20+rnd(i*13+5)*640,y=gh[0]+16+rnd(i*7+9)*(gh[1]-gh[0]-32);if(x<390&&y<356)continue;n++;
+    svgEl('circle',{cx:f1(x),cy:f1(y),r:5,fill:'#0077B6','fill-opacity':.45},g);}
+  // 지표와 나무
+  svgEl('rect',{x:0,y:gy,width:W,height:644-gy,fill:'#7d5f43'},g);
+  svgEl('line',{x1:0,y1:gy+2,x2:W,y2:gy+2,stroke:'#5c9b3a','stroke-width':6},g);
+  [[70,30,52],[128,24,40]].forEach(([x,r,h])=>{svgEl('rect',{x:x-6,y:gy-h,width:12,height:h+2,fill:'#6b4a2b'},g);
+    svgEl('circle',{cx:x,cy:gy-h-r*.55,r,fill:'#3f9a3a'},g);svgEl('circle',{cx:x-r*.5,cy:gy-h-r*.05,r:r*.62,fill:'#4caf45'},g);});
+  sunIcon(g,620,58,26,'태양',28,'end');
+  // 이름표
+  txt(g,24,oz[0]+36,'오존층',Object.assign({'font-size':30,'font-weight':800,style:'fill:var(--uv)'},halo('#e7dcf1',6)));
+  txt(g,24,gh[0]+42,'온실 기체',Object.assign({'font-size':30,'font-weight':800,style:'fill:var(--air)'},halo('#d3ecf8',6)));
+  // 가시광선(늘 보임)
+  const W2=(id,col,par)=>svgEl('path',{id:'s12-'+id,fill:'none',stroke:col,'stroke-width':5,'stroke-linecap':'round'},par);
+  W2('wv','#F2B200',g);s12head(g,...G.vis,'#F2B200');
+  txt(g,560,262,'가시광선',Object.assign({'font-size':28,'font-weight':800,style:'fill:var(--sun)','text-anchor':'end'},halo('#e6eff9',6)));
+  // 2단계: 오존층은 성층권에
+  const s2=svgEl('g',{'data-step':'2','data-fx':'fade'},g);
+  txt(s2,24,oz[0]+72,'성층권',Object.assign({'font-size':26,'font-weight':700,fill:'#6b3d86'},halo('#e7dcf1',6)));
+  // 3단계: 자외선이 오존층에서 흡수됨
+  const s3=svgEl('g',{'data-step':'3','data-fx':'fade'},g);
+  svgEl('ellipse',{id:'s12-gu',cx:G.uv[2],cy:G.uv[3],rx:36,ry:22,fill:'#B05BD9',filter:'url(#s12-gl)'},s3);
+  W2('wu','#8944AB',s3);s12head(s3,...G.uv,'#8944AB');
+  txt(s3,G.uv[2],96,'자외선 흡수',Object.assign({'font-size':28,'font-weight':800,style:'fill:var(--uv)','text-anchor':'middle'},halo('#d9e2f3',6)));
+  // 4단계: 적외선을 온실 기체가 흡수했다가 지표로 재복사 → 약 15 °C
+  const s4=svgEl('g',{'data-step':'4','data-fx':'fade'},g);
+  svgEl('ellipse',{id:'s12-gi',cx:G.up[2],cy:G.up[3]+4,rx:38,ry:24,fill:'#FF6A3D',filter:'url(#s12-gl)'},s4);
+  W2('wi','#FF6A3D',s4);s12head(s4,...G.up,'#FF6A3D');
+  W2('wr','#FF6A3D',s4);s12head(s4,...G.back,'#FF6A3D');
+  txt(s4,226,gh[0]+42,'적외선 흡수',Object.assign({'font-size':28,'font-weight':800,style:'fill:var(--ir)'},halo('#d3ecf8',6)));
+  const rl=svgEl('text',Object.assign({'font-size':28,'font-weight':800,style:'fill:var(--ir)'},halo('#eef5fc',6)),s4);
+  svgEl('tspan',{x:304,y:482},rl).textContent='지표로';svgEl('tspan',{x:304,y:516},rl).textContent='적외선 재복사';
+  txt(s4,W/2+40,600,'평균 표면 온도 약 15 °C',{'font-size':28,'font-weight':800,fill:'#ffe6da','text-anchor':'middle'});
+})();
 function s12draw(c,t){
-  const run=c.k>=3&&!PRINT,tm=run?((t-c.t0)%S12.T+S12.T)%S12.T:0,act=run&&tm<9?Math.floor(tm/3):-1;
-  const al=run?(tm>9.3?1-(tm-9.3)/.7:(tm<.3?tm/.3:1)):1;
-  c.rw.forEach((o,i)=>{
-    const cy=o.cy,p=run?sm(clamp((tm-i*3-.9)/1.1,0,1)):1,A=S12.A[i];
-    o.bg.setAttribute('opacity',run?(act===i?1:.45):1);
-    const P=A.map(a=>[lerp(a[0],a[2],p),cy+lerp(a[1],a[3],p)-62*Math.sin(Math.PI*p)]);   // 화살표(→) 위로 넘어가며 이동
-    o.at.forEach((e,j)=>e.setAttribute('transform','translate('+f1(P[j][0])+' '+f1(P[j][1])+')'));
-    const L=(e,[a,b],op)=>{e.setAttribute('x1',f1(P[a][0]));e.setAttribute('y1',f1(P[a][1]));e.setAttribute('x2',f1(P[b][0]));e.setAttribute('y2',f1(P[b][1]));e.setAttribute('opacity',f1(op));};
-    o.bd0.forEach((e,j)=>{const b=S12.B0[i][j],keep=S12.B1[i].some(q=>q[0]===b[0]&&q[1]===b[1]);L(e,b,keep?1:1-clamp(p*2.5,0,1));});
-    o.bd1.forEach((e,j)=>{const b=S12.B1[i][j],had=S12.B0[i].some(q=>q[0]===b[0]&&q[1]===b[1]);L(e,b,had?0:clamp(p*2.5-1.5,0,1));});
-    o.mv.setAttribute('opacity',f1(al));o.s1.setAttribute('opacity',f1(al*clamp(p*1.5-.5,0,1)));
-    if(o.uv){const u=S12.UV[i],x1=u[0],y1=cy+u[1],x2=u[2],y2=cy+u[3],ph=act===i?t*1.6:0,op=run?(act===i&&p<.05?1:(p>=1?.35:1-p*.65)):1;
-      const L2=Math.hypot(x2-x1,y2-y1),ux=(x2-x1)/L2,uy=(y2-y1)/L2;
-      o.uv.setAttribute('d',wave(x1,y1,x2-ux*14,y2-uy*14,16,6,ph));
-      o.uvh.setAttribute('points',f1(x2)+','+f1(y2)+' '+f1(x2-ux*18-uy*9)+','+f1(y2-uy*18+ux*9)+' '+f1(x2-ux*18+uy*9)+','+f1(y2-uy*18-ux*9));
-      [o.uv,o.uvh].forEach(e=>e.setAttribute('opacity',f1(Math.max(.45,op))));}
-  });
+  const G=S12.G,set=(id,d)=>{const e=c.$('#'+id);if(e)e.setAttribute('d',d);},ph=l=>t*150/l;
+  set('s12-wv',s12wv(...G.vis,22,7,ph(22)));
+  set('s12-wu',s12wv(...G.uv,15,6,ph(15)));
+  set('s12-wi',s12wv(...G.up,62,12,ph(62)));
+  set('s12-wr',s12wv(...G.back,62,12,ph(62)));
+  [['s12-gu',0],['s12-gi',1.3]].forEach(([id,o])=>{const e=c.$('#'+id);if(e)e.setAttribute('opacity',f1(.72+.22*Math.sin(t*3+o)));});
 }
-Deck.scene('s12',{
-  enter(c){s12build(c);c.k=0;c.t0=0;c.tt=0;s12draw(c,0);c.loop(t=>{c.tt=t;s12draw(c,t);});},
-  go(c,k){c.k=k;if(k===3)c.t0=c.tt;s12draw(c,c.tt);}
-});
+Deck.scene('s12',{enter(c){
+  s12draw(c,.4);
+  if(PRINT)return;
+  c.loop(t=>s12draw(c,t+.4));
+}});
 
 /* ── s14 금성 · 지구 · 화성(완자 141쪽 탐구 자료창) ──
    복사 평형 온도(반사도 고려) = 279 K × (1 − 반사도)^¼ ÷ √거리(AU) − 273 → 금성 약 −45, 지구 약 −18, 화성 약 −56 °C
@@ -2797,155 +2650,6 @@ async function s17go(c,k){
 }
 Deck.scene('s17',{go(c,k){return s17go(c,k);}});
 
-/* ── s18 산란 — 직접 해 보기(장면 800×600): 태양 고도에 따라 태양 빛이 통과하는 대기의 두께와 하늘·태양의 색이 바뀜 ──
-   공기 분자의 산란(레일리 산란) 광학 두께 τ(λ) ≈ 0.0088·λ^−4.05(λ: μm, 실제 값)와
-   통과하는 대기의 두께(태양이 머리 위일 때 = 1, Kasten–Young 식, 지평선 근처 약 38배)로 남는 빛과 색을 계산.
-   그림 속 대기의 두께는 크게 과장(지구 반지름 1400px, 대기 75px) — 실제 배수는 숫자로 보여 줌 */
-const S18={R:1400,Ha:75,O:[170,500],tau:{r:.0088*Math.pow(.65,-4.05),g:.0088*Math.pow(.55,-4.05),b:.0088*Math.pow(.45,-4.05)},spd:300};
-S18.C=[S18.O[0],S18.O[1]+S18.R];
-const s18am=h=>1/(Math.sin(h*D2R)+.50572*Math.pow(h+6.07995,-1.6364));   // 통과하는 대기의 두께(배): 태양 고도 h(°)
-const s18exit=h=>{const s=Math.sin(h*D2R),R=S18.R,Ra=R+S18.Ha;return -R*s+Math.sqrt(R*R*s*s+Ra*Ra-R*R);};   // 그림 속 관측자 → 대기 꼭대기 거리(px)
-const s18gam=v=>Math.round(255*Math.pow(clamp(v,0,1),1/2.2));
-function s18col(h){   // 하늘(태양 쪽에서 산란된 빛)과 태양 원반의 색, 남은 빛의 비율
-  const m=s18am(h),t=S18.tau,ch=['r','g','b'];
-  const T={},S={};ch.forEach(k=>{T[k]=Math.exp(-t[k]*m);S[k]=t[k]*T[k];});
-  const mx=o=>Math.max(o.r,o.g,o.b);
-  const blue=ch.map(k=>t[k]*Math.exp(-t[k])),bm=Math.max(...blue);   // 태양이 머리 위일 때 산란된 빛의 색(파란 하늘)
-  const sunL=ch.map(k=>T[k]/mx(T)),w=Math.pow(1-T.b,3);             // 태양 쪽에서 오는 빛(계산한 색)을 파란색 빛이 줄어든 정도에 따라 섞음(하늘 색은 모식)
-  const sky=ch.map((k,i)=>s18gam(lerp(blue[i]/bm,sunL[i],w))),sun=sunL.map(s18gam);
-  return {m,T,sky:'rgb('+sky.join(',')+')',skyTop:'rgb('+sky.map(v=>Math.round(v*.78)).join(',')+')',sun:'rgb('+sun.join(',')+')'};
-}
-const s18surf=(x,r)=>S18.C[1]-Math.sqrt(r*r-(x-S18.C[0])*(x-S18.C[0]));
-function s18build(c){
-  const g=c.$('#s18-svg');g.innerHTML='';
-  const P=PRINT,R=S18.R,Ra=R+S18.Ha;
-  const defs=svgEl('defs',{},g);
-  const ig=svgEl('linearGradient',{id:'s18-ig',x1:0,y1:0,x2:0,y2:1},defs);
-  c.ig0=svgEl('stop',{offset:0},ig);c.ig1=svgEl('stop',{offset:1},ig);
-  const cp=svgEl('clipPath',{id:'s18-icp'},defs);svgEl('rect',{x:560,y:24,width:216,height:170,rx:14},cp);
-  svgEl('rect',{x:0,y:0,width:800,height:600,fill:P?'#eef3f8':'#0b1530'},g);                                    // 우주
-  const top=[],bot=[];for(let x=0;x<=800;x+=10){top.push(x+' '+f1(s18surf(x,Ra)));bot.push(x+' '+f1(s18surf(x,R)));}
-  c.shell=svgEl('path',{d:'M'+top.join(' L')+' L'+bot.reverse().join(' L')+'Z'},g);                             // 대기(하늘 색)
-  svgEl('path',{d:'M'+top.join(' L'),fill:'none',stroke:P?'#6e6e73':'#9fb8d8','stroke-width':2,'stroke-dasharray':'8 8'},g);
-  svgEl('path',{d:'M0 '+f1(s18surf(0,R))+' L'+bot.slice().reverse().join(' L')+' L800 600 L0 600Z',fill:P?'#d6cbb5':'#3b5530'},g);   // 땅
-  const tc=P?'#1d1d1f':'#fff',hb=P?'#fff':'#0b1530';
-  txt(g,24,48,'우주',{'font-size':28,'font-weight':700,fill:P?'#6e6e73':'#a1a1a6'});
-  txt(g,26,482,'대기',Object.assign({'font-size':30,'font-weight':800,fill:tc},halo(hb,6)));
-  // 관측자
-  const [ox,oy]=S18.O,pg=svgEl('g',{stroke:tc,'stroke-width':5,'stroke-linecap':'round',fill:'none'},g);
-  svgEl('circle',{cx:ox,cy:oy-46,r:10,fill:tc,stroke:'none'},pg);
-  svgEl('path',{d:'M'+ox+' '+(oy-36)+' L'+ox+' '+(oy-14)+' M'+(ox-12)+' '+(oy-28)+' L'+(ox+12)+' '+(oy-28)+' M'+ox+' '+(oy-14)+' L'+(ox-9)+' '+oy+' M'+ox+' '+(oy-14)+' L'+(ox+9)+' '+oy},pg);
-  txt(g,ox,oy+56,'관측자',Object.assign({'font-size':28,'font-weight':700,fill:tc,'text-anchor':'middle'},halo(hb,6)));
-  // 태양 빛이 통과하는 대기의 두께(치수선)
-  c.dim=svgEl('g',{},g);
-  c.dimL=svgEl('line',{stroke:'#FFD60A','stroke-width':4},c.dim);c.dimA=svgEl('line',{stroke:'#FFD60A','stroke-width':4},c.dim);c.dimB=svgEl('line',{stroke:'#FFD60A','stroke-width':4},c.dim);
-  svgEl('line',{x1:24,y1:576,x2:62,y2:576,stroke:'#FFD60A','stroke-width':4},g);svgEl('line',{x1:24,y1:566,x2:24,y2:586,stroke:'#FFD60A','stroke-width':4},g);svgEl('line',{x1:62,y1:566,x2:62,y2:586,stroke:'#FFD60A','stroke-width':4},g);
-  txt(g,76,585,'태양 빛이 통과하는 대기의 두께',{'font-size':26,'font-weight':700,fill:tc});
-  // 빛줄기와 빛 알갱이(파란색 빛·붉은색 빛)
-  c.ray=svgEl('line',{stroke:'#FFE680','stroke-width':3,'stroke-opacity':.75,'stroke-dasharray':'2 8','stroke-linecap':'round'},g);
-  c.pg=svgEl('g',{},g);c.parts=[];c.pool=[];
-  for(let i=0;i<90;i++)c.pool.push(svgEl('circle',{r:6.5,stroke:'#fff','stroke-width':1.5,opacity:0},c.pg));
-  // 태양
-  c.sun=svgEl('g',{},g);
-  c.sunGlow=svgEl('circle',{r:58,opacity:.25},c.sun);c.sunDisc=svgEl('circle',{r:34,stroke:P?'#9A7400':'#fff3c4','stroke-width':2},c.sun);
-  c.sunLab=txt(c.sun,0,-52,'태양',Object.assign({'font-size':28,'font-weight':800,fill:P?'#9A7400':'#FFD60A','text-anchor':'middle'},halo(hb,6)));
-  // 관측자가 본 하늘(오른쪽 위 창)
-  const iv=svgEl('g',{'clip-path':'url(#s18-icp)'},g);
-  svgEl('rect',{x:560,y:24,width:216,height:170,fill:'url(#s18-ig)'},iv);
-  c.isun=svgEl('circle',{cx:668,r:17},iv);
-  svgEl('rect',{x:560,y:164,width:216,height:30,fill:P?'#b7a789':'#2b3f24'},iv);
-  svgEl('rect',{x:560,y:24,width:216,height:170,rx:14,fill:'none',stroke:P?'#6e6e73':'#d1d1d6','stroke-width':2.5},g);
-  txt(g,668,228,'관측자가 본 하늘',Object.assign({'font-size':26,'font-weight':700,fill:tc,'text-anchor':'middle'},halo(hb,5)));
-}
-function s18draw(c){
-  const h=c.h,u=[Math.cos(h*D2R),-Math.sin(h*D2R)],[ox,oy]=S18.O,col=s18col(h);
-  const se=s18exit(h),D=Math.max(se+86,300);
-  c.u=u;c.se=se;c.D=D;c.col=col;
-  c.shell.setAttribute('fill',col.sky);
-  const sx=ox+u[0]*D,sy=oy+u[1]*D;c.sx=sx;c.sy=sy;
-  c.sun.setAttribute('transform','translate('+f1(sx)+' '+f1(sy)+')');
-  c.sunDisc.setAttribute('fill',col.sun);c.sunGlow.setAttribute('fill',col.sun);
-  c.ray.setAttribute('x1',f1(sx-u[0]*36));c.ray.setAttribute('y1',f1(sy-u[1]*36));c.ray.setAttribute('x2',ox);c.ray.setAttribute('y2',oy-46);
-  // 치수선: 대기 꼭대기 ~ 관측자 구간을 빛줄기 옆에 나란히(위쪽 또는 오른쪽)
-  const n=h>55?[Math.sin(h*D2R),Math.cos(h*D2R)]:[-Math.sin(h*D2R),-Math.cos(h*D2R)],off=24;
-  const ax=ox+n[0]*off,ay=oy-46*0+n[1]*off,bx=ox+u[0]*se+n[0]*off,by=oy+u[1]*se+n[1]*off;
-  const set=(e,x1,y1,x2,y2)=>{e.setAttribute('x1',f1(x1));e.setAttribute('y1',f1(y1));e.setAttribute('x2',f1(x2));e.setAttribute('y2',f1(y2));};
-  set(c.dimL,ax,ay,bx,by);set(c.dimA,ax-n[0]*10,ay-n[1]*10,ax+n[0]*10,ay+n[1]*10);set(c.dimB,bx-n[0]*10,by-n[1]*10,bx+n[0]*10,by+n[1]*10);
-  c.ig0.setAttribute('stop-color',col.skyTop);c.ig1.setAttribute('stop-color',col.sky);
-  c.isun.setAttribute('cy',f1(164-(h/90)*124));c.isun.setAttribute('fill',col.sun);
-  const pct=v=>v>=.995?'100 %':(v<.01?'1 % 미만':Math.round(v*100)+' %');
-  const r=c.$('#s18-range');if(r&&+r.value!==Math.round(h))r.value=Math.round(h);
-  c.$('#s18-hv').textContent=Math.round(h)+'°';
-  c.$('#s18-m').textContent='×'+(col.m<10?col.m.toFixed(1):Math.round(col.m));
-  c.$('#s18-tb').textContent=pct(col.T.b);c.$('#s18-tr').textContent=pct(col.T.r);
-}
-function s18step(c,dt){   // 빛 알갱이: 태양 → 관측자. 대기 안에서 일부가 산란되어 옆으로 흩어짐(살아남는 비율 = 계산한 남은 빛)
-  c.acc=(c.acc||0)+dt;
-  const [ox,oy]=S18.O,eye=[ox,oy-46],sx=c.sx-c.u[0]*36,sy=c.sy-c.u[1]*36,Ltot=Math.hypot(eye[0]-sx,eye[1]-sy),Lin=Math.min(c.se,Ltot);
-  while(c.acc>.075){c.acc-=.075;c.flip=!c.flip;
-    const k=c.flip?'b':'r',T=c.col.T[k],tm=S18.tau[k]*c.col.m;let de=-1;   // de: 관측자로부터 몇 px 앞에서 산란되는지(-1 = 산란되지 않음)
-    if(Math.random()>T){const f=-Math.log(1-Math.random()*(1-T))/tm;de=Lin*(1-clamp(f,0,1));}
-    c.parts.push({k,s:0,de,x:sx,y:sy,vx:0,vy:0,age:0,on:true});}
-  const v=S18.spd;
-  c.parts.forEach(p=>{   // 날아가는 알갱이는 지금 태양–관측자 길을 따라감(태양 고도를 바꾸면 길도 함께 바뀜)
-    if(p.vx||p.vy){p.x+=p.vx*dt;p.y+=p.vy*dt;p.age+=dt;if(p.age>.7)p.on=false;return;}
-    p.s+=v*dt;const left=Ltot-p.s;
-    const f=clamp(p.s/Ltot,0,1);p.x=lerp(sx,eye[0],f);p.y=lerp(sy,eye[1],f);
-    if(p.de>=0&&left<=p.de){const a=Math.random()*TAU;p.vx=Math.cos(a)*v*.8;p.vy=Math.sin(a)*v*.8;return;}
-    if(left<=0)p.on=false;});
-  c.parts=c.parts.filter(p=>p.on).slice(-c.pool.length);
-  c.pool.forEach((e,i)=>{const p=c.parts[i];if(!p){e.setAttribute('opacity',0);return;}
-    e.setAttribute('cx',f1(p.x));e.setAttribute('cy',f1(p.y));e.setAttribute('fill',p.k==='b'?'#3d9bff':'#ff4d4d');
-    e.setAttribute('opacity',p.vx||p.vy?f1(1-p.age/.7):1);});
-}
-function s18set(c,h){c.h=clamp(h,0,90);s18draw(c);}
-Deck.scene('s18',{
-  enter(c){
-    s18build(c);iaIsolate(c);s18set(c,60);
-    const r=c.$('#s18-range');r.addEventListener('input',()=>s18set(c,+r.value));
-    if(!PRINT)c.loop((t,dt)=>s18step(c,dt));
-  },
-  go(c,k){
-    const to={3:70,4:1}[k];if(to===undefined)return;
-    const h0=c.h;return c.tween(1800,p=>s18set(c,lerp(h0,to,p)),{ease:'inOut'});
-  }
-});
-
-/* ── s19 반사율: 교과서 89쪽 표(《대기과학》, 2016)를 범위 막대로. 2단계 반사율이 높은 것, 3단계 낮은 것만 진하게 ── */
-const S19={x0:380,x1:700,y0:520,dy:72,
-  rows:[['두꺼운 구름',70,90,'cloud'],['얇은 구름',25,30,'thin'],['눈',50,90,'snow'],['젖은 흙',15,25,'soil'],['풀',5,25,'grass'],['모래사장',20,40,'sand']]};
-const s19X=v=>S19.x0+(S19.x1-S19.x0)*v/100;
-function s19icon(g,kind,cx,cy){
-  if(kind==='cloud'){[[cx-8,cy+4,18],[cx+8,cy-3,16],[cx+16,cy+7,12],[cx-18,cy+9,11]].forEach(([x,y,r])=>svgEl('circle',{cx:x,cy:y,r,fill:'#c7ccd3',stroke:'#7d838c','stroke-width':1.5},g));svgEl('rect',{x:cx-26,y:cy+6,width:52,height:14,rx:7,fill:'#c7ccd3'},g);}
-  if(kind==='thin'){svgEl('ellipse',{cx:cx-4,cy:cy-6,rx:22,ry:6,fill:'#edf1f5',stroke:'#9aa1aa','stroke-width':1.5},g);svgEl('ellipse',{cx:cx+6,cy:cy+8,rx:20,ry:5,fill:'#edf1f5',stroke:'#9aa1aa','stroke-width':1.5},g);}
-  if(kind==='snow'){for(let i=0;i<3;i++){const a=i*60*D2R;svgEl('line',{x1:f1(cx-20*Math.cos(a)),y1:f1(cy-20*Math.sin(a)),x2:f1(cx+20*Math.cos(a)),y2:f1(cy+20*Math.sin(a)),stroke:'#3a86c8','stroke-width':4,'stroke-linecap':'round'},g);}svgEl('circle',{cx,cy,r:5,fill:'#3a86c8'},g);}
-  if(kind==='soil'){svgEl('rect',{x:cx-22,y:cy-6,width:44,height:24,rx:6,fill:'#6b4a2b'},g);svgEl('path',{d:'M'+cx+' '+(cy-24)+' C '+(cx+9)+' '+(cy-12)+', '+(cx+7)+' '+(cy-4)+', '+cx+' '+(cy-4)+' C '+(cx-7)+' '+(cy-4)+', '+(cx-9)+' '+(cy-12)+', '+cx+' '+(cy-24)+'Z',fill:'#3a86c8'},g);}
-  if(kind==='grass'){svgEl('rect',{x:cx-22,y:cy+12,width:44,height:8,rx:3,fill:'#6b8e3a'},g);[[-14,-8],[-4,-20],[6,-14],[16,-6]].forEach(([dx,ty])=>svgEl('path',{d:'M'+(cx+dx-4)+' '+(cy+13)+' Q '+(cx+dx)+' '+(cy+ty+6)+' '+(cx+dx+2)+' '+(cy+ty)+' Q '+(cx+dx+2)+' '+(cy+4)+' '+(cx+dx+4)+' '+(cy+13)+'Z',fill:'#4c9a2a'},g));}
-  if(kind==='sand'){svgEl('path',{d:'M'+(cx-24)+' '+(cy+18)+' Q '+cx+' '+(cy-10)+' '+(cx+24)+' '+(cy+18)+'Z',fill:'#e3c48f',stroke:'#b8935a','stroke-width':1.5},g);svgEl('path',{d:'M'+(cx-24)+' '+(cy+18)+' q 8 -5 16 0 t 16 0 t 16 0',fill:'none',stroke:'#3a86c8','stroke-width':3},g);}
-}
-function s19build(){
-  const g=$id('s19-svg');g.innerHTML='';
-  const box=svgEl('g',{'data-in':400,'data-fx':'fade'},g);
-  svgEl('rect',{x:120,y:402,width:680,height:588,rx:18,fill:'#fff'},box);
-  txt(box,156,454,'구름과 다양한 표면의 반사율(%)',{'font-size':30,'font-weight':800,fill:'#1d1d1f'});
-  for(let v=0;v<=100;v+=20){const x=s19X(v);
-    svgEl('line',{x1:x,y1:480,x2:x,y2:916,stroke:v?'#e5e5ea':'#8e8e93','stroke-width':v?2:2.5,'stroke-dasharray':v?'6 8':'0'},box);
-    txt(box,x,952,String(v),{'font-size':26,'font-weight':600,fill:'#6e6e73','text-anchor':'middle'});}
-  svgEl('line',{x1:S19.x0,y1:916,x2:S19.x1+12,y2:916,stroke:'#8e8e93','stroke-width':2.5},box);
-  S19.rows.forEach(([name,a,b,kind],i)=>{
-    const y=S19.y0+i*S19.dy,rg=svgEl('g',{id:'s19-r'+i,class:'s19-row'},g);
-    const lab=svgEl('g',{'data-in':600+i*150,'data-fx':'fade'},rg);
-    s19icon(lab,kind,174,y);
-    txt(lab,206,y+11,name,{'font-size':30,'font-weight':700,fill:'#1d1d1f'});
-    const bar=svgEl('g',{'data-in':700+i*150,'data-fx':'wipe','data-dur':800},rg);
-    svgEl('rect',{x:f1(s19X(a)),y:y-15,width:f1(s19X(b)-s19X(a)),height:30,rx:15,style:'fill:var(--sunF)',stroke:'#b88a00','stroke-width':2},bar);
-    txt(bar,f1(s19X(b)+12),y+10,a+'~'+b,{'font-size':28,'font-weight':700,fill:'#1d1d1f'});
-  });
-}
-s19build();
-const S19KEEP={2:[0,2],3:[1,3,4]};   // 2단계: 금방 내린 눈·두꺼운 구름, 3단계: 흙·풀·얇은 구름
-Deck.scene('s19',{go(c,k){const keep=S19KEEP[k];c.$$('.s19-row').forEach((e,i)=>e.classList.toggle('dim',!!keep&&!keep.includes(i)));}});
-
 /* ── s20 흡수: 교과서 그림 III-7 위에 표시(그림 좌표 1164×724). 2단계 두 곡선의 차이, 3단계 지표면 곡선이 깊게 파인 파장(대기가 흡수) ── */
 (function(){
   const g=$id('s20-ov'),H=halo('#fff',8);
@@ -2959,66 +2663,8 @@ Deck.scene('s19',{go(c,k){const keep=S19KEEP[k];c.$$('.s19-row').forEach((e,i)=>
   txt(s,700,330,'대기가 흡수하는 파장',Object.assign({'font-size':38,'font-weight':800,fill:'#0077B6','text-anchor':'middle'},H));
 })();
 
-/* ── s21 굴절 모식도(상자 880×430): 지구 반지름 900px, 대기 두께 약 116px(크게 과장) ──
-   실제 태양에서 온 빛이 대기에 들어와 밀도가 큰 지표 쪽으로 휘어 관측자의 눈에 들어옴(휜 정도 약 11°로 과장, 실제 약 0.5°).
-   눈은 들어온 방향의 연장선 위(보이는 위치)에 태양이 있다고 느낀다 */
-const S21={C:[110,1190],R:900,E:[112,262],a:5*D2R,b:6*D2R,dx:210};
-(function(){
-  const E=S21.E,C1=[E[0]+S21.dx,E[1]-S21.dx*Math.tan(S21.a)],Pe=[E[0]+2*S21.dx,C1[1]+S21.dx*Math.tan(S21.b)];
-  S21.C1=C1;S21.Pe=Pe;S21.Ra=Math.hypot(Pe[0]-S21.C[0],Pe[1]-S21.C[1]);
-  S21.sun=[Pe[0]+290*Math.cos(S21.b),Pe[1]+290*Math.sin(S21.b)];
-  S21.app=[E[0]+715*Math.cos(S21.a),E[1]-715*Math.sin(S21.a)];
-})();
-const s21y=(x,r)=>S21.C[1]-Math.sqrt(r*r-(x-S21.C[0])*(x-S21.C[0]));
-function s21build(){
-  const g=$id('s21-svg');g.innerHTML='';
-  const {R,Ra,E,Pe,C1,sun,app}=S21,N=5;
-  svgEl('rect',{x:0,y:0,width:880,height:430,fill:'#fbfbfd'},g);
-  const op=[.44,.33,.24,.16,.09];
-  for(let i=0;i<N;i++){const r1=R+(Ra-R)*i/N,r2=R+(Ra-R)*(i+1)/N,a=[],b=[];
-    for(let x=-10;x<=890;x+=10){a.push(x+' '+f1(s21y(x,r2)));b.push(x+' '+f1(s21y(x,r1)));}
-    svgEl('path',{d:'M'+a.join(' L')+' L'+b.reverse().join(' L')+'Z',fill:'#4a9fd8','fill-opacity':op[i]},g);}
-  const gp=[];for(let x=-10;x<=890;x+=10)gp.push(x+' '+f1(s21y(x,R)));
-  svgEl('path',{d:'M'+gp.join(' L')+' L890 440 L-10 440Z',fill:'#c8b28a'},g);
-  svgEl('path',{d:'M'+gp.join(' L'),fill:'none',stroke:'#8f7a52','stroke-width':3},g);
-  // 밀도 범례(왼쪽 위)
-  for(let i=0;i<N;i++)svgEl('rect',{x:28,y:40+i*26,width:40,height:26,fill:'#4a9fd8','fill-opacity':op[N-1-i]},g);
-  svgEl('rect',{x:28,y:40,width:40,height:130,fill:'none',stroke:'#8e8e93','stroke-width':1.5},g);
-  txt(g,84,64,'밀도가 작다',{'font-size':26,'font-weight':700,fill:'#1d1d1f'});
-  txt(g,84,166,'밀도가 크다',{'font-size':26,'font-weight':700,fill:'#1d1d1f'});
-  txt(g,28,28,'대기',{'font-size':26,'font-weight':800,fill:'#0077B6'});
-  // 수평선 방향(관측자에게서 수평으로)
-  svgEl('line',{x1:E[0]+16,y1:E[1],x2:868,y2:E[1],stroke:'#6e6e73','stroke-width':2.5,'stroke-dasharray':'4 8'},g);
-  txt(g,700,E[1]-8,'수평선',Object.assign({'font-size':26,'font-weight':700,fill:'#6e6e73','text-anchor':'middle'},halo('#fbfbfd',6)));
-  // 실제 태양
-  const sg=svgEl('g',{},g);
-  svgEl('circle',{cx:f1(sun[0]),cy:f1(sun[1]),r:22,fill:'#FFD60A',stroke:'#C99700','stroke-width':2.5},sg);
-  txt(sg,f1(sun[0]),f1(sun[1]+56),'실제 위치',Object.assign({'font-size':28,'font-weight':800,fill:'#1d1d1f','text-anchor':'middle'},halo('#fbfbfd',6)));
-  // 3단계: 눈이 보는 방향의 연장선과 보이는 위치
-  const ap=svgEl('g',{'data-step':3,'data-fx':'fade'},g);
-  svgEl('line',{x1:E[0]+14,y1:f1(E[1]-14*Math.tan(S21.a)),x2:f1(app[0]-24*Math.cos(S21.a)),y2:f1(app[1]+24*Math.sin(S21.a)),stroke:'#6e6e73','stroke-width':3,'stroke-dasharray':'10 8'},ap);
-  svgEl('circle',{cx:f1(app[0]),cy:f1(app[1]),r:22,fill:'#FFD60A','fill-opacity':.45,stroke:'#C99700','stroke-width':2.5,'stroke-dasharray':'6 5'},ap);
-  txt(ap,f1(app[0]+22),f1(app[1]-34),'보이는 위치',Object.assign({'font-size':28,'font-weight':800,fill:'#1d1d1f','text-anchor':'end'},halo('#fbfbfd',6)));
-  // 2단계: 실제 태양에서 온 빛 — 대기에 들어와 지표 쪽으로 휘어 눈에 들어옴
-  const d='M'+f1(sun[0]-22*Math.cos(S21.b))+' '+f1(sun[1]-22*Math.sin(S21.b))+' L'+f1(Pe[0])+' '+f1(Pe[1])+' Q'+f1(C1[0])+' '+f1(C1[1])+' '+f1(E[0]+12)+' '+f1(E[1]-1);
-  svgEl('path',{id:'s21-ray',class:'s21-ray',d,fill:'none',stroke:'#E0A800','stroke-width':6,'stroke-linecap':'round',pathLength:1},g);
-  const hx=E[0]+10,hy=E[1]-1,ux=-Math.cos(S21.a),uy=Math.sin(S21.a);   // 화살 머리(눈 쪽)
-  svgEl('polygon',{id:'s21-head',class:'s21-dyn',points:f1(hx)+','+f1(hy)+' '+f1(hx-ux*22-uy*11)+','+f1(hy-uy*22+ux*11)+' '+f1(hx-ux*22+uy*11)+','+f1(hy-uy*22-ux*11),fill:'#E0A800'},g);
-  // 관측자
-  const pg=svgEl('g',{stroke:'#1d1d1f','stroke-width':4.5,'stroke-linecap':'round',fill:'none'},g),fx=110,fy=s21y(110,R);
-  svgEl('circle',{cx:fx,cy:fy-36,r:9,fill:'#1d1d1f',stroke:'none'},pg);
-  svgEl('path',{d:'M'+fx+' '+(fy-27)+' L'+fx+' '+(fy-12)+' M'+(fx-10)+' '+(fy-20)+' L'+(fx+10)+' '+(fy-20)+' M'+fx+' '+(fy-12)+' L'+(fx-8)+' '+fy+' M'+fx+' '+(fy-12)+' L'+(fx+8)+' '+fy},pg);
-  txt(g,fx,fy+42,'관측자',Object.assign({'font-size':28,'font-weight':800,fill:'#1d1d1f','text-anchor':'middle'},halo('#c8b28a',6)));
-}
-s21build();
-Deck.scene('s21',{go(c,k){
-  if(k!==2)return;
-  const ray=c.$('#s21-ray');
-  return c.tween(1700,p=>{ray.style.strokeDashoffset=(1-p).toFixed(4);},{ease:'linear'}).then(()=>c.a(c.$('#s21-head'),[{opacity:0},{opacity:1}],{dur:300}));
-}});
-
 /* ═════ g4 ═════ */
-/* ═══ ⑤ 지구 열수지(s22~s28) ═══ */
+/* ═══ ⑤ 지구 열수지(s22~s27) ═══ */
 
 /* ── 지구 평균 열수지 띠 그림(Sankey 방식) — s23(크게, 단계별)·s24(작게, 칸마다 강조) 공용 ──
    교과서 90쪽 해 보기 값(입사된 태양 복사 에너지 = 100, 미국해양대기청 2023). 띠 굵기 = 에너지양 × 0.7.
@@ -3138,13 +2784,13 @@ function g4_HB(parent,o){
   return A;
 }
 /* s23: 그 단계의 띠를 같은 속도로 그려 나간다(갈라지기 전 한 띠인 부분은 함께 자람). 띠가 다 그려지면 그 띠의 머리·이름표가 나타난다 */
-function g4_hbStep(c,sel,k){
+function g4_hbStep(c,sel,k,sp=1){   // sp: 빠르기 배수
   const R=c.$(sel);if(!R)return;
   R.querySelectorAll('[data-hbout="'+k+'"]:not([data-outof])').forEach(e=>c.a(e,[{opacity:1},{opacity:0}],{dur:300}));
   const els=[...R.querySelectorAll('[data-hb="'+k+'"]')],rb=els.filter(e=>e.classList.contains('rb')),other=els.filter(e=>!e.classList.contains('rb'));
   other.filter(e=>!e.dataset.of).forEach(e=>c.a(e,[{opacity:0},{opacity:1}],{dur:500}));
   if(!rb.length)return;
-  const Lm=Math.max(...rb.map(e=>+e.dataset.len)),T=Math.max(800,Lm*1.9),done=new Set();   // 약 530px/초, 먼 길은 더 오래
+  const Lm=Math.max(...rb.map(e=>+e.dataset.len)),T=Math.max(800,Lm*1.9)/sp,done=new Set();   // 약 530px/초, 먼 길은 더 오래
   rb.forEach(e=>{e.style.opacity=1;e.style.strokeDasharray='1 1';});
   return c.tween(T,p=>{
     rb.forEach(e=>{
@@ -3231,12 +2877,13 @@ Deck.scene('s22',{
   }
 });
 
-/* ── s23 지구 평균 열수지(해 보기): 단계마다 띠가 갈라지며 그려지고, 7단계는 대기 윗면(점선)을 지나는 띠만 진하게(들어온 100 = 되돌아간 30 + 방출된 70) ── */
+/* ── s23 지구 평균 열수지(해 보기): 1단계 한 번에 띠 ①~⑥이 차례로 갈라지며 그려지고(2026-10-29 교사 요청으로 여섯 단계를 하나로, 1.5배 빠르게),
+   2단계는 대기 윗면(점선)을 지나는 띠만 진하게(들어온 100 = 되돌아간 30 + 방출된 70). 띠의 data-hb 1~7은 그리는 순서(7 = 점선) ── */
 g4_HB($id('s23-hb'),{x:120,y:250,s:1,steps:true,id:'s23hb'});
 const S23KEEP=['sum','sun','sunA','sunG','sunRg','sunRa','refA','refG','r30','e12','out','o70'];
-Deck.scene('s23',{steps:7,go(c,k){
-  g4_hbStep(c,'#s23-hb',k);
-  if(k===7)c.$$('#s23-hb [data-a]').forEach(g=>g.classList.toggle('dim',!S23KEEP.includes(g.dataset.a)));
+Deck.scene('s23',{steps:2,async go(c,k){
+  if(k===1){for(let s=1;s<=6;s++)await g4_hbStep(c,'#s23-hb',s,1.5);}   // 앞 띠가 다 그려진 뒤 다음 띠(머리·이름표가 사라지고 나타나는 순서가 지켜짐)
+  if(k===2){g4_hbStep(c,'#s23-hb',7);c.$$('#s23-hb [data-a]').forEach(g=>g.classList.toggle('dim',!S23KEEP.includes(g.dataset.a)));}
 }});
 
 /* ── s24 대기와 지표의 열수지: 합계 빈칸을 채울 때마다 그 칸에 들어가는 띠만 진하게(태양 띠는 갈래별 몫까지) ──
@@ -3252,72 +2899,16 @@ Deck.scene('s24',{
   }
 });
 
-/* ── s25 지표에서 대기로: 막대(잠열 24 · 복사 6 = 104 − 98 · 대류와 전도 5) + 증발 → 응결(구름) → 비 장면 ── */
-const S25={bx:210,u:15,rows:[['s25-lat','잠열',24,'#14B8A6','var(--water)'],['s25-rad','복사',6,'#FF6A3D','var(--ir)'],['s25-cnv','대류와 전도',5,'#a1a1a6','var(--heat)']],
-  wy:252,cx:500,cy:112,N:16};
-(function(){
-  const g=$id('s25-csvg');if(!g)return;
-  txt(g,40,60,'지표 → 대기 (태양 복사 에너지 = 100)',{'font-size':30,'font-weight':800,fill:'#1d1d1f'});
-  S25.rows.forEach(([id,name,v,col,tc],i)=>{
-    const y=104+i*70,r=U.el('g',{id},g);
-    txt(r,40,y+33,name,{'font-size':30,'font-weight':700,style:'fill:'+tc});
-    U.el('rect',{x:S25.bx,y,width:0,height:46,rx:8,fill:col,'data-w':v*S25.u},r);
-    const t=txt(r,S25.bx+12,y+34,'',{'font-size':30,'font-weight':800,style:'fill:'+tc,'data-v':v});
-    if(id==='s25-rad'){const s=txt(r,S25.bx+v*S25.u+60,y+34,'(= 104 − 98)',{'font-size':28,'font-weight':600,fill:'#6e6e73',opacity:0});s.setAttribute('class','s25-sub');}
-  });
-  const tag=U.el('g',{id:'s25-tag',opacity:0},g);
-  U.el('rect',{x:S25.bx+24*S25.u+66,y:106,width:150,height:42,rx:21,fill:'#00796B'},tag);
-  txt(tag,S25.bx+24*S25.u+141,135,'가장 크다',{'font-size':26,'font-weight':800,fill:'#fff','text-anchor':'middle'});
-  // 장면: 하늘 · 물(지표) · 수증기 · 구름 · 비
-  const s=$id('s25-ssvg'),defs=U.el('defs',{},s);
-  const lg=U.el('linearGradient',{id:'s25-sky',x1:0,y1:0,x2:0,y2:1},defs);U.el('stop',{offset:0,'stop-color':'#e3f0f8'},lg);U.el('stop',{offset:1,'stop-color':'#f7fbfe'},lg);
-  U.el('rect',{x:0,y:0,width:820,height:313,fill:'url(#s25-sky)'},s);
-  U.el('rect',{x:0,y:S25.wy,width:820,height:61,fill:'#0f7f78'},s);
-  txt(s,24,S25.wy+42,'증발: 지표의 열을 흡수',{id:'s25-l1','font-size':28,'font-weight':800,fill:'#fff',opacity:0});
-  U.el('g',{id:'s25-rain'},s);
-  U.el('g',{id:'s25-vap'},s);
-  const cl=U.el('g',{id:'s25-cloud',opacity:0},s);
-  U.el('g',{id:'s25-glow'},cl);
-  [[S25.cx-70,S25.cy+8,48],[S25.cx-12,S25.cy-18,58],[S25.cx+52,S25.cy+2,46],[S25.cx+4,S25.cy+20,52]].forEach(([x,y,r])=>U.el('circle',{cx:x,cy:y,r,fill:'#fff',stroke:'#c7d3dc','stroke-width':2},cl));
-  U.el('rect',{x:S25.cx-112,y:S25.cy+10,width:216,height:46,rx:23,fill:'#fff'},cl);
-  const l2=txt(cl,640,86,'',{id:'s25-l2','font-size':28,'font-weight':800,style:'fill:var(--water)'});
-  [['응결:',0],['열을 방출',34]].forEach(([t,dy])=>{const sp=U.el('tspan',{x:640,dy},l2);sp.textContent=t;});
-})();
-/* 장면 그리기: k 3 수증기가 올라감, 4 구름이 생기며 열을 내놓음(퍼지는 고리), 5 비 */
-function s25draw(c,t){
-  const k=c.k||0,vap=c.$('#s25-vap'),glow=c.$('#s25-glow'),rain=c.$('#s25-rain');if(!vap)return;
-  vap.innerHTML='';glow.innerHTML='';rain.innerHTML='';
-  if(k>=3)for(let i=0;i<S25.N;i++){
-    const u=(t*.16+rnd(i+3))%1,x0=70+280*rnd(i+40),top=k>=4?S25.cy+40:S25.cy+60;
-    const x=x0+(S25.cx-60-x0)*Math.pow(u,1.4)*.85,y=S25.wy-6-u*(S25.wy-6-top);
-    const op=k>=4?clamp((1-u)/.18,0,1)*clamp(u/.08,0,1):clamp((1-u)/.3,0,1)*clamp(u/.08,0,1);
-    U.el('circle',{cx:f1(x),cy:f1(y),r:7,fill:'#14B8A6','fill-opacity':f1(op*.9)},vap);
-  }
-  if(k>=4)for(let j=0;j<2;j++){const ph=(t/1.8+j/2)%1;U.el('ellipse',{cx:S25.cx,cy:S25.cy+14,rx:f1(110+70*ph),ry:f1(48+40*ph),fill:'none',stroke:'#14B8A6','stroke-width':4,'stroke-opacity':f1(.7*(1-ph))},glow);}
-  if(k>=5)for(let i=0;i<14;i++){const u=(t*.9+rnd(i+70))%1,x=S25.cx-90+180*rnd(i+90)-u*8,y=S25.cy+54+u*(S25.wy-S25.cy-58);
-    U.el('line',{x1:f1(x),y1:f1(y),x2:f1(x-4),y2:f1(y+18),stroke:'#0f7f78','stroke-width':4,'stroke-linecap':'round','stroke-opacity':f1(.85*clamp((1-u)/.15,0,1))},rain);}
-}
-Deck.scene('s25',{
-  enter(c){c.k=0;s25draw(c,0);if(!PRINT)c.loop(t=>s25draw(c,t));},
-  go(c,k){
-    c.k=k;
-    if(k===1)S25.rows.forEach(([id],i)=>{const r=c.$('#'+id+' rect'),t=c.$('#'+id+' text[data-v]'),w=+r.dataset.w,v=+t.dataset.v;
-      c.tween(1100,p=>{r.setAttribute('width',f1(w*p));t.setAttribute('x',f1(S25.bx+w*p+12));t.textContent=Math.round(v*p);},{ease:'out',delay:i*150});
-      const sub=c.$('#'+id+' .s25-sub');if(sub)c.a(sub,[{opacity:0},{opacity:1}],{dur:500,delay:1300});});
-    if(k===2){['s25-rad','s25-cnv'].forEach(id=>c.$('#'+id).classList.add('dim'));c.a('#s25-tag',[{opacity:0,transform:'scale(.8)'},{opacity:1,transform:'none'}],{dur:500});}
-    if(k===3){['s25-rad','s25-cnv'].forEach(id=>c.$('#'+id).classList.remove('dim'));c.a('#s25-l1',[{opacity:0},{opacity:1}],{dur:500});}
-    if(k===4)c.a('#s25-cloud',[{opacity:0},{opacity:1}],{dur:900});
-    if(PRINT)s25draw(c,2.3);
-  }
-});
-
 /* ── s26 직접 해 보기 — 온실 기체가 늘면?(장면 상자 1680×600) ──
    대기 한 층 모형: 태양 복사 70은 지표가 흡수, 지표의 복사 E = 70(Ts/255 K)⁴ 중 ε(온실 기체의 양)만큼 대기가 흡수하고,
    대기는 흡수한 만큼을 위(우주)·아래(지표, 재복사)로 반씩 방출(대기는 바로 평형). 우주로 나가는 에너지 = (1 − ε/2)E.
    지표 온도는 (들어오는 70 − 나가는 에너지)에 비례해 변함 → 평형 Ts = 255 K × (2/(2 − ε))^¼.
-   ε = 0 → 255 K(약 −18 °C), ε = 0.78(지금) → 약 288.6 K(약 15 °C), ε = 1 → 약 303 K(약 30 °C). 화살표 굵기 = 에너지양 × 1 px */
+   ε = 0 → 255 K(약 −18 °C), ε = 0.78(지금) → 약 288.6 K(약 15 °C), ε = 1 → 약 303 K(약 30 °C). 화살표 굵기 = 에너지양 × 1 px
+   막대(2026-10-29 교사 요청: 가운데가 지금): 막대 값 g = 온실 기체의 양(0 없음 · 0.5 지금 · 1 지금의 2배, 파란 점 수 ∝ g).
+   ε는 왼쪽 반 0 → 0.78, 오른쪽 반 0.78 → 1로 꺾은선(양이 늘수록 흡수가 덜 늘어남) → 늘리는 쪽에서 15 → 30 °C가 막대 절반에 걸쳐 보임 */
 const S26={E0:.78,kT:.41,sx:300,ex:640,ux:1010,dx:1150,top:150,abot:380,sur:500,tx:1430,tT:130,tB:440,Tmin:-25,Tmax:35};
 const s26Teq=e=>255*Math.pow(2/(2-e),.25);
+const s26eps=g=>g<=.5?S26.E0*g/.5:S26.E0+(1-S26.E0)*(g-.5)/.5;   // 막대 값(양) → 대기가 흡수하는 비율
 const s26E=T=>70*Math.pow(T/255,4);
 (function(){
   const g=$id('s26-svg');if(!g)return;const {top,abot,sur}=S26;
@@ -3350,7 +2941,7 @@ const s26E=T=>70*Math.pow(T/255,4);
 })();
 function s26ty(v){return S26.tB-(v-S26.Tmin)/(S26.Tmax-S26.Tmin)*(S26.tB-S26.tT);}
 function s26dots(c){   // 온실 기체(대기 속 파란 점): 양에 비례
-  const g=c.$('#s26-dots'),n=Math.round(c.e*80);if(c.nd===n)return;c.nd=n;g.innerHTML='';
+  const g=c.$('#s26-dots'),n=Math.round(c.g*124);if(c.nd===n)return;c.nd=n;g.innerHTML='';
   for(let i=0;i<n;i++){const x=380+rnd(i+11)*1000,y=S26.top+22+rnd(i+57)*(S26.abot-S26.top-44);U.el('circle',{cx:f1(x),cy:f1(y),r:7,fill:'#0077B6','fill-opacity':.55},g);}
 }
 function s26draw(c){
@@ -3383,15 +2974,15 @@ function s26draw(c){
   else{bdr.setAttribute('fill','#DCEBF7');bdt.setAttribute('fill','#0B5F8F');bdt.textContent='들어옴 70 < 나감 '+(o<=70?71:o)+' → 온도 하강';}
   {const r=Math.round(Tc);$id('s26-t').textContent=(r<0?'−'+(-r):r)+' °C';}
   $id('s26-o').textContent=(Math.abs(d)<.6?70:(d>0?Math.min(69,o):Math.max(71,o)))+' / 70';
-  const v=Math.round(e*100);$id('s26-gv').textContent=v===0?'없음':(Math.abs(v-78)<=2?'지금':(v<78?'적음':'많음'));
+  const v=Math.round(c.g*100);$id('s26-gv').textContent=v===0?'없음':(Math.abs(v-50)<=2?'지금':(v<50?'적음':'많음'));
   s26dots(c);
 }
 Deck.scene('s26',{
   enter(c){
-    c.e=S26.E0;c.T=s26Teq(c.e);c.nd=-1;s26draw(c);iaIsolate(c);
+    c.g=.5;c.e=S26.E0;c.T=s26Teq(c.e);c.nd=-1;s26draw(c);iaIsolate(c);
     const r=c.$('#s26-range');
-    r.addEventListener('input',()=>{c.e=+r.value/100;});
-    c.$('#s26-reset').addEventListener('click',()=>{r.value=Math.round(S26.E0*100);c.e=S26.E0;});
+    r.addEventListener('input',()=>{c.g=+r.value/100;c.e=s26eps(c.g);});
+    c.$('#s26-reset').addEventListener('click',()=>{r.value=50;c.g=.5;c.e=S26.E0;});
     c.loop((t,dt)=>{const out=(1-c.e/2)*s26E(c.T);c.T+=S26.kT*(70-out)*Math.min(dt,.05);s26draw(c);});
   }
 });
@@ -3420,6 +3011,290 @@ Deck.scene('s27',{steps:7,
       c.a('#s27-leg',[{opacity:0},{opacity:1}],{dur:600,delay:1200});
     }
   }
+});
+
+
+/* ═════ 1학년 통합과학 복습 장(2026-10-29, 교사 PPT 2~5·11쪽) ═════
+   s31 들어가기 전에(복사) · s32 복사 평형?(실험) · s33 복사 평형(그래프) · s34 지구의 복사 평형 · s35 복사 평형과 온실 효과.
+   물결 화살표는 공용 도구(rvArrow): 노랑 짧은 물결 = 태양 복사(가시광선), 주황 긴 물결 = 적외선(지구·난로·적외선등 복사).
+   f(0~1)로 물결이 뻗어 나가고, 시간 t로 물결이 흐른다 */
+function rvWv(x1,y1,x2,y2,lam,amp,ph,hl){
+  const dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy);if(L<2)return '';
+  const ux=dx/L,uy=dy/L,nx=-uy,ny=ux,Lb=Math.max(1,L-(hl?hl-2:0)),p=[];
+  const at=s=>{const e=hl?clamp((Lb-s)/(lam*.5),0,1):1,o=amp*e*Math.sin(TAU*(s/lam-ph));return f1(x1+ux*s+nx*o)+' '+f1(y1+uy*s+ny*o);};
+  for(let s=0;s<Lb;s+=3)p.push(at(s));p.push(at(Lb));
+  return 'M'+p.join(' L');
+}
+let RVN=0;
+function rvArrow(par,a){   // 장 HTML은 장에 들어올 때마다 새로 만들어지므로 요소는 id로 찾는다
+  a.id='rv'+(++RVN);
+  svgEl('path',{id:a.id,fill:'none',stroke:a.col,'stroke-width':a.w||5,'stroke-linecap':'round'},par);
+  if(a.hl)svgEl('polygon',{id:a.id+'-h',fill:a.col},par);
+  return a;
+}
+function rvArrowSet(a,t,f){
+  const P=$id(a.id),H=a.hl?$id(a.id+'-h'):null;if(!P)return;
+  const [x1,y1,X2,Y2]=a.p,x2=x1+(X2-x1)*f,y2=y1+(Y2-y1)*f,ok=f>.03&&Math.hypot(x2-x1,y2-y1)>(a.hl||0)+4;
+  P.setAttribute('d',ok?rvWv(x1,y1,x2,y2,a.lam,a.amp,t*(a.v||140)/a.lam,a.hl||0):'');
+  if(H){
+    if(!ok){H.setAttribute('points','');return;}
+    const dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L,hl=a.hl,hw=a.hw||12,bx=x2-ux*hl,by=y2-uy*hl;
+    H.setAttribute('points',f1(x2)+','+f1(y2)+' '+f1(bx-uy*hw)+','+f1(by+ux*hw)+' '+f1(bx+uy*hw)+','+f1(by-ux*hw));
+  }
+}
+const RV_SUN='#F2B200',RV_IR='#FF6A3D';
+function rvGlow(defs,id,sd){const f=svgEl('filter',{id,x:'-100%',y:'-100%',width:'300%',height:'300%'},defs);svgEl('feGaussianBlur',{stdDeviation:sd||10},f);}
+function rvSky(g,id,w,h,c0,c1){const d=svgEl('defs',{},g),l=svgEl('linearGradient',{id,x1:0,y1:0,x2:0,y2:1},d);svgEl('stop',{offset:0,'stop-color':c0},l);svgEl('stop',{offset:1,'stop-color':c1},l);svgEl('rect',{width:w,height:h,fill:'url(#'+id+')'},g);return d;}
+function rvBubble(par,x,y,w,h,tx,ty,s,attrs){   // 말풍선: 상자(x,y,w,h) + 꼬리 끝(tx,ty)
+  const g=svgEl('g',attrs||{},par),r=18,b=y+h,c=Math.min(Math.max(tx,x+40),x+w-40);
+  svgEl('path',{d:`M${x+r} ${y}H${x+w-r}Q${x+w} ${y} ${x+w} ${y+r}V${b-r}Q${x+w} ${b} ${x+w-r} ${b}H${c+14}L${tx} ${ty}L${c-14} ${b}H${x+r}Q${x} ${b} ${x} ${b-r}V${y+r}Q${x} ${y} ${x+r} ${y}Z`,fill:'#fff',stroke:'#8e8e93','stroke-width':3},g);
+  txt(g,x+w/2,y+h/2+11,s,{'font-size':32,'font-weight':700,fill:'#1d1d1f','text-anchor':'middle'});
+  return g;
+}
+
+/* ── s31 들어가기 전에… — 복사: 난로의 복사(주황 물결)가 공기 같은 물질 없이 펭귄에게 곧장 닿음. 1단계 따뜻하다, 2단계 앞 펭귄이 가로막으면 뒤 펭귄은 춥다 ── */
+const S31={by:[250,540],hx:110,to:[1372,700],dy:[-24,0,24]};
+function s31heater(par,x,by){
+  const g=svgEl('g',{},par);
+  svgEl('ellipse',{cx:x+70,cy:by,rx:80,ry:11,fill:'#000','fill-opacity':.12},g);
+  svgEl('rect',{x,y:by-118,width:140,height:116,rx:22,fill:'#4a4a4f'},g);
+  svgEl('rect',{x:x+34,y:by-62,width:72,height:10,rx:5,fill:'#2c2c2e'},g);
+  svgEl('rect',{x:x+8,y:by-190,width:124,height:74,rx:14,fill:'#d9532f'},g);
+  svgEl('ellipse',{cx:x+70,cy:by-153,rx:50,ry:24,fill:'#ffbf7a','fill-opacity':.9,filter:'url(#s31-gl)'},g);
+  for(let i=0;i<6;i++)svgEl('line',{x1:x+15+i*22,y1:by-192,x2:x+15+i*22,y2:by-116,stroke:'#9a9aa0','stroke-width':4},g);
+  svgEl('rect',{x:x-2,y:by-200,width:144,height:13,rx:6,fill:'#9a9aa0'},g);
+  return g;
+}
+function s31penguin(par,cx,by,body,cheek){   // 왼쪽(난로 쪽)을 보는 펭귄, by = 발바닥 높이
+  const g=svgEl('g',{},par);
+  svgEl('ellipse',{cx:cx+6,cy:by,rx:52,ry:9,fill:'#000','fill-opacity':.12},g);
+  svgEl('ellipse',{cx:cx-16,cy:by-6,rx:18,ry:8,fill:'#F5A623'},g);svgEl('ellipse',{cx:cx+20,cy:by-6,rx:18,ry:8,fill:'#F5A623'},g);
+  svgEl('ellipse',{cx,cy:by-72,rx:50,ry:68,fill:body},g);
+  svgEl('ellipse',{cx:cx+44,cy:by-70,rx:13,ry:32,fill:body,transform:`rotate(-16 ${cx+44} ${by-70})`},g);
+  svgEl('ellipse',{cx:cx-12,cy:by-56,rx:31,ry:47,fill:'#fff'},g);
+  [[cx-24,by-110],[cx-2,by-112]].forEach(([x,y])=>{svgEl('circle',{cx:x,cy:y,r:9.5,fill:'#fff',stroke:'#1d1d1f','stroke-width':2},g);svgEl('circle',{cx:x-3,cy:y+1,r:4.5,fill:'#1d1d1f'},g);});
+  svgEl('path',{d:`M${cx-32} ${by-100}L${cx-62} ${by-91}L${cx-32} ${by-84}Z`,fill:'#F5A623'},g);
+  if(cheek)svgEl('circle',{cx:cx-34,cy:by-78,r:8,fill:cheek,'fill-opacity':.55},g);
+  return g;
+}
+(function(){
+  const g=$id('s31-svg');if(!g)return;const {by,hx,to,dy}=S31;
+  const defs=svgEl('defs',{},g);rvGlow(defs,'s31-gl',8);
+  by.forEach(y=>svgEl('line',{x1:40,y1:y,x2:1640,y2:y,stroke:'#d1d1d6','stroke-width':3},g));
+  const mk=(par,y,x2)=>dy.map(d=>rvArrow(par,{p:[hx+150,y-153+d,x2,y-153+d],lam:120,amp:13,col:RV_IR,w:4,v:180}));
+  // 1줄: 난로 → 분홍 펭귄
+  s31heater(g,hx,by[0]);s31penguin(g,1450,by[0],'#F29BB8','#ff4f7f');
+  S31.w1=mk(g,by[0],to[0]);
+  // 2줄(2단계): 앞의 파란 펭귄이 가로막음
+  const r2=svgEl('g',{'data-step':'2','data-fx':'fade'},g);
+  s31heater(r2,hx,by[1]);s31penguin(r2,1450,by[1],'#F29BB8','#ff4f7f');s31penguin(r2,780,by[1],'#2b3c8f','');
+  S31.w2=mk(r2,by[1],to[1]);
+  rvBubble(g,1330,16,330,72,1430,104,'아~ 따뜻하다.',{'data-step':'1','data-fx':'pop','data-delay':'1300'});
+  rvBubble(g,1270,300,390,72,1430,394,'펭돌아, 추워, 비켜봐.',{'data-step':'2','data-fx':'pop','data-delay':'1100'});
+})();
+function s31draw(c){S31.w1.forEach(a=>rvArrowSet(a,c.t,c.f[0]));S31.w2.forEach(a=>rvArrowSet(a,c.t,c.f[1]));}
+Deck.scene('s31',{
+  enter(c){c.f=[0,0];c.t=0;s31draw(c);if(!PRINT)c.loop(t=>{c.t=t;s31draw(c);});},
+  async go(c,k){
+    if(k===1)await c.tween(1300,p=>{c.f[0]=p;s31draw(c);},{ease:'inOut'});
+    if(k===2)await c.tween(900,p=>{c.f[1]=p;s31draw(c);},{ease:'inOut'});
+  }
+});
+
+/* ── s32 복사 평형?: 실험 장치(초시계·검은색 알루미늄 컵·디지털 온도계·적외선등, 면장갑은 2026-10-29 교사 요청으로 뺌). 1단계 적외선등을 켜면 초시계가 가고 온도가 오르다 50.0 ℃에서 멈춤 ── */
+const S32={T:[25.4,29.8,36.1,40.9,44.0,46.8,48.1,48.9,49.3,49.6,49.7,50.0,50.0],
+  W:[[1286,272,898,368],[1290,296,898,398],[1294,320,898,428]]};
+const s32T=m=>{const i=Math.min(11,Math.floor(m/2)),u=m/2-i;return lerp(S32.T[i],S32.T[i+1],clamp(u,0,1));};
+(function(){
+  const g0=$id('s32-svg');if(!g0)return;
+  const defs=svgEl('defs',{},g0);rvGlow(defs,'s32-gl',12);
+  const g=svgEl('g',{transform:'translate(-120 -64) scale(1.12)'},g0),G=g;   // 그림 전체를 조금 키워 상자 가운데로
+  const lab=(x,y,s,anchor)=>txt(g,x,y,s,{'font-size':28,'font-weight':700,fill:'#48484a','text-anchor':anchor||'middle'});
+  const lead=(x1,y1,x2,y2)=>svgEl('line',{x1,y1,x2,y2,stroke:'#8e8e93','stroke-width':2.5},g);
+  // 탁자
+  svgEl('rect',{x:40,y:560,width:1600,height:40,fill:'#e5e5ea'},g);svgEl('rect',{x:40,y:600,width:1600,height:18,fill:'#d1d1d6'},g);
+  // 초시계
+  svgEl('rect',{x:186,y:428,width:30,height:18,rx:5,fill:'#636366'},g);svgEl('rect',{x:270,y:428,width:30,height:18,rx:5,fill:'#636366'},g);
+  svgEl('rect',{x:146,y:440,width:194,height:120,rx:28,fill:'#3a3a3c'},g);
+  svgEl('rect',{x:166,y:462,width:154,height:66,rx:10,fill:'#d4ead0'},g);
+  txt(g,243,509,'00:00',{id:'s32-sw','font-size':42,'font-weight':700,fill:'#1d1d1f','text-anchor':'middle','font-variant-numeric':'tabular-nums'});
+  lab(243,400,'초시계');
+  // 나무 받침 · 검은색 알루미늄 컵 · 디지털 온도계
+  svgEl('rect',{x:764,y:470,width:126,height:90,rx:6,fill:'#e2c193',stroke:'#c9a26b','stroke-width':2},g);
+  [488,510,532].forEach(y=>svgEl('path',{d:`M772 ${y}Q827 ${y-6} 882 ${y}`,fill:'none',stroke:'#c9a26b','stroke-width':2},g));
+  svgEl('path',{d:'M774 340L880 340L872 470L782 470Z',fill:'#1d1d1f'},g);
+  svgEl('ellipse',{cx:827,cy:340,rx:53,ry:10,fill:'#3a3a3c'},g);
+  svgEl('rect',{x:821,y:228,width:12,height:190,rx:6,fill:'#c7c7cc'},g);
+  svgEl('rect',{x:742,y:156,width:170,height:74,rx:12,fill:'#fff',stroke:'#1d1d1f','stroke-width':3},g);
+  txt(g,827,207,'25.4 ℃',{id:'s32-temp','font-size':36,'font-weight':700,fill:'#1d1d1f','text-anchor':'middle','font-variant-numeric':'tabular-nums'});
+  lead(712,193,740,193);lab(704,203,'디지털 온도계','end');
+  lead(752,410,776,410);lab(744,420,'검은색 알루미늄 컵','end');
+  // 적외선등
+  svgEl('ellipse',{cx:1446,cy:558,rx:122,ry:20,fill:'#5fb2e0'},g);svgEl('rect',{x:1424,y:520,width:44,height:40,rx:10,fill:'#5fb2e0'},g);
+  svgEl('path',{d:'M1446 524C1446 430 1468 360 1380 268',fill:'none',stroke:'#a1a1a6','stroke-width':11,'stroke-linecap':'round'},g);
+  const hd=svgEl('g',{transform:'translate(1292 296) rotate(-14)'},g);
+  svgEl('path',{d:'M0 -48L104 -22L104 22L0 48Z',fill:'#6cc0ea'},hd);
+  svgEl('ellipse',{id:'s32-bulb',cx:0,cy:0,rx:12,ry:48,fill:'#8e3b2c'},hd);
+  svgEl('ellipse',{id:'s32-glow',cx:-6,cy:0,rx:26,ry:58,fill:'#ff5a36',filter:'url(#s32-gl)',opacity:0},hd);
+  lab(1330,210,'적외선등');
+  // 적외선(1단계부터): 넓은 빛 띠 + 주황 물결
+  svgEl('polygon',{id:'s32-beam',points:'1286,252 1300,346 898,452 898,350',fill:RV_IR,'fill-opacity':0},G);
+  S32.w=S32.W.map(p=>rvArrow(G,{p,lam:64,amp:9,col:RV_IR,w:4,v:150}));
+})();
+function s32draw(c){
+  const m=c.m,T=s32T(m),on=c.on;
+  c.$('#s32-temp').textContent=T.toFixed(1)+' ℃';
+  const mm=Math.floor(m),ss=Math.floor((m-mm)*60+1e-6);c.$('#s32-sw').textContent=String(mm).padStart(2,'0')+':'+String(ss).padStart(2,'0');
+  c.$('#s32-glow').setAttribute('opacity',f1(on*(.8+.15*Math.sin(c.t*4))));c.$('#s32-bulb').setAttribute('fill',on>.5?'#ff6a3d':'#8e3b2c');
+  c.$('#s32-beam').setAttribute('fill-opacity',f1(.16*on));
+  S32.w.forEach(a=>rvArrowSet(a,c.t,on));
+}
+Deck.scene('s32',{steps:1,
+  enter(c){c.m=0;c.on=0;c.t=0;s32draw(c);if(!PRINT)c.loop(t=>{c.t=t;s32draw(c);});},
+  async go(c,k){
+    if(k===1){await c.tween(500,p=>{c.on=p;s32draw(c);});await c.tween(6000,p=>{c.m=24*p;s32draw(c);},{ease:'linear'});}
+  }
+});
+
+/* ── s33 복사 평형: 온도-시간 그래프(PPT와 같은 개형: 오르다가 꺾여 평평). 1단계 온도가 오르는 구간까지, 2단계 평평한 구간과 '복사 평형'·'복사 평형에 도달한 시간' ── */
+const S33={x0:90,y0:500,xs:90,ys:400,xk:400,yk:180,x1:770};
+const s33y=x=>x<=S33.xk?S33.yk+(S33.ys-S33.yk)*Math.pow(1-(x-S33.xs)/(S33.xk-S33.xs),2):S33.yk;
+(function(){
+  const g=$id('s33-svg');if(!g)return;const {x0,y0,xk,yk,x1}=S33;
+  // 구간 바탕(단계마다)
+  const z1=svgEl('g',{'data-step':'1','data-fx':'fade'},g);
+  svgEl('rect',{x:x0+2,y:70,width:xk-x0-2,height:y0-72,fill:RV_IR,'fill-opacity':.08},z1);
+  txt(z1,(x0+xk)/2,y0-24,'1)',{'font-size':28,'font-weight':800,style:'fill:var(--ir)','text-anchor':'middle'});
+  const z2=svgEl('g',{'data-step':'2','data-fx':'fade'},g);
+  svgEl('rect',{x:xk,y:70,width:x1-xk,height:y0-72,style:'fill:var(--act)','fill-opacity':.07},z2);
+  txt(z2,(xk+x1)/2,y0-24,'2)',{'font-size':28,'font-weight':800,style:'fill:var(--act)','text-anchor':'middle'});
+  // 축
+  svgEl('path',{d:`M${x0} ${y0}H${x1+20}M${x0} ${y0}V62`,fill:'none',stroke:'#1d1d1f','stroke-width':3},g);
+  svgEl('polygon',{points:`${x1+34},${y0} ${x1+16},${y0-8} ${x1+16},${y0+8}`,fill:'#1d1d1f'},g);
+  svgEl('polygon',{points:`${x0},48 ${x0-8},66 ${x0+8},66`,fill:'#1d1d1f'},g);
+  txt(g,x0-16,y0+30,'0',{'font-size':26,fill:'#6e6e73','text-anchor':'end'});
+  txt(g,x0+16,56,'온도(℃)',{'font-size':26,'font-weight':600,fill:'#1d1d1f'});
+  txt(g,x1+30,y0+44,'시간(분)',{'font-size':26,'font-weight':600,fill:'#1d1d1f','text-anchor':'end'});
+  // 2단계: 점선 · 복사 평형 · 복사 평형에 도달한 시간
+  const z3=svgEl('g',{'data-step':'2','data-fx':'fade','data-delay':'1300'},g);
+  svgEl('path',{d:`M${x0} ${yk}H${xk}V${y0}`,fill:'none',style:'stroke:var(--act)','stroke-width':2.5,'stroke-dasharray':'8 7'},z3);
+  svgEl('circle',{cx:xk,cy:y0,r:15,fill:'none',style:'stroke:var(--act)','stroke-width':2.5},z3);
+  svgEl('path',{d:`M${xk+10} ${y0-12}L${xk+34} ${y0-70}H${xk+44}`,fill:'none',style:'stroke:var(--act)','stroke-width':2.5},z3);
+  txt(z3,xk+50,y0-62,'복사 평형에 도달한 시간',{'font-size':26,'font-weight':700,style:'fill:var(--act)'});
+  svgEl('rect',{x:500,y:106,width:170,height:48,rx:24,fill:'#e5e5ea'},z3);
+  txt(z3,585,140,'복사 평형',{'font-size':28,'font-weight':800,fill:'#1d1d1f','text-anchor':'middle'});
+  svgEl('path',{id:'s33-cv',fill:'none',stroke:'#E8602C','stroke-width':6,'stroke-linejoin':'round','stroke-linecap':'round'},g);
+  svgEl('circle',{id:'s33-dot',r:11,fill:'#E8602C',stroke:'#fff','stroke-width':3},g);
+})();
+function s33draw(c){
+  const p=[];for(let x=S33.xs;x<=c.x+.01;x+=4)p.push(f1(x)+' '+f1(s33y(x)));p.push(f1(c.x)+' '+f1(s33y(c.x)));
+  c.$('#s33-cv').setAttribute('d','M'+p.join(' L'));
+  const d=c.$('#s33-dot');d.setAttribute('cx',f1(c.x));d.setAttribute('cy',f1(s33y(c.x)));
+}
+Deck.scene('s33',{
+  enter(c){c.x=S33.xs;s33draw(c);},
+  async go(c,k){
+    if(k===1)await c.tween(1800,p=>{c.x=lerp(S33.xs,S33.xk,p);s33draw(c);},{ease:'linear'});
+    if(k===2)await c.tween(1300,p=>{c.x=lerp(S33.xk,S33.x1,p);s33draw(c);},{ease:'linear'});
+  }
+});
+
+/* ── s34 지구의 복사 평형(단계 없음): 왼쪽 대기 단면 — 태양 복사(가시광선)는 대기를 지나 지표로, 지구 복사(적외선)는 일부가 온실 기체에 흡수되어 지표로 재복사되고 일부는 우주로.
+   오른쪽 태양이 방출하는 복사 중 일부가 지구에 도달하고, 지구는 모든 방향으로 지구 복사를 방출 ── */
+const S34={};
+(function(){
+  const a=$id('s34-sa');if(!a)return;
+  const da=rvSky(a,'s34-sky',840,430,'#d6e4f5','#f3f8fd');rvGlow(da,'s34-gl',9);
+  svgEl('rect',{x:0,y:130,width:840,height:150,fill:'#64D2FF','fill-opacity':.22},a);
+  for(let i=0;i<24;i++)svgEl('circle',{cx:f1(300+rnd(i*9+2)*420),cy:f1(150+rnd(i*5+7)*110),r:5,fill:'#0077B6','fill-opacity':.4},a);
+  txt(a,20,166,'대기',Object.assign({'font-size':26,'font-weight':800,style:'fill:var(--air)'},halo('#d3ecf8',6)));
+  svgEl('rect',{x:0,y:330,width:840,height:100,fill:'#7d5f43'},a);svgEl('line',{x1:0,y1:332,x2:840,y2:332,stroke:'#5c9b3a','stroke-width':6},a);
+  txt(a,420,396,'지구 표면',{'font-size':30,'font-weight':800,fill:'#fff','text-anchor':'middle'});
+  sunIcon(a,58,56,26,'',0);
+  const L=(x,y,s,fs,col,anchor)=>txt(a,x,y,s,Object.assign({'font-size':fs,'font-weight':fs>26?800:700,style:'fill:'+col,'text-anchor':anchor||'start'},halo('#e8f0f9',6)));
+  L(222,44,'태양 복사 에너지',28,'var(--sun)');L(222,76,'주로 가시광선,',24,'var(--sun)');L(222,104,'지구 대기를 잘 통과함',24,'var(--sun)');
+  L(540,44,'지구 복사 에너지',28,'var(--ir)');L(540,76,'주로 적외선,',24,'var(--ir)');L(540,104,'대기 중 온실 기체에',24,'var(--ir)');L(540,132,'의해 잘 흡수됨',24,'var(--ir)');
+  svgEl('ellipse',{id:'s34-g1',cx:560,cy:200,rx:36,ry:22,fill:RV_IR,filter:'url(#s34-gl)',opacity:0},a);
+  S34.A=[rvArrow(a,{p:[92,88,196,326],lam:22,amp:7,col:RV_SUN,hl:22,hw:12,v:150}),
+         rvArrow(a,{p:[560,328,560,196],lam:58,amp:11,col:RV_IR,hl:22,hw:12}),
+         rvArrow(a,{p:[632,206,632,326],lam:58,amp:11,col:RV_IR,hl:22,hw:12}),
+         rvArrow(a,{p:[806,328,806,24],lam:58,amp:11,col:RV_IR,hl:22,hw:12})];
+  const b=$id('s34-sb');
+  const db=rvSky(b,'s34-sp',800,430,'#1f2440','#2c3358');rvGlow(db,'s34-sg',14);
+  const sg=svgEl('radialGradient',{id:'s34-sun',cx:.5,cy:.5,r:.5},db);svgEl('stop',{offset:.6,'stop-color':'#FFB300'},sg);svgEl('stop',{offset:1,'stop-color':'#FF6A00'},sg);
+  svgEl('circle',{cx:-60,cy:160,r:166,fill:'#FF8A00',filter:'url(#s34-sg)',opacity:.7},b);
+  svgEl('circle',{cx:-60,cy:160,r:150,fill:'url(#s34-sun)'},b);
+  S34.sr=[-62,-42,-24,30,40].map(d=>{const an=d*D2R;return rvArrow(b,{p:[-60+162*Math.cos(an),160+162*Math.sin(an),-60+228*Math.cos(an),160+228*Math.sin(an)],lam:16,amp:5,col:'#FFC24D',w:3,hl:12,hw:7});});
+  S34.sw=[120,148,176,204,232].map(y=>rvArrow(b,{p:[104,y,560,y],lam:22,amp:6,col:RV_SUN,w:4,v:150}));
+  const eg=svgEl('g',{},b);
+  svgEl('circle',{cx:640,cy:176,r:78,fill:'#3d8fd6'},eg);
+  [['M598 140q20-24 46-10q14 18-6 30q-22 10-40-20z'],['M640 196q24-6 38 10q4 22-20 30q-26 2-18-40z'],['M588 196q12 4 10 18q-8 10-16 0z']].forEach(([d])=>svgEl('path',{d,fill:'#5fb04a'},eg));
+  svgEl('circle',{cx:612,cy:150,r:22,fill:'#fff','fill-opacity':.25},eg);
+  S34.er=[];for(let i=0;i<8;i++){const an=(i*45+22.5)*D2R;S34.er.push(rvArrow(b,{p:[640+86*Math.cos(an),176+86*Math.sin(an),640+150*Math.cos(an),176+150*Math.sin(an)],lam:22,amp:5,col:RV_IR,w:4,hl:14,hw:8}));}
+  const cap=(x,lines,lx,ly)=>{svgEl('circle',{cx:lx,cy:ly,r:6,fill:'#ff6a3d'},b);svgEl('line',{x1:lx,y1:ly,x2:lx,y2:330,stroke:'#c7c7cc','stroke-width':2,'stroke-dasharray':'5 5'},b);
+    lines.forEach((s,i)=>txt(b,x,354+i*30,s,{'font-size':24,'font-weight':600,fill:'#f2f2f7'}));};
+  cap(24,['태양이 방출하는 복사','에너지 중 일부가 지구에','도달한다.'],240,232);
+  cap(418,['지구는 태양 복사 에너지를','흡수하고, 모든 방향으로 지구','복사 에너지를 방출한다.'],600,240);
+})();
+function s34draw(c){
+  S34.A.forEach(a=>rvArrowSet(a,c.t,c.f[0]));c.$('#s34-g1').setAttribute('opacity',f1(c.f[0]*(.7+.2*Math.sin(c.t*3))));
+  S34.sr.forEach(a=>rvArrowSet(a,c.t,c.f[1]));S34.sw.forEach(a=>rvArrowSet(a,c.t,c.f[1]));S34.er.forEach(a=>rvArrowSet(a,c.t,c.f[1]));
+}
+Deck.scene('s34',{   // 단계 없음(2026-10-29 교사 요청): 장이 뜨면 두 그림과 물결이 모두 나옴
+  enter(c){c.f=[1,1];c.t=0;s34draw(c);if(!PRINT)c.loop(t=>{c.t=t;s34draw(c);});}
+});
+
+/* ── s35 복사 평형과 온실 효과: 1단계 달 표면(대기 없음) — 달 복사 에너지가 곧장 우주로, 2단계 지구 표면(대기 있음) — 지구 복사 일부를 대기가 흡수해 지표로 재복사,
+   3단계 온실 — 햇빛은 유리를 지나 들어오고 안에서 데워진 열이 잘 빠져나가지 못함 ── */
+const S35={};
+(function(){
+  const lb=(g,x,y,s,col,anchor,bg)=>txt(g,x,y,s,Object.assign({'font-size':24,'font-weight':800,style:'fill:'+col,'text-anchor':anchor||'start'},halo(bg||'#eef3f9',6)));
+  // 달 표면
+  const a0=$id('s35-sa');if(!a0)return;
+  const da=rvSky(a0,'s35-k1',533,375,'#dfe6f0','#f4f7fb'),a=svgEl('g',{transform:'translate(0 40)'},a0);   // 그림은 40px 아래로(하늘을 넓힘)
+  svgEl('path',{d:'M0 236Q266 214 533 236V335H0Z',fill:'#a1a1a6'},a);
+  [[90,270,26,7],[230,292,18,5],[400,262,30,8],[470,300,14,4]].forEach(([cx,cy,rx,ry])=>svgEl('ellipse',{cx,cy,rx,ry,fill:'#7c7c80'},a));
+  txt(a,266,312,'달 표면',{'font-size':24,'font-weight':800,fill:'#fff','text-anchor':'middle'});
+  sunIcon(a,54,50,24,'',0);
+  lb(a,172,120,'태양 복사','var(--sun)');lb(a,172,148,'에너지','var(--sun)');
+  lb(a,388,56,'달 복사 에너지','var(--ir)','end');
+  S35.a=[rvArrow(a,{p:[84,78,200,232],lam:22,amp:7,col:RV_SUN,hl:20,hw:11,v:150}),rvArrow(a,{p:[410,236,410,22],lam:56,amp:11,col:RV_IR,hl:20,hw:11})];
+  // 지구 표면(대기 있음)
+  const b0=$id('s35-sb');
+  const db=rvSky(b0,'s35-k2',533,375,'#dbeaf7','#f6fafe');rvGlow(db,'s35-gl',8);const b=svgEl('g',{transform:'translate(0 40)'},b0);
+  svgEl('rect',{x:0,y:84,width:533,height:122,fill:'#64D2FF','fill-opacity':.25},b);
+  for(let i=0;i<14;i++)svgEl('circle',{cx:f1(240+rnd(i*7+3)*270),cy:f1(98+rnd(i*3+5)*94),r:4.5,fill:'#0077B6','fill-opacity':.45},b);
+  lb(b,14,112,'대기','var(--air)','start','#d3ecf8');
+  svgEl('path',{d:'M0 236Q266 214 533 236V335H0Z',fill:'#6aa84f'},b);
+  txt(b,266,312,'지구 표면',{'font-size':24,'font-weight':800,fill:'#fff','text-anchor':'middle'});
+  sunIcon(b,54,50,24,'',0);
+  lb(b,178,150,'태양 복사','var(--sun)','start','#d3ecf8');lb(b,178,178,'에너지','var(--sun)','start','#d3ecf8');
+  lb(b,440,56,'지구 복사 에너지','var(--ir)','end');
+  svgEl('ellipse',{id:'s35-g',cx:300,cy:150,rx:30,ry:18,fill:RV_IR,filter:'url(#s35-gl)',opacity:0},b);
+  S35.b=[rvArrow(b,{p:[84,78,200,232],lam:22,amp:7,col:RV_SUN,hl:20,hw:11,v:150}),rvArrow(b,{p:[300,234,300,146],lam:50,amp:10,col:RV_IR,hl:20,hw:11}),
+         rvArrow(b,{p:[364,152,364,234],lam:50,amp:10,col:RV_IR,hl:20,hw:11}),rvArrow(b,{p:[462,234,462,22],lam:50,amp:10,col:RV_IR,hl:20,hw:11})];
+  // 온실
+  const cc0=$id('s35-sc');
+  rvSky(cc0,'s35-k3',534,375,'#dcebf7','#f6fafe');const cc=svgEl('g',{transform:'translate(0 40)'},cc0);
+  svgEl('path',{d:'M0 270Q267 256 534 270V335H0Z',fill:'#6aa84f'},cc);
+  const G=svgEl('g',{},cc);
+  svgEl('path',{d:'M110 270V150L260 70L410 150V270Z',fill:'#bfe6f7','fill-opacity':.55,stroke:'#48484a','stroke-width':5,'stroke-linejoin':'round'},G);
+  [160,210,260,310,360].forEach(x=>svgEl('line',{x1:x,y1:x<260?150-(x-110)*80/150:150-(410-x)*80/150,x2:x,y2:270,stroke:'#48484a','stroke-width':3},G));
+  svgEl('line',{x1:110,y1:150,x2:410,y2:150,stroke:'#48484a','stroke-width':3},G);
+  [[150,250,18],[200,244,24],[300,246,22],[360,252,16]].forEach(([x,y,r])=>{svgEl('rect',{x:x-3,y,width:6,height:22,fill:'#6b4a2b'},G);svgEl('circle',{cx:x,cy:y,r,fill:'#3f9a3a'},G);});
+  sunIcon(cc,480,48,22,'',0);
+  lb(cc,24,46,'온실','#1d1d1f');
+  S35.c=[rvArrow(cc,{p:[458,70,330,230],lam:22,amp:7,col:RV_SUN,hl:20,hw:11,v:150}),
+         rvArrow(cc,{p:[236,262,236,158],lam:46,amp:9,col:RV_IR,hl:18,hw:10}),rvArrow(cc,{p:[280,150,280,258],lam:46,amp:9,col:RV_IR,hl:18,hw:10})];
+})();
+function s35draw(c){
+  S35.a.forEach(a=>rvArrowSet(a,c.t,c.f[0]));
+  S35.b.forEach(a=>rvArrowSet(a,c.t,c.f[1]));c.$('#s35-g').setAttribute('opacity',f1(c.f[1]*(.7+.2*Math.sin(c.t*3))));
+  S35.c.forEach(a=>rvArrowSet(a,c.t,c.f[2]));
+}
+Deck.scene('s35',{
+  enter(c){c.f=[0,0,0];c.t=0;s35draw(c);if(!PRINT)c.loop(t=>{c.t=t;s35draw(c);});},
+  async go(c,k){if(k>=1&&k<=3)await c.tween(1100,p=>{c.f[k-1]=p;s35draw(c);},{ease:'inOut',delay:250});}
 });
 
 Deck.start();
