@@ -596,13 +596,14 @@ html.print #s01 .sky{fill:#eef1f6!important} html.print #s01 .grd{fill:#d8d8dc!i
 </section>
 
 <!-- ═══ s06 건조 단열 감률과 습윤 단열 감률 ═══ -->
-<section class="slide" id="s06" data-tile="parchment" data-title="건조 단열 감률과 습윤 단열 감률" data-notes="교과서 93쪽 그림 III-10·11. 두 공기 덩어리가 20 ℃에서 함께 출발합니다. 처음 질문(교과서 ?): 20 ℃인 불포화 공기 덩어리가 1 km 상승하면? → 클릭 1 둘 다 1 km(불포화 10 ℃, 포화 15 ℃) → 2 포화 덩어리 안에서 수증기가 응결하며 응결열(잠열)이 나와(주황 빛) 단열 팽창에 의한 기온 하강을 일부 상쇄 → 3 3 km까지: 불포화 −10 ℃, 포화 5 ℃, 차이 15 ℃ → 4 이슬점 감률(불포화 2 ℃/km, 포화 5 ℃/km) — 그래프의 보라 점선(−8 ℃ → −14 ℃)은 경주와 상관없는 예시로, 불포화 덩어리의 기온선과 만나지 않게 그림(만나면 응결 고도로 오해할 수 있음). 덩어리 크기·응결열 고리는 모식. 교과서 보충: 습윤 단열 감률 5 ℃/km는 평균값 — 따뜻한 포화 공기일수록 응결열이 많아 더 작아진다. 지도서 유의점: 건조 단열 감률보다 습윤 단열 감률이 작은 까닭(응결열)을 이해시키기.">
+<section class="slide" id="s06" data-tile="parchment" data-title="건조 단열 감률과 습윤 단열 감률" data-notes="교과서 93쪽 그림 III-10·11. 카드의 두 감률 정의는 교과서 93쪽 문장 그대로(불포화/포화 상태의 공기 덩어리가 상승하거나 하강할 때 일어나는 단열 변화 … 이때의 기온 변화율). 두 공기 덩어리가 20 ℃에서 함께 출발합니다. 처음 질문(교과서 ?): 20 ℃인 불포화 공기 덩어리가 1 km 상승하면? → 클릭 1 둘 다 1 km(불포화 10 ℃, 포화 15 ℃) → 2 포화 덩어리 안에서 수증기가 응결하며 응결열(잠열)이 나와(주황 빛) 단열 팽창에 의한 기온 하강을 일부 상쇄 → 3 3 km까지: 불포화 −10 ℃, 포화 5 ℃, 차이 15 ℃ → 4 이슬점 감률(불포화 2 ℃/km, 포화 5 ℃/km) — 그래프의 보라 점선(−8 ℃ → −14 ℃)은 경주와 상관없는 예시로, 불포화 덩어리의 기온선과 만나지 않게 그림(만나면 응결 고도로 오해할 수 있음). 덩어리 크기·응결열 고리는 모식. 교과서 보충: 습윤 단열 감률 5 ℃/km는 평균값 — 따뜻한 포화 공기일수록 응결열이 많아 더 작아진다. 지도서 유의점: 건조 단열 감률보다 습윤 단열 감률이 작은 까닭(응결열)을 이해시키기.">
   <div class="hd" data-in><div class="eb"><b>1</b>단열 변화</div><h2>건조 단열 감률과 습윤 단열 감률</h2></div>
   <div class="scn" style="left:120px;top:250px;width:860px;height:740px" data-in="200" data-fx="fade"><svg id="s06-svg" viewBox="0 0 860 740"></svg></div>
-  <div class="scn" style="left:1020px;top:250px;width:780px;height:360px" data-in="300" data-fx="fade"><svg id="s06-ch" viewBox="0 0 780 360"></svg></div>
-  <div class="ws-card sm side" id="s06-card" style="left:1020px;top:650px;width:780px;height:340px;display:flex;flex-direction:column;justify-content:center" data-in="400">
-    <div class="ws-row"><span class="tm term c-dry">건조 단열 감률</span><span>불포화 공기 덩어리<br>1 km마다 약 <span class="bk"><span class="a" data-step="1" data-fx="pop">10 ℃</span><span class="n">1</span></span></span></div>
-    <div class="ws-row"><span class="tm term c-wet">습윤 단열 감률</span><span>포화 — 응결하며 <span class="bk"><span class="a" data-step="2" data-fx="pop">응결열</span><span class="n">2</span></span> 방출<br>→ 1 km마다 약 <span class="bk"><span class="a" data-step="3" data-fx="pop">5 ℃</span><span class="n">3</span></span></span></div>
+  <div class="scn" style="left:1020px;top:250px;width:780px;height:310px" data-in="300" data-fx="fade"><svg id="s06-ch" viewBox="0 0 780 310"></svg></div>
+  <style>#s06-card{padding:18px 30px}#s06-card.ws-card.sm.side .ws-row{grid-template-columns:150px 1fr;gap:18px;font-size:28px;line-height:1.4;padding:8px 0}</style>
+  <div class="ws-card sm side" id="s06-card" style="left:1020px;top:600px;width:780px;height:390px;display:flex;flex-direction:column;justify-content:center" data-in="400">
+    <div class="ws-row"><span class="tm term c-dry">건조 단열 감률</span><span>불포화 상태의 공기 덩어리가 상승하거나<br>하강할 때의 기온 변화율<br>→ 1 km마다 약 <span class="bk"><span class="a" data-step="1" data-fx="pop">10 ℃</span><span class="n">1</span></span></span></div>
+    <div class="ws-row"><span class="tm term c-wet">습윤 단열 감률</span><span>포화 상태의 공기 덩어리가 상승하거나<br>하강할 때의 기온 변화율<br>→ <span class="bk"><span class="a" data-step="2" data-fx="pop">응결열</span><span class="n">2</span></span> 방출, 1 km마다 약 <span class="bk"><span class="a" data-step="3" data-fx="pop">5 ℃</span><span class="n">3</span></span></span></div>
     <div class="ws-row"><span class="tm term c-dew">이슬점 감률</span><span>불포화 1 km마다 약 <span class="bk"><span class="a" data-step="4" data-fx="pop">2 ℃</span><span class="n">4</span></span> · 포화 약 5 ℃</span></div>
   </div>
   <div class="fine">교과서 그림 III-10·11을 경주로 · 습윤 단열 감률 5 ℃/km는 평균값(기온·수증기량에 따라 달라짐) · 모식 그림</div>
@@ -2658,7 +2659,7 @@ let S06CH=null;
   A_t(svg,S06.x1,716,'불포화 공기 덩어리',26,C.dry,{a:'middle',w:800});A_t(svg,S06.x2,716,'포화 공기 덩어리',26,C.wet,{a:'middle',w:800});
   A_pill(svg,430,44,'지표면 20 ℃인 불포화 공기 덩어리가 1 km 상승하면 몇 ℃?',{fs:26,anchor:'middle',bg:'rgba(29,29,31,.86)'});
   svgEl('g',{id:'s06-st'},svg);
-  S06CH=adChart($id('s06-ch'),{x:0,y:0,w:780,h:360,Tmin:-30,Tmax:30,Hmax:3,pad:{l:84,r:26,t:44,b:70},tstep:10,hstep:1});
+  S06CH=adChart($id('s06-ch'),{x:0,y:0,w:780,h:310,Tmin:-30,Tmax:30,Hmax:3,pad:{l:84,r:26,t:44,b:70},tstep:10,hstep:1});
 })();
 function s06draw(c,dt){
   const h=c.h,Tu=20-10*h,Ts=20-5*h,y=s06y(h),ch=S06CH;
@@ -2701,7 +2702,7 @@ Deck.scene('s06',{steps:4,
     const th=(T0,s,H,off,lab,col,fs)=>{const x1=ch.X(T0-s*3),y1=ch.Y(3),x2=ch.X(T0),y2=ch.Y(0),a=Math.atan2(y2-y1,x2-x1),mx=ch.X(T0-s*H),my=ch.Y(H),nx=-Math.sin(a)*off,ny=Math.cos(a)*off;
       A_t(c.lab,f1(mx+nx),f1(my+ny),lab,fs,col,{a:'middle',w:800,at:Object.assign({transform:'rotate('+(a/D2R).toFixed(2)+' '+f1(mx+nx)+' '+f1(my+ny)+')'},halo('#fff',6))});};
     th(20,10,1.45,30,'건조 단열선 10 ℃/km',C.dry,24);th(20,5,1.5,-10,'습윤 단열선 5 ℃/km',C.wet,24);
-    c.dl=svgEl('g',{opacity:0},G);A_t(c.dl,92,236,'이슬점 감률선',24,C.dew,{w:800,at:halo('#fff',6)});A_t(c.dl,92,266,'(불포화) 2 ℃/km',24,C.dew,{w:800,at:halo('#fff',6)});
+    c.dl=svgEl('g',{opacity:0},G);A_t(c.dl,92,f1(ch.Y(1.3)),'이슬점 감률선',24,C.dew,{w:800,at:halo('#fff',6)});A_t(c.dl,92,f1(ch.Y(1.3)+30),'(불포화) 2 ℃/km',24,C.dew,{w:800,at:halo('#fff',6)});
     A_fit(c.root);
     s06draw(c,0);if(!PRINT)c.loop((t,dt)=>{c.tt=t;s06draw(c,dt);});
   },
