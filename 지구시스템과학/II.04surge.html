@@ -6,6 +6,8 @@
 <title>지구시스템과학 - II.04. 해일 - 진광고등학교 교사 김덕영</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin></script>
 <!--
 ═══════════════════════════════════════════════════════════════════
  수업 슬라이드 엔진 (단일 파일, 외부 라이브러리 없음 — 글꼴만 CDN)
@@ -335,6 +337,8 @@ html.screen #zbadge{display:none!important}   /* 확대 배율 알약은 발표�
 /* ── 해일 수업에서 추가한 스타일 ──
    격자(모든 장 공통): 좌우 여백 120px → 내용 x 120~1800(폭 1680), 머리(.hd) 아래 내용 시작 y 250,
    단·개체 사이 40px, 카드 안쪽 여백 좌우 36px, 내용 아래 끝 y 990 이내 */
+.tx .katex{font-size:1.15em}   /* 수식(KaTeX, 2026-11-02): <span class="tx" data-tex="LaTeX">대체 글</span> — Deck.start() 전에 그려 원본에 포함 */
+.v-eq .tx .katex{font-size:1em}
 .kw-n{width:380px;top:690px;font-size:44px;font-weight:700;letter-spacing:-.025em}
 .kw-s{width:380px;top:756px;font-size:30px}
 /* 머리 아래 첫 줄 */
@@ -463,7 +467,7 @@ html.print #s01 #s01-cloud,html.print #s01 #s01-lamp{display:none}
     <div class="ws-row"><span class="tm">물 입자의 운동</span><span>해저면의 영향으로 물 입자는 <span class="bk"><span class="a" data-step="2" data-fx="pop">타원</span><span class="n">2</span></span> 운동을 한다.<br>→ 수심이 깊어질수록 타원이 납작해지고,<br>해저면에서는 <span class="bk"><span class="a" data-step="3" data-fx="pop">직선 왕복</span><span class="n">3</span></span> 운동을 한다.</span></div>
   </div>
   <div class="ws-card side" id="s03-v" style="left:120px;top:862px;width:1680px;padding-top:20px;padding-bottom:20px" data-in="550">
-    <div class="ws-row"><span class="tm">전파 속도</span><span>천해파의 전파 속도<span class="mr">(v) = </span><span class="bk"><span class="a" data-step="4" data-fx="pop"><span class="sq">√<span class="in">gh</span></span></span><span class="n">4</span></span> <span class="mu">(g: 중력 가속도, h: 수심)</span></span></div>
+    <div class="ws-row"><span class="tm">전파 속도</span><span>천해파의 전파 속도<span class="tx" data-tex="(v) ="><span class="mr">(v) = </span></span><span class="bk"><span class="a" data-step="4" data-fx="pop"><span class="tx" data-tex="\sqrt{gh}"><span class="sq">√<span class="in">gh</span></span></span></span><span class="n">4</span></span> <span class="mu">(<span class="tx" data-tex="g">g</span>: 중력 가속도, <span class="tx" data-tex="h">h</span>: 수심)</span></span></div>
   </div>
   <div class="fine">모식 그림 · 수심과 물결 높이는 실제보다 크게 그림(실제 천해파는 수심이 파장의 1/20보다 얕음) · 물 입자의 움직임은 천해파 식으로 계산</div>
 </section>
@@ -519,7 +523,7 @@ html.print #s01 #s01-cloud,html.print #s01 #s01-lamp{display:none}
   </div>
   <figure class="pic" id="s06-pic" style="left:120px;top:615px;width:1187px;height:375px" data-in="400" data-fx="fade"><img src="img/II.04/p5_지진해일_전파.png" alt="지진 해일의 발생과 전파"></figure>
   <div class="ws-card st eq" id="s06-v" style="left:1347px;top:615px;width:453px;height:375px" data-in="500">
-    <div class="ws-row"><span class="tm">천해파의 전파 속도</span><span class="v-eq"><span class="mr">v = </span><span class="sq">√<span class="in">gh</span></span></span><span class="mu">g: 중력 가속도<br>h: 수심</span></div>
+    <div class="ws-row"><span class="tm">천해파의 전파 속도</span><span class="v-eq"><span class="tx" data-tex="v = \sqrt{gh}"><span class="mr">v = </span><span class="sq">√<span class="in">gh</span></span></span></span><span class="mu"><span class="tx" data-tex="g">g</span>: 중력 가속도<br><span class="tx" data-tex="h">h</span>: 수심</span></div>
   </div>
 </section>
 
@@ -1894,8 +1898,9 @@ function s5build(c){
   svgEl('rect',{x:1010,y:412,width:640,height:168,rx:18,fill:'#fff',stroke:'#e0e0e0','stroke-width':2},fc);
   const l0=svgEl('text',{x:1040,y:454,'font-size':26,'font-weight':600,fill:'#6e6e73'},fc);l0.textContent='천해파의 전파 속도';
   const l1=svgEl('text',{x:1040,y:504,'font-size':34,'font-weight':700,fill:'#1d1d1f'},fc);
-  svgEl('tspan',{},l1).textContent='v = √(g';
-  svgEl('tspan',{fill:'#6f42c1','font-style':'italic','font-family':"'Times New Roman',serif"},l1).textContent='h';
+  const vf={'font-style':'italic','font-family':'KaTeX_Math,"Times New Roman",serif'};   // 변수 글꼴(KaTeX)
+  svgEl('tspan',vf,l1).textContent='v';svgEl('tspan',{},l1).textContent=' = √(';svgEl('tspan',vf,l1).textContent='g';
+  svgEl('tspan',Object.assign({fill:'#6f42c1'},vf),l1).textContent='h';
   svgEl('tspan',{},l1).textContent=') = √(9.8 × ';
   c.fH=svgEl('tspan',{fill:'#6f42c1'},l1);
   svgEl('tspan',{},l1).textContent=')';
@@ -1947,6 +1952,9 @@ Deck.scene('s06i',{
   }
 });
 
+/* 수식(KaTeX): data-tex의 LaTeX를 그린다. KaTeX를 못 불러오면(인터넷 없음) 안의 대체 글이 그대로 남는다 */
+function texAll(root){if(!window.katex)return;root.querySelectorAll('.tx[data-tex]').forEach(el=>{try{katex.render(el.dataset.tex,el,{throwOnError:false,strict:false});}catch(e){}});}
+texAll(document);
 Deck.start();
 </script>
 </body>
