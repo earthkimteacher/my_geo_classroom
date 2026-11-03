@@ -259,7 +259,7 @@ html.print .was-dark [style*="dashed #f5f5f7"],html.print .was-dark [style*="sol
 html.print .slide[data-tile="parchment"] .ws-card,html.print .qz-why,html.print .rc,html.print .box{background:#f5f5f7}   /* 회색 바탕 위 흰 카드는 흰 종이에서 사라지므로 연한 회색으로 */
 html.print .was-dark [fill="#1c1c1e"]{fill:#f2f2f7}
 html.print .was-dark [fill="#3a3a3c"]{fill:#8e8e93}
-html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why{visibility:hidden!important}   /* ?ans=0: 빈칸 정답·문제 풀이 숨김(학생용 인쇄) */
+html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why,html.noans .sc-a{visibility:hidden!important}   /* ?ans=0: 빈칸 정답·문제 풀이·스스로 확인하기 예시 답안 숨김(학생용 인쇄) */
 @media (prefers-reduced-motion: reduce){ .slide *{scroll-behavior:auto} }
 /* 그림 크게 보기(2026-10-26): 장 안의 그림 상자 .pic(figure > img)을 누르면 무대 가운데에 크게 띄움 */
 .pic{position:absolute;margin:0;border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.06),0 12px 30px rgba(0,0,0,.10);z-index:2;cursor:zoom-in}
@@ -508,6 +508,18 @@ html.print .mini{display:none}
 #s15 .tbl td,#s15 .tbl th{padding:5px 22px;font-size:28px}
 #s15 .tbl thead th{font-size:26px}
 html.print #s01 .sky{fill:#eef1f6!important} html.print #s01 .grd{fill:#d8d8dc!important}
+/* 22장 복사 안개(밤 장면) — 학생용 인쇄에서는 밤하늘·땅을 연하게, 어두운 바탕용 흰 글자·연한 색은 진하게(2026-11-03 학생용 PDF) */
+html.print #s20-a rect[fill="url(#s20-ask)"]{opacity:.3}
+html.print #s20-a circle[fill="#122444"]{fill:#b7bcc4}   /* 초승달을 만드는 가림 원 = 연해진 하늘색 */
+html.print #s20-a circle[fill="#fff"]:not([stroke]){fill:#8e9bb0}   /* 별 */
+html.print #s20-a path[stroke="#ffffff"]{stroke:#1f6fae}   /* 복사 냉각 화살표 */
+html.print #s20-a text[fill="#9fd4ff"]{fill:#1f6fae}
+html.print #s20-a path[fill="#1b3527"]{fill:#9fb3a3}   /* 땅(흰 안개가 보이게 중간 밝기) */
+html.print #s20-a [fill="#10221a"]{fill:#6f8576}   /* 나무·집 */
+html.print #s20-a text[fill="#fff"]{fill:#1d1d1f}
+html.print #s20-a text[fill="#ffa07f"]{fill:#C4391B} html.print #s20-a text[fill="#d9a6ff"]{fill:#8944AB}
+html.print #s20-a rect[fill="rgba(255,255,255,.16)"]{fill:rgba(0,0,0,.08)}
+html.print text[paint-order="stroke"]{stroke:none}   /* 글자 둘레 흰 띠(halo)는 학생용 인쇄에서 뺌 — 벡터 PDF를 pdf.js(파이어폭스·웹 PDF 보기)로 열면 띠가 글자색 덩어리로 그려짐(2026-11-03) */
 /* 확인 문제의 보기 상자·가로 선택지(조석 수업과 같은 모양) */
 .qz-box{border:2px solid var(--hl);border-radius:16px;padding:16px 28px;font-size:34px;line-height:1.6;background:#fff}
 .qz-ch.row{flex-direction:row;flex-wrap:wrap;gap:16px}
