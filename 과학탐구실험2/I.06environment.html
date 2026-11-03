@@ -1641,7 +1641,7 @@ function lkInit(){
 /* ═══ 발표자 보기(V, 2026-10-27 교사 요청 · 2026-11-03 배치 바꿈) ═══
    이 창(노트북·아이패드)에 위 도구 줄, 지금 장(그대로 누르고 조작), 다음·이전 장 미리보기, 넘기기 단추 넷, 아래 칸(단계 · 발표자 노트 탭)을 놓는다.
    지금 장은 무대 칸(#viewport)을 그 자리로 옮겨 그리고, 미리보기(다음·이전 장, 단계 칸)는 같은 수업을 ?thumb=1(정지 화면, 다 그린 뒤 멈춤)로 띄운 작은 창.
-   가로 창: 지금 장 | 다음·이전 장(오른쪽 위아래) · 아래 칸 | 단추 넷(2×2). 세로 창: 지금 장 → 이전 장 | 다음 장 → 단계 단추 → 장 단추 → 아래 칸.
+   가로 창: 지금 장 | 이전·다음 장(오른쪽 위 = 이전 장, 아래 = 다음 장) · 아래 칸 | 단추 넷(2×2). 세로 창: 지금 장 → 이전 장 | 다음 장 → 단계 단추 → 장 단추 → 아래 칸.
    단계 칸은 칸 높이를 꽉 채우되 지금·다음 두 칸은 다 보이게 하고, 넘치면 옆으로 밀어 보며 단계를 넘기면 지금 단계가 왼쪽에 오게 따라감.
    프로젝터 창이 연결되면 저절로 켜지고, V·도구 모음 단추로 켜고 끈다 */
 let pvEl=null,pvT0=0,pvIv=0,pvLastI=-1,pvNT=false,pvSI=-1,pvFK='';   // pvNT: 노트 탭이 열림 · pvSI: 단계 칸이 그리는 장 · pvFK: 단계 칸이 마지막으로 따라간 '장:단계'
@@ -1801,14 +1801,14 @@ function pvLayout(){
   const put=(q,x,y,w,h)=>{const e=pvEl.querySelector(q);e.style.left=f(x);e.style.top=f(y);e.style.width=f(w);e.style.height=f(h);};
   const row=v=>pvEl.querySelectorAll('.pv-b').forEach(e=>e.classList.toggle('row',v));
   let cur;
-  if(W/H>=1.15){   // 가로 창: 지금 장 | 다음·이전 장(오른쪽 위아래, 두 미리보기 높이 합 = 지금 장 높이) · 아래 칸 | 단추 넷(2×2)
+  if(W/H>=1.15){   // 가로 창: 지금 장 | 이전·다음 장(오른쪽 위아래, 두 미리보기 높이 합 = 지금 장 높이) · 아래 칸 | 단추 넷(2×2)
     const U=W-2*P-G,PM=Math.max(190,H*.22);   // PM: 아래 칸 최소 높이
     let R=(U-(L+G)*16/9)/3,C=U-R;
     const av=H-TB-L-G-PM-P;if(C*9/16>av){C=av*16/9;R=(C-(L+G)*16/9)/2;}
     const ch=C*9/16,rh=R*9/16,x0=(W-C-G-R)/2,xr=x0+C+G,yb=TB+L+ch+G,bh=H-P-yb,bw=(R-G)/2,b1=(bh-G)*.58,b2=bh-G-b1;
     cur={x:x0,y:TB+L,w:C,h:ch};
     put('.pv-top',x0,0,C+G+R,TB);put('.pv-lc',x0,TB,C,L);
-    put('.pv-ln',xr,TB,R,L);put('.pv-fn',xr,TB+L,R,rh);put('.pv-lp',xr,TB+L+rh+G,R,L);put('.pv-fp',xr,TB+2*L+rh+G,R,rh);
+    put('.pv-lp',xr,TB,R,L);put('.pv-fp',xr,TB+L,R,rh);put('.pv-ln',xr,TB+L+rh+G,R,L);put('.pv-fn',xr,TB+2*L+rh+G,R,rh);   // 위 = 이전 장, 아래 = 다음 장(2026-11-03 교사 요청)
     put('.pv-pr',xr,yb,bw,b1);put('.pv-nx',xr+bw+G,yb,bw,b1);put('.pv-pp',xr,yb+b1+G,bw,b2);put('.pv-np',xr+bw+G,yb+b1+G,bw,b2);
     put('.pv-notes',x0,yb,C,bh);row(false);
   }else{   // 세로 창: 지금 장 → 이전 장 | 다음 장 → [◀ 이전][다음 ▶] → [이전 장][다음 장] → 아래 칸. 높이가 모자라면 미리보기부터, 그래도 모자라면 지금 장도 줄임
