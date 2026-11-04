@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오늘의 급식</title>
+    <style>
+        :root {
+            /* 기본 테마 (라이트) */
+            --bg-color: #ffffff;
+            --text-color: #334155;
+            --border-color: #e1e4e8;
+            --lunch-color: #0d9488;
+            --dinner-color: #e11d48;
+            --badge-bg: #f1f5f9;
+            --badge-text: #64748b;
+            --modal-bg: rgba(255, 255, 255, 0.95);
+            --font-scale: 1.0; /* 글자 크기 배율 */
+        }
+        
+        [data-theme="dark"] {
+            /* 다크 테마 */
+            --bg-color: #1e293b;
+            --text-color: #f8fafc;
+            --border-color: #334155;
+            --lunch-color: #2dd4bf;
+            --dinner-color: #fb7185;
+            --badge-bg: #334155;
+            --badge-text: #cbd5e1;
+            --modal-bg: rgba(30, 41, 59, 0.95);
+        }
+
+        body, html {
+            margin: 0; padding: 0; 
+            width: 100vw; height: 100vh;
+            font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: transparent;
+            overflow: hidden; 
+        }
+
+        /* 메인 컨테이너 (모서리 라운드 제거) */
+        .meal-container {
+            display: flex;
+            width: 100%; height: 100%;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            box-sizing: border-box;
+            border-radius: 0; /* 라운드 제거 */
+            position: relative;
+        }
+
+        /* 급식 박스 */
+        .meal-box {
+            flex: 1;
+            padding: 1.5vh 2vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-right: 1px solid var(--border-color);
+            min-width: 0;
+        }
+        .meal-box:last-child {
+            border-right: none;
+        }
+
+        /* 타이틀 & 뱃지 */
+        .meal-title {
+            font-size: calc(clamp(12px, 1.3vw, 20px) * var(--font-scale));
+            font-weight: 700;
+            color: var(--lunch-color);
+            margin-bottom: 1vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .meal-title.dinner { color: var(--dinner-color); }
+        
+        .date-badge {
+            font-size: calc(clamp(10px, 1vw, 16px) * var(--font-scale));
+            font-weight: 500;
+            color: var(--badge-text);
+            background: var(--badge-bg);
+            padding: 0.3vh 0.8vw;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        /* 식단 내용 */
+        .meal-content {
+            font-size: calc(clamp(12px, 1.2vw, 18px) * var(--font-scale));
+            font-weight: 500;
+            color: var(--text-color);
+            line-height: 1.4;
+            word-break: keep-all;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .empty-meal { color: var(--badge-text); font-weight: 400; }
+
+        /* 설정 버튼 */
+        .settings-btn {
+            position: absolute;
+            top: 5px; right: 10px;
+            background: none; border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--badge-text);
+            z-index: 10;
+            padding: 5px;
+        }
+        .settings-btn:hover { color: var(--text-color); }
+
+        /* 설정 모달 */
+        .settings-modal {
+            display: none; 
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--modal-bg);
+            z-index: 20;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+            color: var(--text-color);
+        }
+        .settings-modal.active { display: block; }
+        
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 13px;
+        }
+        .settings-grid h3 { 
+            grid-column: span 2; 
+            margin: 0 0 10px 0; 
+            font-size: 16px; 
+            text-align: center; 
+        }
+        .setting-item { display: flex; flex-direction: column; }
+        .setting-item.full-width { grid-column: span 2; }
+        .setting-item label { margin-bottom: 4px; font-weight: 600; }
+        .setting-item input, .setting-item select {
+            padding: 6px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-size: 13px;
+        }
+        .btn-group {
+            grid-column: span 2;
+            display: flex; justify-content: center; gap: 10px;
+            margin-top: 10px;
+        }
+        .btn-group button {
+            padding: 8px 16px; border: none; border-radius: 4px;
+            cursor: pointer; font-weight: bold; font-size: 13px;
+        }
+        .btn-save { background: #0d9488; color: white; }
+        .btn-cancel { background: #64748b; color: white; }
+
+    </style>
+</head>
+<body>
+
+    <div class="meal-container">
+        <button class="settings-btn" id="btn-open-settings" title="환경설정">⚙️</button>
+        
+        <!-- 중식 영역 -->
+        <div class="meal-box">
+            <div class="meal-title">
+                <span>🍽️ 오늘의 중식</span>
+                <span class="date-badge" id="lunch-date">-</span>
+            </div>
+            <div class="meal-content" id="lunch-menu">데이터를 불러오는 중...</div>
+        </div>
+
+        <!-- 석식 영역 -->
+        <div class="meal-box">
+            <div class="meal-title dinner">
+                <span>🌙 오늘의 석식</span>
+                <span class="date-badge" id="dinner-date">-</span>
+            </div>
+            <div class="meal-content" id="dinner-menu">데이터를 불러오는 중...</div>
+        </div>
+
+        <!-- 설정 모달창 -->
+        <div class="settings-modal" id="settings-modal">
+            <div class="settings-grid">
+                <h3>위젯 설정</h3>
+                
+                <div class="setting-item full-width">
+                    <label>NEIS API 인증키</label>
+                    <input type="text" id="input-api-key" placeholder="발급받은 API 키 입력">
+                </div>
+                
+                <div class="setting-item">
+                    <label>시도교육청 코드</label>
+                    <select id="input-edu-code">
+                        <option value="B10">서울특별시교육청</option>
+                        <option value="C10">부산광역시교육청</option>
+                        <option value="D10">대구광역시교육청</option>
+                        <option value="E10">인천광역시교육청</option>
+                        <option value="F10">광주광역시교육청</option>
+                        <option value="G10">대전광역시교육청</option>
+                        <option value="H10">울산광역시교육청</option>
+                        <option value="I10">세종특별자치시교육청</option>
+                        <option value="J10">경기도교육청</option>
+                        <option value="K10" selected>강원특별자치도교육청</option>
+                        <option value="M10">충청북도교육청</option>
+                        <option value="N10">충청남도교육청</option>
+                        <option value="P10">전북특별자치도교육청</option>
+                        <option value="Q10">전라남도교육청</option>
+                        <option value="R10">경상북도교육청</option>
+                        <option value="S10">경상남도교육청</option>
+                        <option value="T10">제주특별자치도교육청</option>
+                    </select>
+                </div>
+                
+                <div class="setting-item">
+                    <label>표준학교코드(7자리)</label>
+                    <input type="text" id="input-school-code" placeholder="예: 7872044">
+                </div>
+                
+                <div class="setting-item">
+                    <label>테마 설정</label>
+                    <select id="input-theme">
+                        <option value="light">라이트 모드</option>
+                        <option value="dark">다크 모드</option>
+                    </select>
+                </div>
+                
+                <div class="setting-item">
+                    <label>글자 크기 (배율)</label>
+                    <select id="input-font-scale">
+                        <option value="0.8">작게 (0.8x)</option>
+                        <option value="1.0" selected>보통 (1.0x)</option>
+                        <option value="1.2">크게 (1.2x)</option>
+                        <option value="1.4">아주 크게 (1.4x)</option>
+                    </select>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-cancel" id="btn-cancel-settings">취소</button>
+                    <button class="btn-save" id="btn-save-settings">저장 및 적용</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM 요소
+        const modal = document.getElementById('settings-modal');
+        const btnOpen = document.getElementById('btn-open-settings');
+        const btnCancel = document.getElementById('btn-cancel-settings');
+        const btnSave = document.getElementById('btn-save-settings');
+
+        // 오늘 날짜 설정
+        const today = new Date();
+        const formattedDate = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}`;
+        const displayDate = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
+        document.getElementById('lunch-date').textContent = displayDate;
+        document.getElementById('dinner-date').textContent = displayDate;
+
+        // 설정값 불러오기 및 적용
+        function loadConfig() {
+            const config = {
+                apiKey: localStorage.getItem('neis_apiKey') || '',
+                eduCode: localStorage.getItem('neis_eduCode') || 'K10',
+                schoolCode: localStorage.getItem('neis_schoolCode') || '',
+                theme: localStorage.getItem('neis_theme') || 'light',
+                fontScale: localStorage.getItem('neis_fontScale') || '1.0'
+            };
+
+            // 테마 및 폰트 크기 즉시 적용
+            document.documentElement.setAttribute('data-theme', config.theme);
+            document.documentElement.style.setProperty('--font-scale', config.fontScale);
+
+            return config;
+        }
+
+        // 알레르기 유발물질 번호 제거 함수
+        function cleanMenuString(menuHTML) {
+            return menuHTML
+                .split('<br/>')
+                .map(item => item.replace(/[0-9./*()]/g, '').trim())
+                .filter(item => item.length > 0)
+                .join(', ');
+        }
+
+        // 급식 API 호출
+        function fetchMeal(config) {
+            const lunchEl = document.getElementById('lunch-menu');
+            const dinnerEl = document.getElementById('dinner-menu');
+
+            if (!config.apiKey || !config.schoolCode) {
+                const msg = '<span class="empty-meal">우측 상단 ⚙️ 버튼을 눌러 API 키와 학교 코드를 설정하세요.</span>';
+                lunchEl.innerHTML = msg;
+                dinnerEl.innerHTML = msg;
+                return;
+            }
+
+            const apiUrl = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${config.apiKey}&Type=json&ATPT_OFCDC_SC_CODE=${config.eduCode}&SD_SCHUL_CODE=${config.schoolCode}&MLSV_YMD=${formattedDate}`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    let lunchMenu = '<span class="empty-meal">오늘 중식 정보가 없습니다.</span>';
+                    let dinnerMenu = '<span class="empty-meal">오늘 석식 정보가 없습니다.</span>';
+
+                    if (data.mealServiceDietInfo && data.mealServiceDietInfo[1].row) {
+                        data.mealServiceDietInfo[1].row.forEach(meal => {
+                            const cleanedMenu = cleanMenuString(meal.DDISH_NM);
+                            if (meal.MMEAL_SC_CODE === "2") lunchMenu = cleanedMenu;
+                            if (meal.MMEAL_SC_CODE === "3") dinnerMenu = cleanedMenu;
+                        });
+                    }
+                    lunchEl.innerHTML = lunchMenu;
+                    dinnerEl.innerHTML = dinnerMenu;
+                })
+                .catch(error => {
+                    const errorMsg = '<span class="empty-meal">데이터를 불러오는 중 오류가 발생했습니다. (API 정보 오류 또는 네트워크 문제)</span>';
+                    lunchEl.innerHTML = errorMsg;
+                    dinnerEl.innerHTML = errorMsg;
+                });
+        }
+
+        // 모달창 열기 (기존 설정값 채우기)
+        btnOpen.addEventListener('click', () => {
+            const config = loadConfig();
+            document.getElementById('input-api-key').value = config.apiKey;
+            document.getElementById('input-edu-code').value = config.eduCode;
+            document.getElementById('input-school-code').value = config.schoolCode;
+            document.getElementById('input-theme').value = config.theme;
+            document.getElementById('input-font-scale').value = config.fontScale;
+            modal.classList.add('active');
+        });
+
+        // 모달창 닫기
+        btnCancel.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        // 설정 저장
+        btnSave.addEventListener('click', () => {
+            localStorage.setItem('neis_apiKey', document.getElementById('input-api-key').value.trim());
+            localStorage.setItem('neis_eduCode', document.getElementById('input-edu-code').value);
+            localStorage.setItem('neis_schoolCode', document.getElementById('input-school-code').value.trim());
+            localStorage.setItem('neis_theme', document.getElementById('input-theme').value);
+            localStorage.setItem('neis_fontScale', document.getElementById('input-font-scale').value);
+            
+            modal.classList.remove('active');
+            
+            const newConfig = loadConfig();
+            fetchMeal(newConfig);
+        });
+
+        // 초기 실행
+        const initialConfig = loadConfig();
+        fetchMeal(initialConfig);
+
+    </script>
+</body>
+</html>
