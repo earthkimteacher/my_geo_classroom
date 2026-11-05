@@ -87,6 +87,7 @@
 ## 폴더 구조
 ```
 my_geo_classroom/
+├─ engine/                           모든 수업 슬라이드가 함께 쓰는 엔진(deck.css · deck.js), 단일 파일 만들기(build_single.py)
 ├─ 과학탐구실험2/
 │  └─ I.06environment.html            학교 주변 환경 탐구 슬라이드
 ├─ 통합과학2/

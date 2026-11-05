@@ -1,0 +1,364 @@
+/* ═══ 수업 슬라이드 공용 엔진 CSS ═══
+   2026-11-05 수업 파일 여섯 개에 똑같이 들어 있던 엔진 CSS를 떼어 냄(engine-split). 이 파일을 고치면 모든 수업에 적용됨.
+   수업 파일은 <link rel="stylesheet" href="../engine/deck.css"> 다음의 <style>에 그 수업 전용 스타일만 둔다. */
+:root{
+  --white:#fff; --parch:#f5f5f7; --black:#000; --dark:#1d1d1f; --graphite:#272729;
+  --ink:#1d1d1f; --on-dark:#f5f5f7;
+  --c1:#64D2FF; --c2:#FFD60A; --c3:#FF6A3D; --c4:#30D158;
+  --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+  --ease-out:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:#000}
+body{font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word;user-select:none;-webkit-user-select:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+/* 무대 */
+#viewport{position:fixed;inset:0;overflow:hidden;background:#000}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center center;overflow:hidden;background:#000}
+.slide{position:absolute;inset:0;display:none;overflow:hidden;isolation:isolate}
+.slide.is-on{display:block;z-index:2}
+.slide.is-out{display:block;z-index:1}
+
+/* 면(타일) */
+.slide[data-tile="black"]{background:#000;color:var(--on-dark)}
+.slide[data-tile="dark"]{background:var(--dark);color:var(--on-dark)}
+.slide[data-tile="graphite"]{background:var(--graphite);color:var(--on-dark)}
+.slide[data-tile="light"]{background:#fff;color:var(--ink)}
+.slide[data-tile="parchment"]{background:var(--parch);color:var(--ink)}
+.slide[data-tile="black"],.slide[data-tile="dark"],.slide[data-tile="graphite"]{--t2:#a1a1a6;--t3:#8e8e93;--hl:#3a3a3c;--act:#2997ff}
+.slide[data-tile="light"],.slide[data-tile="parchment"]{--c1:#0077B6;--c2:#9A7400;--c3:#C4391B;--c4:#1E8B3E;--t2:#6e6e73;--t3:#6e6e73;--hl:#e0e0e0;--act:#0066cc}
+
+/* 글자 체계 (무대 px, 최소 24) */
+.t-title{font-size:84px;font-weight:600;line-height:1.1;letter-spacing:-.025em}
+.t-lead{font-size:44px;font-weight:400;line-height:1.3;letter-spacing:-.012em}
+.t-eyebrow{font-size:30px;font-weight:600;line-height:1.2;letter-spacing:.01em;color:var(--t2)}
+.t-cap{font-size:26px;line-height:1.35}
+.num{font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.abs{position:absolute} .center{text-align:center}
+.mute{color:var(--t2)} .mute2{color:var(--t3)}
+.c1{color:var(--c1)} .c2{color:var(--c2)} .c3{color:var(--c3)} .c4{color:var(--c4)} .act{color:var(--act)}
+.full-svg{position:absolute;inset:0;width:1920px;height:1080px;overflow:visible}
+svg text{font-family:var(--font)}
+.f-c1{fill:var(--c1)} .f-c2{fill:var(--c2)} .f-c3{fill:var(--c3)} .f-c4{fill:var(--c4)}
+.s-hl{stroke:var(--hl)} .tb{transform-box:fill-box;transform-origin:center}
+
+/* 선언형 등장 */
+[data-in],[data-step]{opacity:0}
+[data-fx="draw"],[data-fx="draw"] :is(path,line,polyline,polygon,circle,ellipse,rect){stroke-dasharray:1 1;stroke-dashoffset:1}
+[data-fx="draw"]{opacity:1}
+svg [data-in],svg [data-step]{transform-box:fill-box;transform-origin:center}
+
+/* 장면 머리 */
+.hd{position:absolute;left:120px;top:78px;right:120px;z-index:3}
+.hd .eb{font-size:28px;font-weight:600;color:var(--t2);margin-bottom:10px}
+.hd .eb b{color:var(--act);font-weight:700;margin-right:.35em}
+.hd h2{font-size:66px;font-weight:600;line-height:1.1;letter-spacing:-.028em}
+
+/* 학습지 카드와 빈칸 */
+.ws-card{position:absolute;border-radius:18px;padding:30px 44px 26px;background:#f5f5f7;z-index:3}
+.slide[data-tile="parchment"] .ws-card{background:#fff}
+.slide[data-tile="black"] .ws-card,.slide[data-tile="dark"] .ws-card,.slide[data-tile="graphite"] .ws-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+.ws-card .ws-h{display:flex;align-items:baseline;gap:18px;margin-bottom:6px}
+.ws-card .ws-h b{font-size:40px;font-weight:700;letter-spacing:-.02em}
+.ws-card .ws-h span{font-size:28px;color:var(--t2)}
+.ws-row{display:grid;grid-template-columns:130px 1fr;gap:22px;align-items:baseline;font-size:38px;line-height:1.55;padding:12px 0;border-top:1px solid var(--hl)}
+.ws-row:first-of-type{border-top:0}
+.ws-row .tm{font-size:max(26px,.89em);font-weight:600;color:var(--t2)}
+.slide:is([data-tile="light"],[data-tile="parchment"]) .ws-row .tm:not(.term){color:#5c5c61}   /* 항목 이름(2026-10-29 교사 요청): 설명 글자의 약 0.9배(최소 26px, 줄 글자 36px이면 32px)로 키우고 회색을 조금 진하게(#6e6e73 → #5c5c61) */
+.ws-row .tm.term{font-size:1.1em;font-weight:800;color:inherit;line-height:1.3;letter-spacing:-.01em}   /* 용어 이름표: 설명보다 크고 진하게(개념 색은 style로) */
+.bk{position:relative;display:inline-block;min-width:3.2em;margin:0 .2em 0 42px;padding:0 .3em;text-align:center;line-height:1.3;white-space:nowrap;border-bottom:4px solid #c7c7cc}
+.slide[data-tile="black"] .bk,.slide[data-tile="dark"] .bk,.slide[data-tile="graphite"] .bk{border-bottom-color:#48484a}
+.bk .a{display:inline-block;font-weight:700;color:var(--act)}
+.bk .n{position:absolute;left:-36px;top:50%;margin-top:-15px;min-width:30px;height:30px;padding:0 4px;box-sizing:border-box;border-radius:9999px;background:var(--act);color:#fff;font-size:24px;font-weight:700;line-height:30px;text-align:center}   /* 번호(24px)는 빈칸 바로 왼쪽에 — 프로젝터에서도 읽히게 */
+.say-line{position:absolute;left:120px;right:120px;text-align:center;font-size:44px;font-weight:600;letter-spacing:-.02em;z-index:3}
+.fine{position:absolute;left:120px;bottom:40px;font-size:24px;color:var(--t3);z-index:3}
+
+/* 수식 */
+.eq-big{font-size:150px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.eq-cap{font-size:38px;color:var(--t2);margin-top:14px}
+.eq-in{font-size:44px;font-weight:600;line-height:1.5}
+
+/* 확인 문제 */
+.qz{position:absolute;left:120px;top:84px;width:1680px;display:flex;flex-direction:column;gap:24px}
+.qz-eb{display:flex;align-items:center;gap:14px;font-size:30px;font-weight:600;color:var(--t2)}
+.qz-eb b{color:var(--act);font-weight:700}
+.qz-lv{display:inline-flex;padding:2px 14px;border-radius:9999px;border:2px solid var(--hl);font-size:26px}
+.qz-stem{font-size:40px;font-weight:600;line-height:1.42;letter-spacing:-.015em}
+.qz-ch{list-style:none;display:flex;flex-direction:column;gap:8px}
+.qz-ch li{position:relative;display:flex;gap:18px;font-size:38px;line-height:1.38;padding:12px 150px 12px 20px;border-radius:14px}
+.qz-n{flex:none;font-weight:700;color:var(--t2)}
+.qz-hl{position:absolute;inset:0;border-radius:14px;border:3px solid var(--act);background:color-mix(in srgb,var(--act) 10%,transparent);pointer-events:none}
+.qz-mark{position:absolute;right:18px;top:50%;margin-top:-.78em;font-size:30px;font-weight:700;color:#fff;background:var(--act);border-radius:9999px;padding:3px 18px}
+.qz-why{border-radius:18px;background:#fff;border-left:6px solid var(--act);padding:22px 30px 24px}
+.qz-why-h{font-size:26px;font-weight:700;color:var(--act);margin-bottom:6px}
+.qz-why-t{font-size:32px;line-height:1.5}
+.qz-why b{color:var(--act)}
+/* 스스로 확인하기(2026-10-29 교사 요청): 문제 세 개가 먼저 나오고, 클릭마다 그 문제의 예시 답안(해설 상자 .qz-why 모양) */
+.sc-list{position:absolute;left:120px;top:250px;width:1680px;display:flex;flex-direction:column;gap:30px;z-index:3;word-break:keep-all}
+.sc-q{display:grid;grid-template-columns:52px 1fr;font-size:36px;font-weight:600;line-height:1.4;letter-spacing:-.015em}
+.sc-q .no{font-weight:800;color:var(--act)}
+.sc-q .cr{font-weight:800;color:var(--act);margin-right:6px}
+.sc-a{grid-column:2;margin-top:12px;border-radius:16px;background:#fff;border-left:6px solid var(--act);padding:12px 28px 14px;font-size:30px;font-weight:500;line-height:1.5;letter-spacing:-.01em}
+.sc-a .h{display:inline-block;font-size:24px;font-weight:700;line-height:1.5;color:#fff;background:var(--act);border-radius:9999px;padding:0 14px;margin-right:12px;vertical-align:3px}
+.slide[data-tile="light"] .sc-a{background:#f5f5f7}
+html.print .sc-a{background:#f5f5f7}
+/* 1학년 통합과학 복습 장(2026-10-29 교사 PPT 2~5·11쪽): 머리의 복습 표시, 그림 상자, 밑줄 */
+.hd .eb .rv{display:inline-block;margin-left:18px;font-size:24px;font-weight:700;line-height:1.5;padding:0 14px;border-radius:9999px;border:2px solid var(--hl);color:var(--t2);vertical-align:2px}
+.rv-scene{position:absolute;border-radius:18px;overflow:hidden;z-index:2;background:#f5f5f7}
+.slide[data-tile="parchment"] .rv-scene{background:#fff}
+.rv-scene svg{display:block;width:100%;height:100%}
+html.print .rv-scene{background:#fff;outline:2px solid #e0e0e0}
+.rv-u{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:7px}
+
+/* 정리 카드 */
+.rc{position:absolute;top:290px;width:520px;height:560px;border-radius:18px;background:#fff;padding:34px 34px;display:flex;flex-direction:column;gap:14px}
+.rc .no{font-size:26px;font-weight:700;color:var(--act)}
+.rc h3{font-size:46px;font-weight:600;letter-spacing:-.02em;line-height:1.15}
+.rc p{font-size:30px;line-height:1.5}
+.rc .big{margin-top:auto;font-size:52px;font-weight:700;letter-spacing:-.02em}
+
+/* 키워드 진행 표시 */
+#kwbar{position:absolute;top:34px;right:44px;z-index:30;display:flex;align-items:center;gap:8px;opacity:0;transform:translateY(-8px);pointer-events:none;transition:opacity .45s var(--ease-out),transform .45s var(--ease-out)}
+#kwbar.show{opacity:1;transform:none;pointer-events:auto}
+#kwbar .kw{display:flex;align-items:center;height:46px;min-width:46px;border-radius:9999px;background:rgba(0,0,0,.055);color:#86868b;font-size:24px;font-weight:600;line-height:1;transition:background .45s,color .45s}
+#kwbar .kw b{width:46px;height:46px;flex:none;display:grid;place-items:center;font-weight:700}
+#kwbar .kw span{max-width:0;overflow:hidden;white-space:nowrap;transition:max-width .6s var(--ease-out),padding .6s var(--ease-out)}
+#kwbar .kw.done{background:rgba(0,0,0,.13);color:#3a3a3c}
+#kwbar .kw.cur{background:#0066cc;color:#fff}
+#kwbar .kw.cur span{max-width:460px;padding-right:22px}
+body:not(.on-light) #kwbar .kw{background:rgba(255,255,255,.1);color:#8e8e93}
+body:not(.on-light) #kwbar .kw.done{background:rgba(255,255,255,.24);color:#f5f5f7}
+body:not(.on-light) #kwbar .kw.cur{background:#2997ff;color:#fff}
+
+/* 하단 컨트롤(HUD) */
+#resume,#markbox{position:fixed;left:50%;top:24px;transform:translateX(-50%);z-index:60;padding:14px 16px 14px 22px;border-radius:16px;background:rgba(28,28,30,.95);color:#f5f5f7;font-size:17px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.35);max-width:calc(100vw - 32px)}
+#resume{display:flex;align-items:center;gap:12px}
+#resume span{line-height:1.4} #resume small{display:block;font-size:13px;font-weight:500;color:#a1a1a6} #resume b{color:#ffd60a}
+#resume button,#markbox button{flex:none;border:0;border-radius:10px;padding:10px 16px;font:inherit;font-size:16px;cursor:pointer;background:#3a3a3c;color:#f5f5f7}
+#resume button.go,#markbox button.go{background:#0a84ff}
+/* 책갈피 창: 반마다 이름을 붙여 여러 개 저장, 누르면 그 장·단계로 이동 */
+#markbox{width:540px;max-height:calc(100vh - 48px);overflow:auto;padding:16px 18px}
+#markbox .t{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px} #markbox .t b{font-size:19px} #markbox .t span{font-size:13px;font-weight:500;color:#a1a1a6}
+#markbox .add{display:flex;gap:8px}
+#markbox input{flex:1;min-width:0;border:1px solid #48484a;border-radius:10px;background:#1c1c1e;color:#f5f5f7;font:inherit;font-size:16px;font-weight:500;padding:10px 12px}
+#markbox .now{font-size:13px;font-weight:500;color:#a1a1a6;margin:7px 2px 12px}
+#markbox ul{list-style:none;display:flex;flex-direction:column;gap:6px;margin:0;padding:0}
+#markbox li{display:flex;gap:6px}
+#markbox li .jump{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;background:#2c2c2e;padding:9px 14px}
+#markbox li .jump b{max-width:100%;font-size:17px;color:#ffd60a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#markbox li .jump span{max-width:100%;font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#markbox li .jump small{font-size:12px;font-weight:500;color:#a1a1a6}
+#markbox li .jump:hover{background:#3a3a3c} #markbox li .jump.here{box-shadow:inset 0 0 0 2px #0a84ff}
+#markbox li .upd,#markbox li .x{padding:0 12px;font-size:14px}
+#markbox li .x.sure{background:#ff453a}
+#markbox li.empty{font-size:14px;font-weight:500;color:#a1a1a6;padding:6px 2px;line-height:1.5}
+#markbox .foot{display:flex;justify-content:flex-end;margin-top:12px}
+#hud button.on{background:#ffd60a}
+#hud{position:fixed;right:22px;bottom:18px;display:flex;align-items:center;gap:8px;z-index:50;opacity:0;transform:translateY(8px);transition:opacity .35s var(--ease-out),transform .35s var(--ease-out);pointer-events:none}
+#hud.show{opacity:1;transform:none;pointer-events:auto}
+#hud button{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(210,210,215,.64);color:#1d1d1f;-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);transition:transform .15s var(--ease-out)}
+#hud button:active{transform:scale(.92)}
+#hud #b-laser.on{background:#ff2d55;color:#fff}
+#hud #b-pause.on{background:#0066cc;color:#fff}
+#b-pause .i-play,#b-pause.on .i-pause{display:none} #b-pause.on .i-play{display:block}
+html.paused #hud{opacity:1;transform:none;pointer-events:auto}   /* 멈춘 동안은 컨트롤을 계속 보여 줌 */
+body.notes-open #hud{bottom:calc(34vh + 18px)}   /* 노트가 열려도 컨트롤이 가려지지 않게 */
+/* 레이저 포인터(L): 화면 위 투명 캔버스. 켜져 있는 동안 클릭은 슬라이드로 가지 않는다 */
+#laser{position:fixed;inset:0;width:100vw;height:100vh;z-index:49;display:none;cursor:none;touch-action:none}
+#laser.on{display:block}
+html.still #laser{display:none!important}
+#hud button svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#hud .count{min-width:84px;height:44px;border-radius:9999px;display:grid;place-items:center;padding:0 16px;background:rgba(210,210,215,.64);color:#1d1d1f;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px)}
+#progress{position:fixed;left:0;right:0;bottom:0;height:3px;z-index:40}
+#progress i{display:block;height:100%;width:0;background:rgba(255,255,255,.38);transition:width .5s var(--ease-out),background .4s}
+body.on-light #progress i{background:rgba(0,0,0,.22)}
+/* 쪽 번호 + 단계 점(화면 아래 가운데, 늘 보임): 바탕(알약 모양)을 깔아 화면 위아래 검은 여백(16:9가 아닌 화면)이나 밝은 장에서도 보이게.
+   좁은 화면에서는 오른쪽 아래 도구 모음이 가운데까지 오므로, 도구 모음이 보이는 동안 그 위로 올라간다 */
+#stepdots{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);display:flex;align-items:center;gap:10px;z-index:40;padding:6px 14px;border-radius:9999px;background:rgba(28,28,30,.72);transition:bottom .35s var(--ease-out),opacity .35s}
+#stepdots .pg{font-size:14px;font-weight:700;line-height:1;color:#f5f5f7;font-variant-numeric:tabular-nums;white-space:nowrap}
+#stepdots .pg small{font-size:12px;font-weight:600;color:#a1a1a6}
+#stepdots i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.32);transition:background .3s,transform .3s}
+#stepdots i.on{background:#fff;transform:scale(1.15)}
+body.on-light #stepdots{background:rgba(255,255,255,.9);box-shadow:0 1px 6px rgba(0,0,0,.28)} body.on-light #stepdots .pg{color:#1d1d1f} body.on-light #stepdots .pg small{color:#6e6e73} body.on-light #stepdots i{background:rgba(0,0,0,.18)} body.on-light #stepdots i.on{background:rgba(0,0,0,.7)}
+body.notes-open #stepdots{bottom:calc(34vh + 12px)}
+@media (max-width:1440px){
+  body:has(#hud.show) #stepdots,html.paused #stepdots{bottom:72px}
+  body.notes-open:has(#hud.show) #stepdots,html.paused body.notes-open #stepdots{bottom:calc(34vh + 72px)}
+}
+
+/* 덮개: 노트·도움말·화면 끄기 */
+.overlay{position:fixed;inset:0;z-index:60;display:none}
+.overlay.show{display:block}
+#notes{position:fixed;left:0;right:0;bottom:0;height:34vh;z-index:55;transform:translateY(102%);transition:transform .45s var(--ease-out);background:rgba(22,22,23,.88);color:#f5f5f7;-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);padding:22px 40px 26px;overflow:auto}
+#notes.show{transform:none}
+#notes-x{position:absolute;top:14px;right:22px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.14);color:#f5f5f7;font-size:18px}
+#notes-x:hover{background:rgba(255,255,255,.26)}
+#notes .nh{font-size:15px;color:#a1a1a6;font-weight:600;margin-bottom:10px} #notes .nh b{color:#f5f5f7;font-size:18px;margin-right:10px}
+#notes p{font-size:clamp(17px,1.55vw,24px);line-height:1.6;max-width:1500px}
+/* 목차(O): 실제 슬라이드가 작아져 격자로 펼쳐지고, 누르면 그 장으로 확대되어 들어간다 */
+#stage.ov{background:#111113}
+#stage.ov .slide{display:block;cursor:pointer;transform-origin:0 0;border-radius:var(--ovr);outline:var(--ovw) solid rgba(255,255,255,.14);transition:transform .55s var(--ease-out),opacity .35s ease,outline-color .2s}
+#stage.ov .slide *{pointer-events:none}
+#stage.ov .slide.is-on{outline-color:#2997ff}
+#stage.ov:not(.ov-out) :is(.slide:hover,.slide.sel){outline-color:#f5f5f7}
+#stage.ov .slide:not(.is-on) :is([data-in],[data-step]){opacity:1!important}   /* 썸네일은 다 나온 상태로 */
+#stage.ov .slide:not(.is-on) :is([data-fx="draw"],[data-fx="draw"] :is(path,line,polyline,polygon,circle,ellipse,rect)){stroke-dashoffset:0!important}
+#stage.ov .slide.pick{z-index:5;outline-color:transparent}
+#stage.ov-out .slide:not(.pick){opacity:0}
+#stage.ov #kwbar{opacity:0;pointer-events:none}
+#ovl{position:absolute;inset:0;z-index:4;display:none;pointer-events:none;color:#f5f5f7;transition:opacity .3s}
+#stage.ov #ovl{display:block} #stage.ov-out #ovl{opacity:0}
+#ovl .ovh{position:absolute;top:44px;font-size:44px;font-weight:700;letter-spacing:-.01em}
+#ovl .ovh span{margin-left:24px;font-size:24px;font-weight:500;color:#a1a1a6}
+#ovl .oc{position:absolute;line-height:1.25}
+#ovl .oc b,#ovl .oc span{display:block;font-size:24px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#ovl .oc b{font-weight:700;color:#64D2FF} #ovl .oc.cur b{color:#2997ff}
+#ovl .oc span{font-weight:600}
+#help{background:rgba(0,0,0,.6);place-items:center} #help.show{display:grid}
+#help .box{background:#fff;color:#1d1d1f;border-radius:18px;padding:34px 40px;min-width:520px}
+#help h3{font-size:24px;margin-bottom:16px} #help table{border-collapse:collapse;font-size:17px} #help td{padding:7px 18px 7px 0;border-bottom:1px solid #f0f0f0}
+#help kbd{display:inline-block;min-width:30px;padding:3px 9px;border-radius:8px;background:#f5f5f7;border:1px solid #e0e0e0;font:600 15px var(--font);text-align:center}
+#blank{position:fixed;inset:0;z-index:70;display:none} #blank.black{display:block;background:#000} #blank.white{display:block;background:#fff}
+html.still #hud,html.still #progress,html.still #stepdots{display:none!important}
+html.student #notes{display:none!important}
+/* ?print=1: 어두운 장을 흰 배경으로 인쇄할 때 원래 밝은 글자·선·면을 어둡게(또는 연하게) 바꾼다 */
+html.print .slide{background:#fff!important}
+html.print .was-dark [fill="#f5f5f7"]{fill:#1d1d1f}
+html.print .was-dark [stroke="#f5f5f7"]{stroke:#1d1d1f}
+html.print .was-dark [style*="background:rgba(255,255,255"]{background:rgba(0,0,0,.09)!important}   /* 어두운 면에서 흐린 흰색으로 깐 바탕(막대의 100% 칸 등)은 흰 종이에서 사라지므로 연한 회색으로 */
+html.print .was-dark [style*="dashed #f5f5f7"],html.print .was-dark [style*="solid #f5f5f7"]{border-color:#1d1d1f!important}   /* 범례의 흰 점선 등 */
+html.print .slide[data-tile="parchment"] .ws-card,html.print .qz-why,html.print .rc,html.print .box{background:#f5f5f7}   /* 회색 바탕 위 흰 카드는 흰 종이에서 사라지므로 연한 회색으로 */
+html.print .was-dark [fill="#1c1c1e"]{fill:#f2f2f7}
+html.print .was-dark [fill="#3a3a3c"]{fill:#8e8e93}
+html.noans .bk .a,html.noans .qz-mark,html.noans .qz-hl,html.noans .qz-why,html.noans .sc-a{visibility:hidden!important}   /* ?ans=0: 빈칸 정답·문제 풀이·스스로 확인하기 예시 답안 숨김(학생용 인쇄) */
+@media (prefers-reduced-motion: reduce){ .slide *{scroll-behavior:auto} }
+/* 그림 크게 보기(2026-10-26): 장 안의 그림 상자 .pic(figure > img)을 누르면 무대 가운데에 크게 띄움 */
+.pic{position:absolute;margin:0;border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.06),0 12px 30px rgba(0,0,0,.10);z-index:2;cursor:zoom-in}
+.pic img{display:block;width:100%;height:100%;object-fit:contain}
+.pic.cv img{object-fit:cover}   /* 사진만: 가장자리를 조금 잘라 칸을 채움(도표·글자 든 그림은 쓰지 않음) */
+.pic::after{content:'';position:absolute;right:16px;bottom:16px;width:52px;height:52px;border-radius:9999px;background:rgba(29,29,31,.62) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='M15.5 15.5L21 21M10.5 7.5v6M7.5 10.5h6'/%3E%3C/svg%3E") center/28px no-repeat;opacity:0;transition:opacity .25s;pointer-events:none}
+.pic:hover::after{opacity:1}
+html.still .pic,html.print .pic{cursor:default}
+html.still .pic::after,html.print .pic::after{display:none}
+#zoom{position:absolute;inset:0;z-index:60;display:none;background:rgba(0,0,0,0);transition:background .32s var(--ease-out);cursor:zoom-out}
+#zoom.on{display:block}
+#zoom.show{background:rgba(0,0,0,.8)}
+#zoom img{position:absolute;border-radius:18px;background:#fff;box-shadow:0 24px 80px rgba(0,0,0,.45);transform-origin:0 0}
+/* 부분 확대(2026-10-26): 브라우저 자체 확대·두 번 톡 확대를 막고 엔진이 직접 확대 */
+#viewport{touch-action:none}
+#zbadge{position:fixed;top:12px;left:50%;transform:translate(-50%,-8px);z-index:45;display:flex;align-items:center;gap:10px;padding:5px 6px 5px 16px;border-radius:9999px;background:rgba(28,28,30,.8);color:#f5f5f7;font-size:15px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
+#zbadge.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+#zbadge b{font-variant-numeric:tabular-nums}
+#zbadge button{border:0;border-radius:9999px;padding:6px 14px;font:inherit;font-weight:700;color:#1d1d1f;background:#f5f5f7;cursor:pointer}
+html.zoomed #viewport{cursor:grab}
+/* 발표자 보기(V) + 프로젝터 창 연결(2026-10-27): 이 창 = 발표자 보기(지금 장·이전/다음 장·노트), 프로젝터 창(?screen=1) = 슬라이드만, 두 창이 함께 움직임 */
+#pv{position:fixed;inset:0;z-index:8;background:#0b0b0d;color:#f5f5f7;font-family:var(--font)}
+#pv > *{position:absolute;box-sizing:border-box}
+html.pv #viewport{z-index:9;border-radius:14px;box-shadow:0 0 0 1px rgba(255,255,255,.12),0 12px 40px rgba(0,0,0,.55)}
+html.pv #laser{border-radius:14px}
+html.pv :is(#hud,#progress,#stepdots,#notes,#blank){display:none!important}   /* 화면 끄기(B)는 프로젝터 창에만 */
+#pv svg{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#pv .pv-top{display:flex;align-items:center;gap:10px}
+#pv .pv-link{display:flex;align-items:center;gap:8px;height:36px;padding:0 14px 0 13px;border-radius:9999px;background:#1c1c1e;font-size:14px;font-weight:600;color:#98989d;white-space:nowrap}
+#pv .pv-link i{width:9px;height:9px;border-radius:50%;background:#636366}
+#pv .pv-link.on{color:#f5f5f7} #pv .pv-link.on i{background:#30d158;box-shadow:0 0 0 4px rgba(48,209,88,.2)}
+#pv .pv-open{display:flex;align-items:center;gap:7px;height:36px;padding:0 15px 0 12px;border-radius:9999px;background:#0a84ff;color:#fff;font-size:14px;font-weight:700;text-decoration:none;white-space:nowrap;-webkit-touch-callout:default}
+#pv.linked .pv-open{background:#2c2c2e;color:#e5e5ea}
+#pv .pv-sp{flex:1}
+#pv .pv-time{display:flex;align-items:center;gap:6px;white-space:nowrap;font-variant-numeric:tabular-nums}
+#pv .pv-time > span:first-child{font-size:13px;font-weight:600;color:#98989d}
+#pv .pv-el{min-width:64px;height:36px;padding:0 8px;border-radius:10px;font-size:20px;font-weight:700;color:#f5f5f7}
+#pv .pv-clock{font-size:14px;font-weight:600;color:#98989d;margin-right:6px}
+#pv .pv-tools{display:flex;gap:6px}
+#pv .pv-tools button{display:flex;align-items:center;gap:6px;height:36px;padding:0 12px 0 10px;border-radius:10px;background:#1c1c1e;color:#e5e5ea;font-size:14px;font-weight:600;white-space:nowrap}
+#pv .pv-tools button.on{background:#f5f5f7;color:#1d1d1f}
+#pv .pv-tools .pv-lz.on{background:#ff2d55;color:#fff}
+#pv .pv-tools .pv-ps.on{background:#0a84ff;color:#fff}
+#pv .pv-tools .pv-mk.on{background:#ffd60a;color:#1d1d1f}
+html.pv #resume,html.pv #markbox{top:64px}   /* 발표자 보기: 위 도구 줄(56px)을 가리지 않게 */
+@media (max-width:1000px){#pv .pv-tools button span,#pv .pv-time > span:first-child{display:none} #pv .pv-tools button{padding:0 10px}}
+#pv .pv-lab{display:flex;align-items:center;gap:9px;padding-bottom:6px;font-size:14px;font-weight:600;color:#98989d;white-space:nowrap;overflow:hidden}
+#pv .pv-lab .k{flex:none;padding:3px 9px;border-radius:9999px;font-size:12px;font-weight:700;background:#2c2c2e;color:#e5e5ea}
+#pv .pv-lc .k{background:#0a84ff;color:#fff}
+#pv .pv-lab b{flex:none;color:#f5f5f7;font-weight:700;font-variant-numeric:tabular-nums}
+#pv .pv-lab em{min-width:0;overflow:hidden;text-overflow:ellipsis;font-style:normal;color:#d1d1d6}
+#pv .pv-badge{display:none;flex:none;padding:3px 10px;border-radius:9999px;font-size:12px;font-weight:700}
+#pv .pv-badge.show{display:inline-block}
+#pv .pv-badge.ps{background:#0a84ff;color:#fff} #pv .pv-badge.bk{background:#f5f5f7;color:#000}
+#pv .pv-dots{margin-left:auto;display:flex;align-items:center;gap:6px;flex:none}
+#pv .pv-dots i{width:8px;height:8px;border-radius:50%;background:#3a3a3c}
+#pv .pv-dots i.on{background:#f5f5f7}
+#pv .pv-dots span{margin-left:4px;font-size:13px;font-variant-numeric:tabular-nums}
+#pv .pv-fr{border-radius:10px;overflow:hidden;background:#000;box-shadow:0 0 0 1px rgba(255,255,255,.1);cursor:pointer;transition:box-shadow .2s}
+#pv .pv-fr:hover{box-shadow:0 0 0 2px #0a84ff}
+#pv .pv-fr iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none;opacity:0;transition:opacity .3s}
+#pv .pv-fr.ready iframe{opacity:1}
+#pv .pv-fr .none{position:absolute;inset:0;display:none;place-items:center;font-size:14px;font-weight:600;color:#636366;background:#141416}
+#pv .pv-fr.empty{cursor:default;box-shadow:0 0 0 1px rgba(255,255,255,.06)} #pv .pv-fr.empty .none{display:grid} #pv .pv-fr.empty iframe{visibility:hidden}
+#pv [hidden]{display:none!important}
+/* 아래 칸(2026-11-03): 왼쪽 탭(단계 · 발표자 노트, N으로 전환) + 내용 */
+#pv .pv-notes{display:flex;gap:8px;padding:8px;border-radius:14px;background:#1c1c1e;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+#pv .pv-tabs{flex:none;width:76px;display:flex;flex-direction:column;gap:4px;padding:3px;box-sizing:border-box;border-radius:10px;background:#0b0b0d}
+#pv .pv-tabs button{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:6px 4px;border-radius:8px;font-size:14px;font-weight:700;line-height:1.25;text-align:center;color:#98989d;transition:background .2s,color .2s}
+#pv .pv-tabs button.on{background:#3a3a3c;color:#f5f5f7}
+#pv .pv-tabs b{font-weight:600;font-variant-numeric:tabular-nums;opacity:.8}
+#pv kbd{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:24px;padding:0 7px;box-sizing:border-box;border-radius:6px;background:rgba(255,255,255,.13);box-shadow:inset 0 -1px 0 rgba(0,0,0,.35);font:inherit;font-size:13px;font-weight:700;color:#f5f5f7;white-space:nowrap}
+#pv .pv-tabs kbd{min-width:22px;height:20px;padding:0 6px;font-size:12px;border-radius:5px}
+#pv .pv-notes:not(.tn) .pv-nt,#pv .pv-notes.tn .pv-steps{display:none}
+#pv .pv-nt{flex:1;min-width:0;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:6px 14px 26px;font-size:var(--pvf,19px);line-height:1.7;color:#f5f5f7;user-select:text;-webkit-user-select:text;-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 26px),transparent);mask-image:linear-gradient(to bottom,#000 calc(100% - 26px),transparent);scrollbar-width:thin;scrollbar-color:#48484a transparent}   /* 긴 노트는 아래 끝을 흐리게 */
+#pv .pv-nt::-webkit-scrollbar{width:8px} #pv .pv-nt::-webkit-scrollbar-thumb{background:#48484a;border-radius:8px}
+#pv .pv-nt.empty{color:#636366}
+/* 노트 글자 크기 슬라이더(2026-11-05): 노트 탭 오른쪽 아래. 기본(×1) = 노트 칸 너비에 맞춘 크기, 0.7~2배. 바꾸면 '기본' 단추가 나타남 */
+#pv .pv-fs{position:absolute;right:12px;bottom:10px;z-index:2;display:flex;align-items:center;gap:8px;padding:5px 8px 5px 12px;border-radius:9999px;background:rgba(44,44,46,.94);box-shadow:0 2px 10px rgba(0,0,0,.35);font-size:12px;font-weight:700;color:#98989d}
+#pv .pv-notes:not(.tn) .pv-fs{display:none}
+#pv .pv-fs .s{font-size:12px} #pv .pv-fs .l{font-size:18px}
+#pv .pv-fs input{width:120px;margin:0;accent-color:#0a84ff;cursor:pointer}
+#pv .pv-fs b{min-width:36px;text-align:right;font-weight:600;color:#d1d1d6;font-variant-numeric:tabular-nums}
+#pv .pv-fs button{display:none;padding:3px 10px;border-radius:9999px;background:#3a3a3c;color:#f5f5f7;font-size:12px;font-weight:700} #pv .pv-fs.chg button{display:inline-block}
+#pv .pv-notes.tn .pv-nt{margin-bottom:38px}   /* 노트 글 아래에 막대 자리를 비워 글이 막대에 가리지 않게 */
+/* 단계 칸: 이 장의 처음·1단계·…(지금 = 파란 테두리, 다음 = 흰 테두리, 지난 단계 = 흐리게), 누르면 그 단계로. 넘치면 옆으로 밀어 봄 */
+#pv .pv-steps{position:relative;flex:1;min-width:0;min-height:0;display:flex;gap:8px;align-items:center;padding:4px;overflow-x:auto;overflow-y:hidden;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#48484a transparent}
+#pv .pv-steps::-webkit-scrollbar{height:8px} #pv .pv-steps::-webkit-scrollbar-thumb{background:#48484a;border-radius:8px}
+#pv .pv-steps.fit{justify-content:center}
+#pv .pv-st{position:relative;flex:none;border-radius:8px;overflow:hidden;background:#000;box-shadow:0 0 0 1px rgba(255,255,255,.1);cursor:pointer;transition:box-shadow .2s}
+#pv .pv-st iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none;opacity:0;transition:opacity .3s}
+#pv .pv-st.ready iframe{opacity:1} #pv .pv-st.ready.done iframe{opacity:.5}
+#pv .pv-st.now{box-shadow:0 0 0 3px #0a84ff}
+#pv .pv-st.nx{box-shadow:0 0 0 2px rgba(255,255,255,.75)}
+#pv .pv-none{flex:1;align-self:stretch;display:grid;place-items:center;font-size:14px;font-weight:600;color:#636366}
+/* 넘기기 단추 넷: 단계(◀ 이전 · 다음 ▶)와 장(이전 장 · 다음 장), 같은 일을 하는 키 표시 */
+#pv .pv-b{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border-radius:14px;background:#2c2c2e;color:#f5f5f7;font-size:20px;font-weight:700;transition:transform .12s var(--ease-out),opacity .2s}
+#pv .pv-b small{font-size:13px;font-weight:600;color:rgba(255,255,255,.75)}
+#pv .pv-b:active{transform:scale(.97)}
+#pv .pv-b:disabled{opacity:.35;cursor:default}
+#pv .pv-b.pv-nx{background:#0a84ff}
+#pv .pv-b.pg{background:#1c1c1e;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);font-size:16px;color:#e5e5ea}
+#pv .pv-b.row{flex-direction:row;gap:10px}
+#pv .pv-b .t{display:flex;align-items:center;gap:7px}
+#pv .pv-b .ks{display:flex;align-items:center;gap:5px}
+#pv .pv-nx kbd{background:rgba(255,255,255,.24)}
+#pv .pg kbd{font-weight:600;color:#d1d1d6}
+/* 경계선 끌기(2026-11-05): 세로선 = 왼쪽(지금 장·아래 칸) | 오른쪽(미리보기·단추) 너비, 가로선 = 위 칸 | 아래 칸 높이. 가운데 짧은 손잡이, 올리면 파란 선 */
+#pv .pv-split{z-index:3;display:flex;align-items:center;justify-content:center;touch-action:none}
+#pv .pv-split::after{content:'';border-radius:2px;background:rgba(255,255,255,.22);transition:background .15s}
+#pv .pv-sv{cursor:col-resize} #pv .pv-sv::after{width:4px;height:44px}
+#pv .pv-sh{cursor:row-resize} #pv .pv-sh::after{width:44px;height:4px}
+#pv .pv-split::before{content:'';position:absolute;background:#0a84ff;opacity:0;transition:opacity .15s}
+#pv .pv-sv::before{left:50%;top:0;bottom:0;width:2px;transform:translateX(-50%)} #pv .pv-sh::before{top:50%;left:0;right:0;height:2px;transform:translateY(-50%)}
+#pv .pv-split:hover::before,#pv .pv-split.on::before{opacity:.85} #pv .pv-split:hover::after,#pv .pv-split.on::after{background:#0a84ff}
+#pv.pt .pv-split{display:none}   /* 세로 창은 경계선 끌기 없음 */
+#pv .pv-tools .pv-rs{display:none} #pv.custom .pv-tools .pv-rs{display:flex}   /* 비율을 바꿨을 때만 */
+html.pv-dragx,html.pv-dragx *{cursor:col-resize!important;user-select:none!important} html.pv-dragy,html.pv-dragy *{cursor:row-resize!important;user-select:none!important}
+#hud #b-pv.on{background:#0a84ff;color:#fff}
+html:is(.student,.screen,.thumb) #b-pv{display:none}
+/* 프로젝터 창(?screen=1): 도구 모음 없이 슬라이드만. 위쪽 알림은 연결되면 잠깐 보였다 사라짐 */
+html.screen #hud{display:none!important}
+html.screen #laser{pointer-events:none}
+html.screen #zbadge{display:none!important}   /* 확대 배율 알약은 발표자 창에만 */
+#scr{position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:65;display:flex;align-items:center;gap:12px;padding:8px 8px 8px 18px;border-radius:9999px;background:rgba(28,28,30,.92);color:#f5f5f7;font-size:16px;font-weight:600;white-space:nowrap;transition:opacity .6s}
+#scr i{width:9px;height:9px;border-radius:50%;background:#ff9f0a} #scr.on i{background:#30d158}
+#scr button{border-radius:9999px;padding:7px 15px;background:#f5f5f7;color:#1d1d1f;font-size:15px;font-weight:700}
+#scr button:disabled{background:#3a3a3c;color:#98989d;cursor:default}
+#scr.hide{opacity:0;pointer-events:none}
+
