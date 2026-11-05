@@ -321,6 +321,14 @@ html.pv #resume,html.pv #markbox{top:64px}   /* 발표자 보기: 위 도구 줄
 #pv .pv-nt{flex:1;min-width:0;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:6px 14px 26px;font-size:var(--pvf,19px);line-height:1.7;color:#f5f5f7;user-select:text;-webkit-user-select:text;-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 26px),transparent);mask-image:linear-gradient(to bottom,#000 calc(100% - 26px),transparent);scrollbar-width:thin;scrollbar-color:#48484a transparent}   /* 긴 노트는 아래 끝을 흐리게 */
 #pv .pv-nt::-webkit-scrollbar{width:8px} #pv .pv-nt::-webkit-scrollbar-thumb{background:#48484a;border-radius:8px}
 #pv .pv-nt.empty{color:#636366}
+/* 노트 글자 크기 슬라이더(2026-11-05): 노트 탭 오른쪽 아래. 기본(×1) = 노트 칸 너비에 맞춘 크기, 0.7~2배. 바꾸면 '기본' 단추가 나타남 */
+#pv .pv-fs{position:absolute;right:12px;bottom:10px;z-index:2;display:flex;align-items:center;gap:8px;padding:5px 8px 5px 12px;border-radius:9999px;background:rgba(44,44,46,.94);box-shadow:0 2px 10px rgba(0,0,0,.35);font-size:12px;font-weight:700;color:#98989d}
+#pv .pv-notes:not(.tn) .pv-fs{display:none}
+#pv .pv-fs .s{font-size:12px} #pv .pv-fs .l{font-size:18px}
+#pv .pv-fs input{width:120px;margin:0;accent-color:#0a84ff;cursor:pointer}
+#pv .pv-fs b{min-width:36px;text-align:right;font-weight:600;color:#d1d1d6;font-variant-numeric:tabular-nums}
+#pv .pv-fs button{display:none;padding:3px 10px;border-radius:9999px;background:#3a3a3c;color:#f5f5f7;font-size:12px;font-weight:700} #pv .pv-fs.chg button{display:inline-block}
+#pv .pv-notes.tn .pv-nt{margin-bottom:38px}   /* 노트 글 아래에 막대 자리를 비워 글이 막대에 가리지 않게 */
 /* 단계 칸: 이 장의 처음·1단계·…(지금 = 파란 테두리, 다음 = 흰 테두리, 지난 단계 = 흐리게), 누르면 그 단계로. 넘치면 옆으로 밀어 봄 */
 #pv .pv-steps{position:relative;flex:1;min-width:0;min-height:0;display:flex;gap:8px;align-items:center;padding:4px;overflow-x:auto;overflow-y:hidden;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#48484a transparent}
 #pv .pv-steps::-webkit-scrollbar{height:8px} #pv .pv-steps::-webkit-scrollbar-thumb{background:#48484a;border-radius:8px}
@@ -343,6 +351,17 @@ html.pv #resume,html.pv #markbox{top:64px}   /* 발표자 보기: 위 도구 줄
 #pv .pv-b .ks{display:flex;align-items:center;gap:5px}
 #pv .pv-nx kbd{background:rgba(255,255,255,.24)}
 #pv .pg kbd{font-weight:600;color:#d1d1d6}
+/* 경계선 끌기(2026-11-05): 세로선 = 왼쪽(지금 장·아래 칸) | 오른쪽(미리보기·단추) 너비, 가로선 = 위 칸 | 아래 칸 높이. 가운데 짧은 손잡이, 올리면 파란 선 */
+#pv .pv-split{z-index:3;display:flex;align-items:center;justify-content:center;touch-action:none}
+#pv .pv-split::after{content:'';border-radius:2px;background:rgba(255,255,255,.22);transition:background .15s}
+#pv .pv-sv{cursor:col-resize} #pv .pv-sv::after{width:4px;height:44px}
+#pv .pv-sh{cursor:row-resize} #pv .pv-sh::after{width:44px;height:4px}
+#pv .pv-split::before{content:'';position:absolute;background:#0a84ff;opacity:0;transition:opacity .15s}
+#pv .pv-sv::before{left:50%;top:0;bottom:0;width:2px;transform:translateX(-50%)} #pv .pv-sh::before{top:50%;left:0;right:0;height:2px;transform:translateY(-50%)}
+#pv .pv-split:hover::before,#pv .pv-split.on::before{opacity:.85} #pv .pv-split:hover::after,#pv .pv-split.on::after{background:#0a84ff}
+#pv.pt .pv-split{display:none}   /* 세로 창은 경계선 끌기 없음 */
+#pv .pv-tools .pv-rs{display:none} #pv.custom .pv-tools .pv-rs{display:flex}   /* 비율을 바꿨을 때만 */
+html.pv-dragx,html.pv-dragx *{cursor:col-resize!important;user-select:none!important} html.pv-dragy,html.pv-dragy *{cursor:row-resize!important;user-select:none!important}
 #hud #b-pv.on{background:#0a84ff;color:#fff}
 html:is(.student,.screen,.thumb) #b-pv{display:none}
 /* 프로젝터 창(?screen=1): 도구 모음 없이 슬라이드만. 위쪽 알림은 연결되면 잠깐 보였다 사라짐 */
@@ -1360,7 +1379,10 @@ function lkInit(){
    가로 창: 지금 장 | 이전·다음 장(오른쪽 위 = 이전 장, 아래 = 다음 장) · 아래 칸 | 단추 넷(2×2). 세로 창: 지금 장 → 이전 장 | 다음 장 → 단계 단추 → 장 단추 → 아래 칸.
    단계 칸은 칸 높이를 꽉 채우되 지금·다음 두 칸은 다 보이게 하고, 넘치면 옆으로 밀어 보며 단계를 넘기면 지금 단계가 왼쪽에 오게 따라감.
    프로젝터 창이 연결되면 저절로 켜지고, V·도구 모음 단추로 켜고 끈다 */
-let pvEl=null,pvT0=0,pvIv=0,pvLastI=-1,pvNT=false,pvSI=-1,pvFK='';   // pvNT: 노트 탭이 열림 · pvSI: 단계 칸이 그리는 장 · pvFK: 단계 칸이 마지막으로 따라간 '장:단계'
+let pvEl=null,pvT0=0,pvIv=0,pvLastI=-1,pvNT=false,pvSI=-1,pvFK='',pvSX=null,pvSY=null,pvFrame=null,pvRaf=0;   // pvSX·pvSY: 경계선으로 바꾼 비율(없으면 원본) · pvFrame: 끌 때 쓰는 배치 값
+let pvFS=1,pvFB=22;const PVF='deck-pv-notefont';try{const v=+localStorage.getItem(PVF);if(v>=.7&&v<=2)pvFS=v;}catch(e){}   // 노트 글자 크기 배율(1 = 기본)·기본 크기 — 이 브라우저에 기억
+const PVK='deck-pv-split';try{const o=JSON.parse(localStorage.getItem(PVK)||'null');if(o&&o.x>0&&o.y>0){pvSX=o.x;pvSY=o.y;}}catch(e){}   // 바꾼 비율은 이 브라우저에 기억(다른 수업·새로 고침에도)
+//   // pvNT: 노트 탭이 열림 · pvSI: 단계 칸이 그리는 장 · pvFK: 단계 칸이 마지막으로 따라간 '장:단계'
 const PVI={
   scr:'<svg viewBox="0 0 20 20"><rect x="2.5" y="3.5" width="15" height="10" rx="1.5"/><path d="M7 17h6M10 13.5V17"/></svg>',
   mk:'<svg viewBox="0 0 20 20"><path d="M5.5 3h9v14l-4.5-3.5L5.5 17z"/></svg>',
@@ -1370,7 +1392,8 @@ const PVI={
   bk:'<svg viewBox="0 0 20 20"><rect x="3" y="4.5" width="14" height="11" rx="1.5"/><path d="M6 8l8 4M14 8l-8 4"/></svg>',
   x:'<svg viewBox="0 0 20 20"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9"/></svg>',
   pp:'<svg viewBox="0 0 20 20"><path d="M10 5l-5 5 5 5M16 5l-5 5 5 5"/></svg>',
-  np:'<svg viewBox="0 0 20 20"><path d="M4 5l5 5-5 5M10 5l5 5-5 5"/></svg>'
+  np:'<svg viewBox="0 0 20 20"><path d="M4 5l5 5-5 5M10 5l5 5-5 5"/></svg>',
+  rs:'<svg viewBox="0 0 20 20"><path d="M4.5 10a5.5 5.5 0 1 0 1.6-3.9M4.5 3.8v3.3h3.3"/></svg>'
 };
 function pvBuild(){
   pvEl=document.createElement('div');pvEl.id='pv';
@@ -1380,7 +1403,7 @@ function pvBuild(){
     '<div class="pv-top"><div class="pv-link"><i></i><span></span></div>'+
     '<a class="pv-open" target="_blank">'+PVI.scr+'<span>프로젝터 창 열기</span></a><span class="pv-sp"></span>'+
     '<div class="pv-time"><span>경과</span><button type="button" class="pv-el" title="누르면 0부터 다시">0:00</button><span class="pv-clock"></span></div>'+
-    '<div class="pv-tools">'+tool('pv-ov','목차','ov')+tool('pv-mk','책갈피','mk')+tool('pv-lz','레이저','lz')+tool('pv-ps','멈춤','ps')+tool('pv-bk','화면 끄기','bk')+tool('pv-x','닫기','x')+'</div></div>'+
+    '<div class="pv-tools">'+tool('pv-ov','목차','ov')+tool('pv-mk','책갈피','mk')+tool('pv-lz','레이저','lz')+tool('pv-ps','멈춤','ps')+tool('pv-bk','화면 끄기','bk')+tool('pv-rs','비율 원래대로','rs')+tool('pv-x','닫기','x')+'</div></div>'+
     '<div class="pv-lab pv-lc"><span class="k">지금</span><b class="pv-pos"></b><em class="pv-t"></em><span class="pv-badge ps">멈춤</span><span class="pv-badge bk">프로젝터 화면 꺼짐</span><span class="pv-dots"></span></div>'+
     '<div class="pv-lab pv-ln"><span class="k">다음 장</span><em></em></div>'+
     '<div class="pv-fr pv-fn"><iframe title="다음 장 미리보기" tabindex="-1" aria-hidden="true"></iframe><div class="none">마지막 장입니다</div></div>'+
@@ -1391,7 +1414,9 @@ function pvBuild(){
     '<button type="button" class="pv-b pg pv-pp"><span class="t">'+PVI.pp+'이전 장</span><span class="ks"><kbd>Shift ←</kbd><kbd>휠 ▲</kbd></span></button>'+
     '<button type="button" class="pv-b pg pv-np"><span class="t">다음 장'+PVI.np+'</span><span class="ks"><kbd>Shift →</kbd><kbd>휠 ▼</kbd></span></button>'+
     '<div class="pv-notes"><div class="pv-tabs"><button type="button" class="pv-tst"><span>단계</span><b></b></button><button type="button" class="pv-tnt"><span>발표자<br>노트</span><kbd>N</kbd></button></div>'+
-    '<div class="pv-steps"><div class="pv-none">이 장은 단계가 없습니다</div></div><div class="pv-nt"></div></div>';
+    '<div class="pv-steps"><div class="pv-none">이 장은 단계가 없습니다</div></div><div class="pv-nt"></div>'+
+    '<div class="pv-fs" title="발표자 노트 글자 크기"><span class="s">가</span><input type="range" min="0.7" max="2" step="0.05" aria-label="발표자 노트 글자 크기"><span class="l">가</span><b></b><button type="button">기본</button></div></div>'+
+    '<div class="pv-split pv-sv" title="끌어서 왼쪽·오른쪽 비율 바꾸기"></div><div class="pv-split pv-sh" title="끌어서 위·아래 비율 바꾸기"></div>';
   document.body.appendChild(pvEl);
   const $=q=>pvEl.querySelector(q);
   $('.pv-open').addEventListener('click',e=>{   // 컴퓨터: 따로 떨어진 창으로 열기 · 아이패드: 길게 눌러 ‘새 창에서 열기’(그냥 누르면 새 탭)
@@ -1411,6 +1436,9 @@ function pvBuild(){
   $('.pv-np').onclick=()=>nextPage();
   $('.pv-tst').onclick=()=>pvTab(false);
   $('.pv-tnt').onclick=()=>pvTab(true);
+  $('.pv-rs').onclick=()=>pvSplitReset();
+  const fsr=$('.pv-fs input');fsr.value=pvFS;fsr.addEventListener('input',()=>pvFontSet(+fsr.value));fsr.addEventListener('change',()=>fsr.blur());   // 놓으면 초점을 빼서 방향키가 장을 넘기게
+  $('.pv-fs button').onclick=()=>pvFontSet(1);
   $('.pv-steps').addEventListener('click',e=>{   // 단계 칸을 누르면 그 단계로(바로 다음 단계는 → 키처럼 움직이며 넘어감)
     const d=e.target.closest('.pv-st');if(!d||OV)return;const k=+d.dataset.k;
     if(k===Deck.k+1)next();else if(k!==Deck.k)show(Deck.i,k,{instant:true});
@@ -1422,8 +1450,32 @@ function pvBuild(){
       const j=box.__want;box.__want=null;if(j!=null&&j!==box.__at)pvThumb(box,j);});
     box.onclick=()=>{const j=+box.dataset.j;if(!(j>=0))return;if(d>0)show(j,0);else show(j,stepsOf(Deck.list[j]),{instant:true});};   // 다음 장은 처음부터, 이전 장은 다 나온 상태로
   });
-  pvSI=-1;pvFK='';pvTab(pvNT);
+  pvSI=-1;pvFK='';pvTab(pvNT);pvSplitInit();
 }
+function pvSplitInit(){   // 경계선 끌기(2026-11-05 교사 요청): 마우스·손가락으로 끌면 비율이 바뀌고, 놓으면 이 브라우저에 기억
+  const cl=(v,a,b)=>Math.max(a,Math.min(b,v));
+  pvEl.querySelectorAll('.pv-split').forEach(h=>{
+    const vx=h.classList.contains('pv-sv');
+    h.addEventListener('pointerdown',e=>{
+      if(!pvFrame)return;e.preventDefault();e.stopPropagation();try{h.setPointerCapture(e.pointerId);}catch(_){}
+      h.classList.add('on');rootEl.classList.add(vx?'pv-dragx':'pv-dragy');
+      if(pvSX==null||pvSY==null){pvSX=pvFrame.sx0;pvSY=pvFrame.sy0;}   // 처음 끌 때는 원본 비율에서 시작
+      const mv=ev=>{const F=pvFrame;
+        if(vx)pvSX=cl((ev.clientX-F.x0-F.G/2)/F.FW,.4,1-Math.max(220,F.FW*.15)/F.FW);   // 왼쪽 40% 이상, 오른쪽 220px·15% 이상
+        else pvSY=cl((ev.clientY-F.TB-F.G/2)/F.AH,(F.L+150)/F.AH,(F.AH-140)/F.AH);   // 지금 장 150px 이상, 아래 칸 140px 이상
+        if(!pvRaf)pvRaf=requestAnimationFrame(()=>{pvRaf=0;pvLayout();fit();});};
+      const up=()=>{h.removeEventListener('pointermove',mv);h.removeEventListener('pointerup',up);h.removeEventListener('pointercancel',up);
+        h.classList.remove('on');rootEl.classList.remove('pv-dragx','pv-dragy');try{localStorage.setItem(PVK,JSON.stringify({x:pvSX,y:pvSY}));}catch(_){}};
+      h.addEventListener('pointermove',mv);h.addEventListener('pointerup',up);h.addEventListener('pointercancel',up);
+    });
+  });
+}
+function pvFontApply(){   // 노트 글자 크기 적용 + 슬라이더 표시(px, '기본' 단추)
+  if(!pvEl)return;const px=Math.round(pvFB*pvFS),f=pvEl.querySelector('.pv-fs'),i=f.querySelector('input');
+  pvEl.style.setProperty('--pvf',px+'px');f.classList.toggle('chg',Math.abs(pvFS-1)>.001);f.querySelector('b').textContent=px+'px';if(+i.value!==pvFS)i.value=pvFS;
+}
+function pvFontSet(v){pvFS=Math.max(.7,Math.min(2,v));try{if(Math.abs(pvFS-1)<.001)localStorage.removeItem(PVF);else localStorage.setItem(PVF,String(pvFS));}catch(e){}pvFontApply();}   // 노트 글자 크기 슬라이더(기본 = ×1)
+function pvSplitReset(){pvSX=pvSY=null;try{localStorage.removeItem(PVK);}catch(e){}pvLayout();fit();}   // 비율 원래대로
 function pvThumb(box,j){
   const ok=j>=0&&j<Deck.list.length;
   box.classList.toggle('empty',!ok);box.dataset.j=ok?j:-1;
@@ -1517,16 +1569,21 @@ function pvLayout(){
   const put=(q,x,y,w,h)=>{const e=pvEl.querySelector(q);e.style.left=f(x);e.style.top=f(y);e.style.width=f(w);e.style.height=f(h);};
   const row=v=>pvEl.querySelectorAll('.pv-b').forEach(e=>e.classList.toggle('row',v));
   let cur;
-  if(W/H>=1.15){   // 가로 창: 지금 장 | 이전·다음 장(오른쪽 위아래, 두 미리보기 높이 합 = 지금 장 높이) · 아래 칸 | 단추 넷(2×2)
+  if(W/H>=1.15){   // 가로 창: 지금 장 | 이전·다음 장(오른쪽 위아래) · 아래 칸 | 단추 넷(2×2). 경계선 두 개를 끌어 비율을 바꿈(2026-11-05)
     const U=W-2*P-G,PM=Math.max(190,H*.22);   // PM: 아래 칸 최소 높이
-    let R=(U-(L+G)*16/9)/3,C=U-R;
+    let R=(U-(L+G)*16/9)/3,C=U-R;   // 원본 비율: 두 미리보기 높이 합 = 지금 장 높이
     const av=H-TB-L-G-PM-P;if(C*9/16>av){C=av*16/9;R=(C-(L+G)*16/9)/2;}
-    const ch=C*9/16,rh=R*9/16,x0=(W-C-G-R)/2,xr=x0+C+G,yb=TB+L+ch+G,bh=H-P-yb,bw=(R-G)/2,b1=(bh-G)*.58,b2=bh-G-b1;
-    cur={x:x0,y:TB+L,w:C,h:ch};
-    put('.pv-top',x0,0,C+G+R,TB);put('.pv-lc',x0,TB,C,L);
-    put('.pv-lp',xr,TB,R,L);put('.pv-fp',xr,TB+L,R,rh);put('.pv-ln',xr,TB+L+rh+G,R,L);put('.pv-fn',xr,TB+2*L+rh+G,R,rh);   // 위 = 이전 장, 아래 = 다음 장(2026-11-03 교사 요청)
+    const x0=(W-C-G-R)/2,FW=C+R,AH=H-P-TB-G;   // FW: 왼쪽+오른쪽 너비 · AH: 위 칸+아래 칸 높이
+    let top=L+C*9/16;pvFrame={x0,FW,AH,TB,G,L,sx0:C/FW,sy0:top/AH};
+    const custom=pvSX!=null&&pvSY!=null;if(custom){C=FW*pvSX;R=FW-C;top=AH*pvSY;}   // 경계선으로 바꾼 비율
+    const ch=Math.min(top-L,C*9/16),cw=ch*16/9,rh=Math.min(R*9/16,(top-2*L-G)/2),rw=rh*16/9,xr=x0+C+G,xp=xr+(R-rw)/2,yb=TB+top+G,bh=H-P-yb,bw=(R-G)/2,b1=(bh-G)*.58,b2=bh-G-b1;
+    cur={x:x0+(C-cw)/2,y:TB+L,w:cw,h:ch};   // 칸이 16:9보다 넓으면 지금 장은 가운데로
+    put('.pv-top',x0,0,C+G+R,TB);put('.pv-lc',cur.x,TB,cw,L);   // 이름표는 그림에 맞춰
+    put('.pv-lp',xp,TB,rw,L);put('.pv-fp',xp,TB+L,rw,rh);put('.pv-ln',xp,TB+L+rh+G,rw,L);put('.pv-fn',xp,TB+2*L+rh+G,rw,rh);   // 위 = 이전 장, 아래 = 다음 장(2026-11-03 교사 요청)
     put('.pv-pr',xr,yb,bw,b1);put('.pv-nx',xr+bw+G,yb,bw,b1);put('.pv-pp',xr,yb+b1+G,bw,b2);put('.pv-np',xr+bw+G,yb+b1+G,bw,b2);
     put('.pv-notes',x0,yb,C,bh);row(false);
+    const hs=Math.max(G,14);put('.pv-sv',x0+C+G/2-hs/2,TB,hs,H-P-TB);put('.pv-sh',x0,TB+top+G/2-hs/2,FW+G,hs);   // 경계선 손잡이(잡기 쉽게 14px 이상)
+    pvEl.classList.toggle('custom',custom);pvEl.classList.remove('pt');
   }else{   // 세로 창: 지금 장 → 이전 장 | 다음 장 → [◀ 이전][다음 ▶] → [이전 장][다음 장] → 아래 칸. 높이가 모자라면 미리보기부터, 그래도 모자라면 지금 장도 줄임
     const N1=60,N2=50,av=H-(TB+2*L+5*G+N1+N2+Math.max(160,H*.18)+P),tf=c=>(c-G)/2*9/16;
     let C=W-2*P,k=1;
@@ -1538,10 +1595,11 @@ function pvLayout(){
     put('.pv-pr',x0,y,hw,N1);put('.pv-nx',x0+hw+G,y,hw,N1);y+=N1+G;
     put('.pv-pp',x0,y,hw,N2);put('.pv-np',x0+hw+G,y,hw,N2);y+=N2+G;
     put('.pv-notes',x0,y,C,H-P-y);row(true);
+    pvEl.classList.add('pt');pvEl.classList.remove('custom');pvFrame=null;
   }
   Object.assign(viewport.style,{left:f(cur.x),top:f(cur.y),width:f(cur.w),height:f(cur.h),right:'auto',bottom:'auto'});
   if(zbadge){zbadge.style.left=f(cur.x+cur.w/2);zbadge.style.top=f(cur.y+10);}
-  pvEl.style.setProperty('--pvf',Math.round(Math.max(16,Math.min(22,cur.w/46)))+'px');
+  pvFB=Math.max(16,Math.min(22,W/60));pvFontApply();   // 노트 글자 크기 = 창 너비에 맞춘 기본 크기(16~22px) × 글자 크기 막대 배율. 경계선을 움직여도 바뀌지 않게 창 크기에만 맞춤(2026-11-05: 지금 장·노트 칸 너비에 맞췄을 때는 가로줄·세로줄을 움직이면 글자가 작아졌음)
   pvStepsFit();pvFollow(false);
 }
 function pvSet(v){
@@ -1601,7 +1659,7 @@ Deck.start=function(){
   addEventListener('keydown',e=>{
     if(e.metaKey||e.ctrlKey||e.altKey)return;
     if(ZM){e.preventDefault();zoomClose();return;}   // 크게 보기 중에는 아무 키나 닫기만
-    if(e.target.closest&&e.target.closest('#markbox,#resume'))return;
+    if(e.target.closest&&e.target.closest('#markbox,#resume,.pv-fs'))return;
     if(OV){if(OV===1)tocKey(e);return;}
     const key=e.key;
     if(key==='Escape'){if(LZ.on){lzSet(false);return;}if(ZV.z>1.01){zvReset();return;}closeOverlays();setNotes(false);setBlank('');return;}
