@@ -182,7 +182,7 @@
 2. 엔진 최신본 파일을 새 이름으로 복사한 뒤, **이전 수업의 내용은 모두 걷어 냅니다**: `<title>`, 모든 `<section class="slide">`, `window.KW`, 두 번째 `<script>`의 정적 도형·장면(`Deck.scene`)과 그 수업 전용 함수·상수. 남기는 것은 엔진 부분(엔진 CSS, HUD·노트·도움말 마크업, 첫 번째 `<script>`)과 두 번째 스크립트의 공용 도우미(`arrow` 등)와 맨 끝 `Deck.start()`뿐입니다.
 3. 새 단원의 장을 만듭니다. 아래 '슬라이드 엔진'의 문법과 패턴을 씁니다.
 4. '검증 방법'으로 확인한 뒤 미리보기를 보여 줍니다.
-5. 교사의 수정 요청을 반영하고, 요청이 있을 때 커밋·push합니다. 커밋 메시지는 한국어로 짧게(예: `조석 5장: 용어를 조석 곡선·갯벌 해안 단면과 연결`), 작성자는 `Claude <noreply@anthropic.com>`(`git -c user.name=Claude -c user.email=noreply@anthropic.com commit ...`, 전역 설정은 바꾸지 않음), 끝에 `Co-Authored-By` 줄.
+5. 교사의 수정 요청을 반영하고, 요청이 있을 때 커밋·push합니다. 커밋 메시지는 한국어로 짧게(예: `조석 5장: 용어를 조석 곡선·갯벌 해안 단면과 연결`), 작성자는 **교사 GitHub 계정** `StarFinder <78305286+earthkimteacher@users.noreply.github.com>`(`git -c user.name=StarFinder -c user.email=78305286+earthkimteacher@users.noreply.github.com commit ...`, 전역 설정은 바꾸지 않음)이고, `Co-Authored-By: Claude`·`Claude-Session:` 같은 Claude 표시 줄은 붙이지 않습니다(2026-11-05 교사 결정 '커밋이 전부 Claude가 한 걸로 나온다 → 내가 한 걸로'). 그 전에 Claude 이름으로 만든 커밋 74개도 이날 작성자를 바꾸고 이 줄을 지워 GitHub에 강제 push함(내용·날짜는 그대로, 커밋 번호만 바뀜).
 6. 엔진을 고치면 다른 모든 수업 파일에도 옮기고 '슬라이드 엔진' 절을 갱신합니다. 새 수업을 만들면 '만든 수업 기록' 절을 갱신합니다.
 7. **자료 목록 두 곳을 함께 갱신합니다:** `index.html`(공개 사이트 `earth.esbest.net` 첫 화면, 학생·교사가 보는 카드 목록)과 `README.md`(GitHub 저장소 첫 화면). 두 목록은 항상 같은 내용·같은 순서여야 합니다. `index.html`은 파일 아래쪽 `<script>`의 `SUBJECTS` 배열만 고치면 됩니다(과목: `name`·`grade`, 자료: `unit`·`type`('슬라이드'/'시뮬레이터')·`title`·`note`·`href`, 학생용 PDF가 있으면 `pdf`). 규칙(2026-10-21 교사 결정):
    - 과목별로 묶습니다(README는 `### 과목명 (학년)` 소제목, index.html은 과목 섹션). 과목은 학년 순서(같은 학년이면 가나다순)로 놓고, 새 과목이 생기면 추가합니다. 과목은 학년 순서(같은 학년이면 가나다순)로 놓습니다. 새 과목이 생기면 소제목을 추가합니다.
@@ -304,6 +304,7 @@
 - PDF 읽기: 이 PC에는 PDF를 그림으로 바꾸는 도구(pdftoppm)가 없어 Read로 PDF 쪽을 볼 수 없습니다. 임시 폴더에 `python -m pip install --target <임시폴더> pymupdf`로 설치해 글자(`page.get_text()`)와 쪽 그림(`get_pixmap`)을 뽑아 읽었습니다(Git에 딸린 `pdftotext`는 이 지도서의 한글이 깨짐).
 - **저장소 위치:** `C:\2026 진광고\Claude\my_geo_classroom`. 이 `Claude` 폴더는 교사의 여러 PC 사이에 자동 동기화됩니다. 새 대화는 `my_geo_classroom` 폴더를 열어 시작합니다(그래야 이 문서가 읽힘). Claude 대화 기록은 PC 사이에 동기화되지 않으므로, 이어서 알아야 할 것은 모두 이 문서에 적습니다.
 - **PC를 옮길 때는 GitHub로만**(2026-11-03 교사 결정): 한 PC에서 작업을 마치면 커밋·push하고(교사 승인 뒤), 다른 PC에서는 시작할 때 `git fetch`·`git pull`로 받아 이어서 합니다. NAS 동기화로 넘어온 파일에 기대지 않습니다. (2026-11-02 학교 PC가 커널 패닉으로 멈췄을 때는 교사가 push하지 못한 채 다른 PC에서 급히 고쳤음 — 아래 '동기화가 안 된 일')
+  - **2026-11-05 기록을 새로 써서 강제 push함**(커밋 작성자를 교사 계정으로 바꿈): 그 전에 clone한 다른 PC(맥북 `~/Documents/my_geo_classroom` 등)에서는 `git pull`이 '갈라짐(diverged)'으로 나옵니다. 그 PC에 push 안 한 커밋이나 고친 파일이 없는지(`git status`, `git log origin/main..HEAD`) 확인한 뒤 `git fetch` → `git reset --hard origin/main`으로 GitHub에 맞춥니다. 있으면 손대지 말고 교사에게 알립니다. 바꾸기 전 기록은 학교 PC의 `.git`(`refs/original/refs/heads/main`)에 남아 있음.
 - **동기화 폴더 주의사항:**
   - 두 PC에서 동시에 이 저장소를 고치지 않습니다.
   - **`.git` 폴더는 NAS로 동기화되지 않습니다**(2026-11-03 확인: Synology Drive 동기화 규칙 `black_prefix = "."` — 이름이 '.'으로 시작하는 파일·폴더(`.git`, `.claude`, `.gitignore` 등)는 올라가지 않음). 그래서 PC마다 `.git`이 따로 있고 기록은 GitHub로만 맞춰집니다. NAS가 수업 파일만 먼저 바꿔 놓으면 `git status`에 '고친 파일'로 보일 수 있으니, `git fetch` 뒤 `git diff origin/main --stat`으로 GitHub 것과 같은지 보고, 같으면 pull로 맞추고 다르면 교사에게 알립니다.
