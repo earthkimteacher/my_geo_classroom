@@ -835,14 +835,24 @@ function pvFontApply(){   // 노트 글자 크기 적용 + 슬라이더 표시(p
 }
 function pvFontSet(v){pvFS=Math.max(.7,Math.min(2,v));try{if(Math.abs(pvFS-1)<.001)localStorage.removeItem(PVF);else localStorage.setItem(PVF,String(pvFS));}catch(e){}pvFontApply();}   // 노트 글자 크기 슬라이더(기본 = ×1)
 function pvSplitReset(){pvSX=pvSY=null;try{localStorage.removeItem(PVK);}catch(e){}pvLayout();fit();}   // 비율 원래대로
+/* 미리보기 창을 i장 k단계로: 같은 출처면 바로 Deck.go를 부르고, HTML 파일을 직접 연 경우(file://)처럼
+   Chrome이 창 사이 접근을 막으면 postMessage로 보낸다(미리보기 창은 아래 'message'를 받아 Deck.go). */
+function pvCall(fr,i,k){
+  const w=fr.contentWindow;if(!w)return false;
+  let ok=false,blocked=false;try{ok=!!(w.Deck&&w.Deck.go);}catch(e){blocked=true;}   // 출처가 다르면 w.Deck을 읽는 순간 막힘
+  if(ok){try{w.Deck.go(i,k,{instant:true});}catch(e){}return true;}                 // 웹사이트(같은 출처): 예전과 똑같이
+  if(blocked){try{w.postMessage({deckPv:1,i,k},'*');return true;}catch(e){}}         // 파일로 연 경우만 메시지로
+  return false;                                                                      // 그 밖에는 예전처럼 주소로 다시 불러옴
+}
+if(THUMB)addEventListener('message',e=>{const d=e.data;if(e.source===parent&&d&&d.deckPv===1&&Deck.go)Deck.go(d.i,d.k,{instant:true});});
 function pvThumb(box,j){
   const ok=j>=0&&j<Deck.list.length;
   box.classList.toggle('empty',!ok);box.dataset.j=ok?j:-1;
   if(!ok)return;
   if(box.__busy){box.__want=j;return;}
   if(box.__at===j)return;
-  const fr=box.querySelector('iframe'),w=box.__ready&&fr.contentWindow;
-  if(w&&w.Deck&&w.Deck.go){box.__at=j;try{w.Deck.go(j,99,{instant:true});}catch(e){}}
+  const fr=box.querySelector('iframe');
+  if(box.__ready&&pvCall(fr,j,99))box.__at=j;
   else{box.__busy=true;box.__at=j;fr.src=location.pathname+'?thumb=1&still=1&s=1&k=99#'+(j+1);}
 }
 function pvTick(){
@@ -869,9 +879,8 @@ function pvGo(d,i,k){   // 단계 칸 d를 i장 k단계로(이미 열린 미리�
   if(d.__busy){d.__want=[i,k];return;}
   if(d.__i===i&&d.__k===k)return;
   d.__i=i;d.__k=k;
-  const fr=d.firstChild,w=d.__ready&&fr.contentWindow;
-  if(w&&w.Deck&&w.Deck.go){try{w.Deck.go(i,k,{instant:true});}catch(e){}}
-  else{d.__busy=true;fr.src=location.pathname+'?thumb=1&still=1&s=1&k='+k+'#'+(i+1);}
+  const fr=d.firstChild;
+  if(!(d.__ready&&pvCall(fr,i,k))){d.__busy=true;fr.src=location.pathname+'?thumb=1&still=1&s=1&k='+k+'#'+(i+1);}
 }
 function pvSteps(){   // 장이 바뀌면 칸 수를 맞추고 각 칸을 그 장의 k단계로, 단계가 바뀌면 표시만 바꾼다
   const box=pvEl.querySelector('.pv-steps'),i=Deck.i,st=stepsOf(Deck.list[i]),n=st?st+1:0,slots=[...box.querySelectorAll('.pv-st')];
