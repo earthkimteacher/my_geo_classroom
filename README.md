@@ -29,6 +29,7 @@
 | II.05. 조석 | 슬라이드 | [열기](https://earth.esbest.net/지구시스템과학/II.05tide.html) |
 | III.01~02. 지구의 대기와 생명체 · 지구 열수지 | 슬라이드 | [열기](https://earth.esbest.net/지구시스템과학/III.01-02atmosphere.html) |
 | III.03. 대기 안정도와 강수 | 슬라이드 | [열기](https://earth.esbest.net/지구시스템과학/III.03stability.html) · [학생용 PDF](https://earth.esbest.net/지구시스템과학/PDF/III.03stability_학생용.pdf) |
+| III.04~05. 기압의 연직 분포와 대기를 움직이는 힘 · 여러 가지 바람 | 슬라이드 | [열기](https://earth.esbest.net/지구시스템과학/III.04-05wind.html) |
 | 학생용 수업 자료 PDF | 노션 — 단원별 수업 자료를 내려받는 페이지 | [열기](https://esbest.notion.site/2-32d4a95fb28280e198bfd571eef92fec) |
 
 ## 슬라이드 사용법
@@ -100,12 +101,14 @@ my_geo_classroom/
 │  ├─ II.05tide.html                  조석 슬라이드
 │  ├─ III.01-02atmosphere.html        지구의 대기와 생명체 · 지구 열수지 슬라이드
 │  ├─ III.03stability.html            대기 안정도와 강수 슬라이드
+│  ├─ III.04-05wind.html              기압의 연직 분포와 대기를 움직이는 힘 · 여러 가지 바람 슬라이드
 │  ├─ PDF/
 │  │  └─ III.03stability_학생용.pdf     대기 안정도와 강수 학생용 인쇄 PDF(빈칸 정답 숨김)
 │  └─ img/
 │     ├─ II.04/                       해일 슬라이드에 쓰는 그림(교사 PPT의 그림)
 │     ├─ III.01/                      대기·열수지 슬라이드에 쓰는 교과서 그림(01 단원)
-│     └─ III.02/                      대기·열수지 슬라이드에 쓰는 교과서 그림(02 단원)
+│     ├─ III.02/                      대기·열수지 슬라이드에 쓰는 교과서 그림(02 단원)
+│     └─ III.05/                      바람 슬라이드의 해 보기에 쓰는 교과서 일기도(107쪽)
 ├─ index.html                         사이트 첫 화면 (수업 자료 목록)
 ├─ CLAUDE.md                          슬라이드 제작 안내 (Claude용)
 └─ CNAME                              earth.esbest.net 연결
