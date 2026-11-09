@@ -335,6 +335,35 @@ html.print #s24 .tbl .hl{background:none}
 #s25 .sc-list{gap:26px}
 #s25 #s25-q3{margin-right:480px}
 html.noans #s25-svg [data-step]{visibility:hidden!important}   /* 학생용 인쇄: 3번 답(등압선·저·고) 숨김 */
+/* ── 묶음 K ── */
+/* s02 오늘의 키워드(개념 흐름): 1 연직 방향의 힘 → 2 수평 방향의 네 힘 → 3 상층의 바람 / 4 지상의 바람 → 5 일기도 */
+#s02 .k-card{position:absolute;z-index:3;background:#fff;border-radius:18px;padding:20px 24px 18px;display:flex;flex-direction:column}
+#s02 .k-hd{display:flex;align-items:center;gap:12px;font-size:30px;font-weight:800;letter-spacing:-.025em;color:#1d1d1f;white-space:nowrap}
+#s02 .k-no{flex:none;width:42px;height:42px;border-radius:50%;background:var(--act);color:#fff;font-size:26px;font-weight:800;display:grid;place-items:center;letter-spacing:0}
+#s02 .k-sub{font-size:26px;font-weight:600;color:#5c5c61;letter-spacing:-.015em;margin-top:6px}
+#s02 .k-hd .k-sub{margin:0 0 0 auto}
+#s02 .k-fig{flex:1;width:100%;margin-top:6px}
+/* 2 대기를 움직이는 힘: 힘마다 작은 그림 + 이름 + 무엇에 의해/무엇을 */
+#s02 .k-f{flex:1;display:grid;grid-template-columns:96px 1fr;align-items:center;gap:16px;border-top:1.5px solid #e5e5ea;margin-top:8px}
+#s02 .k-f:first-of-type{margin-top:14px}
+#s02 .k-f svg{width:96px;height:64px}
+#s02 .k-f b{display:block;font-size:30px;font-weight:800;letter-spacing:-.02em}
+#s02 .k-f span{display:block;font-size:26px;font-weight:500;color:#5c5c61;line-height:1.35;word-break:keep-all;margin-top:2px}
+/* 3·4 바람: 위에서 본 작은 그림 + 바람 이름 + 작용하는 힘 알약 */
+#s02 .k-w{flex:1;display:grid;grid-template-columns:120px 1fr;align-items:center;gap:20px;border-top:1.5px solid #e5e5ea;margin-top:8px}
+#s02 .k-hd + .k-w{margin-top:14px}
+#s02 .k-w svg{width:120px;height:110px}
+#s02 .k-w b{display:block;font-size:32px;font-weight:800;color:var(--wind);letter-spacing:-.02em}
+#s02 .k-w b.k-ink{color:#1d1d1f}
+#s02 .k-w .k-d{display:block;font-size:26px;font-weight:500;color:#5c5c61;margin-top:4px;word-break:keep-all}
+#s02 .k-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+#s02 .k-chip{font-size:26px;font-weight:700;line-height:1.3;padding:1px 13px;border-radius:9999px;border:2.5px solid currentColor;white-space:nowrap}
+/* 5 일기도: 위 칸은 상층의 바람, 아래 칸은 지상의 바람과 같은 높이 */
+#s02 .k-m{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px}
+#s02 .k-m2{margin-top:20px;padding-top:20px;border-top:1.5px solid #e5e5ea}
+#s02 .k-m svg{width:200px;height:104px}
+#s02 .k-m b{font-size:30px;font-weight:800;color:#1d1d1f;letter-spacing:-.02em}
+#s02 .k-m span{font-size:26px;font-weight:600;color:#5c5c61}
 /* ── 묶음 P ── */
 /* s14a 여러 가지 바람: 2 × 2 표(열 머리 = 등압선 모양, 행 머리 = 높이), 칸마다 그림(278 × 278) + 이름 + 작용하는 힘 알약 */
 #s14a .s14a-ch{position:absolute;z-index:3;display:flex;align-items:center;justify-content:center;gap:16px;border-radius:16px;background:#e8e8ed;font-size:32px;font-weight:800;letter-spacing:-.015em;color:var(--ink);white-space:nowrap}
@@ -404,28 +433,44 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
   <div class="abs t-lead mute s01-ld" style="left:160px" data-in="1500">정역학 평형 · 기압 경도력 · 전향력 · 지균풍 · 경도풍 · 지상풍</div>
 </section>
 
-<!-- ═══ s02 오늘의 키워드 ═══ -->
-<section class="slide" id="s02" data-tile="parchment" data-title="오늘의 키워드" data-notes="이 단원에서 따라갈 키워드 다섯 개입니다. 다음 장부터 오른쪽 위에 지금 배우는 키워드가 표시됩니다. 1 정역학 평형(기압의 연직 분포, 연직 기압 경도력과 중력) → 2 대기를 움직이는 힘(기압 경도력, 전향력, 구심력, 마찰력) → 3 상층의 바람(지균풍, 경도풍) → 4 지상의 바람(지상풍, 경각) → 5 일기도(지상 일기도와 상층 일기도). 힘의 색 약속: 빨강 기압 경도력, 주황 중력, 파랑 전향력, 보라 구심력, 초록 마찰력, 청록 바람.">
+<!-- ═══ s02 오늘의 키워드(개념 흐름) ═══ -->
+<section class="slide" id="s02" data-tile="parchment" data-title="오늘의 키워드" data-notes="이 단원에서 배울 개념이 이어지는 흐름입니다. 다음 장부터 오른쪽 위에 지금 배우는 키워드 번호가 표시됩니다. 1 정역학 평형: 높이 올라갈수록 기압이 낮아지는 기압의 연직 분포 때문에 위쪽으로 연직 기압 경도력이 작용하고, 아래쪽으로 작용하는 중력과 크기가 같아 정역학 평형을 이룬다(연직 방향의 힘). 2 대기를 움직이는 힘: 수평 방향으로 바람에 작용하는 네 힘 — 기압 경도력(기압 차에 의해 발생, 바람을 일으키는 근본적인 힘), 전향력(지구 자전의 영향), 구심력(원운동의 궤적을 유지), 마찰력(운동 속도를 감소). 그림의 화살표 색은 이 수업 끝까지 같은 힘의 색입니다(빨강 기압 경도력, 주황 중력, 파랑 전향력, 보라 구심력, 초록 마찰력, 청록 바람). 3 상층의 바람(높이 약 1 km 이상, 마찰력을 무시): 지균풍은 기압 경도력과 전향력, 경도풍은 여기에 구심력까지. 4 지상의 바람(높이 약 1 km까지): 마찰력이 더해져 지상풍이 등압선을 비스듬하게 가로지르고, 그 각이 경각. 5 일기도: 상층의 바람은 상층 일기도(등압면의 고도를 나타낸 등고선)에서, 지상의 바람은 지상 일기도(등압선)에서 읽는다. 질문 던지기: 같은 기압 배치인데 높이에 따라 바람이 왜 다를까? → 마찰력.">
   <div class="hd" data-in><div class="eb">학습 안내</div><h2>오늘의 키워드</h2></div>
-  <svg class="full-svg" viewBox="0 0 1920 1080">
-    <path d="M280 560H1640" stroke="#e8e8ed" stroke-width="12" stroke-linecap="round" fill="none"/>
-    <path d="M280 560H1640" stroke="var(--act)" stroke-width="12" stroke-linecap="round" fill="none" data-in="500" data-fx="draw" data-dur="2200"/>
-    <g data-in="500" data-fx="pop"><circle cx="280" cy="560" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="280" y="577" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">1</text></g>
-    <g data-in="900" data-fx="pop"><circle cx="620" cy="560" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="620" y="577" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">2</text></g>
-    <g data-in="1300" data-fx="pop"><circle cx="960" cy="560" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="960" y="577" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">3</text></g>
-    <g data-in="1700" data-fx="pop"><circle cx="1300" cy="560" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="1300" y="577" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">4</text></g>
-    <g data-in="2100" data-fx="pop"><circle cx="1640" cy="560" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="1640" y="577" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">5</text></g>
-  </svg>
-  <div class="abs center kw-n" style="left:110px" data-in="650">정역학 평형</div>
-  <div class="abs center mute kw-s" style="left:110px" data-in="750">기압의 연직 분포<br>연직 기압 경도력 · 중력</div>
-  <div class="abs center kw-n" style="left:450px" data-in="1050">대기를 움직이는 힘</div>
-  <div class="abs center mute kw-s" style="left:450px" data-in="1150">기압 경도력 · 전향력<br>구심력 · 마찰력</div>
-  <div class="abs center kw-n" style="left:790px" data-in="1450">상층의 바람</div>
-  <div class="abs center mute kw-s" style="left:790px" data-in="1550">지균풍 · 경도풍</div>
-  <div class="abs center kw-n" style="left:1130px" data-in="1850">지상의 바람</div>
-  <div class="abs center mute kw-s" style="left:1130px" data-in="1950">지상풍 · 경각</div>
-  <div class="abs center kw-n" style="left:1470px" data-in="2250">일기도</div>
-  <div class="abs center mute kw-s" style="left:1470px" data-in="2350">지상 일기도 · 상층 일기도</div>
+  <svg class="full-svg" viewBox="0 0 1920 1080" id="s02-arw"></svg>
+
+  <div class="k-card" id="s02-c1" style="left:120px;top:250px;width:300px;height:740px" data-in="200">
+    <div class="k-hd"><span class="k-no">1</span>정역학 평형</div>
+    <div class="k-sub">연직 방향의 힘</div>
+    <svg class="k-fig" id="s02-v" viewBox="0 0 256 560"></svg>
+  </div>
+
+  <div class="k-card" id="s02-c2" style="left:480px;top:250px;width:380px;height:740px" data-in="600">
+    <div class="k-hd"><span class="k-no">2</span>대기를 움직이는 힘</div>
+    <div class="k-sub">바람에 작용하는 수평 방향의 힘</div>
+    <div class="k-f" data-in="800"><svg id="s02-f1" viewBox="0 0 96 64"></svg><div><b class="c-pgf">기압 경도력</b></div></div>
+    <div class="k-f" data-in="950"><svg id="s02-f2" viewBox="0 0 96 64"></svg><div><b class="c-cor">전향력</b></div></div>
+    <div class="k-f" data-in="1100"><svg id="s02-f3" viewBox="0 0 96 64"></svg><div><b class="c-cen">구심력</b></div></div>
+    <div class="k-f" data-in="1250"><svg id="s02-f4" viewBox="0 0 96 64"></svg><div><b class="c-fric">마찰력</b></div></div>
+  </div>
+
+  <div class="k-card" id="s02-c3" style="left:910px;top:250px;width:580px;height:350px" data-in="1500">
+    <div class="k-hd"><span class="k-no">3</span>상층의 바람<span class="k-sub">높이 약 1 km 이상</span></div>
+    <div class="k-w"><svg id="s02-w1" viewBox="0 0 120 110"></svg><div><b>지균풍</b><div class="k-chips"><span class="k-chip c-pgf">기압 경도력</span><span class="k-chip c-cor">전향력</span></div></div></div>
+    <div class="k-w"><svg id="s02-w2" viewBox="0 0 120 110"></svg><div><b>경도풍</b><div class="k-chips"><span class="k-chip c-pgf">기압 경도력</span><span class="k-chip c-cor">전향력</span><span class="k-chip c-cen">구심력</span></div></div></div>
+  </div>
+
+  <div class="k-card" id="s02-c4" style="left:910px;top:640px;width:580px;height:350px" data-in="1800">
+    <div class="k-hd"><span class="k-no">4</span>지상의 바람<span class="k-sub">높이 약 1 km까지</span></div>
+    <div class="k-w"><svg id="s02-w3" viewBox="0 0 120 110"></svg><div><b>지상풍</b><div class="k-chips"><span class="k-chip c-pgf">기압 경도력</span><span class="k-chip c-cor">전향력</span><span class="k-chip c-fric">마찰력</span></div></div></div>
+    <div class="k-w"><svg id="s02-w4" viewBox="0 0 120 110"></svg><div><b class="k-ink">경각</b><span class="k-d">지상풍이 등압선과 이루는 각</span></div></div>
+  </div>
+
+  <div class="k-card" id="s02-c5" style="left:1540px;top:250px;width:260px;height:740px" data-in="2100">
+    <div class="k-hd"><span class="k-no">5</span>일기도</div>
+    <div class="k-m" style="height:288px"><svg id="s02-m1" viewBox="0 0 200 104"></svg><b>상층 일기도</b><span>등고선</span></div>
+    <div class="k-m k-m2" style="flex:1"><svg id="s02-m2" viewBox="0 0 200 104"></svg><b>지상 일기도</b><span>등압선</span></div>
+  </div>
+  <div class="fine">모식 그림 · 화살표 색은 이 수업 끝까지 같은 힘의 색</div>
 </section>
 
 <!-- ═══ s03 풍선과 과자 봉지는 왜 부풀까? ═══ -->
@@ -2965,6 +3010,53 @@ function S25cloud(g,u){
 Deck.scene('s25',{steps:3,
   enter(c){const g=c.$('#s25-cl');S25cloud(g,.5);if(!PRINT)c.loop(t=>S25cloud(g,((t/10)+.5)%1));}
 });
+
+/* ═════ 묶음 K ═════ */
+/* ════════ s02 오늘의 키워드(개념 흐름) — 정적 그림(장면 없음, 등장은 data-in) ════════ */
+(function(){
+  const $=id=>$id(id);
+  /* 카드 사이 흐름 표시(회색 갈매기 화살표): 1 → 2, 2 → 3·4, 3 → 5, 4 → 5 */
+  const A=$('s02-arw');
+  if(A){const chev=(x,y,d)=>{const g=svgEl('g',{'data-in':d,'data-fx':'left'},A);
+      svgEl('path',{d:`M${x-11} ${y-20} L${x+9} ${y} L${x-11} ${y+20}`,fill:'none',stroke:'#aeaeb2','stroke-width':7,'stroke-linecap':'round','stroke-linejoin':'round'},g);};
+    chev(450,620,500);chev(885,425,1400);chev(885,815,1700);chev(1515,425,2000);chev(1515,815,2000);}
+  /* 1 정역학 평형: 기압의 연직 분포(아래 빽빽 · 위 성김) 위의 공기 덩어리, 연직 기압 경도력 = 중력 */
+  let g=$('s02-v');
+  if(g){
+    for(let i=0;i<170;i++){const u=rnd(i*3+1),v=rnd(i*3+2),y=556-(-Math.log(1-u*.96))*150;if(y<56)continue;
+      svgEl('circle',{cx:f1(8+v*240),cy:f1(y),r:3.4,fill:'#d1d1d6'},g);}
+    txt(g,128,34,'기압의 연직 분포',Object.assign({'font-size':26,'font-weight':700,fill:'#5c5c61','text-anchor':'middle'},halo('#fff',7)));
+    svgEl('rect',{x:66,y:262,width:124,height:80,rx:14,fill:'#e5e5ea',stroke:'#6e6e73','stroke-width':3},g);
+    farrow(g,128,258,128,150,'pgf',{lab:false});farrow(g,128,346,128,454,'grav',{lab:false});
+    txt(g,128,128,'연직 기압 경도력',Object.assign({'font-size':26,'font-weight':800,fill:C.pgf,'text-anchor':'middle'},halo('#fff',7)));
+    txt(g,128,488,'중력',Object.assign({'font-size':26,'font-weight':800,fill:C.grav,'text-anchor':'middle'},halo('#fff',7)));
+    svgEl('rect',{x:42,y:512,width:172,height:44,rx:22,fill:'#1d1d1f'},g);
+    txt(g,128,543,'정역학 평형',{'font-size':27,'font-weight':800,fill:'#fff','text-anchor':'middle'});
+  }
+  /* 2 네 힘: 무엇을 하는 힘인지 보이는 작은 그림(진회색 = 움직이는 방향) */
+  g=$('s02-f1');if(g){txt(g,12,41,'고',{'font-size':24,'font-weight':800,fill:C.ink,'text-anchor':'middle'});txt(g,86,41,'저',{'font-size':24,'font-weight':800,fill:C.ink,'text-anchor':'middle'});
+    farrow(g,28,32,70,32,'pgf',{lab:false,w:6});}
+  g=$('s02-f2');if(g){farrow(g,30,60,30,8,'wind',{lab:false,w:5,col:C.sub});farrow(g,36,32,84,32,'cor',{lab:false,w:6});}
+  g=$('s02-f3');if(g){svgEl('circle',{cx:62,cy:32,r:26,fill:'none',stroke:C.iso,'stroke-width':2.5,'stroke-dasharray':'5 5'},g);
+    svgEl('circle',{cx:62,cy:32,r:4,fill:C.sub},g);farrow(g,30,32,56,32,'cen',{lab:false,w:6});svgEl('circle',{cx:36,cy:32,r:7,fill:'#fff',stroke:C.sub,'stroke-width':3},g);}
+  g=$('s02-f4');if(g){svgEl('circle',{cx:48,cy:32,r:7,fill:'#fff',stroke:C.sub,'stroke-width':3},g);
+    farrow(g,57,32,94,32,'wind',{lab:false,w:5,col:C.sub});farrow(g,39,32,4,32,'fric',{lab:false,w:6});}
+  /* 3·4 바람(위에서 본 그림, 북반구, 저기압이 위쪽 또는 가운데) */
+  const iso=(g,ys)=>ys.forEach(y=>svgEl('line',{x1:6,y1:y,x2:114,y2:y,stroke:C.iso,'stroke-width':2.5},g));
+  g=$('s02-w1');if(g){iso(g,[22,55,88]);farrow(g,12,38,108,38,'wind',{lab:false,w:6});farrow(g,12,71,108,71,'wind',{lab:false,w:6});}
+  g=$('s02-w2');if(g){[30,50].forEach(r=>svgEl('circle',{cx:60,cy:55,r,fill:'none',stroke:C.iso,'stroke-width':2.5},g));
+    farrow(g,78,15,42,15,'wind',{lab:false,w:5});farrow(g,42,95,78,95,'wind',{lab:false,w:5});hlMark(g,60,55,'저',{r:23});}
+  g=$('s02-w3');if(g){iso(g,[22,55,88]);const t=Math.tan(30*D2R);farrow(g,14,100,104,100-90*t,'wind',{lab:false,w:6});}
+  g=$('s02-w4');if(g){svgEl('line',{x1:6,y1:84,x2:114,y2:84,stroke:C.iso,'stroke-width':2.5},g);
+    const t=Math.tan(30*D2R);farrow(g,14,84,108,84-94*t,'wind',{lab:false,w:6});
+    const r=52,a=30*D2R;svgEl('path',{d:`M${14+r} 84 A${r} ${r} 0 0 0 ${f1(14+r*Math.cos(a))} ${f1(84-r*Math.sin(a))}`,fill:'none',stroke:C.ink,'stroke-width':2.5},g);
+    txt(g,80,80,'θ',{'font-size':26,'font-style':'italic','font-family':"KaTeX_Math,'Times New Roman',serif",fill:C.ink});}
+  /* 5 일기도: 상층 일기도(등고선, 단위 m) · 지상 일기도(등압선, 고·저) */
+  g=$('s02-m1');if(g){['M4 22 C60 6,120 40,196 18','M4 52 C60 36,120 70,196 48','M4 82 C60 66,120 100,196 78'].forEach(d=>svgEl('path',{d,fill:'none',stroke:'#3f7fb8','stroke-width':2.5},g));
+    txt(g,150,44,'5700',Object.assign({'font-size':24,'font-weight':700,fill:'#3f7fb8','text-anchor':'middle'},halo('#fff',6)));}
+  g=$('s02-m2');if(g){[[48,52],[152,52]].forEach(([x,y])=>[[32,28],[46,42]].forEach(([rx,ry])=>svgEl('ellipse',{cx:x,cy:y,rx,ry,fill:'none',stroke:'#3f7fb8','stroke-width':2.5},g)));
+    hlMark(g,48,52,'저',{r:23});hlMark(g,152,52,'고',{r:23});}
+})();
 
 /* ═════ 묶음 P ═════ */
 /* ── 묶음 P: s14a 여러 가지 바람(개요 표, Advance organizer) ──
