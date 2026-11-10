@@ -243,7 +243,7 @@ html.print #s10 #s10-clr{display:none}
 /* ── 묶음 D ── */
 /* s11 전향력: 카드 둘째 줄 오른쪽 아래의 식 상자(크기 줄과 함께 읽음) */
 #s11 #s11-r2{position:relative}
-#s11 .s11-eq{position:absolute;right:16px;bottom:12px;display:flex;align-items:center;gap:22px;height:62px;padding:0 26px;border-radius:14px;background:#fff;border:2px solid #d1d1d6;font-size:36px;white-space:nowrap}
+#s11 .s11-eq{position:absolute;right:16px;bottom:-4px;display:flex;align-items:center;gap:22px;height:58px;padding:0 26px;border-radius:14px;background:#fff;border:2px solid #d1d1d6;font-size:36px;white-space:nowrap}
 #s11 .s11-eq .tx .katex{font-size:1.15em}
 #s11 .s11-en{font-size:30px;font-weight:600;color:#3a3a3c}
 #s11 .s11-en .tx .katex{font-size:1.05em}
@@ -339,6 +339,7 @@ html.print #s24 .tbl .hl{background:none}
 #s25 .sc-list{gap:26px}
 #s25 #s25-q3{margin-right:480px}
 html.noans #s25-svg [data-step]{visibility:hidden!important}   /* 학생용 인쇄: 3번 답(등압선·저·고) 숨김 */
+#s22 .s22-ab{display:inline-block;margin-top:4px;font-size:.9em;line-height:1.38;color:#3a3a3c}
 /* ── 묶음 K ── */
 /* s02 오늘의 키워드(개념 흐름): 1 연직 방향의 힘 → 2 수평 방향의 네 힘 → 3 상층의 바람 / 4 지상의 바람 → 5 일기도 */
 #s02 .k-card{position:absolute;z-index:3;background:#fff;border-radius:18px;padding:20px 24px 18px;display:flex;flex-direction:column}
@@ -539,7 +540,7 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
 </section>
 
 <!-- ═══ s07 해 보기 — 대기의 연직 운동이 발생하는 까닭 알아보기 ═══ -->
-<section class="slide" id="s07" data-tile="light" data-title="해 보기 — 대기의 연직 운동이 발생하는 까닭 알아보기" data-notes="교과서 101쪽 해 보기(문제해결 능력). 그림은 북반구 지상의 고기압과 저기압에 따른 대기의 연직 운동(교과서 그림을 단면으로). 고기압 위 A 지점은 하강 기류, 저기압 위 B 지점은 상승 기류(청록 흐름). 땅 위 청록 화살표: 고기압에서는 공기가 바깥으로 퍼져 나가고(시계 방향), 저기압에서는 안으로 모여듦(시계 반대 방향) — 교과서 그림 그대로, 회전 방향은 지상풍에서 배움. 문제를 먼저 보여 주고 학생 답을 들은 뒤 클릭: 1 A 지점의 공기 — 중력(주황)이 연직 기압 경도력(빨강)보다 크다(화살표 길이 66 : 51) → 2 B 지점의 공기 — 연직 기압 경도력이 중력보다 크다(86 : 66), B 위에 구름이 자람 → 3 예시 답안 1 → 4 예시 답안 2. 두 덩어리의 중력은 같은 길이, 연직 기압 경도력만 다름(길이 비 약 1.3 : 1). 지도 방안(교과서): 연직 방향으로 발생하는 대기의 운동을 이해하기 위해 대기의 정역학 평형에 관한 개념을 지도한다. 덧붙일 말: 하강 기류가 있는 고기압에서는 공기가 내려오며 단열 압축되어 구름이 사라지고 날씨가 맑으며, 상승 기류가 있는 저기압에서는 공기가 올라가며 단열 팽창해 구름이 생긴다(앞 단원 대기 안정도와 연결). 연직 운동이 활발한 기상 현상: 적운형 구름, 태풍, 뇌우.">
+<section class="slide" id="s07" data-tile="light" data-title="해 보기 — 대기의 연직 운동이 발생하는 까닭 알아보기" data-notes="교과서 101쪽 해 보기(문제해결 능력). 그림은 북반구 지상의 고기압과 저기압에 따른 대기의 연직 운동(교과서 그림을 단면으로). 고기압 위 A 지점은 하강 기류, 저기압 위 B 지점은 상승 기류(청록 흐름). 땅 위 청록 화살표: 고기압에서는 공기가 바깥으로 퍼져 나가고(시계 방향), 저기압에서는 안으로 모여듦(시계 반대 방향) — 교과서 그림 그대로, 회전 방향은 지상풍에서 배움. 문제를 먼저 보여 주고 학생 답을 들은 뒤 클릭: 1 A 지점의 공기 — 중력(주황)이 연직 기압 경도력(빨강)보다 크다(덩어리 밖으로 나온 화살표 길이 50 : 25, 덩어리 아래 ‘중력이 더 크다’) → 2 B 지점의 공기 — 연직 기압 경도력이 중력보다 크다(80 : 50, ‘연직 기압 경도력이 더 크다’), B 위에 구름이 자람 → 3 예시 답안 1 → 4 예시 답안 2. 두 덩어리의 중력은 같은 길이, 연직 기압 경도력만 다름(A는 중력의 절반, B는 중력보다 길게 — 교사 요청으로 차이를 분명하게). 지도 방안(교과서): 연직 방향으로 발생하는 대기의 운동을 이해하기 위해 대기의 정역학 평형에 관한 개념을 지도한다. 덧붙일 말: 하강 기류가 있는 고기압에서는 공기가 내려오며 단열 압축되어 구름이 사라지고 날씨가 맑으며, 상승 기류가 있는 저기압에서는 공기가 올라가며 단열 팽창해 구름이 생긴다(앞 단원 대기 안정도와 연결). 연직 운동이 활발한 기상 현상: 적운형 구름, 태풍, 뇌우.">
   <div class="hd" data-in><div class="eb"><b>1</b>정역학 평형</div><h2>해 보기 — 대기의 연직 운동이 발생하는 까닭 알아보기</h2></div>
   <div class="scn" style="left:120px;top:250px;width:700px;height:740px" data-in="200" data-fx="fade"><svg id="s07-svg" viewBox="0 0 700 740"></svg></div>
   <div class="sc-list">
@@ -563,7 +564,7 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
   <div class="ws-card eq" id="s08-eq" style="left:1100px;top:646px;width:700px;height:344px" data-step="5" data-fx="rise">
     <div class="s08-eh">단위 질량의 공기 덩어리에 작용하는 기압 경도력</div>
     <div class="s08-em"><span class="tx" data-tex="P_{\mathrm{H}}=\dfrac{F}{M}=\dfrac{\textcolor{#8C6D00}{\Delta P}\times S}{\rho\times S\times\textcolor{#4A6278}{\Delta L}}=\dfrac{1}{\rho}\,\dfrac{\textcolor{#8C6D00}{\Delta P}}{\textcolor{#4A6278}{\Delta L}}">P_H = F / M = ΔP×S / (ρ×S×ΔL) = (1/ρ)(ΔP/ΔL)</span></div>
-    <div class="s08-ed"><i class="m">F</i> 공기 덩어리에 작용하는 힘 · <i class="m">M</i> 공기의 질량 · <i class="m">ρ</i> 공기의 밀도</div>
+    <div class="s08-ed"><i class="m">F</i> 공기 덩어리에 작용하는 힘<br><i class="m">M</i> 공기의 질량 · <i class="m">ρ</i> 공기의 밀도</div>
   </div>
   <div class="fine">교과서 102쪽 그림 III-26 · 두 힘의 길이 차이(ΔP)는 실제보다 크게 그림(모식)</div>
 </section>
@@ -817,10 +818,10 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
 <!-- ═══ s22 지상 일기도와 상층 일기도 ═══ -->
 <section class="slide" id="s22" data-tile="parchment" data-title="지상 일기도와 상층 일기도" data-notes="교과서 106~107쪽, 그림 III-33. 상층 일기도는 등압면도라고도 한다(교과서 날개). 클릭 1 지상 일기도는 기압이 같은 지점을 연결한 등압선으로 기압의 분포를 나타낸다(그림 왼쪽 아래 작은 지상 일기도). 2 상층 일기도는 500 hPa 등압면처럼 기압이 같은 면의 높이(고도)를 나타낸다 — 등압면 위에서 높이가 같은 곳(5700·5640·5550 m)을 이은 선을 바닥으로 내려 그리면 등고선이 된다. 3 같은 높이(500 hPa 등압면의 평균 높이 면)에서 비교하면, A는 위쪽에 500 hPa 등압면이 있다 = A가 500 hPa 등압면보다 아래에 있어 A 위에 공기가 더 많이 쌓여 있으므로 기압이 500 hPa보다 높다. B는 500 hPa 등압면보다 위에 있으므로 기압이 500 hPa보다 낮다. 그래서 등압면의 고도가 높은 지역은 기압이 높다. 4 위에서 내려다보면 상층 일기도의 등고선 — 등고선이 높은 쪽에서 낮은 쪽으로 기압 경도력이 작용한다(지상 일기도의 등압선과 같은 역할). 덧붙일 말: 등고선 간격이 좁을수록 풍속이 빠르다(완자). 높이 식 P = 1013 hPa × e^(−z/8 km)(기온 일정 가정)로 계산하면 500 hPa ≈ 5.6 km로, 그림의 평균 높이 5640 m와 비슷하다. 학생 질문 대비: 왜 상층은 등압선 대신 등고선? — 상층 일기도는 높이 대신 기압(500 hPa)을 정해 두고 그 등압면의 높이를 그린 것이라 등고선이 기압 분포를 나타낸다. 그림의 등압면 기울기는 매우 과장(실제로는 수천 km에 걸쳐 수백 m 차이).">
   <div class="hd" data-in><div class="eb"><b>5</b>일기도</div><h2>지상 일기도와 상층 일기도</h2></div>
-  <div class="ws-card side" id="s22-card" style="left:120px;top:250px;width:940px;height:740px;display:flex;flex-direction:column;justify-content:center" data-in="200">
+  <div class="ws-card side sm" id="s22-card" style="left:120px;top:250px;width:940px;height:740px;display:flex;flex-direction:column;justify-content:center" data-in="200">
     <div class="ws-row" data-r="1"><span class="tm term">지상 일기도</span><span>기압이 같은 지점을 연결한 <span class="nw"><span class="bk"><span class="a" data-step="1" data-fx="pop">등압선</span><span class="n">1</span></span>으로</span> 기압의 분포를 나타낸다.</span></div>
     <div class="ws-row" data-r="2"><span class="tm term">상층 일기도</span><span>특정 기압에서 <span class="nw"><span class="bk"><span class="a" data-step="2" data-fx="pop">등압면의 고도</span><span class="n">2</span></span>가</span> 같은 지점을 연결한 <b>등고선</b>으로 기압의 분포를 나타낸다.</span></div>
-    <div class="ws-row" data-r="3"><span class="tm">기압</span><span><b>상층 일기도</b>에서 <b>등압면</b>의 고도가 높은 지역은 고도가 낮은 지역보다 <span class="nw">기압이 <span class="bk"><span class="a" data-step="3" data-fx="pop">높다</span><span class="n">3</span></span>.</span></span></div>
+    <div class="ws-row" data-r="3"><span class="tm">기압</span><span><b>상층 일기도</b>에서 <b>등압면</b>의 고도가 높은 지역은<br>고도가 낮은 지역보다 <span class="nw">기압이 <span class="bk"><span class="a" data-step="3" data-fx="pop">높다</span><span class="n">3</span></span>.</span><br><span class="s22-ab"><b>같은 높이</b>(500 hPa 등압면의 평균 높이)에서 비교하면,<br><b>A 지점</b>은 등압면이 위에 있어 위로 더 올라가야<br>500 hPa이 되므로 기압이 500 hPa보다 높고,<br><b>B 지점</b>은 등압면이 아래에 있어<br>기압이 500 hPa보다 낮다.</span></span></div>
     <div class="ws-row" data-r="4"><span class="tm">기압 경도력</span><span><b>등고선</b>이 <span class="nw"><span class="bk"><span class="a" data-step="4" data-fx="pop">높은 쪽에서 낮은 쪽</span><span class="n">4</span></span>으로</span> <span class="nw"><b>기압 경도력</b>이</span> 작용한다.</span></div>
   </div>
   <div class="scn" id="s22-scn" style="left:1100px;top:250px;width:700px;height:740px" data-in="300" data-fx="fade"><svg id="s22-svg" viewBox="0 0 700 740"></svg></div>
@@ -1435,12 +1436,12 @@ Deck.scene('s05',{steps:4,
    아랫면을 위로 미는 힘(진회색 210) − 윗면을 아래로 미는 힘(진회색 110) = 연직 기압 경도력(빨강 100) = 중력(주황 100).
    1단계: 같은 길이(110) 부분이 흐려지고 남은 100이 빨강이 되어 덩어리 가운데로 옮겨 감.
    4단계: 작은 덩어리 — 중력 40은 같고 연직 기압 경도력이 52(위로 이동)·31(아래로 이동)(길이 비 1.3 : 1) */
-const S06={x0:60,y0:260,w:330,h:160,cx:150,cy:340,gx:345,Lt:110,Lb:210,ny:680,mx:590,mw:70,mh:44,mA:[255,110],mB:[480,600],mT:4.2};
+const S06={x0:60,y0:260,w:330,h:160,cx:150,cy:340,gx:345,Lt:110,Lb:210,ny:680,mx:590,mw:70,mh:44,mA:[275,150],mB:[470,560],mT:4.2};
 function s06mini(par,up){
   const g=svgEl('g',{},par),S=S06;
   svgEl('rect',{x:-S.mw/2,y:-S.mh/2,width:S.mw,height:S.mh,rx:10,fill:'#e5e5ea',stroke:'#6e6e73','stroke-width':3},g);
-  farrow(g,0,0,0,up?-52:-31,'pgf',{lab:false,w:6});
-  farrow(g,0,0,0,40,'grav',{lab:false,w:6});
+  const h=S.mh/2;farrow(g,0,-h,0,-h-(up?100:25),'pgf',{lab:false,w:6});
+  farrow(g,0,h,0,h+50,'grav',{lab:false,w:6});
   return g;
 }
 (function(){
@@ -1501,7 +1502,7 @@ Deck.scene('s06',{steps:5,
 /* ── s07 해 보기: 북반구 지상의 고기압(A)·저기압(B) 위의 연직 운동(교과서 101쪽 그림을 단면으로) ──
    A: 하강 기류 — 중력(주황 66) > 연직 기압 경도력(빨강 51) · B: 상승 기류 — 연직 기압 경도력(86) > 중력(66). 두 덩어리의 중력은 같고 길이 비 약 1.3 : 1.
    땅 위 청록 화살표: 고기압은 바깥으로 퍼짐(시계 방향), 저기압은 안으로 모임(시계 반대 방향) — 교과서 그림 그대로 */
-const S07={ax:190,bx:510,gy:625,rx:125,ry:40,pt:350,G:66,pA:51,pB:86,top:120,bot:600,v:55,n:9,lab:494,cb:236};
+const S07={ax:190,bx:510,gy:625,rx:125,ry:40,pt:358,G:50,pA:25,pB:80,top:120,bot:600,v:55,n:9,lab:502,cb:236};
 /* 땅 위 나선 화살표 하나의 점들(비스듬히 본 땅: 세로를 ry/rx로 줄임) */
 function s07spiral(cx,cy,hi,i){
   const S=S07,f=S.ry/S.rx,th0=(i*90+(hi?-20:70))*D2R,span=55*D2R,pts=[];
@@ -1547,8 +1548,12 @@ function s07stPos(e,dir,ph,t){const S=S07,top=dir>0?S.top:S.cb+14,u=((t*S.v/(S.b
   svgEl('line',{x1:S.bx-118,y1:S.cb-1.5,x2:S.bx+118,y2:S.cb-1.5,stroke:'#c9d2dc','stroke-width':3},ci);
   // 공기 덩어리와 힘(1단계 A, 2단계 B) · 범례(한 줄)
   [S.ax,S.bx].forEach(x=>svgEl('rect',{x:x-48,y:S.pt-30,width:96,height:60,rx:12,fill:'#e5e5ea',stroke:'#6e6e73','stroke-width':3},svg));
-  const fA=svgEl('g',{'data-step':1,'data-fx':'fade'},svg);farrow(fA,S.ax,S.pt,S.ax,S.pt-S.pA,'pgf',{lab:false});farrow(fA,S.ax,S.pt,S.ax,S.pt+S.G,'grav',{lab:false});
-  const fB=svgEl('g',{'data-step':2,'data-fx':'fade'},svg);farrow(fB,S.bx,S.pt,S.bx,S.pt-S.pB,'pgf',{lab:false});farrow(fB,S.bx,S.pt,S.bx,S.pt+S.G,'grav',{lab:false});
+  const fA=svgEl('g',{'data-step':1,'data-fx':'fade'},svg);farrow(fA,S.ax,S.pt-30,S.ax,S.pt-30-S.pA,'pgf',{lab:false});farrow(fA,S.ax,S.pt+30,S.ax,S.pt+30+S.G,'grav',{lab:false});
+  const fB=svgEl('g',{'data-step':2,'data-fx':'fade'},svg);farrow(fB,S.bx,S.pt-30,S.bx,S.pt-30-S.pB,'pgf',{lab:false});farrow(fB,S.bx,S.pt+30,S.bx,S.pt+30+S.G,'grav',{lab:false});
+  /* 어느 힘이 더 큰지 글로도(교사 요청 2026-11-10): 덩어리 아래 */
+  const cmp=(par,x,parts)=>{const t=txt(par,x,466,'',Object.assign({'font-size':26,'font-weight':700,fill:C.ink,'text-anchor':'middle'},halo('#e6f3f4',7)));
+    parts.forEach(([s,col])=>{const sp=svgEl('tspan',{fill:col||C.ink,'font-weight':col?800:700},t);sp.textContent=s;});};
+  cmp(fA,S.ax,[['중력',C.grav],['이 더 크다']]);cmp(fB,S.bx,[['연직 기압 경도력',C.pgf],['이 더 크다']]);
   const lg=svgEl('g',{'data-step':1,'data-fx':'fade'},svg);
   farrow(lg,30,54,30,20,'pgf',{lab:false,w:6});txt(lg,52,46,'연직 기압 경도력',Object.assign({'font-size':28,'font-weight':800,fill:C.pgf},halo('#d8e9f6',6)));
   farrow(lg,306,20,306,54,'grav',{lab:false,w:6});txt(lg,328,46,'중력',Object.assign({'font-size':28,'font-weight':800,fill:C.grav},halo('#d8e9f6',6)));
