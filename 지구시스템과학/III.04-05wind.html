@@ -164,6 +164,8 @@ html.print text[paint-order="stroke"]{stroke:none}   /* 글자 둘레 흰 띠(ha
 /* 개념어는 굵게(교사 요청 2026-11-10): 힘·바람 이름(색 글자)과 카드 문장 속 <b> */
 .c-pgf,.c-grav,.c-cor,.c-cen,.c-fric,.c-wind{font-weight:700}
 .ws-row b,.sc-q b,.sc-a b,.ask b{font-weight:700}
+/* 인쇄(학생용 PDF): 흰 종이 위의 흰 상자가 사라지지 않게 테두리를 진하게(2026-11-10 교사 지적 — 2장 카드·그림 상자가 안 보임) */
+html.print .scn,html.print #s10-pn,html.print #s02 .k-card,html.print .slide[data-tile="parchment"] .ask{outline:2.5px solid #c7c7cc;outline-offset:-1px}
 /* 오늘의 키워드 5개 */
 #s02 .kw-n{width:340px;top:650px;font-size:40px} #s02 .kw-s{width:340px;top:712px;font-size:28px;line-height:1.4}
 /* ── 묶음 A ── */
