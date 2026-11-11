@@ -6,7 +6,7 @@
 //   wait  : 불러온 뒤 기다릴 시간(ms, 기본 1200) · eval: 페이지 안에서 실행할 식(결과를 출력, 그 뒤 wait2 ms 기다림 — 막대 값 넣기 등)
 //   check : true면 지금 장의 '24px 미만 글자'(small)·'무대 밖 글자'(out)·장 바로 아래 개체의 위치(boxes, 무대 px)를 출력
 //   walk  : true면 → 키로 끝까지, ← 키로 처음까지 넘기며 콘솔 오류를 모으고 section 속성·글자 노드·id 중복을 검사
-// 크롬 위치가 다르면 환경 변수 CHROME에 실행 파일 경로를 준다. 남은 메모리가 0.5GB 아래면 띄우지 않는다.
+// 크롬 위치가 다르면 환경 변수 CHROME에 실행 파일 경로를 준다. 남은 메모리가 1.5GB 아래면 띄우지 않는다(최대 2분 기다린 뒤에도 모자라면 멈춤 — 교사에게 알릴 것).
 const { spawn, execSync } = require('child_process');
 const fs = require('fs'), path = require('path'), os = require('os');
 const WIN = process.platform === 'win32';
@@ -57,8 +57,8 @@ async function run(jobs, log = r => console.log(JSON.stringify(r))) {
   }
   const killer = setTimeout(() => { log({ fatal: '5분을 넘겨 강제로 닫음' }); cleanup(); process.exit(2); }, 300000);
   try {
-    for (let n = 0; os.freemem() < 800 * 1048576 && n < 40; n++) await sleep(3000);   // 남은 메모리가 0.8GB 아래면 기다림(최대 2분)
-    if (os.freemem() < 500 * 1048576) throw new Error('남은 메모리가 0.5GB 아래라 크롬을 띄우지 않음: ' + Math.round(os.freemem() / 1048576) + 'MB');
+    for (let n = 0; os.freemem() < 1536 * 1048576 && n < 40; n++) await sleep(3000);   // 남은 메모리가 1.5GB 아래면 기다림(최대 2분)
+    if (os.freemem() < 1536 * 1048576) throw new Error('남은 메모리가 1.5GB 아래라 크롬을 띄우지 않음(기다리거나 교사에게 알릴 것): ' + Math.round(os.freemem() / 1048576) + 'MB');
     const port = 9300 + (process.pid % 600);
     prof = fs.mkdtempSync(path.join(os.tmpdir(), 'cdp-geo-'));
     proc = spawn(CHROME, ['--headless=new', '--remote-debugging-port=' + port, '--user-data-dir=' + prof, '--window-size=1920,1080', '--hide-scrollbars',
