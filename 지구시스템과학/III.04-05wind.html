@@ -154,15 +154,15 @@ html.print text[paint-order="stroke"]{stroke:none}   /* 글자 둘레 흰 띠(ha
 .qz-ch.row li{padding:12px 30px;border:2px solid var(--hl);background:#fff}
 .qz-ch.row .qz-mark{top:-26px;right:-14px;margin-top:0;font-size:24px;padding:2px 14px}
 /* ── 기압의 연직 분포와 대기를 움직이는 힘 · 여러 가지 바람 수업에서 추가한 스타일 ──
-   색 약속(이 수업 끝까지): 빨강 기압 경도력(연직·수평) · 주황 중력 · 파랑 전향력 · 보라 구심력 · 초록 마찰력
+   색 약속(이 수업 끝까지): 빨강 기압 경도력(연직·수평) · 주황 중력 · 파랑 전향력 · 보라 원심력 · 초록 마찰력 · 금색 구심력(구심력 vs 원심력 장에서만)
    청록 바람(풍향·풍속)과 공기의 움직임 · 회색 등압선·등고선·공기 분자 · 고기압·저기압 글자는 검정
    글자에는 아래 변수(밝은 면에서 자동으로 진한 색), 넓은 면·굵은 화살표 채우기에는 F 변수(선명한 색). SVG 속성에는 JS의 C·CF */
-.slide{--pgf:#FF453A;--grav:#FF9F0A;--cor:#0A84FF;--cen:#BF5AF2;--fric:#30D158;--wind:#2BD9C5;--gray:#8e8e93}
-.slide[data-tile="light"],.slide[data-tile="parchment"]{--pgf:#D70015;--grav:#B25000;--cor:#0060C0;--cen:#8944AB;--fric:#1E8B3E;--wind:#00796B;--gray:#6e6e73}
-.slide{--pgfF:#FF453A;--gravF:#FF9F0A;--corF:#0A84FF;--cenF:#BF5AF2;--fricF:#30D158;--windF:#2BD9C5}
-.c-pgf{color:var(--pgf)} .c-grav{color:var(--grav)} .c-cor{color:var(--cor)} .c-cen{color:var(--cen)} .c-fric{color:var(--fric)} .c-wind{color:var(--wind)} .c-gray{color:var(--gray)}
+.slide{--pgf:#FF453A;--grav:#FF9F0A;--cor:#0A84FF;--cen:#BF5AF2;--fric:#30D158;--wind:#2BD9C5;--gray:#8e8e93;--cpt:#FFD60A}
+.slide[data-tile="light"],.slide[data-tile="parchment"]{--pgf:#D70015;--grav:#B25000;--cor:#0060C0;--cen:#8944AB;--fric:#1E8B3E;--wind:#00796B;--gray:#6e6e73;--cpt:#8A6800}
+.slide{--pgfF:#FF453A;--gravF:#FF9F0A;--corF:#0A84FF;--cenF:#BF5AF2;--fricF:#30D158;--windF:#2BD9C5;--cptF:#FFD60A}
+.c-pgf{color:var(--pgf)} .c-grav{color:var(--grav)} .c-cor{color:var(--cor)} .c-cen{color:var(--cen)} .c-cpt{color:var(--cpt)} .c-fric{color:var(--fric)} .c-wind{color:var(--wind)} .c-gray{color:var(--gray)}
 /* 개념어는 굵게(교사 요청 2026-11-10): 힘·바람 이름(색 글자)과 카드 문장 속 <b> */
-.c-pgf,.c-grav,.c-cor,.c-cen,.c-fric,.c-wind{font-weight:700}
+.c-pgf,.c-grav,.c-cor,.c-cen,.c-cpt,.c-fric,.c-wind{font-weight:700}
 .ws-row b,.sc-q b,.sc-a b,.ask b{font-weight:700}
 /* 인쇄(학생용 PDF): 흰 종이 위의 흰 상자가 사라지지 않게 테두리를 진하게(2026-11-10 교사 지적 — 2장 카드·그림 상자가 안 보임) */
 html.print .scn,html.print #s10-pn,html.print #s02 .k-card,html.print .slide[data-tile="parchment"] .ask{outline:2.5px solid #c7c7cc;outline-offset:-1px}
@@ -250,7 +250,7 @@ html.print #s10 #s10-clr{display:none}
 #s11 .s11-en{font-size:30px;font-weight:600;color:#3a3a3c}
 #s11 .s11-en .tx .katex{font-size:1.05em}
 #s11 .fine sup.s11-sup{font-size:24px;vertical-align:.45em;line-height:0}
-/* s12 구심력: 빈칸 안 분수 */
+/* s12 원심력: 빈칸 안 분수 */
 #s12 .ws-card .ws-row{grid-template-columns:140px 1fr;gap:22px}
 #s12 .bk .tx .katex{font-size:1.1em}
 /* s13 마찰력 */
@@ -307,14 +307,15 @@ html.print #s22 .ws-row.cur{background:none}
 
 /* s23 해 보기(문제 제시): 일기도 두 장(같은 크기) + 아래 그림 설명(교과서 문장) + 오른쪽 문제 1·2.
    화살표와 예시 답안은 뒤의 해설 장(s23c)에서 */
-#s23 .s23-lead{position:absolute;left:120px;top:781px;width:1240px;height:209px;z-index:3;display:flex;align-items:center;border-radius:18px;background:#f5f5f7;padding:0 36px;font-size:36px;line-height:1.45;font-weight:500;letter-spacing:-.015em;word-break:keep-all}
+#s23 .s23-lead{position:absolute;left:120px;top:781px;width:1240px;height:209px;z-index:3;display:flex;align-items:center;border-radius:18px;background:#fff;padding:0 36px;font-size:36px;line-height:1.45;font-weight:500;letter-spacing:-.015em;word-break:keep-all}
 #s23 .s23-qs{position:absolute;left:1400px;top:250px;width:400px;height:740px;z-index:3;display:flex;flex-direction:column;gap:16px}
-#s23 .s23-q{flex:1;display:grid;grid-template-columns:40px 1fr;align-items:start;border-radius:18px;background:#f5f5f7;padding:26px 24px 20px 20px;font-size:30px;line-height:1.45;font-weight:500;letter-spacing:-.01em;word-break:keep-all;transition:filter .5s,box-shadow .5s}
+#s23 .s23-q{flex:1;display:grid;grid-template-columns:40px 1fr;align-items:start;border-radius:18px;background:#fff;padding:26px 24px 20px 20px;font-size:30px;line-height:1.45;font-weight:500;letter-spacing:-.01em;word-break:keep-all;transition:filter .5s,box-shadow .5s}
+html.print #s23 .s23-lead,html.print #s23 .s23-q{background:#f5f5f7}   /* 면 색이 parchment로 바뀌어 화면에서는 흰 상자(2026-11-12) */
 #s23 .s23-q .no{font-weight:800;color:var(--act)}
 #s23 .s23-q b{font-weight:800}
 
 /* s24 헷갈리는 개념 짚기: 비교표(한 열씩 채움) + 흔한 생각 카드 세 줄 */
-#s24 .tbl{left:120px;top:250px;width:1680px;background:#f5f5f7;border-radius:18px;overflow:hidden;font-size:30px;table-layout:fixed}
+#s24 .tbl{left:120px;top:250px;width:1680px;background:#fff;border-radius:18px;overflow:hidden;font-size:30px;table-layout:fixed}
 #s24 .tbl col{width:auto}
 #s24 .tbl th,#s24 .tbl td{padding:10px 18px;transition:background .45s}
 #s24 .tbl thead th{font-size:30px;color:var(--ink);font-weight:800}
@@ -325,7 +326,7 @@ html.print #s22 .ws-row.cur{background:none}
 #s24 .tbl .hl{background:rgba(0,102,204,.08)}
 #s24 .tbl b{font-weight:800}
 #s24 .tbl .ic{flex:none;width:84px;height:48px}
-#s24 .s24-mc{position:absolute;left:120px;width:1680px;height:109px;z-index:3;border-radius:18px;background:#f5f5f7;display:grid;grid-template-columns:820px 1fr;align-items:center;gap:0}
+#s24 .s24-mc{position:absolute;left:120px;width:1680px;height:109px;z-index:3;border-radius:18px;background:#fff;display:grid;grid-template-columns:820px 1fr;align-items:center;gap:0}
 #s24 .s24-mc .x{padding:0 26px 0 28px;font-size:30px;line-height:1.4;font-weight:600;word-break:keep-all}
 #s24 .s24-mc .o{height:100%;display:flex;align-items:center;padding:0 28px;border-left:2px dashed var(--hl);font-size:30px;line-height:1.4;font-weight:500;word-break:keep-all}
 #s24 .s24-mc .o>span{flex:none}
@@ -380,7 +381,7 @@ html.noans #s25-svg [data-step]{visibility:hidden!important}   /* 학생용 인�
 #s14a .s14a-rh span{font-size:26px;font-weight:600;line-height:1.35;color:#3a3a3c;white-space:nowrap}
 #s14a .s14a-up{background:#e6eef7}   /* 상층(자유 대기) — 지균풍·지상풍 장의 높이 띠와 같은 색 */
 #s14a .s14a-dn{background:#ede6d6}   /* 지상(대기 경계층) */
-#s14a .s14a-cell{position:absolute;z-index:2;border-radius:18px;background:#f5f5f7}
+#s14a .s14a-cell{position:absolute;z-index:2;border-radius:18px;background:#fff}
 #s14a .s14a-fig{position:absolute;left:18px;top:18px;width:278px;height:278px;display:block}
 #s14a .s14a-tx{position:absolute;left:348px;top:18px;right:20px;height:278px;padding-top:28px;display:flex;flex-direction:column;align-items:flex-start}
 #s14a .s14a-nm{font-size:44px;font-weight:800;line-height:1.2;letter-spacing:-.02em;color:var(--wind)}
@@ -389,6 +390,7 @@ html.noans #s25-svg [data-step]{visibility:hidden!important}   /* 학생용 인�
 #s14a .s14a-f{display:inline-flex;align-items:center;height:46px;padding:0 16px;border-radius:9999px;border:3px solid currentColor;background:#fff;font-size:28px;font-weight:800;letter-spacing:-.015em;white-space:nowrap}
 #s14a .s14a-pgf{color:var(--pgf)} #s14a .s14a-cor{color:var(--cor)} #s14a .s14a-cen{color:var(--cen)} #s14a .s14a-fric{color:var(--fric)}
 html.print #s14a .s14a-fig{outline:2px solid #e0e0e0;border-radius:14px}
+html.print #s14a .s14a-cell{background:#f5f5f7}   /* 면 색이 parchment로 바뀌어 화면에서는 흰 칸(2026-11-12) */
 /* ── 묶음 Q ── */
 /* s18a 경도풍의 풍속: 식 카드(왼쪽 아래)·문장 카드(오른쪽 아래) */
 #s18a-eq{display:flex;flex-direction:column;justify-content:center;gap:12px;padding:20px 36px}
@@ -413,13 +415,13 @@ html.noans #s23a .s23a-ans,html.noans #s23b .s23b-ans{visibility:hidden!importan
 /* s23c 해 보기 — 문제 1·2 해설: 일기도 두 장(원래 크기) + 그 위에 겹친 화살표 + 오른쪽 문제 + 아래 예시 답안 두 개 */
 #s23c .s23c-ov{position:absolute;width:560px;height:410px;z-index:3;pointer-events:none;overflow:visible}
 #s23c .s23c-qs{position:absolute;left:1320px;top:250px;width:480px;height:456px;z-index:3;display:flex;flex-direction:column;gap:16px}
-#s23c .s23c-q{flex:1;display:grid;grid-template-columns:40px 1fr;align-items:start;border-radius:18px;background:#fff;padding:18px 24px 18px 18px;font-size:28px;line-height:1.45;font-weight:500;letter-spacing:-.01em;word-break:keep-all;transition:filter .5s,box-shadow .5s}
+#s23c .s23c-q{flex:1;display:grid;grid-template-columns:40px 1fr;align-items:start;border-radius:18px;background:#f5f5f7;padding:18px 24px 18px 18px;font-size:28px;line-height:1.45;font-weight:500;letter-spacing:-.01em;word-break:keep-all;transition:filter .5s,box-shadow .5s}
 #s23c .s23c-q .no{font-weight:800;color:var(--act)}
 #s23c .s23c-q b{font-weight:800}
 #s23c .s23c-q.cur{box-shadow:inset 0 0 0 3px var(--act)}
 #s23c .s23c-q.dimq{filter:opacity(.4)}
 #s23c .s23c-as{position:absolute;left:120px;top:746px;width:1680px;z-index:3;display:flex;flex-direction:column;gap:12px}
-#s23c .s23c-a{border-radius:14px;background:#fff;border-left:6px solid var(--act);padding:9px 24px 11px;font-size:26px;line-height:1.4;font-weight:500;letter-spacing:-.012em;word-break:keep-all}
+#s23c .s23c-a{border-radius:14px;background:#f5f5f7;border-left:6px solid var(--act);padding:9px 24px 11px;font-size:26px;line-height:1.4;font-weight:500;letter-spacing:-.012em;word-break:keep-all}
 #s23c .s23c-a .h{display:inline-block;font-size:24px;font-weight:700;line-height:1.45;color:#fff;background:var(--act);border-radius:9999px;padding:0 14px;margin-right:12px;vertical-align:2px}
 html.noans #s23c .s23c-a,html.noans #s23c .s23c-ov{visibility:hidden!important}   /* 학생용 인쇄: 화살표와 예시 답안은 문제 1·2의 답이므로 숨김 */
 html.print #s23c .s23c-q,html.print #s23c .s23c-a{background:#f5f5f7}
@@ -432,7 +434,7 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
 <div id="viewport"><div id="stage">
 
 <!-- ═══ s01 표지 ═══ -->
-<section class="slide" id="s01" data-tile="black" data-title="표지" data-notes="III.04 기압의 연직 분포와 대기를 움직이는 힘 · III.05 여러 가지 바람(교과서 100~107쪽). 표지 장면: 같은 저기압을 비스듬히 내려다본 두 층 — 위는 상층, 아래는 지상(북반구). 상층의 바람(청록 흐름 줄)은 등압선에 나란하게 시계 반대 방향으로 불고, 지상의 바람은 등압선을 비스듬히(약 30°) 가로질러 시계 반대 방향으로 돌며 저기압 중심으로 불어 듭니다. 왜 두 층의 바람이 다를까? — 이 단원에서 배울 힘(기압 경도력, 전향력, 구심력, 마찰력)으로 답합니다. 등압선 간격·바람 빠르기는 모식.">
+<section class="slide" id="s01" data-tile="black" data-title="표지" data-notes="III.04 기압의 연직 분포와 대기를 움직이는 힘 · III.05 여러 가지 바람(교과서 100~107쪽). 표지 장면: 같은 저기압을 비스듬히 내려다본 두 층 — 위는 상층, 아래는 지상(북반구). 상층의 바람(청록 흐름 줄)은 등압선에 나란하게 시계 반대 방향으로 불고, 지상의 바람은 등압선을 비스듬히(약 30°) 가로질러 시계 반대 방향으로 돌며 저기압 중심으로 불어 듭니다. 왜 두 층의 바람이 다를까? — 이 단원에서 배울 힘(기압 경도력, 전향력, 원심력, 마찰력)으로 답합니다. 등압선 간격·바람 빠르기는 모식.">
   <svg class="full-svg" viewBox="0 0 1920 1080" id="s01-svg"></svg>
   <div class="abs s01-au" style="right:120px;top:80px;font-size:26px;font-weight:600;color:#a1a1a6;letter-spacing:-.01em" data-in="900">2026 진광고등학교 교사 김덕영</div>
   <div class="abs t-eyebrow" style="left:160px;top:300px" data-in="900">지구시스템과학 · Ⅲ. 강수 과정과 대기의 운동</div>
@@ -441,7 +443,7 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
 </section>
 
 <!-- ═══ s02 오늘의 키워드(개념 흐름) ═══ -->
-<section class="slide" id="s02" data-tile="parchment" data-title="오늘의 키워드" data-notes="이 단원에서 배울 개념이 이어지는 흐름입니다. 다음 장부터 오른쪽 위에 지금 배우는 키워드 번호가 표시됩니다. 1 정역학 평형: 높이 올라갈수록 기압이 낮아지는 기압의 연직 분포 때문에 위쪽으로 연직 기압 경도력이 작용하고, 아래쪽으로 작용하는 중력과 크기가 같아 정역학 평형을 이룬다(연직 방향의 힘). 2 대기를 움직이는 힘: 수평 방향으로 바람에 작용하는 네 힘 — 기압 경도력(기압 차에 의해 발생, 바람을 일으키는 근본적인 힘), 전향력(지구 자전의 영향), 구심력(원운동의 궤적을 유지), 마찰력(운동 속도를 감소). 그림의 화살표 색은 이 수업 끝까지 같은 힘의 색입니다(빨강 기압 경도력, 주황 중력, 파랑 전향력, 보라 구심력, 초록 마찰력, 청록 바람). 3 상층의 바람(높이 약 1 km 이상, 마찰력을 무시): 지균풍은 기압 경도력과 전향력, 경도풍은 여기에 구심력까지. 4 지상의 바람(높이 약 1 km까지): 마찰력이 더해져 지상풍이 등압선을 비스듬하게 가로지르고, 그 각이 경각. 5 일기도: 상층의 바람은 상층 일기도(등압면의 고도를 나타낸 등고선)에서, 지상의 바람은 지상 일기도(등압선)에서 읽는다. 질문 던지기: 같은 기압 배치인데 높이에 따라 바람이 왜 다를까? → 마찰력.">
+<section class="slide" id="s02" data-tile="parchment" data-title="오늘의 키워드" data-notes="이 단원에서 배울 개념이 이어지는 흐름입니다. 다음 장부터 오른쪽 위에 지금 배우는 키워드 번호가 표시됩니다. 1 정역학 평형: 높이 올라갈수록 기압이 낮아지는 기압의 연직 분포 때문에 위쪽으로 연직 기압 경도력이 작용하고, 아래쪽으로 작용하는 중력과 크기가 같아 정역학 평형을 이룬다(연직 방향의 힘). 2 대기를 움직이는 힘: 수평 방향으로 바람에 작용하는 네 힘 — 기압 경도력(기압 차에 의해 발생, 바람을 일으키는 근본적인 힘), 전향력(지구 자전의 영향), 원심력(원운동의 바깥쪽으로 작용하는 가상의 힘), 마찰력(운동 속도를 감소). 그림의 화살표 색은 이 수업 끝까지 같은 힘의 색입니다(빨강 기압 경도력, 주황 중력, 파랑 전향력, 보라 원심력, 초록 마찰력, 청록 바람). 3 상층의 바람(높이 약 1 km 이상, 마찰력을 무시): 지균풍은 기압 경도력과 전향력, 경도풍은 여기에 원심력까지. 4 지상의 바람(높이 약 1 km까지): 마찰력이 더해져 지상풍이 등압선을 비스듬하게 가로지르고, 그 각이 경각. 5 일기도: 상층의 바람은 상층 일기도(등압면의 고도를 나타낸 등고선)에서, 지상의 바람은 지상 일기도(등압선)에서 읽는다. 질문 던지기: 같은 기압 배치인데 높이에 따라 바람이 왜 다를까? → 마찰력.">
   <div class="hd" data-in><div class="eb">학습 안내</div><h2>오늘의 키워드</h2></div>
   <svg class="full-svg" viewBox="0 0 1920 1080" id="s02-arw"></svg>
 
@@ -456,14 +458,14 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
     <div class="k-sub">바람에 작용하는 수평 방향의 힘</div>
     <div class="k-f" data-in="800"><svg id="s02-f1" viewBox="0 0 96 64"></svg><div><b class="c-pgf">기압 경도력</b></div></div>
     <div class="k-f" data-in="950"><svg id="s02-f2" viewBox="0 0 96 64"></svg><div><b class="c-cor">전향력</b></div></div>
-    <div class="k-f" data-in="1100"><svg id="s02-f3" viewBox="0 0 96 64"></svg><div><b class="c-cen">구심력</b></div></div>
+    <div class="k-f" data-in="1100"><svg id="s02-f3" viewBox="0 0 96 64"></svg><div><b class="c-cen">원심력</b></div></div>
     <div class="k-f" data-in="1250"><svg id="s02-f4" viewBox="0 0 96 64"></svg><div><b class="c-fric">마찰력</b></div></div>
   </div>
 
   <div class="k-card" id="s02-c3" style="left:910px;top:250px;width:580px;height:350px" data-in="1500">
     <div class="k-hd"><span class="k-no">3</span>상층의 바람<span class="k-sub">높이 약 1 km 이상</span></div>
     <div class="k-w"><svg id="s02-w1" viewBox="0 0 120 110"></svg><div><b>지균풍</b><div class="k-chips"><span class="k-chip c-pgf">기압 경도력</span><span class="k-chip c-cor">전향력</span></div></div></div>
-    <div class="k-w"><svg id="s02-w2" viewBox="0 0 120 110"></svg><div><b>경도풍</b><div class="k-chips"><span class="k-chip c-pgf">기압 경도력</span><span class="k-chip c-cor">전향력</span><span class="k-chip c-cen">구심력</span></div></div></div>
+    <div class="k-w"><svg id="s02-w2" viewBox="0 0 120 110"></svg><div><b>경도풍</b><div class="k-chips"><span class="k-chip c-pgf">기압 경도력</span><span class="k-chip c-cor">전향력</span><span class="k-chip c-cen">원심력</span></div></div></div>
   </div>
 
   <div class="k-card" id="s02-c4" style="left:910px;top:640px;width:580px;height:350px" data-in="1800">
@@ -620,20 +622,46 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
   <div class="fine">교과서 102·103쪽 · 모식 그림 · 빠르게 시계 반대는 원판이 1.7배 빠르게 돎(북위 60°와 30°의 sin <i>φ</i> 비) · 구슬은 원판 밖에서 보면 일정한 속력으로 곧게 굴러간다고 가정</div>
 </section>
 
-<!-- ═══ s12 구심력 ═══ -->
-<section class="slide" id="s12" data-tile="parchment" data-title="구심력" data-notes="교과서 103쪽 그림 III-27. 공은 같은 빠르기로 원을 돈다(등속 원운동). 클릭 1 구심력(보라)은 공이 어디에 있든 늘 원의 중심을 향한다 — 지나간 자리에 흐린 화살표가 남음 → 2 속도(진회색 v)는 크기는 같지만 방향이 계속 바뀐다(늘 원의 접선 방향) — 운동 방향을 계속 바꾸어 주는 힘이 구심력 → 3 크기 v²/r: v가 같을 때 반지름이 절반이면 구심력은 2배, r이 같을 때 속력이 2배이면 4배(아래 두 칸의 화살표 길이를 v²/r로 계산). 학생 질문 대비: 원심력은요? → 원운동을 하는 물체의 운동을 설명할 때는 구심력과 원심력을 모두 고려한다. 실제 작용하는 힘인 구심력과 달리 원심력은 전향력과 같은 가상의 힘으로, 구심력과 크기가 같고 반대 방향(원운동의 바깥쪽)으로 작용한다(교과서 보충, 완자). 덧붙일 말: 바람에 작용하는 구심력은 따로 있는 힘이 아니라 기압 경도력과 전향력의 차이로 나타난다(완자) — 상층의 바람(경도풍)에서 다시 다룬다. 크기는 단위 질량의 물체 기준.">
-  <div class="hd" data-in><div class="eb"><b>2</b>대기를 움직이는 힘</div><h2>구심력</h2></div>
+<!-- ═══ s12 원심력 ═══ -->
+<section class="slide" id="s12" data-tile="parchment" data-title="원심력" data-notes="교과서 103쪽 보충, 완자 175쪽 ‘구심력과 원심력’. 원심력은 원운동을 하는 물체 내에서(물체와 함께 돌며 볼 때) 원운동의 바깥쪽으로 작용하는 힘으로, 실제로 존재하는 힘이 아니라 전향력과 같은 가상의 힘(관성력)이다. 처음 그림은 물체 밖에서 본 모습(실에 묶인 공이 일정한 빠르기로 원운동). 클릭 1 그림이 물체와 함께 돌며 본 모습으로 바뀐다 — 공은 멈춰 보이고 바닥의 눈금이 반대 방향으로 돈다. 이때 공에 바깥쪽으로 원심력(보라)이 작용한다고 본다(빈칸 바깥쪽). 클릭 2 실이 공을 중심 쪽으로 당기는 힘(회색)과 원심력의 크기가 같아 공이 멈춰 보인다 — 원심력은 함께 돌며 볼 때만 생각하는 가상의 힘이고, 물체 밖에서 본 그림에는 그리지 않는다(빈칸 가상의 힘). 클릭 3 크기 v²/r: v가 같을 때 반지름이 절반이면 원심력은 2배, r이 같을 때 속력이 2배이면 4배. 덧붙일 말: 이 수업의 바람 그림에 원심력을 그리는 것은 움직이는 공기 덩어리와 함께 움직이며 보기 때문이다 — 다음 장(구심력 vs 원심력)에서 물체 밖에서 본 모습과 비교한다. 크기는 단위 질량의 물체 기준.">
+  <div class="hd" data-in><div class="eb"><b>2</b>대기를 움직이는 힘</div><h2>원심력</h2></div>
   <div class="scn" id="s12-box" style="left:120px;top:250px;width:700px;height:740px" data-in="200" data-fx="fade"><svg id="s12-svg" viewBox="0 0 700 740"></svg></div>
   <div class="ws-card side" id="s12-card" style="left:860px;top:250px;width:940px;height:740px;display:flex;flex-direction:column;justify-content:center" data-in="350">
-    <div class="ws-row"><span class="tm term c-cen">구심력</span><span>원운동을 하는 물체의 궤적이 유지되도록<br>운동의 <span class="bk"><span class="a" data-step="1" data-fx="pop">중심</span><span class="n">1</span></span> 방향으로 물체가<br>운동하는 <span class="bk"><span class="a" data-step="2" data-fx="pop">방향</span><span class="n">2</span></span>을 지속적으로 바꾸는 힘</span></div>
-    <div class="ws-row"><span class="tm">크기</span><span>단위 질량의 물체에 작용하는 <b>구심력</b>의<br>크기는 <span class="bk" style="min-width:1.6em"><span class="a" data-step="3" data-fx="pop"><span class="tx" data-tex="\dfrac{v^2}{r}"><span class="fr"><i><span class="m">v</span>²</i><b><span class="m">r</span></b></span></span></span><span class="n">3</span></span>이다.</span></div>
-    <div class="ws-row"><span class="tm">바람</span><span><b>등압선</b>이 곡선일 때 부는 바람에도<br>이와 같은 원리의 <b>구심력</b>이 작용한다.</span></div>
+    <div class="ws-row"><span class="tm term c-cen">원심력</span><span>원운동을 하는 물체 내에서<br>원운동의 <span class="bk"><span class="a" data-step="1" data-fx="pop">바깥쪽</span><span class="n">1</span></span>으로 작용하는<br><span class="bk"><span class="a" data-step="2" data-fx="pop">가상의 힘</span><span class="n">2</span></span></span></div>
+    <div class="ws-row"><span class="tm">크기</span><span>단위 질량의 물체에 작용하는 <b>원심력</b>의<br>크기는 <span class="bk" style="min-width:1.6em"><span class="a" data-step="3" data-fx="pop"><span class="tx" data-tex="\dfrac{v^2}{r}"><span class="fr"><i><span class="m">v</span>²</i><b><span class="m">r</span></b></span></span></span><span class="n">3</span></span>이다.</span></div>
+    <div class="ws-row"><span class="tm">바람</span><span><b>등압선</b>이 곡선일 때 부는 바람에도<br><b>원심력</b>이 작용한다.</span></div>
   </div>
-  <div class="fine">교과서 그림 III-27을 움직이는 그림으로 · 공은 등속 원운동 · 아래 두 칸의 구심력 화살표 길이는 <i>v</i>²/<i>r</i>로 계산 · 모식 그림</div>
+  <div class="fine">모식 그림 · 공은 등속 원운동 · 물체와 함께 돌며 보면 공은 멈춰 보이고 바닥의 눈금이 돈다 · 아래 두 칸의 원심력 화살표 길이는 <i>v</i>²/<i>r</i>로 계산</div>
+</section>
+<!-- ═══ s12b 구심력 vs 원심력 ═══ -->
+<section class="slide" id="s12b" data-tile="light" data-title="구심력 vs 원심력" data-notes="교과서 103쪽 보충, 완자 175쪽 ‘구심력과 원심력’. 같은 원운동을 두 쪽에서 본 모습입니다. 왼쪽: 물체 밖에서 보면 공은 원을 돌며 운동 방향이 계속 바뀌고, 운동 방향을 바꾸는 힘이 원의 중심 쪽으로 작용하는 구심력이다(실제로 작용하는 힘 — 실에 묶인 공이면 실이 당기는 힘). 오른쪽: 공과 함께 돌며 보면 공은 멈춰 있는 것처럼 보이고, 구심력과 크기가 같고 반대 방향인 원심력이 작용하는 것처럼 느껴진다(실제로 존재하는 힘이 아닌 가상의 힘, 관성력). 클릭 1 방향(왼쪽 칸에 구심력, 오른쪽 칸에 구심력과 원심력 화살표) → 2 크기(오른쪽 칸의 두 화살표 아래에 같은 길이 표시) → 3 힘의 종류(원심력 화살표가 점선으로 바뀌고 왼쪽에 실선 = 실제로 작용하는 힘, 점선 = 가상의 힘) → 4 바람. 비유: 버스가 커브를 돌 때 버스 안의 사람은 몸이 바깥쪽으로 쏠리는 것을 느끼지만(원심력), 버스 밖에서 보면 몸은 원래 가던 방향으로 계속 나아가려 하고 버스가 안쪽으로 방향을 바꾸는 것이다. 이 수업의 바람 그림은 공기 덩어리와 함께 움직이며 본 것이라 원심력으로 그린다. 교과서·문제집은 구심력으로 설명하기도 하는데, 원심력은 구심력과 크기가 같고 방향만 반대라서 식(전향력 = 기압 경도력 ∓ 구심력)은 똑같다.">
+  <style>
+#s12b .tbl{left:120px;top:620px;width:1680px;background:#f5f5f7;border-radius:18px;overflow:hidden;font-size:32px;line-height:1.3;table-layout:fixed}
+#s12b .tbl th,#s12b .tbl td{padding:7px 20px;transition:background .45s}
+#s12b .tbl .tx .katex{font-size:1.1em}
+#s12b .tbl thead th{font-size:34px;font-weight:800}
+#s12b .tbl col.c0{width:220px}
+#s12b .tbl thead th.c-cpt{color:var(--cpt)}
+#s12b .tbl thead th.c-cen{color:var(--cen)}
+  </style>
+  <div class="hd" data-in><div class="eb"><b>2</b>대기를 움직이는 힘</div><h2>구심력 vs 원심력</h2></div>
+  <div class="scn" id="s12b-boxA" style="left:120px;top:250px;width:820px;height:330px" data-in="200" data-fx="fade"><svg id="s12b-A" viewBox="0 0 820 330"></svg></div>
+  <div class="scn" id="s12b-boxB" style="left:980px;top:250px;width:820px;height:330px" data-in="300" data-fx="fade"><svg id="s12b-B" viewBox="0 0 820 330"></svg></div>
+  <table class="tbl" id="s12b-tb" data-in="400" data-fx="fade">
+    <colgroup><col class="c0"><col><col></colgroup>
+    <thead><tr><th></th><th class="c-cpt">구심력</th><th class="c-cen">원심력</th></tr></thead>
+    <tbody>
+      <tr data-r="1"><th>방향</th><td><span class="v" data-step="1" data-fx="fade">원운동의 <b>중심</b> 쪽</span></td><td><span class="v" data-step="1" data-fx="fade">원운동의 <b>바깥쪽</b></span></td></tr>
+      <tr data-r="2"><th>크기</th><td><span class="v" data-step="2" data-fx="fade"><span class="tx" data-tex="\dfrac{v^2}{r}"><i>v</i>²/<i>r</i></span></span></td><td><span class="v" data-step="2" data-fx="fade"><b>구심력</b>과 같다</span></td></tr>
+      <tr data-r="3"><th>힘의 종류</th><td><span class="v" data-step="3" data-fx="fade"><b>실제로 작용하는 힘</b></span></td><td><span class="v" data-step="3" data-fx="fade"><b>전향력</b>과 같은 <b>가상의 힘</b></span></td></tr>
+      <tr data-r="4"><th>바람</th><td><span class="v" data-step="4" data-fx="fade"><b class="c-pgf">기압 경도력</b>과 <b class="c-cor">전향력</b>의 차이가<br><b class="c-cpt">구심력</b>으로 작용한다.</span></td><td><span class="v" data-step="4" data-fx="fade"><b class="c-pgf">기압 경도력</b>, <b class="c-cor">전향력</b>, <b class="c-cen">원심력</b>이<br>균형을 이룬다.</span></td></tr>
+    </tbody>
+  </table>
+  <div class="fine">모식 그림 · 공은 등속 원운동 · 두 칸은 같은 원운동을 물체 밖과 물체 안(함께 돌며)에서 본 모습</div>
 </section>
 
 <!-- ═══ s13 마찰력 ═══ -->
-<section class="slide" id="s13" data-tile="light" data-title="마찰력" data-notes="교과서 103쪽 본문·그림 III-28, 완자 176쪽. 클릭 1 해양 위의 바람: 마찰력(초록)은 바람(청록)이 부는 방향과 반대 방향으로 작용한다 → 2 같은 세기의 바람이 평야 지대와 숲이 우거진 산악 지역 위를 불면, 지표면이 거칠수록 마찰력이 크다(교과서: 일반적으로 거칠기는 해양보다 지표에서 더 크며, 지표에서는 평야 지대보다 숲이 우거진 산악 지역에서 더 크다) → 3 오른쪽 그래프: 지표면에서 높이 약 1 km까지는 마찰의 영향으로 위로 갈수록 풍속이 커진다 — 이 층이 대기 경계층(마찰층)이고, 흐름이 불규칙하게 소용돌이친다 → 4 그 위는 마찰의 영향을 거의 받지 않는 자유 대기로, 풍속이 거의 일정하고 흐름이 고르다. 덧붙일 말: 완자 — 마찰력 = kv(k: 마찰 계수, v: 풍속)로 풍속이 빠를수록 크다. 높이 올라갈수록 지표면의 영향에 의한 마찰력이 작아지므로 풍속이 대체로 빨라진다(완자). 마찰력이 영향을 미치는 높이를 마찰 고도라고 한다(교과서 날개). 대기 경계층은 일반적으로 지상 1 km 높이까지이지만 지표면의 굴곡이나 건물 등에 따라 그 높이가 달라진다(완자). 마찰력의 크기 비(1 : 2 : 3)와 높이별 풍속 곡선(1 − e^(−z/0.3 km))은 모식.">
+<section class="slide" id="s13" data-tile="parchment" data-title="마찰력" data-notes="교과서 103쪽 본문·그림 III-28, 완자 176쪽. 클릭 1 해양 위의 바람: 마찰력(초록)은 바람(청록)이 부는 방향과 반대 방향으로 작용한다 → 2 같은 세기의 바람이 평야 지대와 숲이 우거진 산악 지역 위를 불면, 지표면이 거칠수록 마찰력이 크다(교과서: 일반적으로 거칠기는 해양보다 지표에서 더 크며, 지표에서는 평야 지대보다 숲이 우거진 산악 지역에서 더 크다) → 3 오른쪽 그래프: 지표면에서 높이 약 1 km까지는 마찰의 영향으로 위로 갈수록 풍속이 커진다 — 이 층이 대기 경계층(마찰층)이고, 흐름이 불규칙하게 소용돌이친다 → 4 그 위는 마찰의 영향을 거의 받지 않는 자유 대기로, 풍속이 거의 일정하고 흐름이 고르다. 덧붙일 말: 완자 — 마찰력 = kv(k: 마찰 계수, v: 풍속)로 풍속이 빠를수록 크다. 높이 올라갈수록 지표면의 영향에 의한 마찰력이 작아지므로 풍속이 대체로 빨라진다(완자). 마찰력이 영향을 미치는 높이를 마찰 고도라고 한다(교과서 날개). 대기 경계층은 일반적으로 지상 1 km 높이까지이지만 지표면의 굴곡이나 건물 등에 따라 그 높이가 달라진다(완자). 마찰력의 크기 비(1 : 2 : 3)와 높이별 풍속 곡선(1 − e^(−z/0.3 km))은 모식.">
   <div class="hd" data-in><div class="eb"><b>2</b>대기를 움직이는 힘</div><h2>마찰력</h2></div>
   <div class="ws-card sm side" id="s13-card" style="left:120px;top:250px;width:1120px;height:428px;display:flex;flex-direction:column;justify-content:center" data-in="300">
     <div class="ws-row"><span class="tm term c-fric">마찰력</span><span>물체가 운동하는 방향과 <span class="bk"><span class="a" data-step="1" data-fx="pop">반대</span><span class="n">1</span></span> 방향으로 작용해 물체의<br>운동 속도를 감소시키는 힘</span></div>
@@ -646,13 +674,13 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
 </section>
 
 <!-- ═══ s14 스스로 확인하기 — 대기를 움직이는 힘 ═══ -->
-<section class="slide" id="s14" data-tile="parchment" data-title="스스로 확인하기 — 대기를 움직이는 힘" data-notes="교과서 103쪽 스스로 확인하기. 문제 세 개를 먼저 보여 주고 학생 답을 들은 뒤, 클릭할 때마다 예시 답안이 하나씩 나옵니다. 예시 답안은 교과서(교사용) 그대로. 지도 방안(3번): 위도에 따른 전향력과 지표의 거칠기에 따른 마찰력의 변화를 함께 고려하여 추론할 수 있도록 지도한다.">
+<section class="slide" id="s14" data-tile="light" data-title="스스로 확인하기 — 대기를 움직이는 힘" data-notes="교과서 103쪽 스스로 확인하기. 문제 세 개를 먼저 보여 주고 학생 답을 들은 뒤, 클릭할 때마다 예시 답안이 하나씩 나옵니다. 예시 답안은 교과서(교사용) 그대로. 지도 방안(3번): 위도에 따른 전향력과 지표의 거칠기에 따른 마찰력의 변화를 함께 고려하여 추론할 수 있도록 지도한다.">
   <div class="hd" data-in><div class="eb"><b>2</b>대기를 움직이는 힘</div><h2>스스로 확인하기 — 대기를 움직이는 힘</h2></div>
   <div class="sc-list" id="s14-list">
     <div class="sc-q" data-in="300"><span class="no">1</span><span><b>정역학 평형</b> 상태에서 대기의 <b>연직 운동</b>을 설명해 보자.</span>
       <div class="sc-a" data-step="1" data-fx="up"><span class="h">예시 답안</span><b>정역학 평형</b> 상태에서는 <b>연직 기압 경도력</b>과 <b>중력</b>의 크기가 같기 때문에 대기의 <b>연직 운동</b> 상태가 변하지 않는다.</div></div>
-    <div class="sc-q" data-in="450"><span class="no">2</span><span>대기를 움직이는 힘인 <b>기압 경도력</b>, <b>전향력</b>, <b>구심력</b>, <b>마찰력</b>을 설명해 보자.</span>
-      <div class="sc-a" data-step="2" data-fx="up"><span class="h">예시 답안</span><b>기압 경도력</b>은 두 지점 사이의 <b>기압 차</b>에 의해 발생하는 힘으로, 기압이 높은 곳에서 낮은 곳으로 작용한다. <b>전향력</b>은 <b>지구 자전</b>에 의해 발생하는 힘으로, 북(남)반구에서는 물체의 운동 방향의 오른쪽(왼쪽) 직각 방향으로 작용한다. <b>구심력</b>은 원운동을 하는 물체의 궤적이 유지되도록 물체의 운동 방향을 바꾸는 힘으로, 운동의 중심 방향으로 작용한다. <b>마찰력</b>은 물체의 운동 속도를 감소시키는 힘으로, 물체의 운동 방향과 반대 방향으로 작용한다.</div></div>
+    <div class="sc-q" data-in="450"><span class="no">2</span><span>대기를 움직이는 힘인 <b>기압 경도력</b>, <b>전향력</b>, <b>원심력</b>, <b>마찰력</b>을 설명해 보자.</span>
+      <div class="sc-a" data-step="2" data-fx="up"><span class="h">예시 답안</span><b>기압 경도력</b>은 두 지점 사이의 <b>기압 차</b>에 의해 발생하는 힘으로, 기압이 높은 곳에서 낮은 곳으로 작용한다. <b>전향력</b>은 <b>지구 자전</b>에 의해 발생하는 힘으로, 북(남)반구에서는 물체의 운동 방향의 오른쪽(왼쪽) 직각 방향으로 작용한다. <b>원심력</b>은 실제로 존재하는 힘이 아니라 <b>전향력</b>과 같은 <b>가상의 힘</b>으로, <b>구심력</b>과 크기가 같고 원운동의 바깥쪽으로 작용한다. <b>마찰력</b>은 물체의 운동 속도를 감소시키는 힘으로, 물체의 운동 방향과 반대 방향으로 작용한다.</div></div>
     <div class="sc-q" data-in="600"><span class="no">3</span><span><span class="cr">| 창의력 더하기 |</span><b>기압 경도력</b>이 일정할 때 적도 해양에서 고위도 육지로 갈수록 바람의 방향과 속력이 어떻게 달라지는지 대기를 움직이는 힘과 관련지어 설명해 보자.</span>
       <div class="sc-a" data-step="3" data-fx="up"><span class="h">예시 답안</span><b>기압 경도력</b>이 일정할 때 적도 해양에서 고위도 육지로 갈수록 <b>전향력</b>이 크게 작용하므로 북반구에서는 <b>풍향</b>이 공기 이동 방향의 오른쪽으로, 남반구에서는 왼쪽으로 바뀔 것이다. <b>마찰력</b>은 해양보다 육지에서 더 크게 작용하므로 적도 해양에서 고위도 육지로 갈수록 <b>풍속</b>이 줄어들 것이다.</div></div>
   </div>
@@ -660,7 +688,7 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
 </section>
 
 <!-- ═══ s14a 여러 가지 바람 ═══ -->
-<section class="slide" id="s14a" data-tile="light" data-title="여러 가지 바람" data-notes="이제부터 배울 바람을 한눈에 정리한 표입니다(완자 ‘상층과 지상의 바람 비교’ 표를 그림으로). 배울 순서: 상층의 바람(지균풍 → 경도풍) → 지상의 바람(지상풍). 학습 목표(교과서 104쪽): 지균풍, 경도풍, 지상풍의 발생 원리를 설명할 수 있다. 여러 가지 바람과 관련된 힘의 작용을 설명할 수 있다. 처음: 표의 머리만 — 위아래 두 줄은 높이(상층: 지표면으로부터 높이 약 1 km 이상, 지상: 높이 약 1 km까지), 좌우 두 칸은 등압선 모양(직선 / 원형이거나 곡선). 클릭 1 지균풍: 상층에서 등압선이 직선일 때, 기압 경도력과 전향력이 평형을 이루어 바람이 등압선에 나란하게 분다(북반구에서는 바람을 등지고 서면 저기압이 왼쪽). 클릭 2 경도풍: 상층에서 등압선이 원형이거나 곡선일 때, 기압 경도력과 전향력뿐만 아니라 구심력의 영향을 받는다. 북반구의 저기압 둘레에서는 시계 반대 방향(고기압 둘레의 시계 방향은 경도풍 장에서). 클릭 3 지상풍(두 칸): 지상에서는 지표면의 마찰이 더해져 바람이 등압선을 비스듬하게 가로질러 저기압 쪽으로 분다. 등압선이 원형이거나 곡선이면 구심력의 영향도 받아, 저기압으로 시계 반대 방향으로 불어 들어간다. 학생에게 던질 질문: 같은 기압 배치인데 높이에 따라 바람이 왜 다를까? → 위 칸과 아래 칸의 힘을 비교하면 달라진 것은 마찰력 하나뿐(지표면의 마찰). 이 질문을 품은 채 다음 장의 구름과 깃발 이야기로 이어 갑니다. 그림: 북반구, 위에서 본 모식 그림(네 그림은 같은 크기·같은 축척). 흐름 줄의 빠르기와 바람 화살표의 길이는 뒤의 장들과 같은 비율 — 지균풍 3, 저기압성 경도풍 2(경도풍 장), 지상풍은 그 위 상층 바람의 cos 30°배(약 0.87배, 지상풍 장) — 그래서 지상의 바람이 상층의 바람보다 약하게 보입니다(완자: 지상에서 부는 바람은 상층에서 부는 바람에 비해 풍속이 약하다).">
+<section class="slide" id="s14a" data-tile="parchment" data-title="여러 가지 바람" data-notes="이제부터 배울 바람을 한눈에 정리한 표입니다(완자 ‘상층과 지상의 바람 비교’ 표를 그림으로). 배울 순서: 상층의 바람(지균풍 → 경도풍) → 지상의 바람(지상풍). 학습 목표(교과서 104쪽): 지균풍, 경도풍, 지상풍의 발생 원리를 설명할 수 있다. 여러 가지 바람과 관련된 힘의 작용을 설명할 수 있다. 처음: 표의 머리만 — 위아래 두 줄은 높이(상층: 지표면으로부터 높이 약 1 km 이상, 지상: 높이 약 1 km까지), 좌우 두 칸은 등압선 모양(직선 / 원형이거나 곡선). 클릭 1 지균풍: 상층에서 등압선이 직선일 때, 기압 경도력과 전향력이 평형을 이루어 바람이 등압선에 나란하게 분다(북반구에서는 바람을 등지고 서면 저기압이 왼쪽). 클릭 2 경도풍: 상층에서 등압선이 원형이거나 곡선일 때, 기압 경도력과 전향력뿐만 아니라 원심력의 영향을 받는다. 북반구의 저기압 둘레에서는 시계 반대 방향(고기압 둘레의 시계 방향은 경도풍 장에서). 클릭 3 지상풍(두 칸): 지상에서는 지표면의 마찰이 더해져 바람이 등압선을 비스듬하게 가로질러 저기압 쪽으로 분다. 등압선이 원형이거나 곡선이면 원심력의 영향도 받아, 저기압으로 시계 반대 방향으로 불어 들어간다. 학생에게 던질 질문: 같은 기압 배치인데 높이에 따라 바람이 왜 다를까? → 위 칸과 아래 칸의 힘을 비교하면 달라진 것은 마찰력 하나뿐(지표면의 마찰). 이 질문을 품은 채 다음 장의 구름과 깃발 이야기로 이어 갑니다. 그림: 북반구, 위에서 본 모식 그림(네 그림은 같은 크기·같은 축척). 흐름 줄의 빠르기와 바람 화살표의 길이는 뒤의 장들과 같은 비율 — 지균풍 3, 저기압성 경도풍 2(경도풍 장), 지상풍은 그 위 상층 바람의 cos 30°배(약 0.87배, 지상풍 장) — 그래서 지상의 바람이 상층의 바람보다 약하게 보입니다(완자: 지상에서 부는 바람은 상층에서 부는 바람에 비해 풍속이 약하다).">
   <div class="hd" data-in><div class="eb"><b>3</b>상층의 바람</div><h2>여러 가지 바람</h2></div>
   <div class="s14a-ch" style="left:410px;top:250px;width:685px;height:72px" data-in="150" data-fx="fade"><svg viewBox="0 0 48 40" aria-hidden="true"><path d="M4 8H44M4 20H44M4 32H44" fill="none" stroke="#8e8e93" stroke-width="3"/></svg><span>등압선이 직선일 때</span></div>
   <div class="s14a-ch" style="left:1115px;top:250px;width:685px;height:72px" data-in="250" data-fx="fade"><svg viewBox="0 0 48 40" aria-hidden="true"><g fill="none" stroke="#8e8e93" stroke-width="3"><circle cx="24" cy="20" r="5"/><circle cx="24" cy="20" r="11.5"/><circle cx="24" cy="20" r="18"/></g></svg><span>등압선이 원형이거나 곡선일 때</span></div>
@@ -679,7 +707,7 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
     <div class="s14a-tx">
       <div class="s14a-nm" data-step="2" data-fx="rise">경도풍</div>
       <div class="s14a-lb" data-step="2" data-fx="fade" data-delay="500">작용하는 힘</div>
-      <div class="s14a-fs"><span class="s14a-f s14a-pgf" data-step="2" data-fx="pop" data-delay="650">기압 경도력</span><span class="s14a-f s14a-cor" data-step="2" data-fx="pop" data-delay="800">전향력</span><span class="s14a-f s14a-cen" data-step="2" data-fx="pop" data-delay="950">구심력</span></div>
+      <div class="s14a-fs"><span class="s14a-f s14a-pgf" data-step="2" data-fx="pop" data-delay="650">기압 경도력</span><span class="s14a-f s14a-cor" data-step="2" data-fx="pop" data-delay="800">전향력</span><span class="s14a-f s14a-cen" data-step="2" data-fx="pop" data-delay="950">원심력</span></div>
     </div>
   </div>
   <div class="s14a-cell" style="left:410px;top:676px;width:685px;height:314px" data-in="500" data-fx="fade">
@@ -695,14 +723,14 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
     <div class="s14a-tx">
       <div class="s14a-nm" data-step="3" data-fx="rise" data-delay="300">지상풍</div>
       <div class="s14a-lb" data-step="3" data-fx="fade" data-delay="800">작용하는 힘</div>
-      <div class="s14a-fs"><span class="s14a-f s14a-pgf" data-step="3" data-fx="pop" data-delay="950">기압 경도력</span><span class="s14a-f s14a-cor" data-step="3" data-fx="pop" data-delay="1100">전향력</span><span class="s14a-f s14a-fric" data-step="3" data-fx="pop" data-delay="1250">마찰력</span><span class="s14a-f s14a-cen" data-step="3" data-fx="pop" data-delay="1400">구심력</span></div>
+      <div class="s14a-fs"><span class="s14a-f s14a-pgf" data-step="3" data-fx="pop" data-delay="950">기압 경도력</span><span class="s14a-f s14a-cor" data-step="3" data-fx="pop" data-delay="1100">전향력</span><span class="s14a-f s14a-fric" data-step="3" data-fx="pop" data-delay="1250">마찰력</span><span class="s14a-f s14a-cen" data-step="3" data-fx="pop" data-delay="1400">원심력</span></div>
     </div>
   </div>
   <div class="fine">모식 그림 · 북반구 · 지상풍의 경각은 30°로 그림</div>
 </section>
 
 <!-- ═══ s15 구름과 깃발은 왜 다른 쪽으로 움직일까? ═══ -->
-<section class="slide" id="s15" data-tile="parchment" data-title="구름과 깃발은 왜 다른 쪽으로 움직일까?" data-notes="교과서 104쪽 단원 도입 질문. 장면: 높은 하늘의 구름은 오른쪽(동쪽)으로 천천히 흘러가고, 땅 가까이의 깃발은 오른쪽 뒤(북동쪽)로 날립니다. 먼저 학생에게 무엇이 구름과 깃발을 움직이는지 묻습니다. 클릭 1 구름이 움직이는 방향(위 화살표)을 깃대를 따라 땅으로 내려 옮기고(점선), 깃발이 날리는 방향과 같은 땅 위에서 비교 — 수평 방향이 서로 다르다. 클릭 2 예시 답안. 지도 방안(교과서 104쪽): 공기는 눈에 보이지 않으므로 공기의 움직임을 직접적으로 관찰할 수는 없지만 구름이 이동하거나 깃발이 날리는 것을 통해 공기의 운동을 추정할 수 있다. 구름이나 깃발의 운동 방향과 바람의 방향이 어떤 관계가 있는지 생각해 보도록 지도한다. 예고: 오늘은 높은 곳에서 부는 바람(지균풍·경도풍)과 지상에서 부는 바람(지상풍)이 어떤 힘으로 생기는지 배운다. 그림의 두 방향 차이(약 40°)는 지상에서 마찰 때문에 바람이 등압선을 비스듬히 가로질러 저기압 쪽으로 불기 때문 — 지상풍에서 다룸(지금은 말하지 않아도 됨). 구름 높이, 깃대·깃발 크기는 모식.">
+<section class="slide" id="s15" data-tile="light" data-title="구름과 깃발은 왜 다른 쪽으로 움직일까?" data-notes="교과서 104쪽 단원 도입 질문. 장면: 높은 하늘의 구름은 오른쪽(동쪽)으로 천천히 흘러가고, 땅 가까이의 깃발은 오른쪽 뒤(북동쪽)로 날립니다. 먼저 학생에게 무엇이 구름과 깃발을 움직이는지 묻습니다. 클릭 1 구름이 움직이는 방향(위 화살표)을 깃대를 따라 땅으로 내려 옮기고(점선), 깃발이 날리는 방향과 같은 땅 위에서 비교 — 수평 방향이 서로 다르다. 클릭 2 예시 답안. 지도 방안(교과서 104쪽): 공기는 눈에 보이지 않으므로 공기의 움직임을 직접적으로 관찰할 수는 없지만 구름이 이동하거나 깃발이 날리는 것을 통해 공기의 운동을 추정할 수 있다. 구름이나 깃발의 운동 방향과 바람의 방향이 어떤 관계가 있는지 생각해 보도록 지도한다. 예고: 오늘은 높은 곳에서 부는 바람(지균풍·경도풍)과 지상에서 부는 바람(지상풍)이 어떤 힘으로 생기는지 배운다. 그림의 두 방향 차이(약 40°)는 지상에서 마찰 때문에 바람이 등압선을 비스듬히 가로질러 저기압 쪽으로 불기 때문 — 지상풍에서 다룸(지금은 말하지 않아도 됨). 구름 높이, 깃대·깃발 크기는 모식.">
   <div class="hd" data-in><div class="eb"><b>3</b>상층의 바람</div><h2>구름과 깃발은 왜 다른 쪽으로 움직일까?</h2></div>
   <div class="scn" style="left:120px;top:250px;width:1020px;height:740px" data-in="200" data-fx="fade"><svg id="s15-svg" viewBox="0 0 1020 740"></svg></div>
   <div class="ask" id="s15-q" style="left:1180px;top:250px;width:620px;height:350px" data-in="350">
@@ -715,7 +743,7 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
 </section>
 
 <!-- ═══ s16 지균풍 ═══ -->
-<section class="slide" id="s16" data-tile="light" data-title="지균풍" data-notes="교과서 104쪽 그림 III-29(북반구, 위에서 본 그림 — 위쪽이 기압이 낮은 840 hPa). 클릭 1 높이 약 1 km(오른쪽 띠의 경계선) → 2 그 위 상층은 지표면의 영향을 거의 받지 않아 마찰력이 무시할 수 있을 정도로 작다(띠: 대기 경계층에서만 초록 마찰력). 3 정지해 있던 공기에 기압 경도력(빨강)이 작용해 기압이 낮은 쪽으로 움직이기 시작하고, 움직이자마자 전향력(파랑)이 운동 방향의 오른쪽 직각으로 작용해 오른쪽으로 휘어짐. 4 기압 경도력이 계속 작용해 풍속이 커지면 전향력도 커져(파란 화살표가 길어짐) 더 휘고, 결국 두 힘이 크기가 같고 방향이 반대(= 표시) — 평형. 5 이때 바람은 등압선에 나란하게 분다 = 지균풍. 남긴 덩어리는 지나온 순간의 모습(빨강 길이는 늘 같음, 파랑 길이 ∝ 풍속). 학생 질문 대비: 전향력이 계속 작용하는데 왜 바람이 더 휘지 않나요? → 기압 경도력과 전향력이 평형을 이루어 합력이 0이므로 속도(풍향·풍속)가 변하지 않고 일정하게 분다. 북반구에서는 지균풍 방향의 오른쪽에 고기압, 왼쪽에 저기압(완자). 지도 방안(교과서): 지균풍의 발생 원리는 ‘II. 해수의 운동과 순환’ 59쪽의 지형류 발생 원리와 비슷하므로 관련지어 이해하게 한다. 지균풍(땅 地, 고를 均, 바람 風). 그림은 모식: 실제로는 지균풍 방향을 중심으로 출렁이다가(관성 진동) 나란해지지만, 교과서 그림처럼 한 번에 휘어 나란해지게 단순화함.">
+<section class="slide" id="s16" data-tile="parchment" data-title="지균풍" data-notes="교과서 104쪽 그림 III-29(북반구, 위에서 본 그림 — 위쪽이 기압이 낮은 840 hPa). 클릭 1 높이 약 1 km(오른쪽 띠의 경계선) → 2 그 위 상층은 지표면의 영향을 거의 받지 않아 마찰력이 무시할 수 있을 정도로 작다(띠: 대기 경계층에서만 초록 마찰력). 3 정지해 있던 공기에 기압 경도력(빨강)이 작용해 기압이 낮은 쪽으로 움직이기 시작하고, 움직이자마자 전향력(파랑)이 운동 방향의 오른쪽 직각으로 작용해 오른쪽으로 휘어짐. 4 기압 경도력이 계속 작용해 풍속이 커지면 전향력도 커져(파란 화살표가 길어짐) 더 휘고, 결국 두 힘이 크기가 같고 방향이 반대(= 표시) — 평형. 5 이때 바람은 등압선에 나란하게 분다 = 지균풍. 남긴 덩어리는 지나온 순간의 모습(빨강 길이는 늘 같음, 파랑 길이 ∝ 풍속). 학생 질문 대비: 전향력이 계속 작용하는데 왜 바람이 더 휘지 않나요? → 기압 경도력과 전향력이 평형을 이루어 합력이 0이므로 속도(풍향·풍속)가 변하지 않고 일정하게 분다. 북반구에서는 지균풍 방향의 오른쪽에 고기압, 왼쪽에 저기압(완자). 지도 방안(교과서): 지균풍의 발생 원리는 ‘II. 해수의 운동과 순환’ 59쪽의 지형류 발생 원리와 비슷하므로 관련지어 이해하게 한다. 지균풍(땅 地, 고를 均, 바람 風). 그림은 모식: 실제로는 지균풍 방향을 중심으로 출렁이다가(관성 진동) 나란해지지만, 교과서 그림처럼 한 번에 휘어 나란해지게 단순화함.">
   <div class="hd" data-in><div class="eb"><b>3</b>상층의 바람</div><h2>지균풍</h2></div>
   <div class="ws-card sm side" id="s16-card" style="left:120px;top:250px;width:1680px;height:372px;display:flex;flex-direction:column;justify-content:center" data-in="250">
     <div class="ws-row"><span class="tm">상층</span><span>지표면으로부터 높이 약 <span class="bk"><span class="a" data-step="1" data-fx="pop">1 km</span><span class="n">1</span></span> 이상의 <b>상층</b> 대기는 지표면의 영향을 거의 받지 않아<br><span class="bk"><span class="a" data-step="2" data-fx="pop">마찰력</span><span class="n">2</span></span>이 무시할 수 있을 정도로 작다.</span></div>
@@ -728,7 +756,7 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
 </section>
 
 <!-- ═══ s17 지균풍의 풍속 ═══ -->
-<section class="slide" id="s17" data-tile="parchment" data-title="지균풍의 풍속" data-notes="조작: 아래 막대 두 개 — 위도 φ(20~70°), 등압선 간격 ΔL(100~600 km). 등압선 사이의 기압 차 ΔP는 4 hPa로 고정. 기압 경도력(빨강)과 전향력(파랑)은 늘 같은 길이(평형), 길이는 ΔP/ΔL에 비례. 바람 화살표와 흐름 줄(청록)의 길이·빠르기는 풍속에 비례. 오른쪽 아래 식 카드는 지금 값을 넣은 계산. 클릭 1 위도는 35°에 두고 등압선 간격을 500 → 150 km로 좁힘: 기압 경도력이 커지고(두 힘 모두 길어짐) 풍속이 빨라짐 → 클수록. 클릭 2 등압선 간격은 그대로 두고 위도를 70° → 20°로 낮춤: 두 힘의 길이는 그대로인데 바람만 빨라짐(같은 풍속에 대한 전향력 2vΩsinφ가 저위도에서 작으므로, 같은 기압 경도력과 평형을 이루려면 풍속이 커야 함) → 낮을수록. 확인 값: 35°·300 km ≈ 16 m/s, 20°·100 km ≈ 80 m/s, 70°·600 km ≈ 4.9 m/s. 식 유도(교과서): 단위 질량에 작용하는 기압 경도력 (1/ρ)(ΔP/ΔL) = 전향력 2vΩsinφ. 공기 밀도는 상층(약 850 hPa 높이) 1.0 kg/m³로 계산. 교과서 밖(묻는 학생에게만): 적도 부근에서는 sinφ가 0에 가까워 전향력이 거의 없으므로 지균풍 식을 쓰기 어렵다. 중위도 상층의 제트류는 풍속이 수십 m/s에 이른다.">
+<section class="slide" id="s17" data-tile="light" data-title="지균풍의 풍속" data-notes="조작: 아래 막대 두 개 — 위도 φ(20~70°), 등압선 간격 ΔL(100~600 km). 등압선 사이의 기압 차 ΔP는 4 hPa로 고정. 기압 경도력(빨강)과 전향력(파랑)은 늘 같은 길이(평형), 길이는 ΔP/ΔL에 비례. 바람 화살표와 흐름 줄(청록)의 길이·빠르기는 풍속에 비례. 오른쪽 아래 식 카드는 지금 값을 넣은 계산. 클릭 1 위도는 35°에 두고 등압선 간격을 500 → 150 km로 좁힘: 기압 경도력이 커지고(두 힘 모두 길어짐) 풍속이 빨라짐 → 클수록. 클릭 2 등압선 간격은 그대로 두고 위도를 70° → 20°로 낮춤: 두 힘의 길이는 그대로인데 바람만 빨라짐(같은 풍속에 대한 전향력 2vΩsinφ가 저위도에서 작으므로, 같은 기압 경도력과 평형을 이루려면 풍속이 커야 함) → 낮을수록. 확인 값: 35°·300 km ≈ 16 m/s, 20°·100 km ≈ 80 m/s, 70°·600 km ≈ 4.9 m/s. 식 유도(교과서): 단위 질량에 작용하는 기압 경도력 (1/ρ)(ΔP/ΔL) = 전향력 2vΩsinφ. 공기 밀도는 상층(약 850 hPa 높이) 1.0 kg/m³로 계산. 교과서 밖(묻는 학생에게만): 적도 부근에서는 sinφ가 0에 가까워 전향력이 거의 없으므로 지균풍 식을 쓰기 어렵다. 중위도 상층의 제트류는 풍속이 수십 m/s에 이른다.">
   <div class="hd" data-in><div class="eb"><b>3</b>상층의 바람</div><h2>지균풍의 풍속</h2></div>
   <div class="scn" id="s17-box" style="left:120px;top:250px;width:920px;height:600px" data-in="200" data-fx="fade"><svg id="s17-svg" viewBox="0 0 920 600"></svg></div>
   <div class="s17-calc" id="s17-calc" data-in="500" data-fx="fade"><span class="tx" id="s17-c1" data-tex="v=\dfrac{1}{2\times 1.0\times 7.29\times 10^{-5}\times\sin 35^\circ}">v = 1 ÷ (2 × 1.0 × 7.29×10⁻⁵ × sin 35°)</span><span class="tx" id="s17-c2" data-tex="\times\dfrac{400\ \mathrm{Pa}}{300\,000\ \mathrm{m}}\approx 16\ \mathrm{m/s}">× 400 Pa ÷ 300 000 m ≈ 16 m/s</span></div>
@@ -749,23 +777,23 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
 </section>
 
 <!-- ═══ s18 경도풍 ═══ -->
-<section class="slide" id="s18" data-tile="light" data-title="경도풍" data-notes="교과서 105쪽 그림 III-30(북반구, 위에서 본 그림). 화살표 빨강 = 기압 경도력, 파랑 = 전향력, 보라 = 구심력, 청록 = 경도풍. 클릭 1 두 칸의 공기 덩어리에 기압 경도력과 전향력이 반대 방향으로 작용 — 작은 쪽 화살표를 큰 쪽 화살표 끝에 맞대면 남는 부분이 구심력(보라, 중심 방향). 저기압: 중심을 향하는 기압 경도력이 바깥쪽을 향하는 전향력보다 커서 그 차이가 구심력. 고기압: 중심을 향하는 전향력이 바깥쪽을 향하는 기압 경도력보다 커서 그 차이가 구심력. 아래 식(교과서 날개): 저기압 전향력 = 기압 경도력 − 구심력, 고기압 전향력 = 기압 경도력 + 구심력. 클릭 2 저기압 둘레는 시계 반대 방향 → 3 고기압 둘레는 시계 방향(점선이 흐르는 방향 = 바람 방향, 흐르는 빠르기는 풍속 비 2 : 4). 클릭 4 전향력의 크기는 풍속에 비례하므로, 기압 경도력이 같을 때 전향력이 더 큰 고기압성 경도풍이 저기압성 경도풍보다 빠르다(막대: 저기압성 경도풍 < 지균풍 < 고기압성 경도풍). 형성 과정(교과서 105쪽): 정지해 있던 공기에 기압 경도력이 작용 → 중심 쪽으로 움직이기 시작 → 전향력이 오른쪽 직각으로 작용해 오른쪽으로 휨 → 풍속이 커져 등압선에 나란하게 분다. 학생 질문 대비: 구심력은 어디서 오나요? → 따로 있는 힘이 아니라 기압 경도력과 전향력의 차이(합력)가 원운동을 유지하게 하는 구심력 역할을 한다. 원심력은 원운동을 하는 물체와 함께 도는 관찰자가 느끼는 가상의 힘(교과서 103쪽 보충). 경도풍(기울 傾, 단위 度, 바람 風). 모식: 기압 경도력 3일 때 저기압 전향력 2·구심력 1, 고기압 전향력 4·구심력 1 — 실제 중위도에서 구심력은 기압 경도력의 1/10 남짓이라 그림에서는 약 1/3로 키움. 풍속 비 2 : 3 : 4와 두 칸의 같은 반지름도 모식.">
+<section class="slide" id="s18" data-tile="parchment" data-title="경도풍" data-notes="교과서 105쪽 그림 III-30(북반구, 위에서 본 그림). 화살표 빨강 = 기압 경도력, 파랑 = 전향력, 보라 = 원심력, 청록 = 경도풍. 그림의 힘은 공기 덩어리와 함께 움직이며 본 것이다(원심력은 그렇게 볼 때 생각하는 가상의 힘 — 구심력 vs 원심력 장). 클릭 1 두 칸의 공기 덩어리에 기압 경도력, 전향력, 원심력이 작용한다. 원심력(보라)은 늘 원의 바깥쪽을 향한다. 바깥쪽을 향하는 두 힘의 흐린 복사본을 중심 쪽 화살표 옆에 이어 붙이면 중심을 향하는 한 힘과 길이가 같아 세 힘이 균형을 이룬다. 저기압: 바깥쪽 전향력 + 원심력 = 중심 쪽 기압 경도력. 고기압: 바깥쪽 기압 경도력 + 원심력 = 중심 쪽 전향력. 아래 식: 저기압 전향력 = 기압 경도력 − 원심력, 고기압 전향력 = 기압 경도력 + 원심력(교과서 날개는 같은 식을 구심력으로 씀 — 원심력은 구심력과 크기가 같고 방향만 반대). 클릭 2 저기압 둘레는 시계 반대 방향 → 3 고기압 둘레는 시계 방향(점선이 흐르는 방향 = 바람 방향, 흐르는 빠르기는 풍속 비 2 : 4). 클릭 4 전향력의 크기는 풍속에 비례하므로, 기압 경도력이 같을 때 전향력이 더 큰 고기압성 경도풍이 저기압성 경도풍보다 빠르다(막대: 저기압성 경도풍 < 지균풍 < 고기압성 경도풍). 형성 과정(교과서 105쪽): 정지해 있던 공기에 기압 경도력이 작용 → 중심 쪽으로 움직이기 시작 → 전향력이 오른쪽 직각으로 작용해 오른쪽으로 휨 → 풍속이 커져 등압선에 나란하게 분다. 학생 질문 대비: 교과서처럼 구심력으로 설명하면? → 물체 밖에서 보면 기압 경도력과 전향력의 차이(합력)가 원운동을 유지하게 하는 구심력 역할을 한다. 경도풍(기울 傾, 단위 度, 바람 風). 모식: 기압 경도력 3일 때 저기압 전향력 2·원심력 1, 고기압 전향력 4·원심력 1 — 실제 중위도에서 원심력은 기압 경도력의 1/10 남짓이라 그림에서는 약 1/3로 키움. 풍속 비 2 : 3 : 4와 두 칸의 같은 반지름도 모식.">
   <div class="hd" data-in><div class="eb"><b>3</b>상층의 바람</div><h2>경도풍</h2></div>
   <div class="scn" style="left:120px;top:250px;width:460px;height:460px" data-in="200" data-fx="fade"><svg id="s18-lo" viewBox="0 0 460 460"></svg></div>
   <div class="scn" style="left:620px;top:250px;width:460px;height:460px" data-in="250" data-fx="fade"><svg id="s18-hi" viewBox="0 0 460 460"></svg></div>
-  <div class="s18-cap" id="s18-capL" style="left:120px" data-step="1" data-fx="fade" data-delay="2200"><b>저기압</b><span><span class="c-cor">전향력</span> = <span class="c-pgf">기압 경도력</span> − <span class="c-cen">구심력</span></span></div>
-  <div class="s18-cap" id="s18-capH" style="left:620px" data-step="1" data-fx="fade" data-delay="4200"><b>고기압</b><span><span class="c-cor">전향력</span> = <span class="c-pgf">기압 경도력</span> + <span class="c-cen">구심력</span></span></div>
+  <div class="s18-cap" id="s18-capL" style="left:120px" data-step="1" data-fx="fade" data-delay="2200"><b>저기압</b><span><span class="c-cor">전향력</span> = <span class="c-pgf">기압 경도력</span> − <span class="c-cen">원심력</span></span></div>
+  <div class="s18-cap" id="s18-capH" style="left:620px" data-step="1" data-fx="fade" data-delay="4200"><b>고기압</b><span><span class="c-cor">전향력</span> = <span class="c-pgf">기압 경도력</span> + <span class="c-cen">원심력</span></span></div>
   <div class="scn" id="s18-barbox" style="left:120px;top:850px;width:960px;height:140px" data-step="4" data-fx="fade"><svg id="s18-bar" viewBox="0 0 960 140"></svg></div>
   <div class="ws-card sm st" id="s18-card" style="left:1120px;top:250px;width:680px;height:740px;display:flex;flex-direction:column;justify-content:center" data-in="300">
-    <div class="ws-row"><span class="tm term" style="color:var(--wind)">경도풍</span><span><b>상층</b>에서 <b>등압선</b>이 원형이거나 곡선일 때<br><span class="c-pgf">기압 경도력</span>, <span class="c-cor">전향력</span>, <span class="bk"><span class="a" data-step="1" data-fx="pop">구심력</span><span class="n">1</span></span>이<br>균형을 이루며 부는 바람</span></div>
+    <div class="ws-row"><span class="tm term" style="color:var(--wind)">경도풍</span><span><b>상층</b>에서 <b>등압선</b>이 원형이거나 곡선일 때<br><span class="c-pgf">기압 경도력</span>, <span class="c-cor">전향력</span>, <span class="bk"><span class="a" data-step="1" data-fx="pop">원심력</span><span class="n">1</span></span>이<br>균형을 이루며 부는 바람</span></div>
     <div class="ws-row"><span class="tm">풍향</span><span>북반구에서 <b>경도풍</b>은 중심부가 <b>저기압</b>일 때<br><span class="bk"><span class="a" data-step="2" data-fx="pop">시계 반대</span><span class="n">2</span></span> 방향, <b>고기압</b>일 때<br><span class="bk"><span class="a" data-step="3" data-fx="pop">시계</span><span class="n">3</span></span> 방향으로 분다.</span></div>
     <div class="ws-row"><span class="tm">풍속</span><span><b>기압 경도력</b>이 일정할 때 <b>고기압</b> 부근의<br><b>경도풍</b>은 <b>저기압</b> 부근의 <b>경도풍</b>보다<br><b>풍속</b>이 <span class="bk"><span class="a" data-step="4" data-fx="pop">빠르다</span><span class="n">4</span></span>.</span></div>
   </div>
-  <div class="fine">교과서 그림 III-30 · 북반구, 위에서 본 모식 그림 · 구심력을 기압 경도력의 약 1/3로 키워 그림(실제로는 1/10 남짓) · 두 칸의 반지름은 같게 그림</div>
+  <div class="fine">교과서 그림 III-30 · 북반구, 위에서 본 모식 그림 · 원심력을 기압 경도력의 약 1/3로 키워 그림(실제로는 1/10 남짓) · 두 칸의 반지름은 같게 그림</div>
 </section>
 
 <!-- ═══ s18a 경도풍의 풍속 ═══ -->
-<section class="slide" id="s18a" data-tile="parchment" data-title="경도풍의 풍속" data-notes="교과서 105쪽 본문(전향력의 크기는 풍속에 비례하므로 …)과 날개 ‘경도풍에 작용하는 힘의 관계’, 완자 180쪽 ‘상층에서 부는 풍속의 크기’·‘지균풍과 경도풍의 풍속 비교’. 위 그림의 막대는 힘의 크기만 나타냅니다(방향은 앞 장 그림 — 저기압에서는 기압 경도력이 중심 쪽·전향력이 바깥쪽, 고기압에서는 전향력이 중심 쪽·기압 경도력이 바깥쪽). 클릭 1 세 바람의 기압 경도력(빨강)을 같은 크기(3칸)로 둔다 — 왼쪽 위 ‘기압 차와 등압선 간격이 같을 때’: 기압 경도력 = (1/ρ)(ΔP/ΔL)이므로 기압 차 ΔP와 등압선 간격 ΔL이 같으면(같은 높이라 공기 밀도 ρ도 같다고 봄) 기압 경도력이 같다. 그 조건에서 비교한다. 클릭 2 구심력(보라)은 늘 원의 중심을 향한다. 저기압성 경도풍은 중심을 향하는 기압 경도력에서 구심력만큼이 빠진 크기의 전향력이 바깥쪽으로 작용(전향력 = 기압 경도력 − 구심력, 2칸), 지균풍은 등압선이 직선이라 구심력이 없어 전향력 = 기압 경도력(3칸), 고기압성 경도풍은 바깥쪽을 향하는 기압 경도력에 구심력만큼을 더한 크기의 전향력이 중심 쪽으로 작용(전향력 = 기압 경도력 + 구심력, 4칸). 클릭 3 전향력 C = 2vΩsinφ에서 2Ωsinφ는 위도가 정해지면 일정한 값이므로(교과서 103쪽 보충, 코리올리 인자) 같은 위도에서는 전향력의 크기가 풍속에 비례한다 → 빈칸 1. 클릭 4 그래서 전향력이 큰 고기압성 경도풍이 저기압성 경도풍보다 빠르다 → 빈칸 2, 바람 화살표(청록)는 전향력 막대와 같은 비율 2 : 3 : 4. 클릭 5 풍속의 크기 순서 → 빈칸 3. 주의: 구심력(v²/r)에도 풍속이 들어 있으므로 ‘풍속이 들어 있는 힘은 전향력뿐’이라고 말하지 않습니다. 결론은 구심력이 중심을 향하므로 저기압에서는 빠지고(−) 고기압에서는 더해진다(+)는 것만으로 정해집니다. 학생 질문 대비: 고기압 바람이 더 빠르다면 왜 태풍(저기압)의 바람이 훨씬 강한가요? → 이 비교는 기압 경도력이 같을 때입니다. 실제로는 저기압(특히 태풍) 중심 부근의 등압선 간격이 매우 좁아 기압 경도력이 훨씬 크고, 고기압 중심 부근은 등압선 간격이 넓어 기압 경도력이 작아 바람이 약합니다. 모식: 두 경도풍의 구심력 크기를 같게(1칸) 그렸지만, 실제 구심력 v²/r은 풍속과 반지름에 따라 다르다 — 크기가 달라도 구심력이 0보다 크기만 하면 순서(고기압성 > 지균풍 > 저기압성)는 그대로. 기압 경도력 3일 때 구심력 1(앞 장과 같은 비율 — 실제 중위도에서 구심력은 기압 경도력의 1/10 남짓이라 그림에서는 약 1/3로 키움), 같은 위도에서 비교.">
+<section class="slide" id="s18a" data-tile="light" data-title="경도풍의 풍속" data-notes="교과서 105쪽 본문(전향력의 크기는 풍속에 비례하므로 …)과 날개 ‘경도풍에 작용하는 힘의 관계’, 완자 180쪽 ‘상층에서 부는 풍속의 크기’·‘지균풍과 경도풍의 풍속 비교’. 위 그림의 막대는 힘의 크기만 나타냅니다(방향은 앞 장 그림 — 저기압에서는 기압 경도력이 중심 쪽·전향력이 바깥쪽, 고기압에서는 전향력이 중심 쪽·기압 경도력이 바깥쪽, 원심력은 둘 다 바깥쪽). 클릭 1 세 바람의 기압 경도력(빨강)을 같은 크기(3칸)로 둔다 — 왼쪽 위 ‘기압 차와 등압선 간격이 같을 때’: 기압 경도력 = (1/ρ)(ΔP/ΔL)이므로 기압 차 ΔP와 등압선 간격 ΔL이 같으면(같은 높이라 공기 밀도 ρ도 같다고 봄) 기압 경도력이 같다. 그 조건에서 비교한다. 클릭 2 원심력(보라)은 늘 원의 바깥쪽을 향한다. 저기압성 경도풍은 바깥쪽을 향하는 전향력과 원심력이 함께 중심 쪽 기압 경도력과 균형을 이루므로, 전향력은 기압 경도력에서 원심력만큼이 빠진 크기(전향력 = 기압 경도력 − 원심력, 2칸). 지균풍은 등압선이 직선이라 원심력이 없어 전향력 = 기압 경도력(3칸). 고기압성 경도풍은 바깥쪽을 향하는 기압 경도력과 원심력을 중심 쪽 전향력 하나가 받쳐야 하므로, 전향력은 기압 경도력에 원심력만큼을 더한 크기(전향력 = 기압 경도력 + 원심력, 4칸). 클릭 3 전향력 C = 2vΩsinφ에서 2Ωsinφ는 위도가 정해지면 일정한 값이므로(교과서 103쪽 보충, 코리올리 인자) 같은 위도에서는 전향력의 크기가 풍속에 비례한다 → 빈칸 1. 클릭 4 그래서 전향력이 큰 고기압성 경도풍이 저기압성 경도풍보다 빠르다 → 빈칸 2, 바람 화살표(청록)는 전향력 막대와 같은 비율 2 : 3 : 4. 클릭 5 풍속의 크기 순서 → 빈칸 3. 주의: 원심력(v²/r)에도 풍속이 들어 있으므로 ‘풍속이 들어 있는 힘은 전향력뿐’이라고 말하지 않습니다. 결론은 원심력이 늘 바깥쪽을 향하므로 저기압에서는 빠지고(−) 고기압에서는 더해진다(+)는 것만으로 정해집니다. 학생 질문 대비: 고기압 바람이 더 빠르다면 왜 태풍(저기압)의 바람이 훨씬 강한가요? → 이 비교는 기압 경도력이 같을 때입니다. 실제로는 저기압(특히 태풍) 중심 부근의 등압선 간격이 매우 좁아 기압 경도력이 훨씬 크고, 고기압 중심 부근은 등압선 간격이 넓어 기압 경도력이 작아 바람이 약합니다. 모식: 두 경도풍의 원심력 크기를 같게(1칸) 그렸지만, 실제 원심력 v²/r은 풍속과 반지름에 따라 다르다 — 크기가 달라도 원심력이 0보다 크기만 하면 순서(고기압성 > 지균풍 > 저기압성)는 그대로. 기압 경도력 3일 때 원심력 1(앞 장과 같은 비율 — 실제 중위도에서 원심력은 기압 경도력의 1/10 남짓이라 그림에서는 약 1/3로 키움), 같은 위도에서 비교.">
   <div class="hd" data-in><div class="eb"><b>3</b>상층의 바람</div><h2>경도풍의 풍속</h2></div>
   <div class="scn" id="s18a-box" style="left:120px;top:250px;width:1680px;height:440px" data-in="200" data-fx="fade"><svg id="s18a-svg" viewBox="0 0 1680 440"></svg></div>
   <div class="ws-card" id="s18a-eq" style="left:120px;top:730px;width:560px;height:260px" data-step="3" data-fx="up">
@@ -776,11 +804,11 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
   <div class="ws-card" id="s18a-con" style="left:720px;top:730px;width:1080px;height:260px" data-in="400">
     <div class="ws-row" style="grid-template-columns:1fr"><span><b>풍속</b>은 <span class="bk"><span class="a" data-step="3" data-fx="pop">전향력</span><span class="n">1</span></span>의 크기에 비례하므로 <span class="c-pgf">기압 경도력</span>이 같을 때<br><b>고기압성 경도풍</b>은 <b>저기압성 경도풍</b>보다 <span class="c-cor">전향력</span>이 <span class="bk"><span class="a" data-step="4" data-fx="pop">크게</span><span class="n">2</span></span> 작용한다.<br>따라서 <b>풍속</b>의 크기는 <span class="bk"><span class="a" data-step="5" data-fx="pop">고기압성 경도풍 &gt; 지균풍 &gt; 저기압성 경도풍</span><span class="n">3</span></span><br>순서로 나타난다.</span></div>
   </div>
-  <div class="fine">모식 그림 · 같은 위도, 같은 기압 차와 등압선 간격에서 비교 · 구심력을 기압 경도력의 약 1/3로 키워 그림(앞 장과 같은 비율) · 바람 화살표 길이는 풍속에 비례</div>
+  <div class="fine">모식 그림 · 같은 위도, 같은 기압 차와 등압선 간격에서 비교 · 원심력을 기압 경도력의 약 1/3로 키워 그림(앞 장과 같은 비율) · 바람 화살표 길이는 풍속에 비례</div>
 </section>
 
 <!-- ═══ s19 지상풍 ═══ -->
-<section class="slide" id="s19" data-tile="light" data-title="지상풍" data-notes="교과서 106쪽 본문과 그림 III-31. 왼쪽은 지표면을 위에서 본 모습입니다(그림의 위쪽 = 지도에서 기압이 낮은 쪽, 하늘이 아님). 오른쪽 띠는 공기 덩어리의 높이. 처음 모습: 높이 1 km 위의 지균풍(기압 경도력과 전향력이 평형, 바람은 등압선에 나란). 클릭 1 공기 덩어리가 지표 부근(약 1 km까지, 대기 경계층)으로 내려옴 → 2 지표면의 마찰: 마찰력(초록)이 바람이 불어 가는 방향의 반대로 작용 → 풍속이 줄고(바람 화살표가 짧아짐) 전향력도 작아지며(전향력은 풍속에 비례) 바람이 저기압 쪽으로 돈다 → 3 마찰력과 전향력의 합력(점선 평행사변형, 회색 점선 화살표)이 기압 경도력과 크기가 같고 방향이 반대 → 평형 → 4 바람이 등압선을 비스듬하게 가로질러 분다(흐름 줄). 지상에서 기압 경도력, 전향력, 마찰력이 평형을 이루며 부는 바람 = 지상풍(땅 地, 위 上, 바람 風) → 5 지상풍과 등압선이 이루는 각 θ = 경각, 마찰력이 크게 작용할수록 경각이 커진다. 카드에 넣지 않은 교과서 문장: 마찰력은 바람이 불어 가는 방향의 반대 방향으로 작용하므로 지표 부근에서는 풍속이 감소하면서 전향력의 크기도 작아진다. 교과서 날개·보충: 경각은 상대적으로 표면이 거친 육상에서는 크고 해상에서는 작다 — 지표면의 거칠기가 큰 육지 20°~35°, 해상 15°~20°, 지형의 기복이 심한 산맥 약 45°. 지도 방안: 마찰력의 크기가 지상풍의 풍향에 어떤 영향을 미치는지 바람에 작용하는 힘의 관계를 통해 이해하게 한다. 학생 질문 대비: 왜 바람이 저기압 쪽으로 휘나요? → 풍속이 줄어 전향력이 기압 경도력보다 작아지면, 기압 경도력 쪽(저기압 쪽)으로 바람이 돌아 마찰력과 전향력의 합력이 기압 경도력과 다시 평형을 이룬다(지도서: 마찰력은 바람에 작용하는 전향력도 약화시킨다). 다음 장에서 직접: 기압 경도력이 일정할 때 고도가 높아질수록 마찰력이 작아지고 경각도 작아지며 풍속이 빨라진다. 계산: 경각 30°, 마찰력 = 마찰 계수 × 풍속(완자), 평형에서 전향력 = 기압 경도력 × cos 30°, 마찰력 = 기압 경도력 × sin 30°(기압 경도력의 절반), 풍속 = 지균풍 풍속 × cos 30°(약 0.87배). 힘 화살표 길이는 이 비율 그대로.">
+<section class="slide" id="s19" data-tile="parchment" data-title="지상풍" data-notes="교과서 106쪽 본문과 그림 III-31. 왼쪽은 지표면을 위에서 본 모습입니다(그림의 위쪽 = 지도에서 기압이 낮은 쪽, 하늘이 아님). 오른쪽 띠는 공기 덩어리의 높이. 처음 모습: 높이 1 km 위의 지균풍(기압 경도력과 전향력이 평형, 바람은 등압선에 나란). 클릭 1 공기 덩어리가 지표 부근(약 1 km까지, 대기 경계층)으로 내려옴 → 2 지표면의 마찰: 마찰력(초록)이 바람이 불어 가는 방향의 반대로 작용 → 풍속이 줄고(바람 화살표가 짧아짐) 전향력도 작아지며(전향력은 풍속에 비례) 바람이 저기압 쪽으로 돈다 → 3 마찰력과 전향력의 합력(점선 평행사변형, 회색 점선 화살표)이 기압 경도력과 크기가 같고 방향이 반대 → 평형 → 4 바람이 등압선을 비스듬하게 가로질러 분다(흐름 줄). 지상에서 기압 경도력, 전향력, 마찰력이 평형을 이루며 부는 바람 = 지상풍(땅 地, 위 上, 바람 風) → 5 지상풍과 등압선이 이루는 각 θ = 경각, 마찰력이 크게 작용할수록 경각이 커진다. 카드에 넣지 않은 교과서 문장: 마찰력은 바람이 불어 가는 방향의 반대 방향으로 작용하므로 지표 부근에서는 풍속이 감소하면서 전향력의 크기도 작아진다. 교과서 날개·보충: 경각은 상대적으로 표면이 거친 육상에서는 크고 해상에서는 작다 — 지표면의 거칠기가 큰 육지 20°~35°, 해상 15°~20°, 지형의 기복이 심한 산맥 약 45°. 지도 방안: 마찰력의 크기가 지상풍의 풍향에 어떤 영향을 미치는지 바람에 작용하는 힘의 관계를 통해 이해하게 한다. 학생 질문 대비: 왜 바람이 저기압 쪽으로 휘나요? → 풍속이 줄어 전향력이 기압 경도력보다 작아지면, 기압 경도력 쪽(저기압 쪽)으로 바람이 돌아 마찰력과 전향력의 합력이 기압 경도력과 다시 평형을 이룬다(지도서: 마찰력은 바람에 작용하는 전향력도 약화시킨다). 다음 장에서 직접: 기압 경도력이 일정할 때 고도가 높아질수록 마찰력이 작아지고 경각도 작아지며 풍속이 빨라진다. 계산: 경각 30°, 마찰력 = 마찰 계수 × 풍속(완자), 평형에서 전향력 = 기압 경도력 × cos 30°, 마찰력 = 기압 경도력 × sin 30°(기압 경도력의 절반), 풍속 = 지균풍 풍속 × cos 30°(약 0.87배). 힘 화살표 길이는 이 비율 그대로.">
   <div class="hd" data-in><div class="eb"><b>4</b>지상의 바람</div><h2>지상풍</h2></div>
   <div class="scn" style="left:120px;top:250px;width:820px;height:740px" data-in="200" data-fx="fade"><svg id="s19-svg" viewBox="0 0 820 740"></svg></div>
   <div class="ws-card st" id="s19-card" style="left:980px;top:250px;width:820px;height:740px;display:flex;flex-direction:column;justify-content:center" data-in="400">
@@ -792,7 +820,7 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
 </section>
 
 <!-- ═══ s20 직접 해 보기 — 마찰력과 경각 ═══ -->
-<section class="slide" id="s20" data-tile="parchment" data-title="직접 해 보기 — 마찰력과 경각" data-notes="조작: 아래 [해양] [평야] [산악] 단추로 지표면을 고르고, 높이 막대(0~1.5 km)를 움직이거나 오른쪽 높이 그림의 공기 덩어리를 위아래로 끕니다. 왼쪽 그림(위에서 본 모습)의 네 화살표(기압 경도력 빨강, 전향력 파랑, 마찰력 초록, 바람 청록)와 경각 θ, 흐름 줄의 빠르기가 바로 바뀌고, 조작 막대 오른쪽에 경각과 풍속이 나옵니다. 높이 1 km 이상(자유 대기)에서는 마찰력이 0이 되어 바람이 등압선에 나란한 지균풍이 됩니다. 학생에게 말로 정리하게: ① 해양 → 평야 → 산악(지표면이 거칠수록): 마찰력이 커지고, 경각이 커지며, 풍속이 느려진다. ② 높이 0 → 1.5 km: 마찰력이 작아지고, 경각도 작아지며, 풍속이 빨라진다(교과서 106쪽: 기압 경도력이 일정할 때 고도가 높아질수록 마찰력이 작아지고 경각도 작아지며 풍속이 빨라진다) — 1 km 위에서는 지균풍. 기압 경도력(빨강)은 어느 경우에나 같은 길이라는 점도 짚어 줍니다. 교과서 경각 값(보충): 육지 20°~35°, 해상 15°~20°, 산맥 약 45°. 계산(모식): 지표에서의 경각 해양 18°, 평야 30°, 산악 45°(교과서 범위 안에서 고름). 마찰력 = 마찰 계수 k × 풍속(완자), 전향력 = f × 풍속. 평형에서 tan θ = k ÷ f, 전향력 = 기압 경도력 × cos θ, 마찰력 = 기압 경도력 × sin θ, 풍속 = 15 m/s × cos θ(지균풍 풍속 15 m/s). 마찰 계수는 높이 1 km에서 0이 되도록 곧게 줄임: k = k₀ × (1 − 높이/1 km). 확인 값: 산악 0 km 45°·10.6 m/s, 평야 0 km 30°·13.0 m/s, 해양 0 km 18°·14.3 m/s, 산악 0.5 km 약 27°·13.4 m/s, 1.2 km 0°·15.0 m/s. 실제 대기 경계층의 두께와 높이에 따른 바람의 변화는 지표면과 날씨에 따라 다릅니다.">
+<section class="slide" id="s20" data-tile="light" data-title="직접 해 보기 — 마찰력과 경각" data-notes="조작: 아래 [해양] [평야] [산악] 단추로 지표면을 고르고, 높이 막대(0~1.5 km)를 움직이거나 오른쪽 높이 그림의 공기 덩어리를 위아래로 끕니다. 왼쪽 그림(위에서 본 모습)의 네 화살표(기압 경도력 빨강, 전향력 파랑, 마찰력 초록, 바람 청록)와 경각 θ, 흐름 줄의 빠르기가 바로 바뀌고, 조작 막대 오른쪽에 경각과 풍속이 나옵니다. 높이 1 km 이상(자유 대기)에서는 마찰력이 0이 되어 바람이 등압선에 나란한 지균풍이 됩니다. 학생에게 말로 정리하게: ① 해양 → 평야 → 산악(지표면이 거칠수록): 마찰력이 커지고, 경각이 커지며, 풍속이 느려진다. ② 높이 0 → 1.5 km: 마찰력이 작아지고, 경각도 작아지며, 풍속이 빨라진다(교과서 106쪽: 기압 경도력이 일정할 때 고도가 높아질수록 마찰력이 작아지고 경각도 작아지며 풍속이 빨라진다) — 1 km 위에서는 지균풍. 기압 경도력(빨강)은 어느 경우에나 같은 길이라는 점도 짚어 줍니다. 교과서 경각 값(보충): 육지 20°~35°, 해상 15°~20°, 산맥 약 45°. 계산(모식): 지표에서의 경각 해양 18°, 평야 30°, 산악 45°(교과서 범위 안에서 고름). 마찰력 = 마찰 계수 k × 풍속(완자), 전향력 = f × 풍속. 평형에서 tan θ = k ÷ f, 전향력 = 기압 경도력 × cos θ, 마찰력 = 기압 경도력 × sin θ, 풍속 = 15 m/s × cos θ(지균풍 풍속 15 m/s). 마찰 계수는 높이 1 km에서 0이 되도록 곧게 줄임: k = k₀ × (1 − 높이/1 km). 확인 값: 산악 0 km 45°·10.6 m/s, 평야 0 km 30°·13.0 m/s, 해양 0 km 18°·14.3 m/s, 산악 0.5 km 약 27°·13.4 m/s, 1.2 km 0°·15.0 m/s. 실제 대기 경계층의 두께와 높이에 따른 바람의 변화는 지표면과 날씨에 따라 다릅니다.">
   <div class="hd" data-in><div class="eb"><b>4</b>지상의 바람</div><h2>직접 해 보기 — 마찰력과 경각</h2></div>
   <div class="ia-box" data-in="200" data-fx="fade"><svg id="s20-svg" viewBox="0 0 1680 600"></svg></div>
   <div class="ia-panel" data-in="350">
@@ -806,7 +834,7 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
 </section>
 
 <!-- ═══ s21 지상풍 — 등압선이 원형일 때 ═══ -->
-<section class="slide" id="s21" data-tile="light" data-title="지상풍 — 등압선이 원형일 때" data-notes="교과서 106쪽 본문과 그림 III-32. 두 칸은 지상의 저기압과 고기압을 위에서 본 모습, 회색 원은 등압선, 청록 흐름 줄은 지상풍입니다. 클릭 1 저기압: 바람이 시계 반대 방향으로 돈다 → 2 등압선을 가로질러 중심 쪽으로 불어 들어간다(나선 경로와 바람 화살표) → 3 고기압: 시계 방향 → 4 중심에서 바깥쪽으로 불어 나간다 → 5 비교: 같은 기압 배치에서 상층의 바람(경도풍, 진회색 점선)은 등압선에 나란하게 불지만, 지표 부근에서는 마찰력이 풍속을 감소시키므로 바람(청록)이 등압선을 가로지르며 분다(카드 첫 줄). 교과서 날개: 저기압 부근에서는 저기압 중심을 향하는 기압 경도력과 바깥쪽을 향하는 마찰력과 전향력의 합력의 차이가 구심력으로 작용한다. 고기압 부근에서는 고기압 중심을 향하는 마찰력과 전향력의 합력과 바깥쪽을 향하는 기압 경도력의 차이가 구심력으로 작용한다. 교과서 본문(카드에 넣지 않음): 지상에서 등압선이 원형이거나 곡선일 때 지상풍은 기압 경도력, 전향력, 마찰력뿐만 아니라 구심력의 영향을 받는다. 덧붙일 말: 지상 저기압 중심으로 불어 든 공기는 모여서 상승하고(앞의 해 보기 B 지점과 연결), 지상 고기압에서 불어 나간 공기의 자리는 위에서 내려오는 하강 기류가 채운다. 학생 질문 대비: 중심으로 계속 모인 공기는 어디로 가나요? → 상승 기류가 되어 위로 빠져나간다. 남반구는 방향이 반대(완자: 지상 저기압은 시계 방향으로 불어 들어가고, 지상 고기압은 시계 반대 방향으로 불어 나간다). 그림: 흐름 줄은 등압선과 30°를 이루는 나선(로그 나선)을 따라 일정한 빠르기로 움직이도록 계산했고, 상층의 경로는 등압선과 나란한 원입니다.">
+<section class="slide" id="s21" data-tile="parchment" data-title="지상풍 — 등압선이 원형일 때" data-notes="교과서 106쪽 본문과 그림 III-32. 두 칸은 지상의 저기압과 고기압을 위에서 본 모습, 회색 원은 등압선, 청록 흐름 줄은 지상풍입니다. 클릭 1 저기압: 바람이 시계 반대 방향으로 돈다 → 2 등압선을 가로질러 중심 쪽으로 불어 들어간다(나선 경로와 바람 화살표) → 3 고기압: 시계 방향 → 4 중심에서 바깥쪽으로 불어 나간다 → 5 비교: 같은 기압 배치에서 상층의 바람(경도풍, 진회색 점선)은 등압선에 나란하게 불지만, 지표 부근에서는 마찰력이 풍속을 감소시키므로 바람(청록)이 등압선을 가로지르며 분다(카드 첫 줄). 원심력으로 보면(교과서 날개는 구심력으로 씀): 저기압 부근에서는 바깥쪽을 향하는 마찰력과 전향력의 합력, 원심력이 저기압 중심을 향하는 기압 경도력과 균형을 이룬다. 고기압 부근에서는 바깥쪽을 향하는 기압 경도력과 원심력이 고기압 중심을 향하는 마찰력과 전향력의 합력과 균형을 이룬다. 교과서 본문(카드에 넣지 않음): 지상에서 등압선이 원형이거나 곡선일 때 지상풍은 기압 경도력, 전향력, 마찰력뿐만 아니라 원심력(교과서는 구심력)의 영향을 받는다. 덧붙일 말: 지상 저기압 중심으로 불어 든 공기는 모여서 상승하고(앞의 해 보기 B 지점과 연결), 지상 고기압에서 불어 나간 공기의 자리는 위에서 내려오는 하강 기류가 채운다. 학생 질문 대비: 중심으로 계속 모인 공기는 어디로 가나요? → 상승 기류가 되어 위로 빠져나간다. 남반구는 방향이 반대(완자: 지상 저기압은 시계 방향으로 불어 들어가고, 지상 고기압은 시계 반대 방향으로 불어 나간다). 그림: 흐름 줄은 등압선과 30°를 이루는 나선(로그 나선)을 따라 일정한 빠르기로 움직이도록 계산했고, 상층의 경로는 등압선과 나란한 원입니다.">
   <div class="hd" data-in><div class="eb"><b>4</b>지상의 바람</div><h2>지상풍 — 등압선이 원형일 때</h2></div>
   <div class="scn" style="left:120px;top:250px;width:820px;height:376px" data-in="200" data-fx="fade"><svg id="s21-L" viewBox="0 0 820 376"></svg></div>
   <div class="scn" style="left:980px;top:250px;width:820px;height:376px" data-in="300" data-fx="fade"><svg id="s21-H" viewBox="0 0 820 376"></svg></div>
@@ -818,7 +846,7 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
 </section>
 
 <!-- ═══ s22 지상 일기도와 상층 일기도 ═══ -->
-<section class="slide" id="s22" data-tile="parchment" data-title="지상 일기도와 상층 일기도" data-notes="교과서 106~107쪽, 그림 III-33. 상층 일기도는 등압면도라고도 한다(교과서 날개). 클릭 1 지상 일기도는 기압이 같은 지점을 연결한 등압선으로 기압의 분포를 나타낸다(그림 왼쪽 아래 작은 지상 일기도). 2 상층 일기도는 500 hPa 등압면처럼 기압이 같은 면의 높이(고도)를 나타낸다 — 등압면 위에서 높이가 같은 곳(5700·5640·5550 m)을 이은 선을 바닥으로 내려 그리면 등고선이 된다. 3 같은 높이(500 hPa 등압면의 평균 높이 면)에서 비교하면, A는 위쪽에 500 hPa 등압면이 있다 = A가 500 hPa 등압면보다 아래에 있어 A 위에 공기가 더 많이 쌓여 있으므로 기압이 500 hPa보다 높다. B는 500 hPa 등압면보다 위에 있으므로 기압이 500 hPa보다 낮다. 그래서 등압면의 고도가 높은 지역은 기압이 높다. 4 위에서 내려다보면 상층 일기도의 등고선 — 등고선이 높은 쪽에서 낮은 쪽으로 기압 경도력이 작용한다(지상 일기도의 등압선과 같은 역할). 덧붙일 말: 등고선 간격이 좁을수록 풍속이 빠르다(완자). 높이 식 P = 1013 hPa × e^(−z/8 km)(기온 일정 가정)로 계산하면 500 hPa ≈ 5.6 km로, 그림의 평균 높이 5640 m와 비슷하다. 학생 질문 대비: 왜 상층은 등압선 대신 등고선? — 상층 일기도는 높이 대신 기압(500 hPa)을 정해 두고 그 등압면의 높이를 그린 것이라 등고선이 기압 분포를 나타낸다. 그림의 등압면 기울기는 매우 과장(실제로는 수천 km에 걸쳐 수백 m 차이).">
+<section class="slide" id="s22" data-tile="light" data-title="지상 일기도와 상층 일기도" data-notes="교과서 106~107쪽, 그림 III-33. 상층 일기도는 등압면도라고도 한다(교과서 날개). 클릭 1 지상 일기도는 기압이 같은 지점을 연결한 등압선으로 기압의 분포를 나타낸다(그림 왼쪽 아래 작은 지상 일기도). 2 상층 일기도는 500 hPa 등압면처럼 기압이 같은 면의 높이(고도)를 나타낸다 — 등압면 위에서 높이가 같은 곳(5700·5640·5550 m)을 이은 선을 바닥으로 내려 그리면 등고선이 된다. 3 같은 높이(500 hPa 등압면의 평균 높이 면)에서 비교하면, A는 위쪽에 500 hPa 등압면이 있다 = A가 500 hPa 등압면보다 아래에 있어 A 위에 공기가 더 많이 쌓여 있으므로 기압이 500 hPa보다 높다. B는 500 hPa 등압면보다 위에 있으므로 기압이 500 hPa보다 낮다. 그래서 등압면의 고도가 높은 지역은 기압이 높다. 4 위에서 내려다보면 상층 일기도의 등고선 — 등고선이 높은 쪽에서 낮은 쪽으로 기압 경도력이 작용한다(지상 일기도의 등압선과 같은 역할). 덧붙일 말: 등고선 간격이 좁을수록 풍속이 빠르다(완자). 높이 식 P = 1013 hPa × e^(−z/8 km)(기온 일정 가정)로 계산하면 500 hPa ≈ 5.6 km로, 그림의 평균 높이 5640 m와 비슷하다. 학생 질문 대비: 왜 상층은 등압선 대신 등고선? — 상층 일기도는 높이 대신 기압(500 hPa)을 정해 두고 그 등압면의 높이를 그린 것이라 등고선이 기압 분포를 나타낸다. 그림의 등압면 기울기는 매우 과장(실제로는 수천 km에 걸쳐 수백 m 차이).">
   <div class="hd" data-in><div class="eb"><b>5</b>일기도</div><h2>지상 일기도와 상층 일기도</h2></div>
   <div class="ws-card side sm" id="s22-card" style="left:120px;top:250px;width:940px;height:740px;display:flex;flex-direction:column;justify-content:center" data-in="200">
     <div class="ws-row" data-r="1"><span class="tm term">지상 일기도</span><span>기압이 같은 지점을 연결한 <span class="nw"><span class="bk"><span class="a" data-step="1" data-fx="pop">등압선</span><span class="n">1</span></span>으로</span> 기압의 분포를 나타낸다.</span></div>
@@ -831,7 +859,7 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
 </section>
 
 <!-- ═══ s23 해 보기 — 지상 일기도와 상층 일기도 비교하기 ═══ -->
-<section class="slide" id="s23" data-tile="light" data-title="해 보기 — 지상 일기도와 상층 일기도 비교하기" data-notes="교과서 107쪽 해 보기. 이 장에서는 문제 1·2를 함께 제시합니다(클릭 단계 없음). 학생이 교과서(학습지) 일기도 위에 A와 A′의 기압 경도력 방향과 풍향을 직접 그려 보게 한 뒤 넘깁니다. 이어지는 흐름: 다음 장에서 지상 일기도의 A 지점을 크게 보며 기압 경도력·마찰력·전향력과 바람을 분석하고, 그다음 장에서 상층 일기도의 A′ 지점을 분석한 뒤, 문제 1·2 해설 장에서 두 일기도 위에 화살표와 예시 답안으로 정리합니다. 상층 일기도는 등고선이 지상 일기도의 등압선과 마찬가지로 기압을 나타낸다는 점(등고선이 높은 쪽에서 낮은 쪽으로 기압 경도력이 작용)을 먼저 떠올리게 합니다. 그림을 누르면 일기도를 크게 볼 수 있음. 디지털 탐색: 기상청 날씨누리(https://www.weather.go.kr)에서 지상 일기도와 상층 일기도를 찾아볼 수 있다.">
+<section class="slide" id="s23" data-tile="parchment" data-title="해 보기 — 지상 일기도와 상층 일기도 비교하기" data-notes="교과서 107쪽 해 보기. 이 장에서는 문제 1·2를 함께 제시합니다(클릭 단계 없음). 학생이 교과서(학습지) 일기도 위에 A와 A′의 기압 경도력 방향과 풍향을 직접 그려 보게 한 뒤 넘깁니다. 이어지는 흐름: 다음 장에서 지상 일기도의 A 지점을 크게 보며 기압 경도력·마찰력·전향력과 바람을 분석하고, 그다음 장에서 상층 일기도의 A′ 지점을 분석한 뒤, 문제 1·2 해설 장에서 두 일기도 위에 화살표와 예시 답안으로 정리합니다. 상층 일기도는 등고선이 지상 일기도의 등압선과 마찬가지로 기압을 나타낸다는 점(등고선이 높은 쪽에서 낮은 쪽으로 기압 경도력이 작용)을 먼저 떠올리게 합니다. 그림을 누르면 일기도를 크게 볼 수 있음. 디지털 탐색: 기상청 날씨누리(https://www.weather.go.kr)에서 지상 일기도와 상층 일기도를 찾아볼 수 있다.">
   <div class="hd" data-in><div class="eb"><b>5</b>일기도</div><h2>해 보기 — 지상 일기도와 상층 일기도 비교하기</h2></div>
   <figure class="pic" id="s23-f1" style="left:120px;top:250px;width:600px;height:439px" data-in="200" data-fx="fade"><img src="img/III.05/p107_지상_일기도.png" alt="지상 일기도(단위: hPa)"></figure>
   <figure class="pic" id="s23-f2" style="left:760px;top:250px;width:600px;height:439px" data-in="320" data-fx="fade"><img src="img/III.05/p107_상층_일기도.png" alt="상층 500 hPa 등압면 일기도(단위: m)"></figure>
@@ -846,7 +874,7 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
 </section>
 
 <!-- ═══ s23a 해 보기 — 지상 일기도의 A 지점 ═══ -->
-<section class="slide" id="s23a" data-tile="parchment" data-title="해 보기 — 지상 일기도의 A 지점" data-notes="앞 장에서 제시한 문제 1·2를 풀기 위해 먼저 지상 일기도의 A 지점을 분석합니다(다음 장은 상층 일기도의 A′ 지점, 그다음 해설 장에서 두 일기도 위에 화살표와 예시 답안으로 정리). 교과서 107쪽 지상 일기도에서 A 둘레를 크게 뽑은 그림(A 글자는 화살표와 겹치지 않게 점 오른쪽 아래로 옮겨 씀, 흰 원 = A 지점의 공기). 클릭 1 기압 경도력(빨강): A는 1012 hPa 등압선 바로 동쪽, 저기압을 둘러싼 1008 hPa 등압선의 남서쪽 모서리 가까이에 있다. 기압이 높은 곳에서 낮은 곳으로, A를 지나는 등압선(회색 점선 — 1012 hPa와 1008 hPa 사이를 지나는 등압선의 방향을 어림한 것)에 수직이므로 북동쪽 — 문제 1의 A. 2 마찰력이 없다면(상층처럼): 바람은 기압 경도력의 오른쪽 직각 방향으로 등압선에 나란하게 불고(지균풍, 점선), 전향력이 기압 경도력과 크기가 같고 방향이 반대. 3 그러나 지상에서는 마찰력(초록)이 바람이 불어 가는 방향의 반대로 작용 → 풍속이 감소하면서 전향력(풍속에 비례)도 작아짐 → 바람이 저기압 쪽으로 돈다 → 마찰력과 전향력의 합력(회색 점선, 평행사변형)이 기압 경도력과 크기가 같고 방향이 반대가 되면 평형. 4 그래서 A의 바람(지상풍)은 기압 경도력의 오른쪽 방향으로 등압선을 비스듬하게 가로질러 저기압 쪽으로 분다 — 문제 2의 A. 경각 θ는 30°로 그림(교과서: 육지 20°~35°, 해상 15°~20°). 학생 질문 대비: 마찰력은 왜 바람을 저기압 쪽으로 휘게 하나요? → 마찰력이 직접 방향을 바꾸는 것이 아니라, 풍속을 줄여 전향력을 약하게 만들기 때문에 기압 경도력 쪽(저기압 쪽)으로 바람이 돈다. 계산(앞의 지상풍 장과 같은 식): 전향력 = 기압 경도력 × cos 30°(약 0.87배), 마찰력 = 기압 경도력 × sin 30°(절반), 합력 = 기압 경도력, 바람 = 지균풍 × cos 30°. 방향(위쪽 = 북쪽, 시계 방향 각): 기압 경도력 40°, 지균풍 130°, 지상풍 100°, 전향력 190°, 마찰력 280°, 합력 220°. 방향은 교과서 그림에서 잰 어림값(교과서 답 화살표 약 35°).">
+<section class="slide" id="s23a" data-tile="light" data-title="해 보기 — 지상 일기도의 A 지점" data-notes="앞 장에서 제시한 문제 1·2를 풀기 위해 먼저 지상 일기도의 A 지점을 분석합니다(다음 장은 상층 일기도의 A′ 지점, 그다음 해설 장에서 두 일기도 위에 화살표와 예시 답안으로 정리). 교과서 107쪽 지상 일기도에서 A 둘레를 크게 뽑은 그림(A 글자는 화살표와 겹치지 않게 점 오른쪽 아래로 옮겨 씀, 흰 원 = A 지점의 공기). 클릭 1 기압 경도력(빨강): A는 1012 hPa 등압선 바로 동쪽, 저기압을 둘러싼 1008 hPa 등압선의 남서쪽 모서리 가까이에 있다. 기압이 높은 곳에서 낮은 곳으로, A를 지나는 등압선(회색 점선 — 1012 hPa와 1008 hPa 사이를 지나는 등압선의 방향을 어림한 것)에 수직이므로 북동쪽 — 문제 1의 A. 2 마찰력이 없다면(상층처럼): 바람은 기압 경도력의 오른쪽 직각 방향으로 등압선에 나란하게 불고(지균풍, 점선), 전향력이 기압 경도력과 크기가 같고 방향이 반대. 3 그러나 지상에서는 마찰력(초록)이 바람이 불어 가는 방향의 반대로 작용 → 풍속이 감소하면서 전향력(풍속에 비례)도 작아짐 → 바람이 저기압 쪽으로 돈다 → 마찰력과 전향력의 합력(회색 점선, 평행사변형)이 기압 경도력과 크기가 같고 방향이 반대가 되면 평형. 4 그래서 A의 바람(지상풍)은 기압 경도력의 오른쪽 방향으로 등압선을 비스듬하게 가로질러 저기압 쪽으로 분다 — 문제 2의 A. 경각 θ는 30°로 그림(교과서: 육지 20°~35°, 해상 15°~20°). 학생 질문 대비: 마찰력은 왜 바람을 저기압 쪽으로 휘게 하나요? → 마찰력이 직접 방향을 바꾸는 것이 아니라, 풍속을 줄여 전향력을 약하게 만들기 때문에 기압 경도력 쪽(저기압 쪽)으로 바람이 돈다. 계산(앞의 지상풍 장과 같은 식): 전향력 = 기압 경도력 × cos 30°(약 0.87배), 마찰력 = 기압 경도력 × sin 30°(절반), 합력 = 기압 경도력, 바람 = 지균풍 × cos 30°. 방향(위쪽 = 북쪽, 시계 방향 각): 기압 경도력 40°, 지균풍 130°, 지상풍 100°, 전향력 190°, 마찰력 280°, 합력 220°. 방향은 교과서 그림에서 잰 어림값(교과서 답 화살표 약 35°).">
   <div class="hd" data-in><div class="eb"><b>5</b>일기도</div><h2>해 보기 — 지상 일기도의 A 지점</h2></div>
   <div class="scn s23a-map" style="left:120px;top:250px;width:756px;height:740px" data-in="200" data-fx="fade">
     <svg id="s23a-svg" viewBox="0 0 756 740"><image href="img/III.05/p107_지상_일기도_A.png" x="0" y="0" width="756" height="740" preserveAspectRatio="none"/></svg>
@@ -861,7 +889,7 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
 </section>
 
 <!-- ═══ s23b 해 보기 — 상층 일기도의 A′ 지점 ═══ -->
-<section class="slide" id="s23b" data-tile="light" data-title="해 보기 — 상층 일기도의 A′ 지점" data-notes="이어서 상층 일기도의 A′ 지점을 분석합니다(다음 장의 해설에서 앞 장의 A와 함께 정리). 교과서 107쪽 상층 500 hPa 등압면 일기도에서 A′ 둘레를 크게 뽑은 그림(A′ 글자는 점 왼쪽 위로 옮겨 씀). 상층 일기도에서 등고선은 지상 일기도의 등압선과 마찬가지로 기압을 나타낸다(높은 등고선 = 기압이 높은 곳). 클릭 1 기압 경도력(빨강): A′는 5700 m 등고선(북쪽)과 5760 m 등고선(남쪽, 값 숫자는 그림에 없음 — 5700과 5820 사이의 선) 사이에 있으므로 등고선이 높은 남쪽에서 낮은 북쪽으로, 등고선(회색 점선 = A′를 지나는 등고선의 방향)에 수직 → 거의 북쪽 — 문제 1의 A′. 2 바람(청록)은 기압 경도력의 오른쪽 직각 방향, 등고선에 나란하게 동쪽으로 불고, 전향력(파랑)은 바람의 오른쪽 직각 = 기압 경도력과 크기가 같고 방향이 반대(지균풍) — 문제 2의 A′. 교과서 문장은 ‘등압선에 나란하게’라고 하지만, 상층 일기도에서는 등고선에 나란하다(등고선이 등압선과 같은 역할). 3 높이 약 1 km 이상의 상층에서는 마찰력이 무시할 수 있을 정도로 작다 → 바람이 등고선을 가로지르지 않는다. 되묻기: 앞 장의 A와 무엇이 다른가? → 기압 경도력은 A에서 북동쪽, A′에서 거의 북쪽으로 비슷하지만, A의 바람은 등압선을 비스듬하게 가로지르고 A′의 바람은 등고선에 나란하다 — 마찰력의 차이. A′의 바람이 A의 바람보다 빠른 까닭은? → 마찰력이 없어 풍속이 줄지 않기 때문(완자: 상층에서 부는 바람이 지상에서 부는 바람보다 풍속이 빠르다). 화살표 길이: 기압 경도력은 앞 장과 같은 길이, 전향력 = 기압 경도력, 바람은 앞 장 지균풍과 같은 길이. 방향(위쪽 = 북쪽): 기압 경도력 2°(5700 m·5760 m 등고선의 방향 약 92°에 수직, 교과서 답 화살표는 정북), 바람 92°, 전향력 182°.">
+<section class="slide" id="s23b" data-tile="parchment" data-title="해 보기 — 상층 일기도의 A′ 지점" data-notes="이어서 상층 일기도의 A′ 지점을 분석합니다(다음 장의 해설에서 앞 장의 A와 함께 정리). 교과서 107쪽 상층 500 hPa 등압면 일기도에서 A′ 둘레를 크게 뽑은 그림(A′ 글자는 점 왼쪽 위로 옮겨 씀). 상층 일기도에서 등고선은 지상 일기도의 등압선과 마찬가지로 기압을 나타낸다(높은 등고선 = 기압이 높은 곳). 클릭 1 기압 경도력(빨강): A′는 5700 m 등고선(북쪽)과 5760 m 등고선(남쪽, 값 숫자는 그림에 없음 — 5700과 5820 사이의 선) 사이에 있으므로 등고선이 높은 남쪽에서 낮은 북쪽으로, 등고선(회색 점선 = A′를 지나는 등고선의 방향)에 수직 → 거의 북쪽 — 문제 1의 A′. 2 바람(청록)은 기압 경도력의 오른쪽 직각 방향, 등고선에 나란하게 동쪽으로 불고, 전향력(파랑)은 바람의 오른쪽 직각 = 기압 경도력과 크기가 같고 방향이 반대(지균풍) — 문제 2의 A′. 교과서 문장은 ‘등압선에 나란하게’라고 하지만, 상층 일기도에서는 등고선에 나란하다(등고선이 등압선과 같은 역할). 3 높이 약 1 km 이상의 상층에서는 마찰력이 무시할 수 있을 정도로 작다 → 바람이 등고선을 가로지르지 않는다. 되묻기: 앞 장의 A와 무엇이 다른가? → 기압 경도력은 A에서 북동쪽, A′에서 거의 북쪽으로 비슷하지만, A의 바람은 등압선을 비스듬하게 가로지르고 A′의 바람은 등고선에 나란하다 — 마찰력의 차이. A′의 바람이 A의 바람보다 빠른 까닭은? → 마찰력이 없어 풍속이 줄지 않기 때문(완자: 상층에서 부는 바람이 지상에서 부는 바람보다 풍속이 빠르다). 화살표 길이: 기압 경도력은 앞 장과 같은 길이, 전향력 = 기압 경도력, 바람은 앞 장 지균풍과 같은 길이. 방향(위쪽 = 북쪽): 기압 경도력 2°(5700 m·5760 m 등고선의 방향 약 92°에 수직, 교과서 답 화살표는 정북), 바람 92°, 전향력 182°.">
   <div class="hd" data-in><div class="eb"><b>5</b>일기도</div><h2>해 보기 — 상층 일기도의 A′ 지점</h2></div>
   <div class="scn s23b-map" style="left:120px;top:250px;width:756px;height:740px" data-in="200" data-fx="fade">
     <svg id="s23b-svg" viewBox="0 0 756 740"><image href="img/III.05/p107_상층_일기도_A2.png" x="0" y="0" width="756" height="740" preserveAspectRatio="none"/></svg>
@@ -876,7 +904,7 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
 </section>
 
 <!-- ═══ s23c 해 보기 — 문제 1·2 해설 ═══ -->
-<section class="slide" id="s23c" data-tile="parchment" data-title="해 보기 — 문제 1·2 해설" data-notes="앞의 두 장에서 A와 A′를 하나씩 분석한 것을 교과서 107쪽 일기도 위에서 정리합니다. 클릭 1 A·A′의 기압 경도력(빨강): A는 북동쪽(1012 hPa 등압선과 저기압을 둘러싼 1008 hPa 등압선 사이, 등압선에 수직), A′는 거의 북쪽(5700 m와 5760 m 등고선 사이, 등고선에 수직) 2 예시 답안 1 3 A·A′의 바람(청록): A는 기압 경도력의 오른쪽으로 등압선을 비스듬하게 가로질러(경각 30°로 그림), A′는 기압 경도력의 오른쪽 직각 방향으로 등고선에 나란하게(동쪽) 4 예시 답안 2 — 차이가 나는 까닭은 마찰력. 교과서 예시 답안은 A′에서도 ‘등압선에 나란하게’라고 쓰지만, 상층 일기도에서는 등고선에 나란하다. 지도 방안: A 지점 주변의 등압선과 A′ 지점 주변의 등고선 분포를 고려해 A 지점을 지나는 등압선과 A′ 지점을 지나는 등고선의 수직 방향으로 기압 경도력을 표시해 보도록 지도한다. 실제 일기도를 통해 같은 지점이어도 지상과 상층에서 부는 바람의 방향이나 세기가 다를 수 있음을 이해하도록 지도한다. 화살표는 앞의 두 장과 같은 방향(A 기압 경도력 40°·바람 100°, A′ 기압 경도력 2°·바람 92°)과 같은 비율(기압 경도력은 같은 길이, A의 바람 = A′의 바람 × cos 30° — 상층의 바람이 더 빠름). 그림을 누르면 일기도를 크게 볼 수 있음(화살표 없이). 디지털 탐색: 기상청 날씨누리(https://www.weather.go.kr)에서 지상 일기도와 상층 일기도를 찾아볼 수 있다.">
+<section class="slide" id="s23c" data-tile="light" data-title="해 보기 — 문제 1·2 해설" data-notes="앞의 두 장에서 A와 A′를 하나씩 분석한 것을 교과서 107쪽 일기도 위에서 정리합니다. 클릭 1 A·A′의 기압 경도력(빨강): A는 북동쪽(1012 hPa 등압선과 저기압을 둘러싼 1008 hPa 등압선 사이, 등압선에 수직), A′는 거의 북쪽(5700 m와 5760 m 등고선 사이, 등고선에 수직) 2 예시 답안 1 3 A·A′의 바람(청록): A는 기압 경도력의 오른쪽으로 등압선을 비스듬하게 가로질러(경각 30°로 그림), A′는 기압 경도력의 오른쪽 직각 방향으로 등고선에 나란하게(동쪽) 4 예시 답안 2 — 차이가 나는 까닭은 마찰력. 교과서 예시 답안은 A′에서도 ‘등압선에 나란하게’라고 쓰지만, 상층 일기도에서는 등고선에 나란하다. 지도 방안: A 지점 주변의 등압선과 A′ 지점 주변의 등고선 분포를 고려해 A 지점을 지나는 등압선과 A′ 지점을 지나는 등고선의 수직 방향으로 기압 경도력을 표시해 보도록 지도한다. 실제 일기도를 통해 같은 지점이어도 지상과 상층에서 부는 바람의 방향이나 세기가 다를 수 있음을 이해하도록 지도한다. 화살표는 앞의 두 장과 같은 방향(A 기압 경도력 40°·바람 100°, A′ 기압 경도력 2°·바람 92°)과 같은 비율(기압 경도력은 같은 길이, A의 바람 = A′의 바람 × cos 30° — 상층의 바람이 더 빠름). 그림을 누르면 일기도를 크게 볼 수 있음(화살표 없이). 디지털 탐색: 기상청 날씨누리(https://www.weather.go.kr)에서 지상 일기도와 상층 일기도를 찾아볼 수 있다.">
   <div class="hd" data-in><div class="eb"><b>5</b>일기도</div><h2>해 보기 — 문제 1·2 해설</h2></div>
   <figure class="pic" id="s23c-f1" style="left:120px;top:250px;width:560px;height:410px" data-in="200" data-fx="fade"><img src="img/III.05/p107_지상_일기도.png" alt="지상 일기도(단위: hPa)"></figure>
   <figure class="pic" id="s23c-f2" style="left:720px;top:250px;width:560px;height:410px" data-in="320" data-fx="fade"><img src="img/III.05/p107_상층_일기도.png" alt="상층 500 hPa 등압면 일기도(단위: m)"></figure>
@@ -896,13 +924,13 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
 </section>
 
 <!-- ═══ s24 헷갈리는 개념 짚기 ═══ -->
-<section class="slide" id="s24" data-tile="light" data-title="헷갈리는 개념 짚기" data-notes="위 표는 완자 ‘상층과 지상의 바람 비교’ 표와 교과서 104~106쪽 문장. 클릭 1~3 한 열씩 채워지며 그 바람을 강조: 지균풍(기압 경도력 = 전향력, 등압선에 나란) → 경도풍(+ 구심력, 등압선이 원형·곡선일 때) → 지상풍(+ 마찰력, 등압선을 비스듬하게 가로지름). 되묻기: 세 바람에 모두 작용하는 힘은? → 기압 경도력과 전향력. 무엇이 더해지면 바람이 등압선을 가로지르나? → 마찰력. 클릭 4~6 흔한 생각에 줄이 그어지고 바른 설명이 나옴. 4 전향력은 운동 방향에 늘 직각으로 작용하므로 속력을 바꾸지 못하고 방향만 바꾼다(완자 주의해). 되묻기: 그럼 지균풍의 풍속은 무엇이 정하나? → 기압 경도력(전향력이 기압 경도력과 같아질 만큼 빨라진다). 5 전향력은 지구 자전 때문에 나타나는 가상의 힘(코리올리 힘), 원심력도 전향력과 같은 가상의 힘이다. 구심력은 실제로 작용하는 힘(교과서 보충). 6 상층에서는 마찰력이 거의 없어 기압 경도력과 전향력이 평형 — 바람은 고기압에서 저기압으로 곧장 불지 않고 등압선에 나란하게 분다(지균풍). 되묻기: 지상에서는? → 마찰력 때문에 등압선을 비스듬하게 가로질러 저기압 쪽으로 분다.">
+<section class="slide" id="s24" data-tile="parchment" data-title="헷갈리는 개념 짚기" data-notes="위 표는 완자 ‘상층과 지상의 바람 비교’ 표와 교과서 104~106쪽 문장. 클릭 1~3 한 열씩 채워지며 그 바람을 강조: 지균풍(기압 경도력 = 전향력, 등압선에 나란) → 경도풍(+ 원심력, 등압선이 원형·곡선일 때) → 지상풍(+ 마찰력, 등압선을 비스듬하게 가로지름). 되묻기: 세 바람에 모두 작용하는 힘은? → 기압 경도력과 전향력. 무엇이 더해지면 바람이 등압선을 가로지르나? → 마찰력. 클릭 4~6 흔한 생각에 줄이 그어지고 바른 설명이 나옴. 4 전향력은 운동 방향에 늘 직각으로 작용하므로 속력을 바꾸지 못하고 방향만 바꾼다(완자 주의해). 되묻기: 그럼 지균풍의 풍속은 무엇이 정하나? → 기압 경도력(전향력이 기압 경도력과 같아질 만큼 빨라진다). 5 전향력은 지구 자전 때문에 나타나는 가상의 힘(코리올리 힘), 원심력도 전향력과 같은 가상의 힘이다. 구심력은 실제로 작용하는 힘(교과서 보충). 이 수업의 바람 그림에 원심력을 그린 것은 공기 덩어리와 함께 움직이며 보았기 때문이다(구심력 vs 원심력 장). 6 상층에서는 마찰력이 거의 없어 기압 경도력과 전향력이 평형 — 바람은 고기압에서 저기압으로 곧장 불지 않고 등압선에 나란하게 분다(지균풍). 되묻기: 지상에서는? → 마찰력 때문에 등압선을 비스듬하게 가로질러 저기압 쪽으로 분다.">
   <div class="hd" data-in><div class="eb"><b>3</b>상층의 바람</div><h2>헷갈리는 개념 짚기</h2></div>
   <table class="tbl" id="s24-tb" data-in="200" data-fx="fade">
     <thead><tr><th style="text-align:left">구분</th><th class="cA">지균풍</th><th class="cB">경도풍</th><th class="cC">지상풍</th></tr></thead>
     <tbody>
       <tr><th>위치</th><td class="cA"><span class="v" data-step="1" data-fx="fade">높이 약 1 km 이상</span></td><td class="cB"><span class="v" data-step="2" data-fx="fade">높이 약 1 km 이상</span></td><td class="cC"><span class="v" data-step="3" data-fx="fade">높이 약 1 km 이내</span></td></tr>
-      <tr><th>작용하는 힘</th><td class="cA"><span class="v" data-step="1" data-fx="fade"><b class="c-pgf">기압 경도력</b>, <b class="c-cor">전향력</b></span></td><td class="cB"><span class="v" data-step="2" data-fx="fade"><b class="c-pgf">기압 경도력</b>, <b class="c-cor">전향력</b>, <b class="c-cen">구심력</b></span></td><td class="cC"><span class="v" data-step="3" data-fx="fade"><b class="c-pgf">기압 경도력</b>, <b class="c-cor">전향력</b>, <b class="c-fric">마찰력</b></span></td></tr>
+      <tr><th>작용하는 힘</th><td class="cA"><span class="v" data-step="1" data-fx="fade"><b class="c-pgf">기압 경도력</b>, <b class="c-cor">전향력</b></span></td><td class="cB"><span class="v" data-step="2" data-fx="fade"><b class="c-pgf">기압 경도력</b>, <b class="c-cor">전향력</b>, <b class="c-cen">원심력</b></span></td><td class="cC"><span class="v" data-step="3" data-fx="fade"><b class="c-pgf">기압 경도력</b>, <b class="c-cor">전향력</b>, <b class="c-fric">마찰력</b></span></td></tr>
       <tr><th>풍향</th><td class="cA"><span class="v f" data-step="1" data-fx="fade"><svg class="ic" id="s24-i1" viewBox="0 0 84 48"></svg>등압선에 나란하게 분다</span></td><td class="cB"><span class="v f" data-step="2" data-fx="fade"><svg class="ic" id="s24-i2" viewBox="0 0 84 48"></svg>등압선에 나란하게 분다</span></td><td class="cC"><span class="v f" data-step="3" data-fx="fade"><svg class="ic" id="s24-i3" viewBox="0 0 84 48"></svg><span>등압선을 비스듬하게<br>가로질러 분다</span></span></td></tr>
     </tbody>
   </table>
@@ -922,7 +950,7 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
 </section>
 
 <!-- ═══ s25 스스로 확인하기 — 여러 가지 바람 ═══ -->
-<section class="slide" id="s25" data-tile="parchment" data-title="스스로 확인하기 — 여러 가지 바람" data-notes="교과서 107쪽 스스로 확인하기 1~3. 문제 세 개를 먼저 보여 주고 학생 답을 들은 뒤, 클릭할 때마다 예시 답안이 하나씩 나옵니다. 예시 답안은 교과서(교사용) 그대로. 3번 그림: 구름은 상층의 바람에 의해 남서쪽에서 북동쪽으로 이동(청록 화살표). 클릭 3에서 예시 답안과 함께 등압선(구름 이동 방향과 나란), 북서쪽 저기압, 남동쪽 고기압이 나타남 — 북반구 상층에서는 바람을 등지고 서면 왼쪽이 저기압(기압 경도력의 오른쪽 직각으로 바람이 불기 때문). 1번 덧붙일 말: 지균풍 풍속 식에서 sin(위도)가 분모에 있으므로 위도가 낮을수록 빠르다(적도 부근에서는 지균풍이 성립하지 않음).">
+<section class="slide" id="s25" data-tile="light" data-title="스스로 확인하기 — 여러 가지 바람" data-notes="교과서 107쪽 스스로 확인하기 1~3. 문제 세 개를 먼저 보여 주고 학생 답을 들은 뒤, 클릭할 때마다 예시 답안이 하나씩 나옵니다. 예시 답안은 교과서(교사용) 그대로. 3번 그림: 구름은 상층의 바람에 의해 남서쪽에서 북동쪽으로 이동(청록 화살표). 클릭 3에서 예시 답안과 함께 등압선(구름 이동 방향과 나란), 북서쪽 저기압, 남동쪽 고기압이 나타남 — 북반구 상층에서는 바람을 등지고 서면 왼쪽이 저기압(기압 경도력의 오른쪽 직각으로 바람이 불기 때문). 1번 덧붙일 말: 지균풍 풍속 식에서 sin(위도)가 분모에 있으므로 위도가 낮을수록 빠르다(적도 부근에서는 지균풍이 성립하지 않음).">
   <div class="hd" data-in><div class="eb"><b>5</b>일기도</div><h2>스스로 확인하기 — 여러 가지 바람</h2></div>
   <div class="sc-list">
     <div class="sc-q" data-in="300"><span class="no">1</span><span><b>기압 경도력</b>의 크기가 같을 때 <b>지균풍</b>의 <b>풍속</b>은 위도에 따라 어떻게 달라지는지 설명해 보자.</span>
@@ -947,7 +975,7 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
 /* ═══ 장면: 기압의 연직 분포와 대기를 움직이는 힘 · 여러 가지 바람 수업 ═══ */
 const {U}=Deck;
 window.KW={items:['정역학 평형','대기를 움직이는 힘','상층의 바람','지상의 바람','일기도'],
-  at:[-1,-1,0,0,0,0,0,1,1,1,1,1,1,1,2,2,2,2,2,2,3,3,3,4,4,4,4,4,2,4]};
+  at:[-1,-1,0,0,0,0,0,1,1,1,1,1,1,1,1,2,2,2,2,2,2,3,3,3,4,4,4,4,4,2,4]};
 const $id=id=>document.getElementById(id);
 const TAU=Math.PI*2, D2R=Math.PI/180;
 const f1=v=>(+v).toFixed(1);
@@ -1026,9 +1054,9 @@ function redraw(holder,key,make){if(holder.__k===key)return;holder.__k=key;while
 
 /* ═══ 이 수업(III.04~05)의 공용 도구 ═══ */
 /* 색(SVG 속성용): C = 밝은 면 글자·선, CF = 넓은 면·굵은 화살표 채우기. CSS 변수 --pgf 등과 같은 색 약속 */
-const C={pgf:'#D70015',grav:'#B25000',cor:'#0060C0',cen:'#8944AB',fric:'#1E8B3E',wind:'#00796B',gray:'#6e6e73',iso:'#8e8e93',ink:'#1d1d1f',sub:'#3a3a3c'};
-const CF={pgf:'#FF453A',grav:'#FF9F0A',cor:'#0A84FF',cen:'#BF5AF2',fric:'#30D158',wind:'#2BD9C5'};
-const FNAME={pgf:'기압 경도력',grav:'중력',cor:'전향력',cen:'구심력',fric:'마찰력',wind:'바람'};
+const C={pgf:'#D70015',grav:'#B25000',cor:'#0060C0',cen:'#8944AB',cpt:'#8A6800',fric:'#1E8B3E',wind:'#00796B',gray:'#6e6e73',iso:'#8e8e93',ink:'#1d1d1f',sub:'#3a3a3c'};
+const CF={pgf:'#FF453A',grav:'#FF9F0A',cor:'#0A84FF',cen:'#BF5AF2',cpt:'#FFD60A',fric:'#30D158',wind:'#2BD9C5'};
+const FNAME={pgf:'기압 경도력',grav:'중력',cor:'전향력',cen:'원심력',cpt:'구심력',fric:'마찰력',wind:'바람'};
 /* 힘 화살표: kind = 'pgf'|'grav'|'cor'|'cen'|'fric'|'wind'. 모든 장의 힘 화살표 모양을 같게(굵기 7, 머리는 굵기에 비례).
    o.lab: 이름표 글자(기본 FNAME[kind]), o.lx/o.ly: 이름표 위치(기본: 끝 너머), o.fs: 글자 크기(기본 28), o.w: 굵기, o.bg: 이름표 테두리 바탕색, o.dash: 점선.
    돌려주는 값: 묶음 <g>(이름표 포함). 길이가 4px보다 짧으면 빈 묶음 */
@@ -2027,92 +2055,166 @@ Deck.scene('s11',{steps:4,
   go(c,k){c.k=k;if(k<=2)c.ts[k-1]=c.t;if(k===4)c.t4=c.t;s11draw(c,PRINT?.6:c.t);}
 });
 
-/* ═══ s12 구심력 ═══
-   공이 원 위를 등속으로 돎(각속도 일정, 이징 없음). 속도 v(진회색, 접선)와 구심력(보라, 중심 방향).
-   1단계: 지나간 자리 8곳에 흐린 구심력 화살표(늘 중심), 2단계: 흐린 v 화살표(방향이 계속 바뀜), 3단계: 아래 비교 두 칸(길이 ∝ v²/r) */
-const S12={cx:350,cy:214,r:150,br:18,per:7,lv:80,lc:72,
-  pn:[{x:20,y:430,w:320,h:304,cx:190},{x:360,y:430,w:320,h:304,cx:530}],pcy:600,pr:112,L0:20,v0:36};
+/* ═══ s12 원심력 ═══
+   처음: 물체 밖에서 본 모습 — 실에 묶인 공이 원 위를 등속으로 돎(각속도 일정, 이징 없음), 속도 v(진회색, 접선).
+   1단계: 물체와 함께 돌며 본 모습으로 바뀜 — 공은 오른쪽 자리에 멈춰 보이고 바닥 눈금이 반대(시계) 방향으로 돎. 원심력(보라)이 바깥쪽으로.
+   2단계: 실이 당기는 힘(회색, 중심 쪽)이 원심력과 같은 길이 → 공이 멈춰 보이는 것을 설명하려고 생각하는 힘(가상의 힘).
+   3단계: 아래 비교 두 칸(화살표 길이 ∝ v²/r, 방향은 바깥쪽) */
+const S12={cx:350,cy:236,r:140,br:18,per:7,lv:80,lf:90,
+  pn:[{x:20,y:430,w:320,h:304,cx:175,pr:110},{x:360,y:430,w:320,h:304,cx:495,pr:90}],pcy:606,L0:18,v0:36};
 const s12U=a=>({x:Math.cos(a*D2R),y:-Math.sin(a*D2R)});   // 화면 좌표의 단위 벡터(a: 수학 각, 시계 반대 방향이 +)
-function s12forces(par,a){   // 공 위치 a(도)에서 v·구심력 화살표. 운동 방향(시계 반대 방향의 접선) = 화면 (-sin, -cos)
-  const {cx,cy,r,br}=S12,u=s12U(a),X=cx+r*u.x,Y=cy+r*u.y,vx=-Math.sin(a*D2R),vy=-Math.cos(a*D2R);
-  farrow(par,X-u.x*(br+2),Y-u.y*(br+2),X-u.x*(br+2+S12.lc),Y-u.y*(br+2+S12.lc),'cen',{lab:false});
-  farrow(par,X+vx*(br+2),Y+vy*(br+2),X+vx*(br+2+S12.lv),Y+vy*(br+2+S12.lv),'v',{col:C.sub,lab:false});
-  return {X,Y,vx,vy,u};
+/* 바닥 무늬(원 둘레의 눈금 + 안쪽 점): 함께 돌며 볼 때 이 묶음을 시계 방향으로 돌림(s12b도 씀) */
+function s12floor(par,cx,cy,r,dots=true){
+  const g=svgEl('g',{},par);
+  for(let i=0;i<12;i++){const u=s12U(i*30+15),L=i%3?8:13;
+    svgEl('line',{x1:f1(cx+u.x*(r-L)),y1:f1(cy+u.y*(r-L)),x2:f1(cx+u.x*(r+L)),y2:f1(cy+u.y*(r+L)),stroke:'#8e8e93','stroke-width':3,'stroke-linecap':'round'},g);}
+  if(dots)[[50,.58],[170,.58],[290,.58],[110,.3],[230,.3],[350,.3]].forEach(([a,k])=>{const u=s12U(a);svgEl('circle',{cx:f1(cx+u.x*r*k),cy:f1(cy+u.y*r*k),r:5,fill:'#c7c7cc'},g);});
+  return g;
+}
+const s12rot=(g,deg,cx,cy)=>g.setAttribute('transform','rotate('+(deg%360).toFixed(2)+' '+cx+' '+cy+')');
+/* st = {mix 0(물체 밖) → 1(함께 돌며), A 공의 각(도), bg 바닥이 돈 각(도), F1 원심력(0~1), F2 실이 당기는 힘(0~1)}. R = {live, tri, fl, cap} */
+function s12draw(R,st){
+  const {cx,cy,r,br,lv,lf}=S12,g=R.live,m=st.mix,oo=clamp(1-2*m,0,1),ro=clamp(2*m-1,0,1);
+  E_clear(g);s12rot(R.fl,st.bg,cx,cy);
+  R.tri.setAttribute('opacity',oo.toFixed(2));
+  R.cap.textContent=m<.5?'물체 밖에서 볼 때':'물체와 함께 돌며 볼 때';R.cap.setAttribute('opacity',Math.max(oo,ro).toFixed(2));
+  if(oo>0){   // 물체 밖에서 볼 때: 공이 돎
+    const a=st.A%360,u=s12U(a),X=cx+r*u.x,Y=cy+r*u.y,vx=-Math.sin(a*D2R),vy=-Math.cos(a*D2R),G=svgEl('g',{opacity:oo.toFixed(2)},g);
+    svgEl('line',{x1:cx,y1:cy,x2:f1(X),y2:f1(Y),stroke:'#6e6e73','stroke-width':3},G);
+    D_it(G,cx+u.x*r*.7+vx*24,cy+u.y*r*.7+vy*24+10,'r',32,C.sub,{at:halo('#fff',6)});   // 실의 바깥쪽 부분 옆(어느 각도에서도 '중심' 글자와 떨어지게)
+    farrow(G,X+vx*(br+2),Y+vy*(br+2),X+vx*(br+2+lv),Y+vy*(br+2+lv),'v',{col:C.sub,lab:false});
+    D_it(G,X+vx*(br+lv+22),Y+vy*(br+lv+22)+11,'v',34,C.sub,{at:halo('#fff',6)});
+    svgEl('circle',{cx:f1(X),cy:f1(Y),r:br,fill:'#d1d1d6',stroke:'#6e6e73','stroke-width':3},G);
+  }
+  if(ro>0){   // 물체와 함께 돌며 볼 때: 공은 오른쪽 자리에 멈춰 보임
+    const X=cx+r,Y=cy,G=svgEl('g',{opacity:ro.toFixed(2)},g),T={'font-size':30,'font-weight':800};
+    svgEl('line',{x1:cx,y1:cy,x2:X,y2:Y,stroke:'#6e6e73','stroke-width':3},G);
+    D_it(G,cx+30,cy+38,'r',32,C.sub,{at:halo('#fff',6)});
+    if(st.F2>0){farrow(G,X-br-2,Y,X-br-2-lf*st.F2,Y,'t',{col:C.gray,lab:false});
+      if(st.F2>=1)txt(G,X-br-4,Y-26,'실이 당기는 힘',Object.assign({fill:C.gray,'text-anchor':'end'},T,halo('#fff',7)));}
+    if(st.F1>0){farrow(G,X+br+2,Y,X+br+2+lf*st.F1,Y,'cen',{lab:false});
+      if(st.F1>=1)txt(G,X+br+6,Y-26,'원심력',Object.assign({fill:C.cen,'text-anchor':'start'},T,halo('#fff',7)));}
+    svgEl('circle',{cx:X,cy:Y,r:br,fill:'#d1d1d6',stroke:'#6e6e73','stroke-width':3},G);
+  }
 }
 (function(){
   const svg=$id('s12-svg');if(!svg)return;
   const {cx,cy,r}=S12;
   svgEl('circle',{cx,cy,r,fill:'none',stroke:'#8e8e93','stroke-width':3},svg);
+  const fl=s12floor(svg,cx,cy,r);fl.id='s12-fl';
+  const tri=svgEl('g',{id:'s12-tri'},svg);
   [45,135,225,315].forEach(a=>{const u=s12U(a),vx=-Math.sin(a*D2R),vy=-Math.cos(a*D2R),X=cx+r*u.x,Y=cy+r*u.y;   // 원 위의 방향 표시(시계 반대 방향)
-    svgEl('polygon',{points:[[X+vx*11,Y+vy*11],[X-vx*7+u.x*8,Y-vy*7+u.y*8],[X-vx*7-u.x*8,Y-vy*7-u.y*8]].map(p=>f1(p[0])+','+f1(p[1])).join(' '),fill:'#8e8e93'},svg);});
-  svgEl('g',{id:'s12-gc'},svg);svgEl('g',{id:'s12-gv'},svg);
-  svgEl('g',{id:'s12-live'},svg);
+    svgEl('polygon',{points:[[X+vx*11,Y+vy*11],[X-vx*7+u.x*8,Y-vy*7+u.y*8],[X-vx*7-u.x*8,Y-vy*7-u.y*8]].map(p=>f1(p[0])+','+f1(p[1])).join(' '),fill:'#8e8e93'},tri);});
+  const live=svgEl('g',{id:'s12-live'},svg);
   svgEl('circle',{cx,cy,r:6,fill:C.ink},svg);
-  txt(svg,cx,cy+44,'중심',Object.assign({'font-size':30,'font-weight':800,fill:C.ink,'text-anchor':'middle'},halo('#fff',7)));
-  // 3단계 비교 두 칸 — 화살표 길이 = L0 × (v/v0)² ÷ (r/r0): r/2 → 2 L0, 2v → 4 L0 (공 가장자리에서 잼)
-  const P=svgEl('g',{id:'s12-pn','data-step':3,'data-fx':'fade'},svg),{pcy,pr,L0,v0}=S12,IT={style:D_IT};
+  txt(svg,cx-14,cy+10,'중심',Object.assign({'font-size':28,'font-weight':800,fill:C.ink,'text-anchor':'end'},halo('#fff',7)));
+  const cap=txt(svg,24,46,'',{id:'s12-cap','font-size':28,'font-weight':800,fill:C.sub});
+  // 3단계 비교 두 칸 — 원심력 화살표 길이 = L0 × (v/v0)² ÷ (r/r0): r/2 → 2 L0, 2v → 4 L0 (공 가장자리에서 바깥쪽으로)
+  const P=svgEl('g',{id:'s12-pn','data-step':3,'data-fx':'fade'},svg),{pcy,L0,v0}=S12,IT={style:D_IT};
   const ball=(x,y)=>svgEl('circle',{cx:x,cy:y,r:9,fill:'#d1d1d6',stroke:'#6e6e73','stroke-width':2.5},P);
   const dash=(x1,y1,x2,y2)=>svgEl('line',{x1,y1,x2,y2,stroke:'#8e8e93','stroke-width':2,'stroke-dasharray':'5 5'},P);
+  const mul=(x,y,s)=>txt(P,x,y,s,{'font-size':28,'font-weight':800,fill:C.cen,'text-anchor':'middle'});
   S12.pn.forEach((q,j)=>{
     svgEl('rect',{x:q.x,y:q.y,width:q.w,height:q.h,rx:16,fill:'#f5f5f7'},P);
     const tt=txt(P,q.x+20,q.y+36,'',{'font-size':28,'font-weight':800,fill:C.ink});
     svgEl('tspan',IT,tt).textContent=j?'r':'v';svgEl('tspan',{},tt).textContent=j?'이 같을 때':'가 같을 때';
-    const X=q.cx,Yt=pcy-pr;
+    const X=q.cx,pr=q.pr,XL=X-pr;
     svgEl('circle',{cx:X,cy:pcy,r:pr,fill:'none',stroke:'#8e8e93','stroke-width':2.5},P);
-    // 위 공: v0, r → 구심력 L0
-    ball(X,Yt);farrow(P,X,Yt+11,X,Yt+11+L0,'cen',{lab:false,w:6});farrow(P,X-11,Yt,X-11-v0,Yt,'v',{col:C.sub,lab:false,w:6});D_it(P,X-11-v0-8,Yt+9,'v',28,C.sub,{a:'end'});
-    if(!j){   // 안쪽 원(반지름 r/2) 오른쪽 공: v0 → 2 L0
+    // 왼쪽 공(기준): v0, r → 원심력 L0 (왼쪽 = 바깥쪽), 속도는 아래쪽(시계 반대 방향)
+    ball(XL,pcy);farrow(P,XL-11,pcy,XL-11-L0,pcy,'cen',{lab:false,w:6});farrow(P,XL,pcy+11,XL,pcy+11+v0,'v',{col:C.sub,lab:false,w:6});D_it(P,XL+16,pcy+11+v0+2,'v',28,C.sub,{a:'start'});
+    if(!j){   // 안쪽 원(반지름 r/2)의 오른쪽 공: v0 → 2 L0
       const ri=pr/2,Xi=X+ri;
       svgEl('circle',{cx:X,cy:pcy,r:ri,fill:'none',stroke:'#8e8e93','stroke-width':2.5},P);
-      dash(X,pcy,X,Yt);dash(X,pcy,Xi,pcy);
-      D_it(P,X+12,pcy-78,'r',28,C.sub,{a:'start'});
-      const t2=txt(P,X+ri/2,pcy+34,'',{'font-size':28,fill:C.sub,'text-anchor':'middle'});svgEl('tspan',IT,t2).textContent='r';svgEl('tspan',{style:"font-family:KaTeX_Main,'Times New Roman',serif"},t2).textContent='/2';
-      ball(Xi,pcy);farrow(P,Xi-11,pcy,Xi-11-2*L0,pcy,'cen',{lab:false,w:6});farrow(P,Xi,pcy-11,Xi,pcy-11-v0,'v',{col:C.sub,lab:false,w:6});D_it(P,Xi,pcy-11-v0-12,'v',28,C.sub);
-      txt(P,Xi-11-L0,pcy-20,'×2',{'font-size':28,'font-weight':800,fill:C.cen,'text-anchor':'middle'});
-    }else{   // 같은 원 아래 공: 2 v0 → 4 L0
-      const Yb=pcy+pr;dash(X,pcy,X+pr,pcy);D_it(P,X+pr/2,pcy-12,'r',28,C.sub);
-      ball(X,Yb);farrow(P,X,Yb-11,X,Yb-11-4*L0,'cen',{lab:false,w:6});farrow(P,X+11,Yb,X+11+2*v0,Yb,'v',{col:C.sub,lab:false,w:6});
-      const t3=txt(P,X+11+2*v0+10,Yb+9,'2',{'font-size':28,fill:C.sub});svgEl('tspan',IT,t3).textContent='v';
-      txt(P,X-14,Yb-11-2*L0+10,'×4',{'font-size':28,'font-weight':800,fill:C.cen,'text-anchor':'end'});
+      dash(XL,pcy,X,pcy);dash(X,pcy,Xi,pcy);
+      D_it(P,X-ri-pr/4,pcy-12,'r',28,C.sub);
+      const t2=txt(P,X+ri/2-4,pcy+32,'',{'font-size':28,fill:C.sub,'text-anchor':'middle'});svgEl('tspan',IT,t2).textContent='r';svgEl('tspan',{style:"font-family:KaTeX_Main,'Times New Roman',serif"},t2).textContent='/2';
+      ball(Xi,pcy);farrow(P,Xi+11,pcy,Xi+11+2*L0,pcy,'cen',{lab:false,w:6});farrow(P,Xi,pcy-11,Xi,pcy-11-v0,'v',{col:C.sub,lab:false,w:6});D_it(P,Xi+16,pcy-11-v0+14,'v',28,C.sub,{a:'start'});
+      mul(Xi+11+L0,pcy+40,'×2');
+    }else{   // 같은 원의 오른쪽 공: 2 v0 → 4 L0
+      const XR=X+pr;dash(X,pcy,XR,pcy);D_it(P,X+pr/2,pcy-12,'r',28,C.sub);
+      ball(XR,pcy);farrow(P,XR+11,pcy,XR+11+4*L0,pcy,'cen',{lab:false,w:6});farrow(P,XR,pcy-11,XR,pcy-11-2*v0,'v',{col:C.sub,lab:false,w:6});
+      const t3=txt(P,XR-14,pcy-11-2*v0+24,'2',{'font-size':28,fill:C.sub,'text-anchor':'end'});svgEl('tspan',IT,t3).textContent='v';
+      mul(XR+11+2*L0,pcy+40,'×4');
     }
   });
+  s12draw({live,tri,fl,cap},{mix:1,A:20,bg:0,F1:1,F2:1});   // 원본(목차 썸네일)에는 다 나온 모습
 })();
-function s12ghost(c,j,kind){
-  const key=kind+j;if(c.gh[key])return;c.gh[key]=1;
-  const a=j*45,{cx,cy,r,br}=S12,u=s12U(a),X=cx+r*u.x,Y=cy+r*u.y,vx=-Math.sin(a*D2R),vy=-Math.cos(a*D2R);
-  const g=svgEl('g',{opacity:0},kind==='c'?c.gc:c.gv);
-  if(kind==='c')farrow(g,X-u.x*(br+2),Y-u.y*(br+2),X-u.x*(br+2+S12.lc),Y-u.y*(br+2+S12.lc),'cen',{lab:false});
-  else farrow(g,X+vx*(br+2),Y+vy*(br+2),X+vx*(br+2+S12.lv),Y+vy*(br+2+S12.lv),'v',{col:C.sub,lab:false});
-  svgEl('circle',{cx:f1(X),cy:f1(Y),r:br,fill:'none',stroke:'#aeaeb2','stroke-width':2,'stroke-dasharray':'4 4'},g);
-  if(c.instant||PRINT)g.setAttribute('opacity',.3);else c.fd.push([g,c.A]);   // 나타나기는 루프에서(트윈을 쓰면 클릭이 '빨리 감기'로 먹힘)
-}
-function s12draw(c,A){
-  const {cx,cy,r,br}=S12,a=A%360,g=c.live;
-  while(g.firstChild)g.firstChild.remove();
-  const u=s12U(a),X=cx+r*u.x,Y=cy+r*u.y,vx=-Math.sin(a*D2R),vy=-Math.cos(a*D2R);
-  // 반지름 r: 중심~공 선과 그 위(운동 방향 쪽)의 점선 호
-  svgEl('line',{x1:cx,y1:cy,x2:f1(X),y2:f1(Y),stroke:'#6e6e73','stroke-width':2},g);
-  const mx=(cx+X)/2+vx*34,my=(cy+Y)/2+vy*34;
-  svgEl('path',{d:`M${cx} ${cy} Q${f1((cx+X)/2+vx*68)} ${f1((cy+Y)/2+vy*68)} ${f1(X)} ${f1(Y)}`,fill:'none',stroke:'#8e8e93','stroke-width':2,'stroke-dasharray':'6 6'},g);
-  D_it(g,mx+vx*16,my+vy*16+10,'r',32,C.sub,{at:halo('#fff',6)});
-  const f=s12forces(g,a);
-  // 이름표: 구심력은 화살표 가운데의 뒤쪽(지나온 쪽), v는 화살 끝 너머
-  const lx=X-u.x*(br+2+S12.lc/2)-vx*36,ly=Y-u.y*(br+2+S12.lc/2)-vy*36+10;
-  txt(g,f1(lx),f1(ly),'구심력',Object.assign({'font-size':30,'font-weight':800,fill:C.cen,'text-anchor':'middle'},halo('#fff',7)));
-  D_it(g,X+vx*(br+S12.lv+22),Y+vy*(br+S12.lv+22)+11,'v',34,C.sub,{at:halo('#fff',6)});
-  svgEl('circle',{cx:f1(X),cy:f1(Y),r:br,fill:'#d1d1d6',stroke:'#6e6e73','stroke-width':3},g);
-}
 Deck.scene('s12',{steps:3,
   enter(c){
-    c.k=0;c.A=0;c.gh={};c.fd=[];c.live=c.$('#s12-live');c.gc=c.$('#s12-gc');c.gv=c.$('#s12-gv');
-    s12draw(c,0);
-    if(!PRINT)c.loop((t,dt)=>{const A0=c.A;c.A+=360/S12.per*dt;
-      for(let m=Math.floor(A0/45)+1;m*45<=c.A;m++){const j=m%8;if(c.k>=1)s12ghost(c,j,'c');if(c.k>=2)s12ghost(c,j,'v');}
-      c.fd=c.fd.filter(([g,a0])=>{const e=Math.min(1,(c.A-a0)/26);g.setAttribute('opacity',f1(.3*e));return e<1;});
-      s12draw(c,c.A);});
+    c.R={live:c.$('#s12-live'),tri:c.$('#s12-tri'),fl:c.$('#s12-fl'),cap:c.$('#s12-cap')};
+    c.st={mix:0,A:20,bg:0,F1:0,F2:0};
+    c.D=()=>s12draw(c.R,c.st);c.D();
+    if(!PRINT)c.loop((t,dt)=>{const s=c.st,w=360/S12.per*dt;if(s.mix<.5)s.A+=w;else s.bg+=w;c.D();});   // 공이 시계 반대 방향으로 도는 만큼, 함께 돌며 보면 바닥이 시계 방향으로 돎
   },
-  go(c,k){c.k=k;
-    if(c.instant||PRINT){for(let j=0;j<8;j++){if(k>=1)s12ghost(c,j,'c');if(k>=2)s12ghost(c,j,'v');}}
+  async go(c,k){const s=c.st,D=c.D;
+    if(k===1){await c.tween(800,e=>{s.mix=e;D();});await c.tween(600,e=>{s.F1=e;D();},{ease:'out'});}
+    if(k===2)await c.tween(600,e=>{s.F2=e;D();},{ease:'out'});
+  }
+});
+
+/* ═══ s12b 구심력 vs 원심력 ═══
+   같은 등속 원운동을 두 칸으로. 왼쪽(물체 밖에서 볼 때): 공이 돎, 속도 v와 구심력(금색, 중심 쪽).
+   오른쪽(물체와 함께 돌며 볼 때): 공은 멈춰 보이고 바닥 눈금이 시계 방향으로 돎, 구심력(금색)과 원심력(보라, 바깥쪽)이 같은 길이.
+   1단계 화살표(방향) → 2단계 같은 길이 표시(크기) → 3단계 원심력을 점선으로 + 힘의 종류 이름 → 4단계 표의 바람 줄 */
+const S12B={cxA:410,cxB:500,cy:168,r:120,br:16,lv:52,lf:90,per:7};
+function s12bBuild(svg,cap,cx){
+  const {cy,r}=S12B;
+  svgEl('circle',{cx,cy,r,fill:'none',stroke:'#8e8e93','stroke-width':3},svg);
+  s12floor(svg,cx,cy,r,false).setAttribute('class','s12b-fl');
+  const live=svgEl('g',{class:'s12b-live'},svg);
+  svgEl('circle',{cx,cy,r:6,fill:C.ink},svg);
+  txt(svg,24,46,cap,{'font-size':28,'font-weight':800,fill:C.sub});
+  return live;
+}
+/* st = {A 공의 각(도), bg 바닥이 돈 각(도), F 힘 화살표(0~1), E 같은 길이 표시(0~1), G 힘의 종류(0~1)} */
+function s12bA(g,st){   // 물체 밖에서 볼 때
+  const {cxA:cx,cy,r,br,lv,lf}=S12B,a=st.A%360,u=s12U(a),X=cx+r*u.x,Y=cy+r*u.y,vx=-Math.sin(a*D2R),vy=-Math.cos(a*D2R);
+  E_clear(g);
+  svgEl('line',{x1:cx,y1:cy,x2:f1(X),y2:f1(Y),stroke:'#6e6e73','stroke-width':3},g);
+  D_it(g,cx+u.x*r*.42+vx*30,cy+u.y*r*.42+vy*30+10,'r',30,C.sub);
+  farrow(g,X+vx*(br+2),Y+vy*(br+2),X+vx*(br+2+lv),Y+vy*(br+2+lv),'v',{col:C.sub,lab:false});
+  D_it(g,X+vx*(br+lv+18),Y+vy*(br+lv+18)+10,'v',32,C.sub);
+  if(st.F>0){farrow(g,X-u.x*(br+2),Y-u.y*(br+2),X-u.x*(br+2+lf*st.F),Y-u.y*(br+2+lf*st.F),'cpt',{lab:false});
+    if(st.F>=1){   // 이름표: 글자 상자(88×30)가 화살표에서 떨어지고 네 귀퉁이가 원 둘레 눈금 안쪽(r − 16)에 들도록 자리를 잡음
+      const hw=44,hh=15,d=hw*Math.abs(vx)+hh*Math.abs(vy)+20,R2=(r-16)*(r-16);let q=r*.55,lx,ly;
+      for(;q>=0;q-=2){lx=u.x*q-vx*d;ly=u.y*q-vy*d;if([[-1,-1],[1,-1],[-1,1],[1,1]].every(([a,b])=>(lx+a*hw)**2+(ly+b*hh)**2<=R2))break;}
+      txt(g,f1(cx+lx),f1(cy+ly+10),'구심력',{'font-size':28,'font-weight':800,fill:C.cpt,'text-anchor':'middle'});}}
+  svgEl('circle',{cx:f1(X),cy:f1(Y),r:br,fill:'#d1d1d6',stroke:'#6e6e73','stroke-width':3},g);
+}
+function s12bB(g,fl,st){   // 물체와 함께 돌며 볼 때
+  const {cxB:cx,cy,r,br,lf}=S12B,X=cx+r,Y=cy,T={'font-size':28,'font-weight':800};
+  E_clear(g);s12rot(fl,st.bg,cx,cy);
+  svgEl('line',{x1:cx,y1:cy,x2:X,y2:Y,stroke:'#6e6e73','stroke-width':3},g);
+  if(st.F>0){const L=lf*st.F,x1=X-br-2,x2=X+br+2;
+    farrow(g,x1,Y,x1-L,Y,'cpt',{lab:false});
+    farrow(g,x2,Y,x2+L,Y,'cen',{lab:false,dash:st.G>0?'4 12':'none'});
+    if(st.F>=1){txt(g,x1-2,Y-24,'구심력',Object.assign({fill:C.cpt,'text-anchor':'end'},T));
+      txt(g,x2+2,Y-24,'원심력',Object.assign({fill:C.cen,'text-anchor':'start'},T));}
+    if(st.E>0){const y=Y+30,M=svgEl('g',{opacity:st.E.toFixed(2),stroke:C.gray,'stroke-width':2.5,'stroke-linecap':'round'},g);   // 같은 길이 표시(치수선 + 가운데 빗금 하나씩)
+      [[x1-lf,x1],[x2,x2+lf]].forEach(([a,b])=>{svgEl('line',{x1:a,y1:y,x2:b,y2:y},M);[a,b].forEach(x=>svgEl('line',{x1:x,y1:y-7,x2:x,y2:y+7},M));
+        svgEl('line',{x1:(a+b)/2-4,y1:y+9,x2:(a+b)/2+4,y2:y-9},M);});}
+    if(st.G>0){const Lg=svgEl('g',{opacity:st.G.toFixed(2)},g),A={'font-size':26,'font-weight':700};   // 힘의 종류(왼쪽 빈 자리의 범례: 실선 = 실제로 작용하는 힘, 점선 = 가상의 힘)
+      farrow(Lg,28,206,78,206,'cpt',{lab:false,w:6});txt(Lg,90,215,'실제로 작용하는 힘',Object.assign({fill:C.cpt},A));
+      farrow(Lg,28,254,78,254,'cen',{lab:false,w:6,dash:'4 11'});txt(Lg,90,263,'가상의 힘',Object.assign({fill:C.cen},A));}
+  }
+  svgEl('circle',{cx:X,cy:Y,r:br,fill:'#d1d1d6',stroke:'#6e6e73','stroke-width':3},g);
+}
+(function(){
+  const a=$id('s12b-A'),b=$id('s12b-B');if(!a||!b)return;
+  const la=s12bBuild(a,'물체 밖에서 볼 때',S12B.cxA),lb=s12bBuild(b,'물체와 함께 돌며 볼 때',S12B.cxB),full={A:35,bg:0,F:1,E:1,G:1};
+  s12bA(la,full);s12bB(lb,b.querySelector('.s12b-fl'),full);   // 원본(목차 썸네일)에는 다 나온 모습
+})();
+Deck.scene('s12b',{steps:4,
+  enter(c){
+    c.st={A:35,bg:0,F:0,E:0,G:0};c.la=c.$('#s12b-A .s12b-live');c.lb=c.$('#s12b-B .s12b-live');c.fl=c.$('#s12b-B .s12b-fl');
+    c.D=()=>{s12bA(c.la,c.st);s12bB(c.lb,c.fl,c.st);};c.D();
+    if(!PRINT)c.loop((t,dt)=>{const w=360/S12B.per*dt;c.st.A+=w;c.st.bg+=w;c.D();});   // 두 칸은 같은 각속도(왼쪽은 공이, 오른쪽은 바닥이 돎)
+  },
+  async go(c,k){const s=c.st,D=c.D;
+    c.$$('#s12b-tb tbody tr').forEach(r=>r.classList.toggle('cur',+r.dataset.r===k));
+    if(k===1)await c.tween(600,e=>{s.F=e;D();},{ease:'out'});
+    if(k===2)await c.tween(500,e=>{s.E=e;D();});
+    if(k===3)await c.tween(500,e=>{s.G=e;D();});
   }
 });
 
@@ -2471,27 +2573,26 @@ Deck.scene('s17',{steps:2,
 
 /* ════════ s18 경도풍 ════════
    교과서 그림 III-30(북반구)을 위에서 본 그림 두 칸으로. 저기압 칸: 844(안)·848·852 hPa, 고기압 칸: 852(안)·848·844 hPa.
-   승인된 비율(모식): 기압 경도력 3일 때 저기압 전향력 2·구심력 1, 고기압 전향력 4·구심력 1(모두 중심 방향의 구심력 = 두 힘의 차).
+   공기 덩어리와 함께 움직이며 본 힘: 기압 경도력, 전향력, 원심력(늘 바깥쪽)이 균형.
+   승인된 비율(모식): 기압 경도력 3일 때 저기압 전향력 2·원심력 1(전향력 + 원심력 = 기압 경도력), 고기압 전향력 4·원심력 1(기압 경도력 + 원심력 = 전향력).
    풍속 ∝ 전향력 → 저기압 2 : 지균풍 3 : 고기압 4. 같은 반지름이므로 도는 빠르기(각속도)도 2 : 4. 원운동은 등속 */
-const S18={c:230,R:[60,116,172],ro:144,u:22,uw:24,pr:16,off:13,w:TAU/14,
+const S18={c:230,R:[60,116,172],ro:144,u:22,uw:24,pr:16,off:8,cof:19,cop:.5,w:TAU/14,
   lo:{vals:[844,848,852],mk:'저',dir:1,pgf:-3,cor:2,sp:2},hi:{vals:[852,848,844],mk:'고',dir:-1,pgf:3,cor:-4,sp:4}};
-/* 한 칸의 덩어리와 화살표. st = {a 각도, on, gv 맞대기(0~1), gf 맞댄 화살표 보임(0~1), cen 구심력(0~1), wind 바람(0~1), F 힘 화살표 자람(0~1)} */
+/* 한 칸의 덩어리와 화살표. st = {a 각도, on, F 힘 화살표 자람(0~1), wind 바람(0~1),
+   o1·m1 바깥쪽 큰 힘의 흐린 복사본 보임·옮겨 감(0~1), o2·m2 원심력의 흐린 복사본}
+   복사본 둘을 중심 쪽 화살표 옆에 이어 붙이면(큰 힘 끝에 원심력) 중심 쪽 화살표와 길이가 같음 = 세 힘의 균형 */
 function s18parcel(g,K,st){
   E_clear(g);if(!st.on)return;
   const S=S18,T=S[K],c=S.c,a=st.a,ex=Math.cos(a),ey=-Math.sin(a),px=c+S.ro*ex,py=c+S.ro*ey,r=S.pr,u=S.u;
   const vx=T.dir>0?-Math.sin(a):Math.sin(a),vy=T.dir>0?-Math.cos(a):Math.cos(a);   // 운동 방향(저기압 시계 반대, 고기압 시계)
   const at=(s,o=0)=>[px+ex*s+vx*o,py+ey*s+vy*o];   // 바깥쪽 s(음수 = 중심 쪽), 운동 방향 쪽 o
-  const sg=v=>v>0?1:-1,F=st.F??1;
-  const arr=(L,kind,o,extra)=>{const s0=sg(L)*r,s1=sg(L)*(r+Math.abs(L)*u*F),p0=at(s0,o),p1=at(s1,o);farrow(g,p0[0],p0[1],p1[0],p1[1],kind,Object.assign({lab:false},extra||{}));};
+  const F=st.F??1,ko=T.dir>0?'cor':'pgf',ki=T.dir>0?'pgf':'cor',Lo=Math.abs(T[ko])*u,Li=Math.abs(T[ki])*u;   // 바깥쪽 큰 힘·중심 쪽 힘(Li = Lo + 원심력 u)
+  const seg=(par,s0,s1,o,kind)=>{const p0=at(s0,o),p1=at(s1,o);farrow(par,p0[0],p0[1],p1[0],p1[1],kind,{lab:false});};
   if(st.wind>0){const L=(r+T.sp*S.uw*st.wind),p0=[px+vx*r,py+vy*r],p1=[px+vx*L,py+vy*L];
     farrow(g,p0[0],p0[1],p1[0],p1[1],'wind',{lab:st.wind>=1?'경도풍':false,fs:28,bg:'#fff'});}
-  arr(T.pgf,'pgf',0);arr(T.cor,'cor',0);
-  if(st.gf>0){   // 작은 쪽(바깥쪽) 화살표의 복사본을 큰 쪽(중심 쪽) 화살표 끝에 맞댐
-    const Lo=T.dir>0?T.cor:T.pgf,Li=T.dir>0?T.pgf:T.cor,kind=T.dir>0?'cor':'pgf',e=st.gv;
-    const a0=at(r,0),a1=at(r+Lo*u,0),b0=at(-(r+Math.abs(Li)*u),S.off),b1=at(-(r+Math.abs(Li)*u)+Lo*u,S.off);
-    const q0=[lerp(a0[0],b0[0],e),lerp(a0[1],b0[1],e)],q1=[lerp(a1[0],b1[0],e),lerp(a1[1],b1[1],e)];
-    const gg=svgEl('g',{opacity:f1(st.gf)},g);farrow(gg,q0[0],q0[1],q1[0],q1[1],kind,{lab:false,dash:'9 7'});}
-  if(st.cen>0){const p0=at(-r,-S.off),p1=at(-(r+u*st.cen),-S.off);farrow(g,p0[0],p0[1],p1[0],p1[1],'cen',{lab:false});}
+  const copy=(kind,L,o0,s1,m,op)=>{if(!(op>0))return;const s=lerp(r,s1,m),o=lerp(o0,-S.cof,m);seg(svgEl('g',{opacity:op.toFixed(2)},g),s,s+L,o,kind);};
+  copy(ko,Lo,S.off,-(r+Li),st.m1,st.o1);copy('cen',u,-S.off,-(r+Li)+Lo,st.m2,st.o2);
+  seg(g,-r,-(r+Li*F),0,ki);seg(g,r,r+Lo*F,S.off,ko);seg(g,r,r+u*F,-S.off,'cen');
   svgEl('circle',{cx:f1(px),cy:f1(py),r:14,fill:'#fff',stroke:C.sub,'stroke-width':4},g);
 }
 function s18orbit(g,K,ph){   // 덩어리가 도는 길(점선이 흐르는 방향 = 바람 방향)
@@ -2511,7 +2612,7 @@ function s18panel(svg,K){
 (function(){
   const bl=$id('s18-lo'),bh=$id('s18-hi');if(!bl||!bh)return;
   s18panel(bl,'lo');s18panel(bh,'hi');
-  const full={on:true,a:0,gv:1,gf:0,cen:1,wind:1};
+  const full={on:true,a:0,m1:1,o1:S18.cop,m2:1,o2:S18.cop,wind:1};
   s18parcel(bl.querySelector('.s18-p'),'lo',full);s18parcel(bh.querySelector('.s18-p'),'hi',full);
   /* 풍속 비교 막대 */
   const b=$id('s18-bar');if(!b)return;
@@ -2521,23 +2622,24 @@ function s18panel(svg,K){
 })();
 Deck.scene('s18',{steps:4,
   enter(c){
-    c.lo={on:false,a:0,gv:0,gf:0,cen:0,wind:0,F:0};c.hi={on:false,a:0,gv:0,gf:0,cen:0,wind:0,F:0};c.ph=0;c.rotL=false;c.rotH=false;
+    const z=()=>({on:false,a:0,m1:0,o1:0,m2:0,o2:0,wind:0,F:0});
+    c.lo=z();c.hi=z();c.ph=0;
     c.gL=c.$('#s18-lo .s18-p');c.gH=c.$('#s18-hi .s18-p');c.oL=c.$('#s18-lo .s18-orb');c.oH=c.$('#s18-hi .s18-orb');
     [c.oL,c.oH].forEach(o=>o.setAttribute('opacity',0));
     c.$$('.s18-bv').forEach(e=>e.setAttribute('width',0));
     c.D=()=>{s18parcel(c.gL,'lo',c.lo);s18parcel(c.gH,'hi',c.hi);s18orbit(c.oL,'lo',c.ph*S18.ro*S18.w*S18.lo.sp/2);s18orbit(c.oH,'hi',c.ph*S18.ro*S18.w*S18.hi.sp/2);};
     c.D();
-    if(!PRINT)c.loop((t,dt)=>{c.ph+=dt;if(c.rotL)c.lo.a+=S18.w*S18.lo.sp/2*dt;if(c.rotH)c.hi.a-=S18.w*S18.hi.sp/2*dt;c.D();});
+    if(!PRINT)c.loop((t,dt)=>{c.ph+=dt;c.D();});
   },
   async go(c,k){
     const D=c.D;
     if(k===1){c.lo.on=c.hi.on=true;
       await c.tween(600,e=>{c.lo.F=c.hi.F=e;D();});
+      /* 저기압(식 이름표 2200 ms) → 고기압(4200 ms): 바깥쪽 큰 힘의 복사본을 중심 쪽 화살표 옆으로, 그 끝에 원심력의 복사본을 이어 붙임 */
       for(const K of ['lo','hi']){const s=c[K];
-        await c.wait(200);s.gf=1;
-        await c.tween(900,e=>{s.gv=e;D();},{ease:'inOut'});
-        await c.tween(500,e=>{s.cen=e;D();});
-        await c.tween(400,e=>{s.gf=1-e;D();});s.gf=0;D();}
+        await c.wait(K==='lo'?200:600);s.o1=S18.cop;
+        await c.tween(800,e=>{s.m1=e;D();},{ease:'inOut'});s.o2=S18.cop;
+        await c.tween(600,e=>{s.m2=e;D();},{ease:'inOut'});}
     }
     if(k===2||k===3){const K=k===2?'lo':'hi',s=c[K],o=k===2?c.oL:c.oH;
       c.tween(600,e=>o.setAttribute('opacity',f1(.55*e)));
@@ -3048,8 +3150,8 @@ Deck.scene('s25',{steps:3,
   g=$('s02-f1');if(g){txt(g,12,41,'고',{'font-size':24,'font-weight':800,fill:C.ink,'text-anchor':'middle'});txt(g,86,41,'저',{'font-size':24,'font-weight':800,fill:C.ink,'text-anchor':'middle'});
     farrow(g,28,32,70,32,'pgf',{lab:false,w:6});}
   g=$('s02-f2');if(g){farrow(g,30,60,30,8,'wind',{lab:false,w:5,col:C.sub});farrow(g,36,32,84,32,'cor',{lab:false,w:6});}
-  g=$('s02-f3');if(g){svgEl('circle',{cx:62,cy:32,r:26,fill:'none',stroke:C.iso,'stroke-width':2.5,'stroke-dasharray':'5 5'},g);
-    svgEl('circle',{cx:62,cy:32,r:4,fill:C.sub},g);farrow(g,30,32,56,32,'cen',{lab:false,w:6});svgEl('circle',{cx:36,cy:32,r:7,fill:'#fff',stroke:C.sub,'stroke-width':3},g);}
+  g=$('s02-f3');if(g){svgEl('circle',{cx:24,cy:32,r:20,fill:'none',stroke:C.iso,'stroke-width':2.5,'stroke-dasharray':'5 5'},g);   // 원심력: 원을 도는 공에서 바깥쪽으로
+    svgEl('circle',{cx:24,cy:32,r:4,fill:C.sub},g);farrow(g,53,32,92,32,'cen',{lab:false,w:6});svgEl('circle',{cx:44,cy:32,r:7,fill:'#fff',stroke:C.sub,'stroke-width':3},g);}
   g=$('s02-f4');if(g){svgEl('circle',{cx:48,cy:32,r:7,fill:'#fff',stroke:C.sub,'stroke-width':3},g);
     farrow(g,57,32,94,32,'wind',{lab:false,w:5,col:C.sub});farrow(g,39,32,4,32,'fric',{lab:false,w:6});}
   /* 3·4 바람(위에서 본 그림, 북반구, 저기압이 위쪽 또는 가운데) */
@@ -3154,7 +3256,7 @@ Deck.scene('s14a',{steps:3,
 /* ═════ 묶음 Q ═════ */
 /* ════════ s18a 경도풍의 풍속 ════════
    힘의 크기 막대(Stacked bar build). 단위 칸 u = 100 px, 앞 장(경도풍)과 같은 모식 비율:
-   기압 경도력 3 · 구심력 1 → 저기압성 경도풍 전향력 3 − 1 = 2, 지균풍 3, 고기압성 경도풍 3 + 1 = 4.
+   기압 경도력 3 · 원심력 1 → 저기압성 경도풍 전향력 3 − 1 = 2, 지균풍 3, 고기압성 경도풍 3 + 1 = 4.
    같은 위도에서 전향력 C = 2vΩ sinφ ∝ 풍속 v → 바람 화살표 길이 = 전향력 막대 길이(2 : 3 : 4).
    그림 좌표(viewBox 1680 × 440 = 화면 크기): 왼쪽 줄 이름 칸(0~240) + 세 칸(240·720·1200, 폭 480) */
 const S18A={W:1680,H:440,col:[240,720,1200],cw:480,ox:40,u:100,bh:44,yH:62,yP:166,yC:246,yW:332,yF:414,
@@ -3179,7 +3281,7 @@ function s18aHead(svg){
   svgEl('g',{id:'s18a-dyn'},svg);
 }
 /* 상태 st에 맞게 움직이는 부분을 다시 그림.
-   st = {lP,lC,lW 줄 이름(0~1), p 기압 경도력 막대(0~1), c:[{cen 구심력 빼기·더하기, cor 전향력 막대, eq 같은 크기 점선, cap 식, wind 바람 화살표}]} */
+   st = {lP,lC,lW 줄 이름(0~1), p 기압 경도력 막대(0~1), c:[{cen 원심력 빼기·더하기, cor 전향력 막대, eq 같은 크기 점선, cap 식, wind 바람 화살표}]} */
 function s18aDraw(g,st){
   const S=S18A;Q_clear(g);
   const lab=(y,s,col,o)=>{if(o>0)txt(g,S.ox,y+11,s,{'font-size':30,'font-weight':800,fill:col,opacity:f1(clamp(o,0,1))});};
@@ -3190,28 +3292,28 @@ function s18aDraw(g,st){
     /* 기압 경도력 3칸(세 바람 모두 같은 크기) */
     if(st.p>0){
       for(let n=0;n<3;n++){const w=clamp(st.p*3-n,0,1);if(w<=0)continue;
-        if(K.cen<0&&n===2&&q.cen>0){   // 저기압: 끝 1칸이 보라 점선으로 바뀌며 빠짐(구심력만큼 빠짐)
+        if(K.cen<0&&n===2&&q.cen>0){   // 저기압: 끝 1칸이 보라 점선으로 바뀌며 빠짐(원심력만큼 빠짐)
           const a=clamp(q.cen*2,0,1),b=clamp(q.cen*2-1,0,1);
           Q_cell(g,x0,n,S.yP,1,{fill:mixHex(CF.pgf,CF.cen,a),'fill-opacity':f1(1-.88*b)});
           if(b>0)Q_cell(g,x0,n,S.yP,1,{fill:'none',stroke:C.cen,'stroke-width':4,'stroke-dasharray':'10 7',opacity:f1(b)});
         }else Q_cell(g,x0,n,S.yP,w,{fill:CF.pgf});}
     }
-    if(K.cen>0&&q.cen>0)Q_cell(g,x0,3,S.yP,q.cen,{fill:CF.cen});   // 고기압: 구심력 1칸을 더함
+    if(K.cen>0&&q.cen>0)Q_cell(g,x0,3,S.yP,q.cen,{fill:CF.cen});   // 고기압: 원심력 1칸을 더함
     if(K.cen!==0&&q.cen>.5){const cxl=x0+(K.cen<0?2.5:3.5)*u;
-      txt(g,cxl,S.yP-S.bh/2-12,(K.cen<0?'− ':'+ ')+'구심력',{'font-size':28,'font-weight':800,fill:C.cen,'text-anchor':'middle',opacity:f1(clamp(q.cen*2-1,0,1))});}
+      txt(g,cxl,S.yP-S.bh/2-12,(K.cen<0?'− ':'+ ')+'원심력',{'font-size':28,'font-weight':800,fill:C.cen,'text-anchor':'middle',opacity:f1(clamp(q.cen*2-1,0,1))});}
     /* 전향력 막대 */
     if(q.cor>0)Q_bar(g,x0,S.yC,K.cor*q.cor,CF.cor);
-    /* 같은 크기 점선: 위 막대(기압 경도력 ∓ 구심력)의 끝 = 전향력 막대의 끝 → 아래로 늘이면 바람 화살표 끝 */
+    /* 같은 크기 점선: 위 막대(기압 경도력 ∓ 원심력)의 끝 = 전향력 막대의 끝 → 아래로 늘이면 바람 화살표 끝 */
     const xe=x0+K.cor*u-3,yt=S.yP-S.bh/2-4,yb=S.yC+S.bh/2+4;
     if(q.eq>0)svgEl('line',{x1:f1(xe),y1:f1(yt),x2:f1(xe),y2:f1(lerp(yt,yb,clamp(q.eq,0,1))),stroke:C.sub,'stroke-width':3,'stroke-dasharray':'6 6'},g);
     if(q.wind>0){
       const yw=S.yW,L=K.cor*u-3;
       svgEl('line',{x1:f1(xe),y1:f1(yb),x2:f1(xe),y2:f1(lerp(yb,yw-14,clamp(q.wind*1.6,0,1))),stroke:C.sub,'stroke-width':3,'stroke-dasharray':'6 6'},g);
       const e=clamp(q.wind*1.25-.25,0,1);if(e>0)farrow(g,x0,yw,x0+L*e,yw,'wind',{lab:false,w:12});}
-    /* 식: 전향력 = 기압 경도력 ∓ 구심력 */
+    /* 식: 전향력 = 기압 경도력 ∓ 원심력 */
     if(q.cap>0){const t=txt(g,x0,S.yF,'',{'font-size':30,'font-weight':800,fill:C.ink,opacity:f1(clamp(q.cap,0,1))});
       const sp=(s,col)=>{const e=svgEl('tspan',col?{fill:col}:{},t);e.textContent=s;};
-      sp('전향력',C.cor);sp(' = ');sp('기압 경도력',C.pgf);if(K.cen){sp(K.cen<0?' − ':' + ');sp('구심력',C.cen);}}
+      sp('전향력',C.cor);sp(' = ');sp('기압 경도력',C.pgf);if(K.cen){sp(K.cen<0?' − ':' + ');sp('원심력',C.cen);}}
   });
 }
 const S18A_FULL=()=>({lP:1,lC:1,lW:1,p:1,c:S18A.K.map(()=>({cen:1,cor:1,eq:1,cap:1,wind:1}))});
@@ -3227,7 +3329,7 @@ Deck.scene('s18a',{steps:5,
     if(k===1){   // 기압 경도력이 같을 때: 빨강 막대 셋이 같은 길이로 자람
       await c.tween(400,e=>{st.lP=e;D();});
       await c.tween(1100,e=>{st.p=e;D();},{ease:'out'});}
-    if(k===2){   // 구심력을 빼고(저기압) 더해(고기압) 전향력 막대 2 · 3 · 4
+    if(k===2){   // 원심력을 빼고(저기압) 더해(고기압) 전향력 막대 2 · 3 · 4
       c.tween(400,e=>{st.lC=e;D();});
       for(let i=0;i<3;i++){const q=st.c[i],K=S18A.K[i];
         if(K.cen)await c.tween(700,e=>{q.cen=e;D();},{ease:'inOut'});
