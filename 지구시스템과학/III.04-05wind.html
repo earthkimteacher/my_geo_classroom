@@ -8,6 +8,7 @@
 <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin></script>
+<script type="importmap">{"imports":{"three":"../engine/vendor/three@0.160.0/build/three.module.min.js","three/addons/":"../engine/vendor/three@0.160.0/examples/jsm/"}}</script>
 <!--
 ═══════════════════════════════════════════════════════════════════
  수업 슬라이드 — 엔진은 공용 파일 ../engine/deck.css · ../engine/deck.js(2026-11-05 떼어 냄), 이 파일에는 이 수업의 장·스타일·장면만 (외부 라이브러리 없음 — 글꼴만 CDN)
@@ -427,6 +428,136 @@ html.noans #s23c .s23c-a,html.noans #s23c .s23c-ov{visibility:hidden!important} 
 html.print #s23c .s23c-q,html.print #s23c .s23c-a{background:#f5f5f7}
 html.print #s23c .s23c-q.dimq{filter:none}
 html.print #s23c .s23c-q.cur{box-shadow:none}
+/* ── s11d 전향력 — 입체로 보기 (three.js 입체, 2026-11-17 덧붙임) ── */
+#s11d .v3{position:absolute;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#fdfdfd 0%,#eef1f5 100%);z-index:2;touch-action:none}
+#s11d .v3 .v3-gl{position:absolute;left:0;top:0;width:100%!important;height:100%!important;display:block}
+#s11d .v3 .v3-lab{position:absolute!important;left:0;top:0;cursor:grab}
+#s11d .v3 .v3-lab:active{cursor:grabbing}
+#s11d .v3-t{font-size:26px;font-weight:700;line-height:1.2;white-space:nowrap;padding:2px 10px;border-radius:9px;background:rgba(255,255,255,.82);color:#1d1d1f;pointer-events:none;letter-spacing:-.01em}
+#s11d .v3-t i{font-style:normal;font-weight:600;opacity:.75;font-size:24px}
+#s11d .v3-t.sm{font-size:24px;font-weight:600;background:rgba(255,255,255,.65)}
+#s11d .v3-t.b{font-size:28px;font-weight:800}
+#s11d .v3-t.hor{color:var(--hor)}#s11d .v3-t.ink{color:#1d1d1f}
+#s11d .v3-t.v3-hide{opacity:0!important}
+#s11d .ia-panel{position:absolute;left:auto;top:auto;width:auto;height:88px;display:flex;align-items:center;gap:26px;padding:0 26px;border-radius:18px;background:#fff;font-size:30px;font-weight:600;color:var(--ink);z-index:5}
+#s11d .ia-panel label{display:flex;align-items:center;gap:14px;white-space:nowrap}
+#s11d .ia-panel input[type=range]{width:190px;height:40px;accent-color:var(--act);cursor:pointer}
+#s11d .ia-panel .val{min-width:118px;font-variant-numeric:tabular-nums;color:var(--act);font-weight:700}
+#s11d .ia-btn{border:0;border-radius:12px;height:60px;padding:0 22px;font:inherit;font-size:28px;font-weight:700;color:#fff;background:#1d1d1f;cursor:pointer;white-space:nowrap}
+#s11d .ia-btn.sub{background:#d1d1d6;color:#1d1d1f}
+#s11d .ia-btn.on{background:var(--act)}
+#s11d{--cor:#0060C0;--act:#0066cc}
+#s11d .c-cor{color:var(--cor)}
+#s11d #s11d-v{left:0;top:0;width:1920px;height:1080px;border-radius:0;z-index:1;background:radial-gradient(ellipse at 55% 50%,#101a2c 0%,#05070c 70%)}
+html.print #s11d #s11d-v{background:#fff}
+#s11d .gl{background:rgba(255,255,255,.96);box-shadow:0 6px 24px rgba(0,0,0,.35);border-radius:20px;color:#1d1d1f}
+#s11d .hd{left:50px;top:40px;right:auto;padding:14px 28px 16px;z-index:4}
+#s11d .hd .eb{font-size:24px;margin-bottom:2px;color:#6e6e73}
+#s11d .hd h2{font-size:44px;color:#1d1d1f}
+#s11d #s11d-cap{position:absolute;left:50px;top:190px;width:560px;padding:22px 28px 24px;z-index:4;font-size:30px;line-height:1.45;font-weight:500;letter-spacing:-.015em;box-sizing:border-box}
+#s11d #s11d-cap .cp{display:none}
+#s11d #s11d-cap .cp.on{display:block;animation:s11din .45s ease both}
+@keyframes s11din{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+#s11d #s11d-cap .tm{display:block;font-size:26px;font-weight:800;color:var(--cor);margin-bottom:6px}
+#s11d #s11d-cap b{font-weight:800}
+#s11d #s11d-cap .sub{display:block;margin-top:12px;padding-top:12px;border-top:2px solid rgba(0,0,0,.08);font-size:27px;color:#3a3a3c}
+#s11d #s11d-cap .q{color:#B25000;font-weight:800}
+#s11d .mv{font-family:KaTeX_Math,'Times New Roman',serif;font-style:italic}
+/* 왼쪽 아래 카드: 위도별 원판 표(3·4단계) ↔ 원판 위에서 본 모습(5단계) */
+#s11d #s11d-low{position:absolute;left:50px;top:606px;width:560px;height:364px;z-index:4;padding:16px 24px;box-sizing:border-box;opacity:0;visibility:hidden;transition:opacity .5s}
+#s11d #s11d-low.on{opacity:1;visibility:visible}
+#s11d #s11d-low .pg{display:none}
+#s11d #s11d-low .pg.on{display:block}
+#s11d #s11d-low .st{font-size:26px;font-weight:800;line-height:36px;margin-bottom:6px}
+#s11d #s11d-low .st em{font-style:normal;font-weight:500;font-size:24px;color:#6e6e73;margin-left:8px}
+#s11d #s11d-tab{width:100%;border-collapse:collapse;font-size:25px;font-variant-numeric:tabular-nums}
+#s11d #s11d-tab td{padding:0 6px;height:39px;border-top:1.5px solid rgba(0,0,0,.08);white-space:nowrap}
+#s11d #s11d-tab td:nth-child(2){text-align:right;font-weight:800}
+#s11d #s11d-tab td:nth-child(3){text-align:right;color:#3a3a3c}
+#s11d #s11d-tab tr.eq td{background:rgba(255,214,10,.25)}
+#s11d #s11d-ins{display:block}
+#s11d #s11d-ins text{font-size:24px;font-weight:600;fill:#3a3a3c}
+/* 오른쪽 위 읽은 값 */
+#s11d #s11d-read{position:absolute;right:50px;top:100px;width:480px;z-index:4;padding:16px 24px;box-sizing:border-box;opacity:0;visibility:hidden;transition:opacity .5s}
+#s11d #s11d-read.on{opacity:1;visibility:visible}
+#s11d #s11d-read .r{display:flex;justify-content:space-between;align-items:baseline;gap:14px;font-size:26px;font-weight:600;line-height:44px;white-space:nowrap}
+#s11d #s11d-read .r+.r{border-top:1.5px solid rgba(0,0,0,.08)}
+#s11d #s11d-read .r b{font-weight:800;font-variant-numeric:tabular-nums}
+#s11d #s11d-read .r.k5{display:none}
+#s11d #s11d-read.k5 .r.k5{display:flex}
+#s11d sup{font-size:24px;vertical-align:.5em;line-height:0}
+#s11d #s11d-panel{left:auto;right:50px;bottom:40px;height:80px;gap:18px;padding:0 20px;font-size:28px;z-index:5}
+#s11d #s11d-panel .seg{display:flex;gap:6px}
+#s11d #s11d-panel .ia-btn{height:56px;font-size:26px;padding:0 16px}
+#s11d #s11d-panel .ia-btn.sub.on{background:#1d1d1f;color:#fff}
+#s11d #s11d-panel input[type=range]{width:250px}
+#s11d #s11d-panel .val{min-width:128px}
+#s11d .fine{left:50px;bottom:40px;padding:5px 16px;border-radius:12px;background:rgba(0,0,0,.55);color:#e5e5ea;z-index:4}
+html.print #s11d .fine{background:none;color:#3a3a3c}
+/* 3D 안의 이름표 */
+#s11d .v3-t.dk{background:rgba(20,24,32,.78);color:#fff}
+#s11d .v3-t.om{background:rgba(20,24,32,.78);color:#FFD60A;font-size:30px;font-weight:800}
+#s11d .v3-t.vs{background:rgba(20,24,32,.78);color:#FF9F0A;font-size:28px;font-weight:800}
+#s11d .v3-t .mv{font-family:KaTeX_Math,'Times New Roman',serif;font-style:italic}
+html.print #s11d .v3-t.dk,html.print #s11d .v3-t.om,html.print #s11d .v3-t.vs{background:rgba(255,255,255,.9)}
+html.print #s11d .v3-t.dk{color:#1d1d1f}html.print #s11d .v3-t.om{color:#8A6800}html.print #s11d .v3-t.vs{color:#B25000}
+/* ── s22d 등압면과 등고선 — 입체로 보기 (three.js 입체, 2026-11-17 덧붙임) ── */
+#s22d .v3{position:absolute;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#fdfdfd 0%,#eef1f5 100%);z-index:2;touch-action:none}
+#s22d .v3 .v3-gl{position:absolute;left:0;top:0;width:100%!important;height:100%!important;display:block}
+#s22d .v3 .v3-lab{position:absolute!important;left:0;top:0;cursor:grab}
+#s22d .v3 .v3-lab:active{cursor:grabbing}
+#s22d .v3-t{font-size:26px;font-weight:700;line-height:1.2;white-space:nowrap;padding:2px 10px;border-radius:9px;background:rgba(255,255,255,.82);color:#1d1d1f;pointer-events:none;letter-spacing:-.01em}
+#s22d .v3-t i{font-style:normal;font-weight:600;opacity:.75;font-size:24px}
+#s22d .v3-t.sm{font-size:24px;font-weight:600;background:rgba(255,255,255,.65)}
+#s22d .v3-t.b{font-size:28px;font-weight:800}
+#s22d .ia-panel{position:absolute;left:auto;top:auto;width:auto;height:88px;display:flex;align-items:center;gap:26px;padding:0 26px;border-radius:18px;background:#fff;font-size:30px;font-weight:600;color:var(--ink);z-index:5}
+#s22d .ia-panel label{display:flex;align-items:center;gap:14px;white-space:nowrap}
+#s22d .ia-panel input[type=range]{width:190px;height:40px;accent-color:var(--act);cursor:pointer}
+#s22d .ia-panel .val{min-width:118px;font-variant-numeric:tabular-nums;color:var(--act);font-weight:700}
+#s22d .ia-btn{border:0;border-radius:12px;height:60px;padding:0 22px;font:inherit;font-size:28px;font-weight:700;color:#fff;background:#1d1d1f;cursor:pointer;white-space:nowrap}
+#s22d .ia-btn.sub{background:#d1d1d6;color:#1d1d1f}
+#s22d .ia-btn.on{background:var(--act)}
+#s22d .v3-t.hor{color:var(--hor)}#s22d .v3-t.ink{color:#1d1d1f}#s22d .v3-t.pgf{color:#D70015}#s22d .v3-t.iso{color:#2a4a6b}#s22d .v3-t.hi{color:#B25000}#s22d .v3-t.lo{color:#005BB8}
+#s22d .v3-t.v3-hide{opacity:0!important}
+#s22d{--hor:#157F4A;--gray:#6e6e73;--pgf:#D70015;--wind:#00796B;--hiC:#B25000;--loC:#005BB8}
+#s22d .c-pgf{color:var(--pgf)}#s22d .c-wind{color:var(--wind)}#s22d .c-hi{color:var(--hiC)}#s22d .c-lo{color:var(--loC)}#s22d .c-iso{color:#2a4a6b}
+/* 화면 가득 3D: 하늘(그러데이션)은 3D 안의 둥근 하늘 — 아래는 불러오기 전의 바탕 */
+#s22d #s22d-v{left:0;top:0;width:1920px;height:1080px;border-radius:0;z-index:1;background:linear-gradient(180deg,#5d9bdb 0%,#a9d0ee 55%,#dfeaf2 100%)}
+/* 유리 카드(흰 92 % + 진한 글자) */
+#s22d .gl{background:rgba(255,255,255,.93);box-shadow:0 6px 24px rgba(20,40,70,.18);border-radius:20px;color:#1d1d1f}
+#s22d .hd{left:50px;top:40px;right:auto;padding:14px 28px 16px;z-index:4}
+#s22d .hd .eb{font-size:24px;margin-bottom:2px;color:#6e6e73}
+#s22d .hd h2{font-size:44px;color:#1d1d1f}
+#s22d #s22d-cap{position:absolute;left:50px;top:190px;width:560px;padding:24px 30px 26px;z-index:4;font-size:31px;line-height:1.45;font-weight:500;letter-spacing:-.01em}
+#s22d #s22d-cap .cp{display:none}
+#s22d #s22d-cap .cp.on{display:block;animation:s22din .45s ease both}
+@keyframes s22din{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+#s22d #s22d-cap .tm{display:block;font-size:26px;font-weight:800;color:var(--act);margin-bottom:6px}
+#s22d #s22d-cap b{font-weight:800}
+#s22d #s22d-cap .sub{display:block;margin-top:12px;padding-top:12px;border-top:2px solid rgba(0,0,0,.08);font-size:28px;color:#3a3a3c}
+#s22d #s22d-cap .num{font-variant-numeric:tabular-nums}#s22d #s22d-cap .nw{white-space:nowrap}
+/* 남북 단면(왼쪽 아래) */
+#s22d #s22d-secw{position:absolute;left:50px;top:648px;width:560px;z-index:4}
+#s22d #s22d-secc{padding:14px 20px 8px}
+#s22d #s22d-secc .st{display:flex;align-items:baseline;gap:10px;font-size:26px;font-weight:800;line-height:36px}
+#s22d #s22d-secc .st em{margin-left:auto;font-style:normal;font-weight:500;font-size:24px;color:#6e6e73}
+#s22d #s22d-sec{display:block}
+#s22d #s22d-sec text{font-size:24px;font-weight:600;fill:#3a3a3c;font-variant-numeric:tabular-nums}
+#s22d #s22d-sec .halo{paint-order:stroke;stroke:#fff;stroke-width:6px;stroke-linejoin:round}
+/* 떠 있는 조작 막대 */
+#s22d #s22d-panel{left:auto;right:50px;bottom:100px;height:80px;gap:20px;padding:0 20px;font-size:28px;z-index:5}
+#s22d #s22d-panel .seg{display:flex;gap:6px}
+#s22d #s22d-panel .ia-btn{height:56px;font-size:26px;padding:0 18px}
+#s22d #s22d-panel .ia-btn.sub.on{background:#1d1d1f;color:#fff}
+#s22d #s22d-panel input[type=range]{width:240px}
+#s22d #s22d-panel .val{min-width:104px}
+#s22d .ia-chk{display:flex;align-items:center;gap:10px;cursor:pointer}
+#s22d .ia-chk input{width:30px;height:30px;accent-color:var(--act);cursor:pointer}
+#s22d .fine{left:50px;bottom:46px;padding:5px 16px;border-radius:12px;background:rgba(255,255,255,.88);color:#3a3a3c;z-index:4}
+/* 3D 안의 이름표(이 장에서 더한 것) */
+#s22d .v3-t.wind{color:var(--wind)}
+#s22d .v3-t.grip{background:#1d1d1f;color:#fff;font-weight:700}
+#s22d .v3-t.surf{color:#2a4a6b;background:rgba(255,255,255,.9)}
 </style>
 </head>
 <body>
@@ -598,6 +729,37 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
   <div class="scn" id="s11-gbox" style="left:120px;top:620px;width:960px;height:370px" data-in="400" data-fx="fade"><svg id="s11-glb" viewBox="0 0 960 370"></svg></div>
   <div class="scn" id="s11-cbox" style="left:1120px;top:620px;width:680px;height:370px" data-in="500" data-fx="fade"><svg id="s11-ch" viewBox="0 0 680 370"></svg></div>
   <div class="fine">모식 그림 · 그래프는 <i>C</i> = 2<i>v</i>Ω sin <i>φ</i>로 계산(Ω = 7.29 × 10<sup class="s11-sup">−5</sup> /s) · 원판의 회전 빠르기는 Ω sin <i>φ</i>에 비례(실제보다 빠르게)</div>
+</section>
+
+<!-- ═══ s11d 전향력 — 입체로 보기(three.js, 2026-11-17 덧붙임. 장면 코드는 파일 끝 module) ═══ -->
+<section class="slide" id="s11d" data-tile="black" data-title="전향력 — 입체로 보기" data-notes="앞 장 ‘전향력’의 지구본(교과서 103쪽 날개 그림 ‘위도에 따른 회전 각속도의 크기’)을 입체(three.js)로 돌려 보는 장입니다. 앞 장에서 빈칸과 그래프를 채운 뒤, 왜 위도마다 다른지와 왜 남반구는 반대인지를 눈으로 확인하는 데 씁니다. 끌면 돌려 보고 휠로 확대합니다. 장면을 끌지 않고 그냥 누르면 다음 단계(왼쪽 가장자리는 이전). 아래 [옆에서]·[북극 위]·[남극 위] 단추로 시점을 바꿉니다. 처음 화면: 지구가 자전축 둘레로 서쪽에서 동쪽으로 돈다(경선이 오른쪽으로 지나감). 자전 각속도 Ω = 7.29 × 10⁻⁵ /s(한 바퀴 2π를 약 24시간 = 86 164초로 나눈 값). 그림에서는 12초에 한 바퀴. 클릭 1 북극 위에서 내려다보면 지구가 시계 반대 방향으로 돈다 → 북극의 지표면은 하루에 한 바퀴(Ω) 시계 반대 방향으로 도는 원판과 같다(북극에 놓은 흰 원판과 그 위의 선이 지구와 함께 돈다). → 2 남극 위에서 내려다보면(시점이 지구를 돌아 남극 아래로 감) 같은 자전인데 시계 방향으로 보인다 → 남반구의 지표면은 시계 방향으로 도는 원판과 같다. 여기서 묻습니다: 적도의 지표면은 어떻게 돌까? → 3 옆에서 본 모습. 북극·북위 60°·북위 30°·적도·남위 30°·남위 60°(·남극)에 그 자리의 수평면인 작은 원판을 붙였습니다. 원판 위의 선이 도는 빠르기 = 지표면에 수직인 축(연직축)을 중심으로 회전하는 각속도 Ω sin φ. 북극에서 가장 빠르고(Ω), 위도가 낮을수록 느리며, 적도에서는 돌지 않고, 남반구는 반대 방향(위에서 보아 시계 방향). 이 단계부터는 지구본의 자전을 멈추고 원판이 제자리에서 도는 것만 보여 줍니다 — 지구가 멈춘 것이 아니라, 지표면이 자전축 둘레로 실려 가는 움직임은 빼고 그 자리에서 맴도는 움직임만 떼어 본 것이라고 말해 줍니다(앞 장의 지구본과 같은 방식). 왼쪽 아래 표: 위도별 Ω sin φ(× 10⁻⁵ /s) — 90° 7.29, 60° 6.31, 30° 3.65(3.645를 반올림), 0° 0. → 4 까닭: 노란 화살표는 지구 자전(Ω, 자전축과 나란함), 가는 점선은 그 자리의 연직축, 주황 화살표는 Ω 가운데 연직축 방향의 몫 = Ω sin φ(노란 화살표 끝에서 연직축에 내린 수선의 발까지, 직각 표시). 위도 막대(−90° ~ 90°, 5° 간격)를 움직이면 노란 테 원판이 경선을 따라 옮겨 가고 주황 화살표의 길이와 원판의 빠르기가 함께 바뀝니다. 적도에서는 노란 화살표가 수평면 안에 누워 연직축 방향의 몫이 0 — 적도에서도 지구는 돌지만 수평면은 맴돌지 않습니다(자전축 둘레로 실려 가며 넘어갈 뿐). 남반구에서는 주황 화살표가 아래(땅 쪽)를 향한다 = 위에서 보면 시계 방향. 오른쪽 위 카드: 위도, Ω sin φ 값, 그 빠르기로 한 바퀴 도는 데 걸리는 시간(약 24시간 ÷ sin φ — 북위 30°는 약 48시간, 적도는 돌지 않음). → 5 전향력: 도는 원판 위에서 공을 곧게 굴리면(다음 장 탐구의 회전 원판과 같음) 공은 곧게 가지만 원판이 돌기 때문에 원판 위에 남는 자국은 휜다 — 북반구(시계 반대 방향으로 도는 원판)에서는 운동 방향의 오른쪽, 남반구에서는 왼쪽, 적도에서는 휘지 않는다. 3D의 노란 테 원판에서는 공이 북쪽으로 곧게 가고 자국이 원판과 함께 돌아가며, 왼쪽 아래 카드는 원판과 함께 도는 눈으로 본 모습(자국이 휜 길, 파랑 화살표 = 전향력, 운동 방향에 직각)입니다. 전향력 C = 2vΩ sin φ — 오른쪽 위 카드의 값은 v = 10 m/s일 때(북위 30° 0.73, 북위 60° 1.26, 극 1.46 × 10⁻³ N/kg — 앞 장 그래프의 10 m/s 곡선과 같은 값. v = 30 m/s, φ = 90°이면 약 4.4 × 10⁻³ N/kg). 덧붙일 말(앞 장과 같음): 전향력은 실제로 존재하는 힘이 아니라 지구 자전에 의해 나타나는 가상의 힘으로, 코리올리 힘이라고도 한다. 전향력은 늘 운동 방향에 직각으로 작용하므로 속력은 바꾸지 않고 방향만 바꾼다. 학생 질문 대비: 남반구도 같은 방향으로 자전하지 않나요? → 지구는 하나의 방향으로 자전하지만 남극 위에서 내려다보면 시계 방향으로 보인다(2단계 시점). 적도에서는 지구가 안 도나요? → 돈다. 다만 수평면에 수직인 축 둘레로는 돌지 않는다(4단계에서 막대를 0°로). 모식인 것: 원판의 크기와 회전 빠르기(실제보다 매우 빠름 — 극 12초에 한 바퀴), 화살표 길이, 공이 가장자리까지 4초(그동안 원판이 북위 30°에서 60°, 북위 60°에서 104° 돎 — 탐구 장과 같은 각), 자전축은 기울이지 않고 세워 그림. 원판 위 공의 자국에는 전향력만 화살표로 그렸습니다.">
+  <div class="v3" id="s11d-v"></div>
+  <div class="hd gl" data-in><div class="eb"><b>2</b>대기를 움직이는 힘</div><h2>전향력 — 입체로 보기</h2></div>
+  <div class="gl" id="s11d-cap" data-in="300">
+    <div class="cp" data-k="0"><span class="tm">지구의 자전</span>지구는 자전축 둘레로 <b>서쪽에서 동쪽</b>으로 하루에 한 바퀴 돈다<span class="sub">지구 자전 각속도 <span class="mv">Ω</span> = 7.29 × 10<sup>−5</sup> /s</span></div>
+    <div class="cp" data-k="1"><span class="tm">북극 위에서 보면</span>지구가 <b>시계 반대 방향</b>으로 돈다<span class="sub">북극의 지표면 = 하루에 한 바퀴(<span class="mv">Ω</span>) <b>시계 반대 방향</b>으로 도는 원판</span></div>
+    <div class="cp" data-k="2"><span class="tm">남극 위에서 보면</span>같은 자전인데 <b>시계 방향</b>으로 보인다<span class="sub">남반구의 지표면 = <b>시계 방향</b>으로 도는 원판<br><span class="q">적도의 지표면은 어떻게 돌까?</span></span></div>
+    <div class="cp" data-k="3"><span class="tm">위도마다 다른 빠르기로 도는 원판</span>지표면(수평면)이 제자리에서 도는 빠르기는 <b>극에서 가장 빠르고</b>, 저위도로 갈수록 느리며, <b>적도에서는 0</b><span class="sub">북반구 시계 반대 방향 · 남반구 시계 방향</span></div>
+    <div class="cp" data-k="4"><span class="tm">왜 위도마다 다를까</span>지구 자전(<span class="mv">Ω</span>) 가운데 그 자리의 <b>연직축 둘레로 도는 몫</b>은 <b><span class="mv">Ω</span> sin <span class="mv">φ</span></b><span class="sub">적도에서도 지구는 돌지만 수평면은 맴돌지 않는다 → 0<br>위도 막대를 움직여 보자</span></div>
+    <div class="cp" data-k="5"><span class="tm">전향력</span>도는 원판 위에서 곧게 굴린 공의 자국은 휜다 — 북반구 <b class="c-cor">오른쪽</b>, 남반구 <b class="c-cor">왼쪽</b>, 적도 0<br><b class="c-cor"><span class="mv">C</span></b> = 2<span class="mv">v</span><span class="mv">Ω</span> sin <span class="mv">φ</span><span class="sub">실제로 존재하는 힘이 아니라 지구 자전에 의해 나타나는 <b>가상의 힘</b></span></div>
+  </div>
+  <div class="gl" id="s11d-low">
+    <div class="pg" id="s11d-pg1"><div class="st">위도별 원판의 회전<em><span class="mv">Ω</span> sin <span class="mv">φ</span> (× 10<sup>−5</sup> /s)</em></div><table id="s11d-tab"></table></div>
+    <div class="pg" id="s11d-pg2"><div class="st">원판과 함께 돌며 본 모습<em id="s11d-insn"></em></div><svg id="s11d-ins" viewBox="0 0 512 290" width="512" height="290"></svg></div>
+  </div>
+  <div class="gl" id="s11d-read">
+    <div class="r"><span>위도 <span class="mv">φ</span></span><b id="s11d-r1">북위 30°</b></div>
+    <div class="r"><span><span class="mv">Ω</span> sin <span class="mv">φ</span></span><b id="s11d-r2"></b></div>
+    <div class="r"><span>원판 한 바퀴</span><b id="s11d-r3"></b></div>
+    <div class="r k5"><span>전향력 <span style="font-weight:500;font-size:24px">(<span class="mv">v</span> = 10 m/s)</span></span><b id="s11d-r4" class="c-cor"></b></div>
+    <div class="r k5"><span>휘는 쪽</span><b id="s11d-r5" class="c-cor"></b></div>
+  </div>
+  <div class="ia-panel gl" id="s11d-panel" data-in="400">
+    <div class="seg"><button class="ia-btn sub on" id="s11d-b0" type="button">옆에서</button><button class="ia-btn sub" id="s11d-b1" type="button">북극 위</button><button class="ia-btn sub" id="s11d-b2" type="button">남극 위</button></div>
+    <label><span>위도</span><input id="s11d-ph" type="range" min="-90" max="90" step="5" value="30"><span class="val" id="s11d-phv">북위 30°</span></label>
+    <button class="ia-btn sub" id="s11d-home" type="button">처음 모습</button>
+  </div>
+  <div class="fine">모식 그림 · 원판의 회전은 실제보다 매우 빠르게 그림</div>
 </section>
 
 <!-- ═══ s10 탐구 — 회전 원판을 이용한 전향 효과 실험하기 ═══ -->
@@ -858,6 +1020,27 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
   <div class="fine">교과서 그림 III-33 · 모식 그림 · 등압면 기울기는 크게 과장(실제로는 수천 km에 걸쳐 수백 m 차이)</div>
 </section>
 
+<!-- ═══ s22d 등압면과 등고선 — 입체로 보기(three.js, 2026-11-17 덧붙임. 장면 코드는 파일 끝 module) ═══ -->
+<section class="slide" id="s22d" data-tile="light" data-title="등압면과 등고선 — 입체로 보기" data-notes="앞 장 ‘지상 일기도와 상층 일기도’의 그림 III-33(등압면과 등고선, 교과서 106~107쪽)을 입체(three.js)로 돌려 보는 장입니다. 앞 장에서 빈칸을 채운 뒤, 등고선이 어떻게 만들어지는지와 왜 등압면의 고도가 높은 곳이 기압이 높은 곳인지를 눈으로 확인하는 데 씁니다. 등압면의 모양·등고선 값·A와 B의 자리는 앞 장 그림과 같습니다. 모형(앞 장 그림과 같음): 500 hPa 등압면의 높이 h = 5640 + 100·cos(πx) m (x 서→동 0~1). 서쪽 끝 5740 m, 동쪽 끝 5540 m, 평균 5640 m. 높이가 동서로만 달라 등고선은 남북으로 곧은 선이고, 5700·5640·5550 m 등고선은 서쪽에서 0.295·0.5·0.856 되는 곳에 있다(앞 장 상층 일기도의 선 자리와 같음). 높이 차는 매우 과장했다(그림에서 높이 200 m를 0.7 칸으로 — 실제로는 수천 km에 걸쳐 수백 m 차이). 땅에서 등압면까지의 거리(약 5.6 km)는 줄여 그렸다. 끌면 돌려 보고 휠·두 손가락으로 확대한다. 장면을 끌지 않고 그냥 누르면 다음 단계로 넘어간다(왼쪽 가장자리는 이전). 처음 화면: 하늘에 떠 있는 반투명 격자 막이 500 hPa 등압면 — 기압이 500 hPa인 곳을 이은 가상의 면이지 실제로 있는 막이나 지형이 아니다. 앞 장 그림처럼 남쪽에서 바라보아 왼쪽(서쪽)이 높다. 땅의 색은 등압면이 높은 서쪽을 조금 따뜻한 색, 낮은 동쪽을 조금 찬 색으로 은은하게 나타냈다. 클릭 1 수평인 빛의 판이 5700·5640·5550 m 높이에 차례로 멈추며 등압면과 만나는 선이 빛난다. 그 선을 바닥으로 내려 그리면 등고선 = 상층 일기도. 등고선의 숫자는 땅의 높이가 아니라 500 hPa 등압면의 높이다. 2 같은 높이(평균 높이 5640 m)의 수평면에서 비교: A(서쪽, 그 자리의 등압면 높이 5700 m)는 등압면이 위에 있다 — 500 hPa가 되려면 더 올라가야 하므로 A의 기압은 500 hPa보다 높다(주황). B(동쪽, 등압면 높이 5550 m)는 이미 등압면보다 위에 있으므로 500 hPa보다 낮다(파랑). 그래서 등압면의 고도가 높은 곳 = 기압이 높은 곳. 기압의 높고 낮음은 같은 높이에서 비교해야 말할 수 있다. A·B는 앞 장 그림의 A·B와 같은 자리다. 수평면 모서리의 검은 손잡이를 위아래로 끌거나 아래 막대(5540~5740 m)로 비교 높이를 바꾸면 주황과 파랑의 경계가 그 높이의 등고선과 겹친다 — 5640 m에서는 주황이 넓이의 50 %, 5700 m로 올리면 등압면이 5700 m보다 높은 서쪽 약 30 %(29.5 %)만 주황으로 남는다. 왼쪽 아래의 동서 단면은 A와 B를 지나는 동서 선(3D의 가는 점선)을 따라 자른 옆모습으로 3D와 같은 식으로 그렸고 높이 과장도 같다 — 곡선(등압면)이 비교 높이 선보다 위인 구간이 주황, 아래인 구간이 파랑이며 막대나 손잡이를 움직이면 함께 바뀐다. 3 위에서 내려다보면 상층 일기도(등압면은 감춤, 가로 점선은 동서 단면을 자른 자리). 기압 경도력은 등고선이 높은 쪽에서 낮은 쪽으로, 등고선에 수직 — 여기서는 서쪽에서 동쪽으로(빨강, 앞 장의 화살표와 같은 방향. 높이의 기울기를 계산해 그렸고 화살표 길이는 기울기에 비례 — 5640 m 선에서 가장 길다, 작은 직각 표시). 4 상층은 마찰이 없어 바람(지균풍)이 기압 경도력의 오른쪽 직각 방향(북반구), 곧 등고선에 나란하게 높은 쪽을 오른쪽에 두고 분다 — 계산하면 기압 경도력이 동쪽(방위 90°)이므로 바람은 남쪽(방위 180°)을 향한다 = 북쪽에서 남쪽으로 부는 바람. 작은 점들은 등고선을 따라 흐르는 공기이고 빠르기는 높이의 기울기에 비례한다(등고선 간격이 좁은 가운데가 빠르다). 이때 전향 인자 f는 일정하다고 두었다. 주의: 서쪽이 높은 것은 교과서 그림 III-33의 모식 배치다 — 실제 중위도 상층은 대체로 남쪽(저위도)이 높아 바람이 서쪽에서 동쪽으로 분다(편서풍). 이 그림의 북풍을 실제 상층의 바람 방향으로 외우지 않게 말해 준다.">
+  <div class="v3" id="s22d-v"></div>
+  <div class="hd gl" data-in><div class="eb"><b>5</b>일기도</div><h2>등압면과 등고선 — 입체로 보기</h2></div>
+  <div class="gl" id="s22d-cap" data-in="300">
+    <div class="cp" data-k="0"><span class="tm">등압면</span><b>500 hPa 등압면</b>: 기압이 500 hPa인 곳을 이은 <b>가상의 면</b>(높이 약 5.6 km)<span class="sub">실제로 있는 막이 아니다 · 서쪽이 높고 동쪽이 낮다</span></div>
+    <div class="cp" data-k="1"><span class="tm">등고선</span>등압면과 <b>같은 높이의 수평면</b>이 만나는 선 → 바닥에 내려 그리면 <b class="c-iso">등고선</b>(상층 일기도)<span class="sub">숫자는 땅의 높이가 아니라 <b>500 hPa 등압면의 높이</b></span></div>
+    <div class="cp" data-k="2"><span class="tm">같은 높이에서 비교</span><b class="c-hi">A</b> 등압면이 <b>위</b>에 있다<br><span class="nw">→ 기압이 500 hPa보다 <b class="c-hi">높다</b></span><br><b class="c-lo">B</b> 등압면이 <b>아래</b>에 있다<br><span class="nw">→ 기압이 500 hPa보다 <b class="c-lo">낮다</b></span><span class="sub">A는 500 hPa가 되려면 더 올라가야 한다<br><b>등압면의 고도가 높은 곳 = 기압이 높은 곳</b><br>아래 막대로 비교 높이를 바꿔 볼 수 있다</span></div>
+    <div class="cp" data-k="3"><span class="tm">위에서 보면 — 상층 일기도</span><b class="c-pgf">기압 경도력</b>: 등고선이 높은 쪽 → 낮은 쪽, 등고선에 <b>수직</b></div>
+    <div class="cp" data-k="4"><span class="tm">상층의 바람</span><b class="c-wind">바람(지균풍)</b>: 기압 경도력의 오른쪽 직각(북반구) → 등고선에 <b>나란</b>하게, 높은 쪽을 오른쪽에 두고 분다<span class="sub">이 그림에서는 <b>북쪽에서 남쪽</b>으로 · 등고선 간격이 좁을수록 빠르다</span></div>
+  </div>
+  <div id="s22d-secw" data-in="350"><div class="gl" id="s22d-secc"><div class="st">동서 단면 · A–B 선<em>높이 과장은 3D와 같음</em></div><svg id="s22d-sec" viewBox="0 0 520 262" width="520" height="262"></svg></div></div>
+  <div class="ia-panel gl" id="s22d-panel" data-in="400">
+    <div class="seg"><button class="ia-btn sub on" id="s22d-b3">입체</button><button class="ia-btn sub" id="s22d-b2">위에서</button></div>
+    <label><span>비교 높이</span><input id="s22d-h" type="range" min="5540" max="5740" step="10" value="5640"><span class="val" id="s22d-hv">5640 m</span></label>
+    <label class="ia-chk"><input type="checkbox" id="s22d-w">바람 보기</label>
+    <button class="ia-btn sub" id="s22d-home">처음 모습</button>
+  </div>
+  <div class="fine">모식 그림 · 높이 차는 매우 과장(실제로는 수천 km에 걸쳐 수백 m) · 등압면은 기압이 같은 곳을 이은 가상의 면</div>
+</section>
+
 <!-- ═══ s23 해 보기 — 지상 일기도와 상층 일기도 비교하기 ═══ -->
 <section class="slide" id="s23" data-tile="parchment" data-title="해 보기 — 지상 일기도와 상층 일기도 비교하기" data-notes="교과서 107쪽 해 보기. 이 장에서는 문제 1·2를 함께 제시합니다(클릭 단계 없음). 학생이 교과서(학습지) 일기도 위에 A와 A′의 기압 경도력 방향과 풍향을 직접 그려 보게 한 뒤 넘깁니다. 이어지는 흐름: 다음 장에서 지상 일기도의 A 지점을 크게 보며 기압 경도력·마찰력·전향력과 바람을 분석하고, 그다음 장에서 상층 일기도의 A′ 지점을 분석한 뒤, 문제 1·2 해설 장에서 두 일기도 위에 화살표와 예시 답안으로 정리합니다. 상층 일기도는 등고선이 지상 일기도의 등압선과 마찬가지로 기압을 나타낸다는 점(등고선이 높은 쪽에서 낮은 쪽으로 기압 경도력이 작용)을 먼저 떠올리게 합니다. 그림을 누르면 일기도를 크게 볼 수 있음. 디지털 탐색: 기상청 날씨누리(https://www.weather.go.kr)에서 지상 일기도와 상층 일기도를 찾아볼 수 있다.">
   <div class="hd" data-in><div class="eb"><b>5</b>일기도</div><h2>해 보기 — 지상 일기도와 상층 일기도 비교하기</h2></div>
@@ -975,7 +1158,7 @@ html.print #s23c .s23c-q.cur{box-shadow:none}
 /* ═══ 장면: 기압의 연직 분포와 대기를 움직이는 힘 · 여러 가지 바람 수업 ═══ */
 const {U}=Deck;
 window.KW={items:['정역학 평형','대기를 움직이는 힘','상층의 바람','지상의 바람','일기도'],
-  at:[-1,-1,0,0,0,0,0,1,1,1,1,1,1,1,1,2,2,2,2,2,2,3,3,3,4,4,4,4,4,2,4]};
+  at:[-1,-1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,3,3,3,4,4,4,4,4,4,2,4]};
 const $id=id=>document.getElementById(id);
 const TAU=Math.PI*2, D2R=Math.PI/180;
 const f1=v=>(+v).toFixed(1);
@@ -3546,6 +3729,497 @@ Deck.scene('s23c',{steps:4,
 function texAll(root){if(!window.katex)return;root.querySelectorAll('.tx[data-tex]').forEach(el=>{try{katex.render(el.dataset.tex,el,{throwOnError:false,strict:false});}catch(e){}});}
 texAll(document);
 
+</script>
+<!-- ═══ 3D 장면(three.js) — s11d 전향력 · s22d 등압면과 등고선. 3D 도구를 못 불러와도 수업은 시작됨 ═══ -->
+<script type="module">
+let K=null;
+try{K=await import('../engine/three-kit.js');}catch(e){console.error('3D 도구를 불러오지 못함',e);}
+if(K){const {THREE,makeView,line,segs,dot,label,fade,clear,arrow,clamp,lerp,D2R,PRINT,STILL}=K;
+/* 글 카드·조작 줄(.gl) 뒤로 들어간 3D 이름표는 감춤(여섯 프레임에 한 번 잼) */
+function hideBehind(sec,n){if(n%6)return;const cs=[...sec.querySelectorAll('.gl')].filter(e=>getComputedStyle(e).visibility!=='hidden').map(e=>e.getBoundingClientRect());
+  sec.querySelectorAll('.v3-t').forEach(e=>{const r=e.getBoundingClientRect();e.classList.toggle('v3-hide',r.width>0&&cs.some(c=>r.left<c.right&&r.right>c.left&&r.top<c.bottom&&r.bottom>c.top));});}
+/* ═══ s11d 전향력 — 입체로 보기 ═══ */
+{
+
+/* ── 모형 ──
+   지구 반지름 1, 자전축 = Y축(북극 +Y). 위도 φ·경도 λ인 곳: p = (cos φ sin λ, sin φ, cos φ cos λ) — λ = 0이 카메라 쪽(+Z), 동쪽이 +X(오른쪽).
+   그 자리의 동·북·위 단위 벡터: e = (cos λ, 0, −sin λ), n = (−sin φ sin λ, cos φ, −sin φ cos λ), u = p (e × n = u, 오른손)
+   자전: Y축 둘레로 +각(서 → 동, 북극 위에서 보아 시계 반대). 자전 각속도 벡터 Ω = Ω·(0,1,0)
+   수평면(원판)이 연직축 u 둘레로 도는 각속도 = Ω · u = Ω sin φ (+ = 위에서 보아 시계 반대 → 북반구 +, 남반구 −, 적도 0)
+   전향력 C = 2vΩ sin φ, Ω = 7.29 × 10⁻⁵ /s (원래 장과 같은 값). 그림의 빠르기: 극 12초에 한 바퀴 */
+const OM=7.29e-5,PER=12,OMS=2*Math.PI/PER,TB=4,HOLD=1;
+const P3=(ph,la,r=1)=>new THREE.Vector3(Math.cos(ph)*Math.sin(la)*r,Math.sin(ph)*r,Math.cos(ph)*Math.cos(la)*r);
+const E3=(ph,la)=>new THREE.Vector3(Math.cos(la),0,-Math.sin(la));
+const N3=(ph,la)=>new THREE.Vector3(-Math.sin(ph)*Math.sin(la),Math.cos(ph),-Math.sin(ph)*Math.cos(la));
+const AXIS=new THREE.Vector3(0,1,0);
+const vert=ph=>P3(ph,0).dot(AXIS);                       // Ω의 연직 성분 ÷ Ω (= sin φ를 벡터 내적으로 구한 값)
+const LATS=[90,60,30,0,-30,-60,-90],LF=-40*D2R,LP=24*D2R,RF=.16,RP=.3;
+const nmLat=d=>d===90?'북극':d===-90?'남극':d===0?'적도':(d>0?'북위 ':'남위 ')+Math.abs(d)+'°';
+const sup=s=>'<sup>'+s+'</sup>';
+const DK=!PRINT,COL={globe:DK?0x2b6cb3:0xb9d5ee,mer:DK?0xcfe3f7:0x5d7591,axis:DK?0xffffff:0x3a3a3c,om:DK?0xFFD60A:0x8A6800,vs:DK?0xFF9F0A:0xB25000,ink:0x1d1d1f,cor:DK?0x0A84FF:0x0060C0};
+const sph=(lat,lon,D)=>[D*Math.cos(lat*D2R)*Math.sin(lon*D2R),D*Math.sin(lat*D2R),D*Math.cos(lat*D2R)*Math.cos(lon*D2R)];
+const CAMS={side0:[14,0,6.3],np:[78,0,6.3],sp:[-78,0,6.3],side:[4,0,7.6]};
+const OFFX=60;
+
+let V=null,cur=null,TT=0;
+/* 원판 하나: 그 자리의 (동, 북, 위)를 (x, y, z)로 삼는 묶음 — 안의 그림은 xy 평면, z가 위 */
+function frame(g,phd,la,h=1.014){const ph=phd*D2R,m=new THREE.Matrix4().makeBasis(E3(ph,la),N3(ph,la),P3(ph,la));m.setPosition(P3(ph,la,h));g.matrix.copy(m);g.matrixAutoUpdate=false;g.matrixWorldNeedsUpdate=true;}
+function arcArrow(r,a0,a1,col,w=3){   // xy 평면의 호 화살표(a0 → a1, 도)
+  const g=new THREE.Group(),pts=[];for(let i=0;i<=20;i++){const a=lerp(a0,a1,i/20)*D2R;pts.push([r*Math.cos(a),r*Math.sin(a),.004]);}
+  g.add(line(V,pts,{col,w,order:8}));
+  const a=a1*D2R,s=Math.sign(a1-a0),t=new THREE.Vector3(-Math.sin(a)*s,Math.cos(a)*s,0);
+  const hd=new THREE.Mesh(new THREE.ConeGeometry(r*.14,r*.36,16),new THREE.MeshBasicMaterial({color:col,transparent:true}));
+  hd.position.set(r*Math.cos(a),r*Math.sin(a),.004).addScaledVector(t,r*.1);hd.quaternion.setFromUnitVectors(AXIS,t);hd.renderOrder=8;g.add(hd);return g;
+}
+function mkDisk(r,rim,rimW){
+  const g=new THREE.Group();
+  const m=new THREE.Mesh(new THREE.CircleGeometry(r,48),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.94,side:THREE.DoubleSide}));m.userData.base=.94;m.renderOrder=6;g.add(m);
+  g.add(line(V,Array.from({length:65},(_,i)=>[r*Math.cos(i/64*6.2832),r*Math.sin(i/64*6.2832),.002]),{col:rim,w:rimW,order:7}));
+  const mk=new THREE.Group();mk.add(line(V,[[-r*.9,0,.006],[r*.9,0,.006]],{col:COL.ink,w:3.4,order:9}));const d=dot([r*.9,0,.006],{r:r*.11,col:COL.ink,order:9});mk.add(d);g.add(mk);
+  const ccw=arcArrow(r*1.3,215,325,rim===0xFFD60A?0xFFD60A:(DK?0xe5e5ea:0x6e6e73)),cw=arcArrow(r*1.3,325,215,rim===0xFFD60A?0xFFD60A:(DK?0xe5e5ea:0x6e6e73));g.add(ccw,cw);
+  return {g,mk,ccw,cw};
+}
+function setup(){
+  V=makeView({w:1920,h:1080,fov:30,pos:sph(...CAMS.side0),target:[0,0,0],minD:3,maxD:12,key:'s11d'});
+  V.camera.setViewOffset(1920,1080,-OFFX,-16,1920,1080);
+  const S=V.scene;
+  S.add(new THREE.AmbientLight(0xffffff,DK?1.5:2.6));const dl=new THREE.DirectionalLight(0xffffff,DK?2.2:1);dl.position.set(-3,2.5,5);S.add(dl);
+  if(DK){   // 별(은은하게)
+    let s=7;const rn=()=>{s=(s*16807)%2147483647;return s/2147483647;},ps=[];
+    for(let i=0;i<420;i++){const u=rn()*2-1,a=rn()*6.2832,q=Math.sqrt(1-u*u);ps.push(50*q*Math.cos(a),50*u,50*q*Math.sin(a));}
+    const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(ps,3));
+    V.stars=new THREE.Points(g,new THREE.PointsMaterial({color:0xffffff,size:2.2,sizeAttenuation:false,transparent:true,opacity:.6,depthWrite:false}));V.stars.renderOrder=-5;S.add(V.stars);
+  }
+  /* 지구본: 자전하는 묶음(경선), 위선은 그대로 */
+  S.add(new THREE.Mesh(new THREE.SphereGeometry(1,96,64),new THREE.MeshLambertMaterial({color:COL.globe})));
+  V.earth=new THREE.Group();S.add(V.earth);
+  for(let k=0;k<12;k++){const la=k*30*D2R;V.earth.add(line(V,Array.from({length:61},(_,i)=>P3((-90+i*3)*D2R,la,1.003).toArray()),{col:COL.mer,w:k===0?3.4:1.6,op:k===0?.95:.5}));}
+  [[0,2.6,.9],[30,1.6,.55],[60,1.6,.55],[-30,1.6,.55],[-60,1.6,.55]].forEach(([d,w,op])=>S.add(line(V,Array.from({length:121},(_,i)=>P3(d*D2R,i*3*D2R,1.003).toArray()),{col:COL.mer,w,op})));
+  /* 자전축과 Ω(자전 방향) */
+  S.add(line(V,[[0,-1.32,0],[0,1.32,0]],{col:COL.axis,w:2.6,op:.85}));
+  const om=arcArrow(.26,20,290,COL.axis,3);om.rotation.x=-Math.PI/2;om.position.y=1.2;S.add(om);   // xy 평면 → 수평면(위에서 보아 시계 반대)
+  V.lbOm=label('<span class="mv">Ω</span> 자전',[0,1.2,0],{cls:'dk b',dx:-104,dy:-6});S.add(V.lbOm);
+  V.lbN=label('북극',[0,1.02,0],{cls:'dk sm',dx:70,dy:-12});V.lbS=label('남극',[0,-1.02,0],{cls:'dk sm',dx:70,dy:14});V.lbE=label('적도',P3(0,62*D2R,1.01).toArray(),{cls:'dk sm',dy:20});
+  S.add(V.lbN,V.lbS,V.lbE);
+  /* 서 → 동 화살표(적도 앞쪽) */
+  V.gWE=new THREE.Group();
+  {const pts=Array.from({length:21},(_,i)=>P3(-9*D2R,(-18+i*1.8)*D2R,1.02).toArray());V.gWE.add(line(V,pts,{col:COL.om,w:5,order:8}));
+   const p=P3(-9*D2R,18*D2R,1.02),t=E3(0,18*D2R),hd=new THREE.Mesh(new THREE.ConeGeometry(.045,.13,16),new THREE.MeshBasicMaterial({color:COL.om,transparent:true}));hd.position.copy(p).addScaledVector(t,.05);hd.quaternion.setFromUnitVectors(AXIS,t);V.gWE.add(hd);
+   V.gWE.add(label('서 → 동',P3(-9*D2R,0,1.02).toArray(),{cls:'om',dy:38}));}
+  S.add(V.gWE);
+  /* 위도별 원판(왼쪽 경선) */
+  V.disks=LATS.map(d=>{const D=mkDisk(RF,DK?0xe5e5ea:0x6e6e73,2.6);frame(D.g,d,LF);D.lat=d;D.ccw.visible=d>0;D.cw.visible=d<0;
+    D.p=P3(d*D2R,LF);D.lb=label(nmLat(d),D.p.clone().multiplyScalar(1.02).toArray(),{cls:'dk sm',dx:Math.abs(d)===90?-70:-104,dy:Math.abs(d)===90?(d>0?-14:16):0});D.lbG=new THREE.Group();D.lbG.add(D.lb);S.add(D.g,D.lbG);return D;});
+  /* 위도 막대로 옮기는 원판(오른쪽 경선, 노란 테) */
+  V.pr=mkDisk(RP,0xFFD60A,4.5);S.add(V.pr.g);
+  V.gBall=new THREE.Group();V.pr.g.add(V.gBall);
+  V.gBall.add(line(V,[[0,0,.008],[0,RP*.95,.008]],{col:0x8e8e93,w:2.4,dash:[.03,.025],order:9}));
+  V.trace=segs(V,Array.from({length:24},()=>[[0,0,0],[0,0,0]]),{col:0x8e8e93,w:4,order:10});V.trace.frustumCulled=false;V.gBall.add(V.trace);
+  V.ball=dot([0,0,.03],{r:.03,col:0x48484a,order:11});V.gBall.add(V.ball);
+  V.gVec=new THREE.Group();S.add(V.gVec);
+}
+/* 노란 테 원판 자리의 벡터 그림: Ω(자전축과 나란함)와 연직축 방향의 몫 Ω sin φ */
+const HQ=.4,LV=.36;
+function buildVec(st){
+  clear(V.gVec);const ph=st.ph*D2R,u=P3(ph,LP),q=u.clone().multiplyScalar(1+HQ),s=Math.sin(ph);
+  V.gVec.add(line(V,[u.clone().multiplyScalar(1.02).toArray(),u.clone().multiplyScalar(1+HQ+LV+.12).toArray()],{col:COL.axis,w:2,dash:[.04,.035],op:.8}));
+  V.gVec.add(label('연직축',u.clone().multiplyScalar(s>=0?1+HQ+LV+.12:1+HQ+.1).toArray(),{cls:'dk sm',dx:s>=0?56:64,dy:Math.abs(s)<.07?-30:s>=0?-4:8}));
+  const tip=q.clone().addScaledVector(AXIS,LV),ft=q.clone().addScaledVector(u,LV*s);
+  V.gVec.add(arrow(q.toArray(),tip.toArray(),{col:COL.om,head:.12,hr:.048,sr:.017}));
+  V.gVec.add(label('<span class="mv">Ω</span>',tip.toArray(),{cls:'om',dx:s>=0?-30:34,dy:-16}));
+  if(Math.abs(s)>.07){V.gVec.add(arrow(q.toArray(),ft.toArray(),{col:COL.vs,head:.1,hr:.05,sr:.022}));
+    if(Math.abs(s)<.995){V.gVec.add(line(V,[tip.toArray(),ft.toArray()],{col:COL.axis,w:2,dash:[.03,.025],op:.9}));
+      const a=ft.clone().addScaledVector(u,-.05*Math.sign(s)),b=tip.clone().sub(ft).normalize().multiplyScalar(.05);   // 직각 표시
+      V.gVec.add(line(V,[a.toArray(),a.clone().add(b).toArray(),ft.clone().add(b).toArray()],{col:COL.axis,w:2}));}}
+  else V.gVec.add(dot(q.toArray(),{r:.03,col:COL.vs}));
+  V.gVec.add(label(Math.abs(s)>.07?'<span class="mv">Ω</span> sin <span class="mv">φ</span>':'<span class="mv">Ω</span> sin <span class="mv">φ</span> = 0',q.clone().lerp(ft,.6).toArray(),{cls:'vs',dx:104,dy:Math.abs(s)<.07?34:s>=0?26:14}));
+  st.check={dotPerp:+tip.clone().sub(ft).dot(u).toFixed(6),comp:+(ft.clone().sub(q).dot(u)/LV).toFixed(5)};
+}
+/* 원판 위의 공: 원판 밖에서 보면 곧게(북쪽으로) 가고, 원판에 남은 자국은 원판과 함께 돌아감. 가장자리까지 TB초 */
+const ballTau=()=>PRINT||STILL?TB*.8:TT%(TB+HOLD);
+function trackPt(ph,s,tau,R){const w=OMS*Math.sin(ph),rho=R*.95*s/TB,a=Math.PI/2+w*(tau-s);return [rho*Math.cos(a),rho*Math.sin(a)];}   // 시각 s에 찍힌 자국이 시각 tau에 있는 곳(원판 밖에서 본 좌표)
+function drawBall(st){
+  const ph=st.ph*D2R,tau=Math.min(ballTau(),TB),arr=V.trace.geometry.attributes.instanceStart.data.array;
+  for(let i=0;i<24;i++){const a=trackPt(ph,tau*i/24,tau,RP),b=trackPt(ph,tau*(i+1)/24,tau,RP);arr[i*6]=a[0];arr[i*6+1]=a[1];arr[i*6+2]=.012;arr[i*6+3]=b[0];arr[i*6+4]=b[1];arr[i*6+5]=.012;}
+  V.trace.geometry.attributes.instanceStart.data.needsUpdate=true;V.ball.position.set(0,RP*.95*tau/TB,.03);
+}
+/* 왼쪽 아래 그림: 원판과 함께 돌며 본 모습(자국이 휜 길) — 자국의 각 = 90° − ω s (북반구: 시계 방향으로 밀림 = 운동 방향의 오른쪽) */
+const f1=v=>v.toFixed(1);
+function insPt(ph,s){const w=OMS*Math.sin(ph),rho=112*.95*s/TB,a=Math.PI/2-w*s;return [150+rho*Math.cos(a),146-rho*Math.sin(a)];}
+function drawIns(c){
+  const st=c.st,ph=st.ph*D2R,sn=Math.sin(ph),tau=Math.min(ballTau(),TB),el=c.$('#s11d-ins');if(!el)return;
+  let s=`<circle cx="150" cy="146" r="112" fill="#fff" stroke="#FFD60A" stroke-width="6"/><circle cx="150" cy="146" r="115" fill="none" stroke="#8e8e93" stroke-width="1.5"/>`;
+  if(Math.abs(sn)>.01){const sg=sn>0?1:-1,A=a=>[150+130*Math.cos(a*D2R),146-130*Math.sin(a*D2R)],p=[];for(let a=215;a<=325;a+=5)p.push(A(a));if(sg<0)p.reverse();
+    const e=p[p.length-1],e0=p[p.length-2],dx=e[0]-e0[0],dy=e[1]-e0[1],l=Math.hypot(dx,dy),ux=dx/l,uy=dy/l;
+    s+=`<path d="M${p.map(q=>f1(q[0])+' '+f1(q[1])).join(' L')}" fill="none" stroke="#6e6e73" stroke-width="3.5"/><path d="M${f1(e[0]+ux*12)} ${f1(e[1]+uy*12)} L${f1(e[0]-uy*8)} ${f1(e[1]+ux*8)} L${f1(e[0]+uy*8)} ${f1(e[1]-ux*8)} Z" fill="#6e6e73"/>`;}
+  s+=`<line x1="150" y1="146" x2="150" y2="40" stroke="#aeaeb2" stroke-width="3" stroke-dasharray="7 7"/>`;
+  const pts=[];for(let i=0;i<=30;i++)pts.push(insPt(ph,tau*i/30));
+  s+=`<path d="M${pts.map(q=>f1(q[0])+' '+f1(q[1])).join(' L')}" fill="none" stroke="#48484a" stroke-width="4.5" stroke-linecap="round"/>`;
+  const b=pts[30],b0=insPt(ph,Math.max(0,tau-.05)),vx=b[0]-b0[0],vy=b[1]-b0[1],vl=Math.hypot(vx,vy)||1,ux=vx/vl,uy=vy/vl;
+  if(Math.abs(sn)>.03&&tau>.3){const sg=sn>0?1:-1,L=20+52*Math.abs(sn),rx=-uy*sg,ry=ux*sg,x2=b[0]+rx*(12+L),y2=b[1]+ry*(12+L);   // 화면(y 아래)에서 운동 방향의 오른쪽 = (−uy, ux)
+    s+=`<line x1="${f1(b[0]+rx*12)}" y1="${f1(b[1]+ry*12)}" x2="${f1(x2-rx*10)}" y2="${f1(y2-ry*10)}" stroke="#0060C0" stroke-width="6" stroke-linecap="round"/><path d="M${f1(x2+rx*4)} ${f1(y2+ry*4)} L${f1(x2-rx*12-ry*9)} ${f1(y2-ry*12+rx*9)} L${f1(x2-rx*12+ry*9)} ${f1(y2-ry*12-rx*9)} Z" fill="#0060C0"/>`;}
+  s+=`<circle cx="${f1(b[0])}" cy="${f1(b[1])}" r="10" fill="#48484a" stroke="#fff" stroke-width="2.5"/>`;
+  s+=`<text x="296" y="60">점선: 굴린 방향</text><text x="296" y="100">굵은 선: 공의 자국</text><text x="296" y="140" style="fill:#0060C0;font-weight:800">파랑: 전향력</text>`;
+  s+=`<text x="296" y="206" style="font-size:30px;font-weight:800;fill:${Math.abs(sn)>.01?'#0060C0':'#1d1d1f'}">${sn>.01?'오른쪽으로 휜다':sn<-.01?'왼쪽으로 휜다':'휘지 않는다'}</text><text x="296" y="246">${sn>.01?'원판: 시계 반대 방향':sn<-.01?'원판: 시계 방향':'원판이 돌지 않는다'}</text>`;
+  el.innerHTML=s;c.$('#s11d-insn').textContent=nmLat(st.ph);
+}
+const sci=(x,e)=>(Math.round(x/Math.pow(10,e)*100+1e-6)/100).toFixed(2)+' × 10'+sup('−'+Math.abs(e));
+function readout(c){
+  const st=c.st,sn=Math.sin(st.ph*D2R),w=OM*Math.abs(sn);
+  c.$('#s11d-r1').textContent=nmLat(st.ph)+(Math.abs(st.ph)===90||st.ph===0?' ('+Math.abs(st.ph)+'°)':'');
+  c.$('#s11d-r2').innerHTML=st.ph===0?'0':sci(w,-5)+' /s';
+  c.$('#s11d-r3').textContent=st.ph===0?'돌지 않는다':'약 '+Math.round(86164/Math.abs(sn)/3600)+'시간'+(sn>0?' · 시계 반대':' · 시계');
+  c.$('#s11d-r4').innerHTML=st.ph===0?'0':sci(2*10*w,-3)+' N/kg';   // v = 10 m/s일 때(노트)
+  c.$('#s11d-r5').textContent=sn>0?'운동 방향의 오른쪽':sn<0?'운동 방향의 왼쪽':'휘지 않는다';
+}
+const DEF=k=>({spin:k<=2?1:0,we:k===0?1:0,dN:k>=1?1:0,dS:k>=2?1:0,dk:k>=3?1:0,pr:k>=4?1:0,vec:k>=4?1:0,ball:k>=5?1:0});
+const KEYS=['spin','we','dN','dS','dk','pr','vec','ball'];
+const CAM=k=>k===0?'side0':k===1?'np':k===2?'sp':'side';
+function apply(c){
+  const st=c.st,cd=V.camera.position.clone().normalize();
+  V.disks.forEach(D=>{const o=D.lat===90?Math.max(st.dN,st.dk):D.lat===-90?Math.max(st.dS,st.dk):st.dk;fade(D.g,o);fade(D.lbG,o);D.mk.rotation.z=25*D2R+st.ang*Math.sin(D.lat*D2R);
+    D.lb.visible=D.p.dot(cd)>.1&&!(Math.abs(D.lat)===90&&st.dk<.5);});
+  V.lbN.visible=st.dk<.5&&cd.y>-.2;V.lbS.visible=st.dk<.5&&cd.y<.2;V.lbE.visible=st.dk<.5&&P3(0,62*D2R).dot(cd)>.1;V.lbOm.visible=cd.y>-.15;
+  fade(V.gWE,st.we);
+  frame(V.pr.g,st.ph,LP);fade(V.pr.g,st.pr);V.pr.mk.rotation.z=25*D2R+st.ang*Math.sin(st.ph*D2R);V.pr.ccw.visible=st.ph>0&&st.pr>.003;V.pr.cw.visible=st.ph<0&&st.pr>.003;
+  fade(V.gBall,st.pr*st.ball);if(st.ball>0)drawBall(st);
+  fade(V.gVec,st.vec);
+  V.earth.rotation.y=st.rot;
+}
+Deck.scene('s11d',{steps:5,
+  enter(c){
+    if(!V)setup();
+    V.mount(c.$('#s11d-v'));cur=c;TT=0;
+    const st=c.st=Object.assign(DEF(0),{ph:30,ang:0,rot:0});
+    const iP=c.$('#s11d-ph'),pv=c.$('#s11d-phv');
+    c.$('#s11d-tab').innerHTML=LATS.map(d=>{const s=Math.sin(d*D2R);return `<tr class="${d===0?'eq':''}"><td>${nmLat(d)}${Math.abs(d)===90?' (90°)':d===0?' (0°)':''}</td><td>${d===0?'0':(Math.round(OM*Math.abs(s)*1e7+1e-6)/100).toFixed(2)}</td><td>${s>0?'시계 반대 방향':s<0?'시계 방향':'돌지 않는다'}</td></tr>`;}).join('');
+    c.sync=()=>{iP.value=st.ph;pv.textContent=nmLat(st.ph);readout(c);buildVec(st);drawIns(c);};
+    c.cap=k=>{c.$$('#s11d-cap .cp').forEach(e=>e.classList.toggle('on',e.dataset.k===String(k)));
+      c.$('#s11d-low').classList.toggle('on',k>=3);c.$('#s11d-pg1').classList.toggle('on',k<5);c.$('#s11d-pg2').classList.toggle('on',k>=5);
+      c.$('#s11d-read').classList.toggle('on',k>=4||st.pr>.5);c.$('#s11d-read').classList.toggle('k5',k>=5);};
+    c.btn=n=>['side','np','sp'].forEach((m,i)=>c.$('#s11d-b'+i).classList.toggle('on',n.startsWith(m)));
+    /* 카메라는 지구 둘레를 돌아서 옮김(위도·경도·거리를 따로 — 곧게 옮기면 지구 속을 지나감) */
+    c.camTok=0;
+    c.cam=(name,ms)=>{const tok=++c.camTok,p=V.camera.position,D0=p.length(),la0=Math.asin(clamp(p.y/D0,-1,1))/D2R,lo0=Math.atan2(p.x,p.z)/D2R,[la1,lo1,D1]=CAMS[name];c.btn(name);
+      return c.tween(ms,e=>{if(tok!==c.camTok)return;V.camera.position.set(...sph(lerp(la0,la1,e),lerp(lo0,lo1,e),lerp(D0,D1,e)));V.ctl.target.set(0,0,0);},{ease:'inOut'});};
+    c.to=(d,ms)=>{const s0={...st};return c.tween(ms,e=>{KEYS.forEach(n=>{st[n]=lerp(s0[n],d[n],e);});});};
+    iP.addEventListener('input',()=>{st.ph=+iP.value;if(st.pr<.5){st.pr=1;st.vec=1;c.$('#s11d-read').classList.add('on');}c.sync();});
+    c.$('#s11d-b0').addEventListener('click',()=>c.cam(Deck.k>=3?'side':'side0',1300));
+    c.$('#s11d-b1').addEventListener('click',()=>c.cam('np',1300));
+    c.$('#s11d-b2').addEventListener('click',()=>c.cam('sp',1300));
+    c.$('#s11d-home').addEventListener('click',()=>{st.ph=30;c.sync();c.cam(CAM(Deck.k),1000);c.to(DEF(Deck.k),500).then(()=>c.cap(Deck.k));});
+    c.$('#s11d-panel').addEventListener('click',e=>e.stopPropagation());
+    c.btn('side');c.sync();c.cap(0);
+    V.camera.position.set(...sph(CAMS.side0[0],-14,CAMS.side0[2]*1.15));V.ctl.target.set(0,0,0);V.ctl.update();
+    if(PRINT||STILL){st.ang=.6*OMS;st.rot=.35;}
+    apply(c);V.render();
+    c.cam('side0',1500);
+    c.loop((t,dt)=>{dt=Math.min(dt,.05);if(!PRINT&&!STILL){TT+=dt;st.ang+=OMS*dt;st.rot+=OMS*dt*st.spin;if(st.ball>0)drawIns(c);}apply(c);V.render();hideBehind(c.$('#s11d-v').parentNode,c.fn=(c.fn||0)+1);});
+  },
+  async go(c,k){
+    const st=c.st,d=DEF(k);
+    if(c.instant){Object.assign(st,d);c.cap(k);c.camTok++;V.camera.position.set(...sph(...CAMS[CAM(k)]));V.ctl.target.set(0,0,0);V.ctl.update();c.btn(CAM(k));c.sync();apply(c);V.render();return;}
+    const keep={};KEYS.forEach(n=>{keep[n]=n==='spin'?st[n]:Math.min(st[n],d[n]);});await c.to(keep,300);
+    c.cap(k);
+    if(k<=3)await c.cam(CAM(k),k===2?2600:1500);
+    await c.to(d,k===3?1600:900);c.sync();
+  }});
+}
+/* ═══ s22d 등압면과 등고선 — 입체로 보기 ═══ */
+{
+
+/* ── 500 hPa 등압면의 높이(모식) — 앞 장 '지상 일기도와 상층 일기도'(그림 III-33)와 같은 모형 ──
+   x: 서→동 0~1, y: 남→북 0~1.  h(x) = 5640 + 100·cos(πx)  [m] — 서쪽 5740 m, 동쪽 5540 m, 평균 5640 m. 높이가 x에만 달려 있어 등고선은 남북으로 곧은 선
+   등고선 5700·5640·5550 m의 자리: x = acos((H − 5640)/100)/π = 0.295·0.5·0.856(앞 장과 같음)
+   3D: X = (x − .5)·2.4(동쪽 +), Z = (.5 − y)·1.6(북쪽 −Z), 높이 Y = 1 + (h − 5640)·0.0035(200 m를 0.7로 — 크게 과장), 바닥(땅) Y = 0
+   같은 높이 z에서: 등압면이 위에 있으면(h > z) 기압 > 500 hPa */
+const h=(x,y)=>5640+100*Math.cos(Math.PI*x);
+const xAt=H=>Math.acos(clamp((H-5640)/100,-1,1))/Math.PI;   // 등압면의 높이가 H인 곳(서→동으로 낮아짐)
+const KY=.0035,X=x=>(x-.5)*2.4,Z=y=>(.5-y)*1.6,Y=hh=>1+(hh-5640)*KY;
+const W3=(x,y,hh)=>[X(x),Y(hh),Z(y)];
+const LV=[5700,5640,5550];
+const A={x:xAt(5700),y:.4},B={x:xAt(5550),y:.4};   // 앞 장의 A(등압면 높이 5700 m인 곳)·B(5550 m인 곳), 같은 위도
+const NX=72,NY=48,sm=t=>t*t*(3-2*t);
+/* 높이의 기울기(월드 좌표, m/칸): gx = ∂h/∂X(동쪽 +), gz = ∂h/∂Z(남쪽 +) */
+const grad=(x,y)=>[-100*Math.PI*Math.sin(Math.PI*x)/2.4, 0];
+/* 등고선 찾기(격자 사각형마다 선분 — marching squares) → [[x,y],[x,y]] 쌍 */
+function iso(L){
+  const out=[],v=(i,j)=>h(i/NX,j/NY)-L,cut=(a,b,va,vb)=>{const t=va/(va-vb);return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];};
+  for(let i=0;i<NX;i++)for(let j=0;j<NY;j++){
+    const P=[[i/NX,j/NY],[(i+1)/NX,j/NY],[(i+1)/NX,(j+1)/NY],[i/NX,(j+1)/NY]],Vv=[v(i,j),v(i+1,j),v(i+1,j+1),v(i,j+1)],e=[];
+    for(let k=0;k<4;k++){const a=Vv[k],b=Vv[(k+1)%4];if((a<0)!==(b<0))e.push(cut(P[k],P[(k+1)%4],a,b));}
+    if(e.length===2)out.push(e);else if(e.length===4){out.push([e[0],e[1]]);out.push([e[2],e[3]]);}
+  }
+  return out;
+}
+const ISO={};LV.forEach(L=>ISO[L]=iso(L));
+
+/* 그 높이에서 주황(등압면이 위 = 기압 > 500 hPa)인 넓이의 비율 — 240×160 격자로 셈 */
+const FR={};const frac=Hc=>{const k=Math.round(Hc);if(FR[k]!=null)return FR[k];let n=0;for(let i=0;i<240;i++)for(let j=0;j<160;j++)if(h((i+.5)/240,(j+.5)/160)>Hc)n++;return FR[k]=n/38400;};
+
+/* 카메라 자리(단계마다) */
+const HOME={pos:[2.3,2.75,5.5],target:[0,.56,0]},     // 남남동쪽 위: 서쪽(높은 쪽)이 왼쪽 — 앞 장 그림과 같은 방향
+      C1A={pos:[1.5,1.7,6.0],target:[0,.7,0]},       // 빛의 판을 옆에서(수평인 것이 보이게)
+      C1B={pos:[2.0,3.6,5.2],target:[0,.45,0]},      // 바닥의 등고선이 보이게 조금 위에서
+      C2={pos:[.9,2.6,6.2],target:[0,.56,0]},        // 남쪽에서: 등압면이 수평면 위(서)·아래(동)에 있는 것이 보이게
+      TOP={pos:[0,5.15,-.1],target:[0,0,-.12]};            // 머리 위(북쪽이 위)
+const OFFX=250,OFFY=140;   // 장면의 가운데를 화면 오른쪽·위로(왼쪽 글 카드와 아래 막대 자리)
+
+let V=null,cur=null,grab=null,used=false;
+function setup(){
+  V=makeView({w:1920,h:1080,fov:30,pos:HOME.pos,target:HOME.target,minD:2.6,maxD:9,key:'s22d'});
+  V.camera.setViewOffset(1920,1080,-OFFX,OFFY,1920,1080);
+  V.ctl.maxPolarAngle=Math.PI*.49;
+  const S=V.scene;
+  S.add(new THREE.AmbientLight(0xffffff,.8));const dl=new THREE.DirectionalLight(0xffffff,.9);dl.position.set(-2,4,3);S.add(dl);
+  /* 하늘: 둥근 하늘에 그러데이션(올려다볼수록 파랑, 내려다볼수록 뿌연 흰빛) — 시점을 바꾸면 배경도 따라 바뀜 */
+  const sky=new THREE.Mesh(new THREE.SphereGeometry(45,32,24),new THREE.ShaderMaterial({side:THREE.BackSide,depthWrite:false,depthTest:false,
+    uniforms:{top:{value:new THREE.Color(0x4f8fd4)},mid:{value:new THREE.Color(0xa6cdec)},hor:{value:new THREE.Color(0xd5e7f4)},low:{value:new THREE.Color(0xe4edf3)}},
+    vertexShader:'varying vec3 d;void main(){d=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+    fragmentShader:'uniform vec3 top,mid,hor,low;varying vec3 d;void main(){float e=normalize(d).y;vec3 c=mix(low,hor,smoothstep(-.95,-.6,e));c=mix(c,mid,smoothstep(-.6,-.3,e));c=mix(c,top,smoothstep(-.3,.3,e));gl_FragColor=vec4(c,1.);\n#include <colorspace_fragment>\n}'}));
+  sky.renderOrder=-10;sky.frustumCulled=false;S.add(sky);
+  /* 땅(지도가 놓일 판): 서쪽(등압면이 높은 쪽)은 조금 따뜻한 색, 동쪽은 조금 찬 색(은은하게) */
+  const slab=new THREE.Mesh(new THREE.BoxGeometry(2.4,.06,1.6),new THREE.MeshBasicMaterial({color:0xb4b0a6}));slab.position.y=-.032;S.add(slab);
+  const fg=new THREE.PlaneGeometry(2.4,1.6,16,1);fg.rotateX(-Math.PI/2);
+  {const p=fg.attributes.position,cs=[],cS=new THREE.Color(0xf6ead9),cM=new THREE.Color(0xf3f2ee),cN=new THREE.Color(0xdfe9f3),t=new THREE.Color();
+    for(let n=0;n<p.count;n++){const y=p.getX(n)/2.4+.5;if(y<.5)t.lerpColors(cS,cM,y*2);else t.lerpColors(cM,cN,(y-.5)*2);cs.push(t.r,t.g,t.b);}
+    fg.setAttribute('color',new THREE.Float32BufferAttribute(cs,3));}
+  S.add(new THREE.Mesh(fg,new THREE.MeshBasicMaterial({vertexColors:true})));
+  S.add(line(V,[[-1.2,.001,.8],[1.2,.001,.8],[1.2,.001,-.8],[-1.2,.001,-.8],[-1.2,.001,.8]],{col:0x8e8e93,w:2.2}));
+  [['북 N',[0,0,-.8],0,-26],['남 S',[0,0,.8],0,30],['동 E',[1.2,0,0],52,0],['서 W',[-1.2,0,0],-52,0]].forEach(([t,p,dx,dy])=>S.add(label(t,p,{cls:'hor sm',dx,dy})));
+  /* 등압면: 반투명 막 + 격자(가상의 면이라는 느낌) */
+  const g=new THREE.BufferGeometry(),pos=[],idx=[];
+  for(let j=0;j<=NY;j++)for(let i=0;i<=NX;i++){const x=i/NX,y=j/NY;pos.push(...W3(x,y,h(x,y)));}
+  for(let j=0;j<NY;j++)for(let i=0;i<NX;i++){const a=j*(NX+1)+i,b=a+1,c=a+NX+1,d=c+1;idx.push(a,c,b,b,c,d);}
+  g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setIndex(idx);g.computeVertexNormals();
+  V.surf=new THREE.Mesh(g,new THREE.MeshStandardMaterial({color:0x8fa8c2,transparent:true,opacity:.46,side:THREE.DoubleSide,roughness:1,metalness:0,depthWrite:false}));
+  V.surf.renderOrder=5;V.surf.userData.base=.46;
+  V.gSurf=new THREE.Group();V.gSurf.add(V.surf);
+  const grid=[];
+  for(let k=1;k<12;k++){const x=k/12;for(let n=0;n<24;n++)grid.push([W3(x,n/24,h(x,n/24)),W3(x,(n+1)/24,h(x,(n+1)/24))]);}
+  for(let k=1;k<8;k++){const y=k/8;for(let n=0;n<36;n++)grid.push([W3(n/36,y,h(n/36,y)),W3((n+1)/36,y,h((n+1)/36,y))]);}
+  V.gSurf.add(segs(V,grid,{col:0xffffff,w:1.5,op:.7,order:6}));
+  const edge=[[0,0,1,0],[1,0,1,1],[1,1,0,1],[0,1,0,0]];   // 가장자리 네 변
+  edge.forEach(([x0,y0,x1,y1])=>V.gSurf.add(line(V,[...Array(49)].map((_,n)=>{const x=lerp(x0,x1,n/48),y=lerp(y0,y1,n/48);return W3(x,y,h(x,y));}),{col:0x5d7591,w:3,order:7})));
+  [[0,0],[1,0],[1,1],[0,1]].forEach(([x,y])=>V.gSurf.add(line(V,[[X(x),0,Z(y)],W3(x,y,h(x,y))],{col:0x7d8a99,w:1.8,dash:[.05,.04],op:.8})));   // 땅에서 떠 있음을 알리는 가는 점선
+  V.gSurf.add(line(V,[...Array(49)].map((_,n)=>W3(n/48,A.y,h(n/48,A.y))),{col:0x2a4a6b,w:2.2,dash:[.05,.035],op:.75,order:7}));   // 동서 단면을 자른 자리(A·B를 지나는 선)
+  V.gSurf.add(label('500 hPa 등압면',W3(.5,1,h(.5,1)),{cls:'surf b',dy:-44}));
+  S.add(V.gSurf);
+  V.gC=new THREE.Group();V.gP=new THREE.Group();V.gF=new THREE.Group();V.gW=new THREE.Group();S.add(V.gC,V.gP,V.gF,V.gW);
+  setupWind();setupDrag();
+}
+
+/* ── 지균풍 입자: 바람 = 기압 경도력(−∇h)의 오른쪽 직각(북반구) = (gz, −gx)·c → 등고선을 따라 흐르고 빠르기 ∝ |∇h|(전향 인자 f는 일정하다고 둠) ── */
+const NP=110,WC=.00135,TAIL=.42,WY=.014,YB=.09;   // 입자 수, 빠르기 배율(칸/초 per m/칸), 꼬리 길이(초), 바닥에서 띄운 높이, 남·북 가장자리의 비우는 폭(등고선이 지도 끝과 만나는 곳)
+const PX=new Float32Array(NP),PY=new Float32Array(NP);
+function rng(s){return()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const rnd=rng(20261117);
+const wvel=(x,y)=>{const [gx,gz]=grad(x,y);return [gz*WC/2.4,gx*WC/1.6];};   // 모형 좌표(x 동쪽, y 북쪽)에서의 속도: 월드 (gz, −gx)·c
+function stepWind(dt){
+  for(let i=0;i<NP;i++){
+    const [u1,v1]=wvel(PX[i],PY[i]),[u,v]=wvel(PX[i]+u1*dt/2,PY[i]+v1*dt/2);   // 중간점(RK2) — 등고선에서 벗어나지 않게
+    let x=PX[i]+u*dt,y=PY[i]+v*dt;
+    if(y<=YB||y>=1-YB||x<0||x>1){x=.05+.9*rnd();y=1-YB-.03*rnd();}                 // 남쪽 끝으로 나가면 북쪽 끝에서 다시 들어옴
+    PX[i]=x;PY[i]=y;
+  }
+}
+function drawWind(){
+  const a=V.wTail.geometry.attributes.instanceStart.data,arr=a.array,pp=V.wPts.geometry.attributes.position;
+  for(let i=0;i<NP;i++){const x=PX[i],y=PY[i],[u,v]=wvel(x,y),x0=clamp(x-u*TAIL,0,1),y0=clamp(y-v*TAIL,0,1);
+    arr[i*6]=X(x0);arr[i*6+1]=WY;arr[i*6+2]=Z(y0);arr[i*6+3]=X(x);arr[i*6+4]=WY;arr[i*6+5]=Z(y);
+    pp.setXYZ(i,X(x),WY,Z(y));}
+  a.needsUpdate=true;pp.needsUpdate=true;V.wPts.material.size=10*V.R.getPixelRatio();
+}
+function setupWind(){
+  for(let i=0;i<NP;i++){PX[i]=rnd();PY[i]=YB+(1-2*YB)*rnd();}
+  V.wTail=segs(V,[...Array(NP)].map(()=>[[0,0,0],[0,0,0]]),{col:0x00796B,w:3.6,op:.85,order:11});V.wTail.frustumCulled=false;
+  const cv=document.createElement('canvas');cv.width=cv.height=32;const x=cv.getContext('2d');x.fillStyle='#fff';x.beginPath();x.arc(16,16,14,0,7);x.fill();
+  const pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.Float32BufferAttribute(new Float32Array(NP*3),3));
+  V.wPts=new THREE.Points(pg,new THREE.PointsMaterial({color:0x00796B,size:7,sizeAttenuation:false,map:new THREE.CanvasTexture(cv),transparent:true,alphaTest:.3,depthWrite:false}));
+  V.wPts.frustumCulled=false;V.wPts.renderOrder=12;
+  V.gW.add(V.wTail,V.wPts);drawWind();fade(V.gW,0);
+}
+
+/* ── 수평면을 3D 안에서 직접 끌기: 손잡이(수평면 남동쪽 모서리의 검은 공)를 잡고 위아래로 ── */
+const gripPos=Hc=>new THREE.Vector3(1.2+.12,Y(Hc),.8);
+const rc=new THREE.Raycaster(),ndc=new THREE.Vector2(),tmp=new THREE.Vector3();
+function rayOf(e){const el=V.L.domElement,r=el.getBoundingClientRect();ndc.set((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height*2-1));rc.setFromCamera(ndc,V.camera);return rc.ray;}
+const gripOn=()=>cur&&cur.st&&cur.st.p>.5&&cur.st.surf>.5;
+function yOnRay(e,P){   // 손잡이를 지나고 카메라를 향한 세로 평면과 시선이 만나는 높이
+  const n=new THREE.Vector3(V.camera.position.x-P.x,0,V.camera.position.z-P.z).normalize();
+  return rayOf(e).intersectPlane(new THREE.Plane().setFromNormalAndCoplanarPoint(n,P),tmp)?tmp.y:null;
+}
+function setupDrag(){
+  const el=V.L.domElement;
+  el.addEventListener('pointerdown',e=>{   // 캡처 단계: 돌려 보기(OrbitControls)보다 먼저 받음
+    if(!gripOn()||e.button)return;const P=gripPos(cur.st.hc);
+    if(rayOf(e).distanceToPoint(P)>.15)return;
+    const y=yOnRay(e,P);if(y==null)return;
+    grab={dy:P.y-y,id:e.pointerId};used=true;V.ctl.enabled=false;try{el.setPointerCapture(e.pointerId);}catch(_){}
+  },true);
+  el.addEventListener('pointermove',e=>{
+    if(!grab){el.style.cursor=gripOn()&&rayOf(e).distanceToPoint(gripPos(cur.st.hc))<.15?'ns-resize':'';return;}
+    const y=yOnRay(e,gripPos(cur.st.hc));if(y==null||!cur)return;
+    const Hc=clamp(Math.round((5640+(y+grab.dy-1)/KY)/10)*10,5540,5740);
+    if(Hc!==cur.st.hc){cur.st.hc=Hc;cur.st.dirty=true;cur.sync();V.soon();}
+  });
+  const end=e=>{if(!grab)return;grab=null;V.ctl.enabled=true;try{el.releasePointerCapture(e.pointerId);}catch(_){}};
+  el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);
+}
+/* 3D 상자에 붙이기(common.js의 mount를 이 장에 맞게 고친 것): 끌기·휠·터치는 장 넘기기로 가지 않음.
+   화면 가득 3D라 '끌지 않고 그냥 누른 것'만 엔진으로 보내 다음 단계로 넘어가게 함(손잡이를 잡았을 때는 보내지 않음) */
+function mount(box){
+  V.R.domElement.className='v3-gl';box.append(V.R.domElement,V.L.domElement);V.fitRes();V.render();
+  let dn=null,moved=false;
+  box.addEventListener('pointerdown',e=>{dn=[e.clientX,e.clientY];moved=false;if(!grab)used=false;e.stopPropagation();});
+  box.addEventListener('pointermove',e=>{if(dn&&Math.hypot(e.clientX-dn[0],e.clientY-dn[1])>6)moved=true;});
+  box.addEventListener('pointerup',e=>{dn=null;e.stopPropagation();});
+  box.addEventListener('click',e=>{if(moved||used)e.stopPropagation();moved=false;used=false;});
+  ['dblclick','wheel','touchstart','touchmove','touchend','gesturestart','gesturechange','contextmenu'].forEach(t=>
+    box.addEventListener(t,e=>{e.stopPropagation();if(t==='contextmenu')e.preventDefault();},{passive:t!=='contextmenu'}));
+}
+
+/* ── 1 등고선: 수평인 빛의 판이 5700·5640·5550 m에 차례로 멈추고(만나는 선이 빛남) → 선이 바닥으로 내려와 등고선 ── */
+const SW=[[0,.13,5750,5700],[.13,.21,5700,5700],[.21,.34,5700,5640],[.34,.42,5640,5640],[.42,.55,5640,5550],[.55,.63,5550,5550]],RCH=[.13,.34,.55],QD=.72;
+const plateH=q=>{for(const [a,b,h0,h1] of SW)if(q<=b)return lerp(h0,h1,sm(clamp((q-a)/(b-a),0,1)));return 5550;};
+const LYP=.1;   // 등고선 숫자를 붙일 곳(남쪽 끝 가까이)
+function buildC(st){
+  clear(V.gC);const q=st.c;if(q<=0)return;
+  const po=clamp(q/.03,0,1)*clamp((.70-q)/.07,0,1)*st.surf;
+  if(po>0){const Hp=plateH(q),yy=Y(Hp);
+    const pm=new THREE.Mesh(new THREE.PlaneGeometry(2.7,1.9),new THREE.MeshBasicMaterial({color:0xfff3bf,transparent:true,opacity:.34*po,side:THREE.DoubleSide,depthWrite:false}));
+    pm.rotation.x=-Math.PI/2;pm.position.y=yy;pm.renderOrder=4;V.gC.add(pm);
+    V.gC.add(line(V,[[-1.35,yy,.95],[1.35,yy,.95],[1.35,yy,-.95],[-1.35,yy,-.95],[-1.35,yy,.95]],{col:0xc9962a,w:2.2,op:po,order:6}));
+    const sg=iso(Hp).map(([a,b])=>[W3(a[0],a[1],Hp),W3(b[0],b[1],Hp)]);
+    if(sg.length)V.gC.add(segs(V,sg,{col:0xffe680,w:10,op:.95*po,order:8,depth:false}));               // 만나는 선(빛)
+    V.gC.add(label(Math.round(Hp/10)*10+' m',[1.35,yy,.95],{cls:'grip sm',dx:74,dy:0}));   // 판의 높이
+  }
+  const qd=clamp((q-QD)/(1-QD),0,1),qe=sm(qd);
+  LV.forEach((L,i)=>{
+    const qa=clamp((q-RCH[i])/.03,0,1);if(qa<=0)return;
+    const sg=ISO[L],lx=xAt(L);
+    const on=segs(V,sg.map(([a,b])=>[W3(a[0],a[1],L),W3(b[0],b[1],L)]),{col:0x1f3044,w:3.4,order:9});V.gC.add(on);fade(on,qa*st.surf*(1-.4*qe));   // 위에서 볼 때는 면 위의 선을 감춤(바닥 등고선과 두 겹으로 보이지 않게)
+    let yl=Y(L),lo=qa*st.surf;
+    if(qd>0){yl=lerp(Y(L),.006,qe);lo=1;V.gC.add(segs(V,sg.map(([a,b])=>[[X(a[0]),yl,Z(a[1])],[X(b[0]),yl,Z(b[1])]]),{col:0x2a4a6b,w:3.8,order:8}));}
+    const lb=label(L+' m',[X(lx),yl,Z(LYP)],{cls:'iso sm',dx:52});V.gC.add(lb);fade(lb,lo);
+  });
+}
+/* ── 2 비교 높이의 수평면: 등압면이 위에 있는 곳(기압 > 500 hPa) 주황, 아래인 곳(< 500 hPa) 파랑, 경계 = 그 높이의 등고선.
+      위에서 볼 때는 바닥(지도)에 붙여 그림 → 경계가 지도의 등고선과 그대로 겹침 ── */
+function buildP(st){
+  clear(V.gP);if(st.p<=0)return;
+  const Hc=st.hc,flat=1-st.surf,yy=lerp(Y(Hc),.004,flat),g=new THREE.PlaneGeometry(2.4,1.6,NX,NY);g.rotateX(-Math.PI/2);
+  const cols=[],p=g.attributes.position;
+  for(let n=0;n<p.count;n++){const x=p.getX(n)/2.4+.5,y=.5-p.getZ(n)/1.6,t=(clamp((h(x,y)-Hc)/8,-1,1)+1)/2;
+    cols.push(lerp(.60,1.0,t),lerp(.79,.76,t),lerp(1.0,.50,t));}   // 연한 파랑 ↔ 연한 주황
+  g.setAttribute('color',new THREE.Float32BufferAttribute(cols,3));
+  const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({vertexColors:true,transparent:true,opacity:.8,side:THREE.DoubleSide,depthWrite:false}));
+  m.position.y=yy;m.renderOrder=4;m.userData.base=.8;V.gP.add(m);
+  V.gP.add(line(V,[[-1.2,yy,.8],[1.2,yy,.8],[1.2,yy,-.8],[-1.2,yy,-.8],[-1.2,yy,.8]],{col:0x1d1d1f,w:2.4,order:7}));
+  V.gP.add(line(V,[[-1.2,yy+.002,Z(A.y)],[1.2,yy+.002,Z(A.y)]],{col:0x1d1d1f,w:2,dash:[.05,.035],op:.7,order:8}));   // 단면을 자른 자리
+  const sg=iso(Hc);if(sg.length)V.gP.add(segs(V,sg.map(([a,b])=>[[X(a[0]),yy+.002,Z(a[1])],[X(b[0]),yy+.002,Z(b[1])]]),{col:0x1d1d1f,w:4.2,order:9}));
+  [[A,'A'],[B,'B']].forEach(([P,n])=>{
+    const hs=h(P.x,P.y),a=[X(P.x),yy,Z(P.y)],s=[X(P.x),Y(hs),Z(P.y)],hi=hs>Hc,col=hi?0xB25000:0x005BB8;
+    if(flat<.5&&Math.abs(s[1]-a[1])>.03){
+      if(hi)V.gP.add(arrow(a,s,{col,head:.09,hr:.034,sr:.011}));                                  // A: 500 hPa 면까지 더 올라가야 함
+      else{V.gP.add(line(V,[a,s],{col,w:3,dash:[.035,.03],order:9}));V.gP.add(dot(s,{r:.024,col,order:10}));}   // B: 500 hPa 면은 아래에
+    }
+    V.gP.add(dot(a,{r:.036,col:0x1d1d1f,order:10}));
+    const eq=Math.abs(hs-Hc)<.5;   // 비교 높이가 바로 그 자리의 등압면 높이면 기압 = 500 hPa
+    V.gP.add(label(n+(flat>.5?'':eq?' 기압 = 500 hPa':hi?' 기압 > 500 hPa':' 기압 < 500 hPa'),a,{cls:(eq?'ink':hi?'hi':'lo')+' b',dy:46,dx:hi?0:-50}));
+  });
+  if(flat<.5){const G=gripPos(Hc);   // 손잡이
+    V.gP.add(line(V,[[1.2,yy,.8],[G.x,yy,.8]],{col:0x1d1d1f,w:3,order:9}));
+    V.gP.add(dot([G.x,G.y,G.z],{r:.05,col:0x1d1d1f,order:10}));V.gP.add(dot([G.x,G.y,G.z],{r:.022,col:0xffffff,order:11}));
+    V.gP.add(label('↕ '+Math.round(Hc/10)*10+' m',[G.x,G.y,G.z],{cls:'grip',dx:104,dy:0}));}
+  fade(V.gP,st.p);
+}
+/* ── 3 위에서 본 지도의 힘·바람: 기압 경도력 = −∇h(높은 쪽 → 낮은 쪽, 등고선에 수직), 바람(지균풍) = 그 오른쪽 직각(북반구) ── */
+const FP=[{y:.56,L:5640,main:1},{y:.84,L:5700},{y:.84,L:5550}],FLEN=.42;
+FP.forEach(P=>{P.x=xAt(P.L);const [gx,gz]=grad(P.x,P.y);P.g=Math.hypot(gx,gz);P.p=[-gx/P.g,-gz/P.g];P.w=[-P.p[1],P.p[0]];});   // p: 기압 경도력 방향(월드 X·Z), w: 위에서 볼 때 p의 오른쪽 직각
+const G0=FP[0].g;
+function buildF(st){
+  clear(V.gF);if(st.f<=0)return;const wgs=[];
+  FP.forEach(P=>{
+    const o=[X(P.x),.022,Z(P.y)],[px,pz]=P.p,[wx,wz]=P.w,L=FLEN*P.g/G0,s=.055;
+    V.gF.add(arrow(o,[o[0]+px*L,o[1],o[2]+pz*L],{col:0xD70015,head:.13,hr:.05,sr:.018}));
+    V.gF.add(line(V,[[o[0]+wx*s,.02,o[2]+wz*s],[o[0]+wx*s+px*s,.02,o[2]+wz*s+pz*s],[o[0]+px*s,.02,o[2]+pz*s]],{col:0x1d1d1f,w:2,order:10}));   // 직각 표시(등고선 접선 ⟂ 기압 경도력)
+    if(P.main)V.gF.add(label('기압 경도력',[o[0]+px*L*.55,0,o[2]+pz*L*.55],{cls:'pgf b',dy:-36}));
+    if(st.w>0){const wg=new THREE.Group();wg.add(arrow(o,[o[0]+wx*L*1.15,o[1]+.004,o[2]+wz*L*1.15],{col:0x00796B,head:.13,hr:.05,sr:.018}));
+      if(P.main)wg.add(label('바람(지균풍)',[o[0]+wx*L*.42,0,o[2]+wz*L*.42],{cls:'wind b',dx:112}));wgs.push(wg);V.gF.add(wg);}
+    V.gF.add(dot(o,{r:.034,col:0xffffff,order:10}));
+  });
+  /* 동서 단면을 자른 자리(왼쪽 아래 그래프의 선) — 위에서 본 지도에도 표시 */
+  V.gF.add(line(V,[[-1.2,.012,Z(A.y)],[1.2,.012,Z(A.y)]],{col:0x2a4a6b,w:2.4,dash:[.05,.035],op:.8,order:8}));
+  V.gF.add(label('동서 단면',[-1.2,0,Z(A.y)],{cls:'iso sm',dy:-22,dx:70}));
+  fade(V.gF,st.f);
+  wgs.forEach(wg=>fade(wg,st.f*st.w));
+}
+
+/* ── 동서 단면(A·B를 지나는 선 y = 0.4): 3D와 같은 식 h(x), 왼쪽 = 서, 오른쪽 = 동. 가로 380 px가 3D의 2.4칸 → 세로 260 m를 144 px로 그려 높이 과장이 3D와 같음(0.55 px/m) ── */
+const SX=x=>110+380*x,SY=hh=>190-(hh-5510)/260*144,f1=v=>v.toFixed(1);
+let secDrawn=null;
+function drawSec(c){
+  const st=c.st,el=c.$('#s22d-sec');if(!el)return;
+  const Hc=st.hc,cur=(a,b)=>[...Array(41)].map((_,n)=>{const x=lerp(a,b,n/40);return f1(SX(x))+','+f1(SY(h(x,A.y)));}).join(' L');
+  let s='';
+  LV.forEach(L=>{s+=`<line x1="110" x2="490" y1="${f1(SY(L))}" y2="${f1(SY(L))}" stroke="#d1d1d6" stroke-width="1.5"/><text x="100" y="${f1(SY(L)+8)}" text-anchor="end">${L} m</text>`;});
+  s+='<path d="M110,10 V226 H490" fill="none" stroke="#8e8e93" stroke-width="2"/><text x="110" y="254" style="fill:#157F4A;font-weight:700">서</text><text x="490" y="254" text-anchor="end" style="fill:#157F4A;font-weight:700">동</text>';
+  if(st.p>0){
+    const yb=xAt(Hc),yh=f1(SY(Hc));secDrawn={hc:Hc,yb,px:SX(yb)};
+    s+=`<g opacity="${st.p.toFixed(3)}">`;
+    if(yb>.001)s+=`<path d="M110,${yh} L${cur(0,yb)} L${f1(SX(yb))},${yh} Z" fill="#ffc27f" opacity=".85"/><line x1="110" x2="${f1(SX(yb))}" y1="${yh}" y2="${yh}" stroke="#B25000" stroke-width="5"/>`;      // 등압면이 위 = 기압 > 500 hPa
+    if(yb<.999)s+=`<path d="M${f1(SX(yb))},${yh} L${cur(yb,1)} L490,${yh} Z" fill="#9ecbff" opacity=".85"/><line x1="${f1(SX(yb))}" x2="490" y1="${yh}" y2="${yh}" stroke="#005BB8" stroke-width="5"/>`;   // 등압면이 아래 = 기압 < 500 hPa
+    [[A,'A'],[B,'B']].forEach(([P,n])=>{const hs=h(P.x,P.y),px=f1(SX(P.x)),ys=SY(hs),y0=SY(Hc),hi=hs>Hc,col=hi?'#B25000':'#005BB8';
+      if(Math.abs(ys-y0)>12){if(hi)s+=`<line x1="${px}" x2="${px}" y1="${f1(y0)}" y2="${f1(ys+12)}" stroke="${col}" stroke-width="4"/><path d="M${px},${f1(ys+1)} l-8,14 h16 Z" fill="${col}"/>`;
+        else s+=`<line x1="${px}" x2="${px}" y1="${f1(y0)}" y2="${f1(ys)}" stroke="${col}" stroke-width="3" stroke-dasharray="6 5"/><circle cx="${px}" cy="${f1(ys)}" r="5" fill="${col}"/>`;}
+      s+=`<circle cx="${px}" cy="${f1(y0)}" r="7" fill="#1d1d1f"/><text class="halo" x="${f1(+px+(n==='A'?-14:14))}" y="${f1(y0+30)}" text-anchor="${n==='A'?'end':'start'}" style="fill:${col};font-size:26px;font-weight:800">${n}</text>`;});
+    s+='</g>';
+  }
+  s+=`<path d="M${cur(0,1)}" fill="none" stroke="#5d7591" stroke-width="4" stroke-linecap="round"/>`;
+  LV.forEach((L,i)=>{const qa=clamp((st.c-RCH[i])/.03,0,1);if(qa>0){const y=xAt(L);s+=`<circle cx="${f1(SX(y))}" cy="${f1(SY(L))}" r="5.5" fill="#1f3044" opacity="${qa.toFixed(2)}"/>`;}});   // 등고선 높이와 만나는 곳
+  s+=`<text class="halo" x="486" y="32" text-anchor="end" style="fill:#2a4a6b;font-weight:700">500 hPa 등압면</text>`;
+  el.innerHTML=s;
+}
+const DEF=k=>({c:k>=1?1:0,p:k===2?1:0,hc:5640,f:k>=3?1:0,w:k>=4?1:0,top:k>=3,cam:k>=3?TOP:k===2?C2:k===1?C1B:HOME});
+Deck.scene('s22d',{steps:4,
+  enter(c){
+    if(!V)setup();
+    mount(c.$('#s22d-v'));cur=c;grab=null;V.ctl.enabled=true;
+    const st=c.st={c:0,p:0,f:0,w:0,hc:5640,surf:1,dirty:true};
+    const iH=c.$('#s22d-h'),hv=c.$('#s22d-hv'),cw=c.$('#s22d-w');
+    c.sync=()=>{const v=Math.round(st.hc/10)*10;iH.value=v;hv.textContent=v+' m';};
+    c.cap=k=>c.$$('#s22d-cap .cp').forEach(e=>e.classList.toggle('on',e.dataset.k.split(' ').includes(String(k))));
+    c.camTok=0;
+    c.cam=(to,ms)=>{const tok=++c.camTok,f=V.camTo(to.pos,to.target);return c.tween(ms,e=>{if(tok===c.camTok)f(e);},{ease:'inOut'});};
+    c.T=(ms,fn,o)=>c.tween(ms,e=>{fn(e);st.dirty=true;},o);
+    c.btn=top=>{c.$('#s22d-b2').classList.toggle('on',top);c.$('#s22d-b3').classList.toggle('on',!top);};
+    c.view=(top,ms=1400)=>{c.btn(top);const s0=st.surf;c.cam(top?TOP:(Deck.k===2?C2:HOME),ms);return c.T(ms,e=>{st.surf=lerp(s0,top?0:1,e);},{ease:'inOut'});};   // 위에서 보면 등압면은 감추고 바닥(상층 일기도)만
+    iH.addEventListener('input',()=>{st.hc=+iH.value;hv.textContent=st.hc+' m';if(st.p<.5)st.p=1;st.dirty=true;});
+    cw.addEventListener('change',()=>{const w0=st.w,w1=cw.checked?1:0;c.T(500,e=>{st.w=lerp(w0,w1,e);});});
+    c.$('#s22d-b2').addEventListener('click',()=>c.view(true));
+    c.$('#s22d-b3').addEventListener('click',()=>c.view(false));
+    c.$('#s22d-home').addEventListener('click',()=>{const d=DEF(Deck.k),s0={...st};st.c=d.c;c.cam(d.cam,1000);c.btn(d.top);cw.checked=!!d.w;
+      c.T(1000,e=>{st.p=lerp(s0.p,d.p,e);st.hc=lerp(s0.hc,d.hc,e);st.f=lerp(s0.f,d.f,e);st.w=lerp(s0.w,d.w,e);st.surf=lerp(s0.surf,d.top?0:1,e);c.sync();},{ease:'inOut'});});
+    c.$('#s22d-panel').addEventListener('click',e=>e.stopPropagation());
+    c.d=()=>{buildC(st);buildP(st);buildF(st);fade(V.gSurf,st.surf);fade(V.gW,st.w*.95);drawSec(c);st.dirty=false;};
+    c.cap(0);c.btn(false);c.sync();
+    /* 들어올 때: 조금 멀리서 다가감 */
+    V.camera.position.set(HOME.pos[0]*1.14,HOME.pos[1]*1.18,HOME.pos[2]*1.14);V.ctl.target.set(...HOME.target);V.ctl.update();
+    c.d();drawWind();V.render();
+    c.cam(HOME,1600);
+    c.loop((t,dt)=>{if(st.w>.01){stepWind(dt);drawWind();}if(st.dirty)c.d();V.render();hideBehind(c.$('#s22d-v').parentNode,c.fn=(c.fn||0)+1);});
+  },
+  async go(c,k){
+    const st=c.st,T=c.T;c.cap(k);
+    if(k===1){await c.cam(C1A,1000);await T(5800,e=>{st.c=QD*e;},{ease:'linear'});c.cam(C1B,2000);await T(2000,e=>{st.c=QD+(1-QD)*e;},{ease:'linear'});}
+    if(k===2){const h0=st.hc,p0=st.p;c.cam(C2,1400);await T(1200,e=>{st.p=lerp(p0,1,e);st.hc=lerp(h0,5640,e);});c.sync();}
+    if(k===3){const p0=st.p;T(600,e=>{st.p=p0*(1-e);});await c.view(true);await T(700,e=>{st.f=e;});}
+    if(k===4){const w0=st.w;c.$('#s22d-w').checked=true;await T(800,e=>{st.w=lerp(w0,1,e);});}
+    if(c.instant){c.d();drawWind();V.render();}
+  }});
+}
+}
 Deck.start();
 </script>
 </body>
