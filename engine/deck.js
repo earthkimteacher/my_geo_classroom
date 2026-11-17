@@ -14,12 +14,13 @@ const Q=new URLSearchParams(location.search);
 const STILL=Q.get('still')==='1', STUDENT=Q.get('s')==='1';
 const rootEl=document.documentElement;
 if(STILL)rootEl.classList.add('still');
-/* ?alt=scrub — 2026-11-17 교사 질문('해 보기 장의 수치 조절에 Scrubber를 쓰면 보기 좋지 않을까?')에 보여 줄 시안. 결정 전까지 이 주소에서만 켜짐.
+/* 값 조절 막대 = 스크러버 — 2026-11-17 교사 질문('해 보기 장의 수치 조절에 Scrubber를 쓰면 보기 좋지 않을까?')으로 ?alt=scrub 시안을 만든 뒤,
+   같은 날 교사 결정('수치를 조절하는 바는 새로운 것을 쓰자고 정한게 있지 않나?')으로 기본으로 켬. 주소에 ?scrub=0이면 예전 막대(비교용).
    SmoothUI 'Scrubber'를 바꿔 씀: 막대 전체가 손잡이(어디를 눌러도·끌어도 그 값), 이름은 왼쪽·값은 오른쪽에 막대 안에, 눈금, 채워진 부분,
    가는 세로 손잡이(평소 흐리고 작게 → 마우스를 올리거나 끌면 진하게, 0.25초 살짝 튀는 스프링). 원래 막대(input)는 그대로 두고 투명하게 위에 덮어
    장면 코드·프로젝터 창 맞추기는 그대로 동작. 꾸밈 요소는 label 맨 뒤에 붙여 다른 요소의 순서(프로젝터 창이 쓰는 경로)를 바꾸지 않음 */
-const ALT_SCRUB=Q.get('alt')==='scrub';
-if(ALT_SCRUB)rootEl.classList.add('alt-scrub');
+const SCRUB=Q.get('scrub')!=='0';
+if(SCRUB)rootEl.classList.add('scrub');
 function scrubUp(sec){
   sec.querySelectorAll('.ia-panel label').forEach(lb=>{
     const inp=lb.querySelector('input[type=range]');if(!inp||inp.hidden||lb.classList.contains('scrub'))return;
@@ -232,7 +233,7 @@ async function show(i,k=0,o={}){
   const def=scenes[to.id]||{};
   c.instant=instant||k>0;
   await safe(async()=>{runDecl(c,0);if(def.enter)await def.enter(c);},c);
-  if(ALT_SCRUB)scrubUp(to);
+  if(SCRUB)scrubUp(to);
   for(let j=1;j<=k;j++){
     if(token!==Deck.token)return;
     await safe(async()=>{runDecl(c,j);if(def.go)await def.go(c,j);},c);
@@ -857,6 +858,10 @@ function lkPost(m){
   if(LINK.ls)try{localStorage.setItem(LINK.key,JSON.stringify(m));}catch(e){}
 }
 function lkTx(m){if(REMOTE||QUIET||!LINK.on)return;LINK.at=performance.now();lkPost(m);}
+/* 장면 코드용 연결 통로(2026-11-17, 3D 카메라 각도를 프로젝터 창에도): Deck.link.send(이름, 값) → 다른 창의 Deck.link.on(이름, 함수)가 받음.
+   받는 동안(REMOTE)에는 다시 보내지 않으므로 서로 주고받으며 끝없이 도는 일이 없음. 연결된 창이 없으면 아무것도 하지 않음 */
+const XH={};
+Deck.link={send(k,d){lkTx({t:'x',k,d});},on(k,f){XH[k]=f;},get linked(){return !!LINK.on;},get remote(){return REMOTE;}};
 function lkLinked(){const want=ROLE==='screen'?'main':'screen',now=Date.now();return Object.keys(LINK.peers).some(id=>{const p=LINK.peers[id];return p.r===want&&now-p.t<6500;});}
 function lkCheck(){const on=lkLinked();if(on===LINK.was)return;LINK.was=on;
   if(ROLE==='main'&&on&&!PV)pvSet(true);   // 프로젝터 창이 연결되면 이 창은 발표자 보기로
@@ -908,6 +913,7 @@ function lkDo(m){
     case 'lzon':if(LZ.on!==!!m.v)lzSet(!!m.v);break;
     case 'lz':lzRx(m.q||[]);break;
     case 'lson':if(LS.on!==!!m.v)lsSet(!!m.v);break;
+    case 'x':{const f=XH[m.k];if(f)try{f(m.d);}catch(e){console.error(e);}break;}   // 장면 코드가 보낸 값(Deck.link) — 예: 3D 카메라 각도
     case 'ls':lsRx(m);break;
     case 'zv':ZV.z=m.z;ZV.x=m.x*FS;ZV.y=m.y*FS;zvClamp();stApply(m.a);break;
     case 'pic':if(m.i===Deck.i&&!ZM){const f=Deck.list[Deck.i].querySelectorAll('.pic')[m.n];if(f)zoomOpen(f);}break;
