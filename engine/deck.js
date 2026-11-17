@@ -3,7 +3,7 @@
    이 파일을 고치면 모든 수업에 적용됨. 수업 파일은 무대(#viewport > #stage > section.slide) 바로 뒤에
    <script src="../engine/deck.js"> 태그(닫는 태그까지)를 두고, 그다음 <script>에서 Deck.scene(…)을 등록한 뒤 Deck.start()를 부른다. */
 /* 도구 줄(HUD)·발표자 노트·도움말·화면 끄기 마크업 — 예전에는 수업 파일마다 무대 뒤에 있었음 */
-document.body.insertAdjacentHTML('beforeend',"<div id=\"hud\">\n  <button id=\"b-prev\" aria-label=\"이전 장 (Shift+←)\"><svg viewBox=\"0 0 20 20\"><path d=\"M12.5 4 6.5 10l6 6\"/></svg></button>\n  <div class=\"count\" id=\"count\">1 / 1</div>\n  <button id=\"b-next\" aria-label=\"다음 장 (남은 단계 건너뜀, Shift+→)\"><svg viewBox=\"0 0 20 20\"><path d=\"M7.5 4l6 6-6 6\"/></svg></button>\n  <button id=\"b-pause\" aria-label=\"애니메이션 일시정지 (P)\"><svg class=\"i-pause\" viewBox=\"0 0 20 20\"><path d=\"M7 4.5v11M13 4.5v11\"/></svg><svg class=\"i-play\" viewBox=\"0 0 20 20\"><path d=\"M7 4.5l9 5.5-9 5.5z\"/></svg></button>\n  <button id=\"b-mark\" aria-label=\"책갈피 (M)\"><svg viewBox=\"0 0 20 20\"><path d=\"M5.5 3h9v14l-4.5-3.5L5.5 17z\"/></svg></button>\n  <button id=\"b-notes\" aria-label=\"발표자 노트 (N)\"><svg viewBox=\"0 0 20 20\"><path d=\"M4 5h12M4 10h12M4 15h7\"/></svg></button>\n  <button id=\"b-laser\" aria-label=\"레이저 포인터 (L)\"><svg viewBox=\"0 0 20 20\"><circle cx=\"10\" cy=\"10\" r=\"2.6\"/><path d=\"M10 2.5v3M10 14.5v3M2.5 10h3M14.5 10h3\"/></svg></button>\n  <button id=\"b-ov\" aria-label=\"목차 (O)\"><svg viewBox=\"0 0 20 20\"><rect x=\"3\" y=\"3\" width=\"5.5\" height=\"5.5\" rx=\"1\"/><rect x=\"11.5\" y=\"3\" width=\"5.5\" height=\"5.5\" rx=\"1\"/><rect x=\"3\" y=\"11.5\" width=\"5.5\" height=\"5.5\" rx=\"1\"/><rect x=\"11.5\" y=\"11.5\" width=\"5.5\" height=\"5.5\" rx=\"1\"/></svg></button>\n  <button id=\"b-pv\" aria-label=\"발표자 보기 · 프로젝터 창 연결 (V)\"><svg viewBox=\"0 0 20 20\"><rect x=\"2.5\" y=\"3.5\" width=\"15\" height=\"10\" rx=\"1.5\"/><path d=\"M7 17h6M10 13.5V17\"/></svg></button>\n  <button id=\"b-fs\" aria-label=\"전체 화면 (F)\"><svg viewBox=\"0 0 20 20\"><path d=\"M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4\"/></svg></button>\n</div>\n<div id=\"notes\"><button id=\"notes-x\" aria-label=\"노트 닫기 (N 또는 Esc)\">✕</button><div class=\"nh\"><b id=\"notes-t\"></b>발표자 노트</div><p id=\"notes-p\"></p></div>\n<div class=\"overlay\" id=\"help\"><div class=\"box\"><h3>단축키</h3><table>\n  <tr><td><kbd>→</kbd> <kbd>Space</kbd></td><td>다음 (클릭도 가능)</td></tr>\n  <tr><td><kbd>←</kbd></td><td>이전</td></tr>\n  <tr><td><kbd>Shift</kbd>+<kbd>→</kbd> · 휠 아래로 · 아래 ▶ 버튼</td><td>다음 장 (남은 단계 건너뜀)</td></tr>\n  <tr><td><kbd>Shift</kbd>+<kbd>←</kbd> · 휠 위로 · 아래 ◀ 버튼</td><td>이전 장</td></tr>\n  <tr><td><kbd>N</kbd></td><td>발표자 노트 (발표자 보기에서는 아래 칸의 단계 ↔ 노트 전환)</td></tr>\n  <tr><td><kbd>O</kbd></td><td>목차 (누르면 그 장으로)</td></tr>\n  <tr><td><kbd>B</kbd> <kbd>W</kbd></td><td>검은 화면 / 흰 화면</td></tr>\n  <tr><td><kbd>F</kbd></td><td>전체 화면</td></tr>\n  <tr><td><kbd>V</kbd></td><td>발표자 보기 — 이 창에서 조작 (단계·노트·이전/다음 장 미리보기). 위 ‘프로젝터 창 열기’로 연 창을 프로젝터 화면으로 옮겨 크게 (아이패드는 길게 눌러 ‘새 창에서 열기’)</td></tr>\n  <tr><td><kbd>M</kbd></td><td>책갈피 목록 (반마다 저장 · 눌러서 이동)</td></tr>\n  <tr><td><kbd>P</kbd></td><td>애니메이션 일시정지 · 이어서 재생 (멈춘 상태에서 → 도 재생)</td></tr>\n  <tr><td><kbd>L</kbd></td><td>레이저 포인터 켜기·끄기 (누른 채 움직이면 선, 떼면 사라짐)</td></tr>\n  <tr><td>두 손가락 벌리기<br>트랙패드 핀치 · Ctrl+휠</td><td>부분 확대 (확대 중 끌어서 옮기기 · 두 번 톡이나 Esc로 원래대로)</td></tr>\n  <tr><td><kbd>Esc</kbd></td><td>덮개 닫기</td></tr></table></div></div>\n<div id=\"blank\"></div>\n\n");
+document.body.insertAdjacentHTML('beforeend',"<div id=\"hud\">\n  <button id=\"b-pause\" aria-label=\"애니메이션 일시정지 (P)\"><svg class=\"i-pause\" viewBox=\"0 0 20 20\"><path d=\"M7 4.5v11M13 4.5v11\"/></svg><svg class=\"i-play\" viewBox=\"0 0 20 20\"><path d=\"M7 4.5l9 5.5-9 5.5z\"/></svg></button>\n  <button id=\"b-mark\" aria-label=\"책갈피 (M)\"><svg viewBox=\"0 0 20 20\"><path d=\"M5.5 3h9v14l-4.5-3.5L5.5 17z\"/></svg></button>\n  <button id=\"b-notes\" aria-label=\"발표자 노트 (N)\"><svg viewBox=\"0 0 20 20\"><path d=\"M4 5h12M4 10h12M4 15h7\"/></svg></button>\n  <button id=\"b-laser\" aria-label=\"레이저 포인터 (L)\"><svg viewBox=\"0 0 20 20\"><circle cx=\"10\" cy=\"10\" r=\"2.6\"/><path d=\"M10 2.5v3M10 14.5v3M2.5 10h3M14.5 10h3\"/></svg></button>\n  <button id=\"b-lens\" aria-label=\"돋보기 (Z)\"><svg viewBox=\"0 0 20 20\"><circle cx=\"8.5\" cy=\"8.5\" r=\"5\"/><path d=\"M12.3 12.3 17 17\"/></svg></button>\n  <button id=\"b-ov\" aria-label=\"목차 (O)\"><svg viewBox=\"0 0 20 20\"><rect x=\"3\" y=\"3\" width=\"5.5\" height=\"5.5\" rx=\"1\"/><rect x=\"11.5\" y=\"3\" width=\"5.5\" height=\"5.5\" rx=\"1\"/><rect x=\"3\" y=\"11.5\" width=\"5.5\" height=\"5.5\" rx=\"1\"/><rect x=\"11.5\" y=\"11.5\" width=\"5.5\" height=\"5.5\" rx=\"1\"/></svg></button>\n  <button id=\"b-pv\" aria-label=\"발표자 보기 · 프로젝터 창 연결 (V)\"><svg viewBox=\"0 0 20 20\"><rect x=\"2.5\" y=\"3.5\" width=\"15\" height=\"10\" rx=\"1.5\"/><path d=\"M7 17h6M10 13.5V17\"/></svg></button>\n  <button id=\"b-fs\" aria-label=\"전체 화면 (F)\"><svg viewBox=\"0 0 20 20\"><path d=\"M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4\"/></svg></button>\n  <button id=\"b-tools\" aria-label=\"도구 열기\" aria-expanded=\"false\"><svg viewBox=\"0 0 20 20\"><path d=\"M10 4v12M4 10h12\"/></svg></button>\n  <button id=\"b-prev\" aria-label=\"이전 장 (Shift+←)\"><svg viewBox=\"0 0 20 20\"><path d=\"M12.5 4 6.5 10l6 6\"/></svg></button>\n  <div class=\"count\" id=\"count\">1 / 1</div>\n  <button id=\"b-next\" aria-label=\"다음 장 (남은 단계 건너뜀, Shift+→)\"><svg viewBox=\"0 0 20 20\"><path d=\"M7.5 4l6 6-6 6\"/></svg></button>\n  <i id=\"hud-tail\"></i><div id=\"hud-tip\" role=\"tooltip\"></div>\n</div>\n<div id=\"notes\"><button id=\"notes-x\" aria-label=\"노트 닫기 (N 또는 Esc)\">✕</button><div class=\"nh\"><b id=\"notes-t\"></b>발표자 노트</div><p id=\"notes-p\"></p></div>\n<div class=\"overlay\" id=\"help\"><div class=\"box\"><h3>단축키</h3><table>\n  <tr><td><kbd>→</kbd> <kbd>Space</kbd></td><td>다음 (클릭도 가능)</td></tr>\n  <tr><td><kbd>←</kbd></td><td>이전</td></tr>\n  <tr><td><kbd>Shift</kbd>+<kbd>→</kbd> · 휠 아래로 · 아래 ▶ 버튼</td><td>다음 장 (남은 단계 건너뜀)</td></tr>\n  <tr><td><kbd>Shift</kbd>+<kbd>←</kbd> · 휠 위로 · 아래 ◀ 버튼</td><td>이전 장</td></tr>\n  <tr><td><kbd>N</kbd></td><td>발표자 노트 (발표자 보기에서는 아래 칸의 단계 ↔ 노트 전환)</td></tr>\n  <tr><td><kbd>O</kbd></td><td>목차 (누르면 그 장으로)</td></tr>\n  <tr><td><kbd>B</kbd> <kbd>W</kbd></td><td>검은 화면 / 흰 화면</td></tr>\n  <tr><td><kbd>F</kbd></td><td>전체 화면</td></tr>\n  <tr><td><kbd>V</kbd></td><td>발표자 보기 — 이 창에서 조작 (단계·노트·이전/다음 장 미리보기). 위 ‘프로젝터 창 열기’로 연 창을 프로젝터 화면으로 옮겨 크게 (아이패드는 길게 눌러 ‘새 창에서 열기’)</td></tr>\n  <tr><td><kbd>M</kbd></td><td>책갈피 목록 (반마다 저장 · 눌러서 이동)</td></tr>\n  <tr><td><kbd>P</kbd></td><td>애니메이션 일시정지 · 이어서 재생 (멈춘 상태에서 → 도 재생)</td></tr>\n  <tr><td><kbd>L</kbd></td><td>레이저 포인터 켜기·끄기 (누른 채 움직이면 선, 떼면 사라짐)</td></tr>\n  <tr><td><kbd>Z</kbd></td><td>돋보기 켜기·끄기 (마우스를 따라 1.7배, 누르고 있으면 2.4배)</td></tr>\n  <tr><td>두 손가락 벌리기<br>트랙패드 핀치 · Ctrl+휠</td><td>부분 확대 (확대 중 끌어서 옮기기 · 두 번 톡이나 Esc로 원래대로)</td></tr>\n  <tr><td><kbd>Esc</kbd></td><td>덮개 닫기</td></tr></table></div></div>\n<div id=\"blank\"></div>\n\n");
 /* ═══════════════════════════════════════════════════════════════
    엔진: 1920×1080 무대 · 장면(enter + 클릭 단계 go) · 선언형 등장 · 복원 후 순간 재생
    ═══════════════════════════════════════════════════════════════ */
@@ -14,6 +14,31 @@ const Q=new URLSearchParams(location.search);
 const STILL=Q.get('still')==='1', STUDENT=Q.get('s')==='1';
 const rootEl=document.documentElement;
 if(STILL)rootEl.classList.add('still');
+/* ?alt=scrub — 2026-11-17 교사 질문('해 보기 장의 수치 조절에 Scrubber를 쓰면 보기 좋지 않을까?')에 보여 줄 시안. 결정 전까지 이 주소에서만 켜짐.
+   SmoothUI 'Scrubber'를 바꿔 씀: 막대 전체가 손잡이(어디를 눌러도·끌어도 그 값), 이름은 왼쪽·값은 오른쪽에 막대 안에, 눈금, 채워진 부분,
+   가는 세로 손잡이(평소 흐리고 작게 → 마우스를 올리거나 끌면 진하게, 0.25초 살짝 튀는 스프링). 원래 막대(input)는 그대로 두고 투명하게 위에 덮어
+   장면 코드·프로젝터 창 맞추기는 그대로 동작. 꾸밈 요소는 label 맨 뒤에 붙여 다른 요소의 순서(프로젝터 창이 쓰는 경로)를 바꾸지 않음 */
+const ALT_SCRUB=Q.get('alt')==='scrub';
+if(ALT_SCRUB)rootEl.classList.add('alt-scrub');
+function scrubUp(sec){
+  sec.querySelectorAll('.ia-panel label').forEach(lb=>{
+    const inp=lb.querySelector('input[type=range]');if(!inp||inp.hidden||lb.classList.contains('scrub'))return;
+    const w=lb.offsetWidth;lb.classList.add('scrub');lb.style.width=w+'px';   // 원래 차지하던 폭 그대로(줄 배치가 바뀌지 않게)
+    const mn=+inp.min||0,mx=+(inp.max||100),stp=+inp.step||1,n=Math.round((mx-mn)/stp);
+    const fl=document.createElement('i');fl.className='sc-fill';
+    const tk=document.createElement('i');tk.className='sc-tk';
+    const cnt=n>=2&&n<=12?n-1:9;   // 칸이 적으면 칸마다, 많으면 9개
+    for(let j=1;j<=cnt;j++){const b=document.createElement('b');b.style.left=(j/(cnt+1)*100).toFixed(3)+'%';tk.appendChild(b);}
+    const th=document.createElement('i');th.className='sc-th';
+    lb.append(fl,tk,th);
+    const upd=()=>{const v=+inp.value;lb.style.setProperty('--p',(mx>mn?(v-mn)/(mx-mn)*100:0).toFixed(3)+'%');};
+    const d=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value');   // 장면 코드가 값을 바로 넣어도(초기화 단추 등) 따라가게
+    Object.defineProperty(inp,'value',{configurable:true,get(){return d.get.call(this);},set(v){d.set.call(this,v);upd();}});
+    inp.addEventListener('input',upd);inp.addEventListener('change',upd);
+    inp.addEventListener('pointerdown',()=>{lb.classList.add('drag');const f=()=>{lb.classList.remove('drag');removeEventListener('pointerup',f,true);removeEventListener('pointercancel',f,true);};addEventListener('pointerup',f,true);addEventListener('pointercancel',f,true);});
+    upd();
+  });
+}
 if(STUDENT)rootEl.classList.add('student');
 if(Q.get('ans')==='0')rootEl.classList.add('noans');
 if(Q.get('print')==='1')rootEl.classList.add('print');
@@ -207,6 +232,7 @@ async function show(i,k=0,o={}){
   const def=scenes[to.id]||{};
   c.instant=instant||k>0;
   await safe(async()=>{runDecl(c,0);if(def.enter)await def.enter(c);},c);
+  if(ALT_SCRUB)scrubUp(to);
   for(let j=1;j<=k;j++){
     if(token!==Deck.token)return;
     await safe(async()=>{runDecl(c,j);if(def.go)await def.go(c,j);},c);
@@ -394,7 +420,7 @@ function ovLayout(n){
 function ovMark(i){ovSel=i;Deck.list.forEach((s,j)=>s.classList.toggle('sel',j===i));}
 function openToc(){
   if(OV)return;
-  zvReset(false);OV=1;closeOverlays();if(LZ.on)lzSet(false);
+  zvReset(false);OV=1;closeOverlays();if(LZ.on)lzSet(false);if(LS.on)lsSet(false);
   const L=ovLayout(Deck.list.length),K=window.KW;
   stage.style.setProperty('--ovw',(3/L.s).toFixed(1)+'px');
   stage.style.setProperty('--ovr',(12/L.s).toFixed(1)+'px');
@@ -444,6 +470,7 @@ function fit(){
   FS=Math.min(r.width/SW,r.height/SH);
   QUIET++;try{zvClamp();stApply(false);}finally{QUIET--;}
   if(LZ.cv&&LZ.on)lzSize();
+  if(LS.catch&&LS.on)lsSize();
 }
 /* 부분 확대(2026-10-26 교사 요청): 아이패드는 두 손가락 벌리기·오므리기, 맥은 트랙패드 핀치(사파리 gesture, 크롬 등 ctrl+휠),
    마우스는 Ctrl+휠로 손가락(포인터) 자리를 중심으로 1~4배 확대. 확대 중에는 한 손가락 끌기·두 손가락 스크롤로 옮기고,
@@ -520,7 +547,96 @@ function zoomInit(){
 }
 function pokeHud(){
   hud.classList.add('show');clearTimeout(hudTimer);
-  hudTimer=setTimeout(()=>hud.classList.remove('show'),2500);
+  hudTimer=setTimeout(function hide(){
+    if(hud.matches(':hover')){hudTimer=setTimeout(hide,800);return;}   // 버튼 위에 마우스가 있는 동안은 숨기지 않음
+    hud.classList.remove('show');if(HF.hide)HF.hide();
+  },2500);
+}
+/* 아래 도구 줄 움직임(2026-11-17 교사 요청, designbookmark.com의 Morph tooltip·Goo menu를 바꿔 씀)
+   ① 툴팁 하나가 버튼 사이를 늘어나며 옮겨 다님: 가는 쪽 끝은 단단한 스프링(620/36), 반대쪽 끝은 무른 스프링(190/19), 꼬리 300/22 — 원본 값 그대로.
+   ② ◀·쪽 번호·▶ 말고 도구 7개는 + 단추에 접혀 있다가 일렬로 미끄러져 나옴. 원본은 둥글게 퍼지는 방울(goo)이지만
+      교사 결정으로 일렬, 방울 붙는 효과는 뺌(정신없음), 펼치기는 원본(230/15, 간격 45ms)보다 빠르게(420/28, 간격 25ms — 덜 출렁임).
+      펼칠 때는 먼 것부터, 접을 때는 가까운 것부터 출발해 서로 앞지르지 않음. 펼친 상태는 도구 줄이 숨었다 나와도 그대로.
+   스프링: x'' = −k(x − 목표) − c·x', 움직이는 동안만 requestAnimationFrame을 돌림(일시정지 P와 무관). 손가락 터치에서는 툴팁을 띄우지 않음 */
+const HF={};
+function hudFx(){
+  const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const S=(x,k=400,c=30)=>({x,v:0,t:x,k,c:RM?2*Math.sqrt(k):c}),tune=(s,k,c)=>{s.k=k;s.c=RM?2*Math.sqrt(k):c;};
+  const step=(s,dt)=>{const a=-s.k*(s.x-s.t)-s.c*s.v;s.v+=a*dt;s.x+=s.v*dt;},cl=(v,a,b)=>Math.max(a,Math.min(b,v));
+  const LEAD=[620,36],TRAIL=[190,19],OUT=[420,28],OUT_SC=[450,17],IN=[520,34],IN_SC=[420,30],GAP=.025;
+  const $=id=>document.getElementById(id),main=$('b-tools'),tip=$('hud-tip'),tail=$('hud-tail');
+  // 도구(지금 순서 그대로) — 이름, 단축키. f: 0 = 제자리(펼침), 1 = + 단추 위치(접힘)
+  const tools=[['b-pause',()=>PAUSED?'이어서 재생':'일시정지','P'],['b-mark','책갈피','M'],['b-notes','발표자 노트','N'],['b-laser','레이저 포인터','L'],['b-lens','돋보기','Z'],
+    ['b-ov','목차','O'],['b-pv','발표자 보기','V'],['b-fs','전체 화면','F']].map(([id,name,key])=>{const el=$(id);el.classList.add('tl');el.tabIndex=-1;
+      return {el,name,key,ic:el.querySelectorAll('svg'),f:S(1),s:S(.5,420,22),p:S(1,520,16),pend:null};});
+  const tg=[...tools.map(t=>({el:t.el,name:t.name,key:t.key,tool:t})),{el:main,name:()=>HF.open?'도구 닫기':'도구 열기',key:''},
+    {el:$('b-prev'),name:'이전 장',key:'Shift ←'},{el:$('b-next'),name:'다음 장',key:'Shift →'}];
+  tg.forEach(t=>{t.lab=document.createElement('span');t.lab.className='hlab';tip.appendChild(t.lab);t.o=S(0,420,32);t.dir=0;t.w=96;});
+  const EL=S(0,...LEAD),ER=S(0,...LEAD),TX=S(0,300,22),A=S(0,420,24),M={sc:S(1,520,16),rot:S(0,320,20)};
+  let cur=-1,hideT=0,raf=0,last=0;HF.open=false;
+  const dist=t=>main.offsetLeft-t.el.offsetLeft;          // 제자리에서 + 단추까지(transform은 offsetLeft에 안 들어감)
+  const cx=t=>t.el.offsetLeft+t.el.offsetWidth/2;
+  function fill(t){const n=typeof t.name==='function'?t.name():t.name;t.lab.innerHTML=n+(t.key?'<kbd>'+t.key+'</kbd>':'');t.lab.classList.toggle('nokey',!t.key);t.w=t.lab.offsetWidth||t.w;}
+  function place(i,snap){const c=cx(tg[i]),h=tg[i].w/2;[[EL,c-h],[ER,c+h],[TX,c]].forEach(([s,v])=>{s.t=v;if(snap){s.x=v;s.v=0;}});}
+  function point(i){
+    clearTimeout(hideT);hideT=0;fill(tg[i]);
+    if(i===cur){place(i,false);A.t=1;kick();return;}
+    const dir=cur<0?0:Math.sign(cx(tg[i])-cx(tg[cur]));
+    if(A.x<.3){place(i,true);tg.forEach((t,k)=>{t.o.x=t.o.t=k===i?1:0;t.o.v=0;t.dir=0;});}
+    else{const r=dir>=0;tune(ER,...(r?LEAD:TRAIL));tune(EL,...(r?TRAIL:LEAD));place(i,false);
+      tg.forEach((t,k)=>{if(k===i){t.dir=dir;t.o.t=1;}else if(t.o.t===1){t.dir=-dir;t.o.t=0;}});}
+    cur=i;A.t=1;kick();
+  }
+  function leave(){clearTimeout(hideT);hideT=setTimeout(()=>{hideT=0;A.t=0;cur=-1;kick();},140);}
+  HF.hide=()=>{clearTimeout(hideT);hideT=0;A.t=0;A.x=0;A.v=0;cur=-1;kick();};
+  tg.forEach((t,i)=>{
+    t.el.addEventListener('pointerenter',e=>{if(e.pointerType==='touch'||(t.tool&&!HF.open))return;point(i);});
+    t.el.addEventListener('pointerleave',e=>{if(e.pointerType!=='touch')leave();});
+    t.el.addEventListener('click',()=>{if(cur===i)setTimeout(()=>{if(cur===i)point(i);},30);});   // '일시정지 ↔ 이어서 재생'처럼 이름이 바뀌면 다시 씀
+  });
+  function setOpen(v){
+    if(v===HF.open)return;HF.open=v;
+    hud.classList.toggle('open',v);main.setAttribute('aria-expanded',v);main.setAttribute('aria-label',v?'도구 닫기':'도구 열기');
+    M.rot.t=v?135:0;M.sc.v-=v?3:1.6;
+    const n=tools.length;
+    tools.forEach((t,i)=>{t.el.tabIndex=v?0:-1;
+      if(v){t.pend={t:i*GAP,to:0,k:OUT};t.s.t=1;tune(t.s,...OUT_SC);}
+      else{t.pend={t:(n-1-i)*GAP*.66,to:1,k:IN};t.s.t=.5;tune(t.s,...IN_SC);}});
+    if(cur>-1&&tg[cur].el===main)point(cur);else if(!v&&cur>-1&&tg[cur].tool)leave();
+    kick();
+  }
+  main.addEventListener('click',e=>{e.stopPropagation();setOpen(!HF.open);main.blur();});
+  tools.forEach(t=>t.el.addEventListener('pointerdown',()=>{t.p.x=.78;t.p.v=0;kick();}));
+  function kick(){if(!raf){last=performance.now();raf=requestAnimationFrame(loop);}}
+  function loop(now){
+    const dt=Math.min((now-last)/1000,1/30)/4;last=now;
+    const all=[EL,ER,TX,A,M.sc,M.rot,...tg.map(t=>t.o),...tools.flatMap(t=>[t.f,t.s,t.p])];
+    for(let k=0;k<4;k++){
+      tools.forEach(t=>{if(t.pend&&(t.pend.t-=dt)<=0){tune(t.f,...t.pend.k);t.f.t=t.pend.to;t.pend=null;}});
+      all.forEach(s=>step(s,dt));
+    }
+    render();
+    raf=tools.some(t=>t.pend)||all.some(s=>Math.abs(s.x-s.t)>.001||Math.abs(s.v)>.001)?requestAnimationFrame(loop):0;
+  }
+  function render(){
+    main.style.transform='scale('+M.sc.x.toFixed(4)+')';main.firstElementChild.style.transform='rotate('+M.rot.x.toFixed(2)+'deg)';
+    tools.forEach(t=>{const D=dist(t),f=t.f.x;
+      t.el.style.transform='translateX('+(f*D).toFixed(2)+'px) scale('+t.s.x.toFixed(4)+')';
+      t.el.style.opacity=cl((D*(1-f)-18)/40,0,1).toFixed(3);           // + 밑에 숨어 있다가 빠져나오며 보임
+      t.el.style.pointerEvents=HF.open?'':'none';
+      t.ic.forEach(s=>s.style.scale=t.p.x.toFixed(4));});
+    const a=cl(A.x,0,1.15),op=cl(A.x,0,1),W=hud.clientWidth;
+    const l0=Math.min(EL.x,ER.x-30),w=ER.x-l0,l=cl(l0,0,Math.max(0,W-w));   // 오른쪽 끝(▶)에서도 화면 밖으로 나가지 않게
+    tip.style.width=w.toFixed(2)+'px';tip.style.opacity=op.toFixed(3);
+    tip.style.transform='translate('+l.toFixed(2)+'px,'+((1-a)*6).toFixed(2)+'px) scale('+(.72+.28*a).toFixed(4)+')';
+    const tx=cl(TX.x,l+12,l+w-12);
+    tail.style.opacity=op.toFixed(3);
+    tail.style.transform='translate('+(tx-6).toFixed(2)+'px,'+((1-a)*8).toFixed(2)+'px) rotate(45deg) scale('+a.toFixed(3)+')';
+    tg.forEach(t=>{const o=cl(t.o.x,0,1);t.lab.style.opacity=o.toFixed(3);
+      t.lab.style.transform='translateX(calc(-50% + '+(t.dir*(1-o)*14).toFixed(2)+'px))';
+      t.lab.style.filter=o>.02&&o<.98?'blur('+((1-o)*3).toFixed(2)+'px)':'none';});
+  }
+  render();
 }
 function setNotes(v){
   notesEl.classList.toggle('show',v);
@@ -529,7 +645,28 @@ function setNotes(v){
 
 /* 레이저 포인터(L): 켜면 빨간 점이 마우스를 따라가고, 누른 채 움직이면 선이 그려졌다가 떼면 서서히 사라진다.
    켜져 있어도 방향키로 넘길 수 있고, 장·단계가 바뀌면 그려 둔 선은 지운다. Esc로 끈다. */
-const LZ={on:false,cv:null,g:null,pt:null,pts:[],down:null,seq:0,raf:0,r:null,q:[],qr:0},LZ_FADE=1100,LZ_ALPHA=.7;   // 선의 기본 투명도
+const LZ={on:false,cv:null,g:null,pt:null,pts:[],down:null,seq:0,raf:0,r:null,q:[],qr:0,tip:null,tgt:null,acc:0,lt:0},LZ_FADE=1100,LZ_ALPHA=.7;   // 선의 기본 투명도
+/* 2026-11-17 교사 요청('끊기거나 각지는 거 없이 부드럽게'): Kokonut UI Signature pad의 펜 끝 방식 —
+   선은 마우스 위치를 바로 잇지 않고, 마우스를 단단한 스프링(2600/78, 1/240초 고정 간격)으로 쫓아가는 펜 끝이 0.6px 움직일 때마다 점을 찍는다.
+   손떨림·띄엄띄엄 오는 마우스 신호가 걸러지고, 그릴 때는 점 사이를 중간점 곡선(quadraticCurveTo)으로 이어 꺾임이 없다. 움직임 줄이기 설정이면 스프링 없이 그대로 */
+const LZ_K=2600,LZ_C=78,LZ_DT=1/240,LZ_RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function lzStep(now){   // 펜 끝을 스프링으로 움직이며 점을 찍는다. 아직 따라가는 중이면 true
+  const T=LZ.tip,G=LZ.tgt;if(!T||!G)return false;
+  const S=FS*ZV.z,gap=.6/S;   // 무대 좌표에서 화면 0.6px
+  if(LZ_RM){T.x=G.x;T.y=G.y;T.vx=T.vy=0;}
+  else{
+    LZ.acc+=LZ.lt?Math.min((now-LZ.lt)/1000,.05):LZ_DT;LZ.lt=now;
+    while(LZ.acc>=LZ_DT){
+      T.vx+=((G.x-T.x)*LZ_K-T.vx*LZ_C)*LZ_DT;T.vy+=((G.y-T.y)*LZ_K-T.vy*LZ_C)*LZ_DT;
+      T.x+=T.vx*LZ_DT;T.y+=T.vy*LZ_DT;LZ.acc-=LZ_DT;
+      const l=LZ.pts[LZ.pts.length-1];
+      if(!l||l.s!==LZ.seq||Math.hypot(T.x-l.x,T.y-l.y)>=gap)LZ.pts.push({x:T.x,y:T.y,t:null,s:LZ.seq});
+    }
+  }
+  const l=LZ.pts[LZ.pts.length-1];
+  if(LZ_RM&&(!l||l.s!==LZ.seq||Math.hypot(T.x-l.x,T.y-l.y)>=gap))LZ.pts.push({x:T.x,y:T.y,t:null,s:LZ.seq});
+  return Math.hypot(G.x-T.x,G.y-T.y)*S>=.3||Math.hypot(T.vx,T.vy)*S>=5;
+}
 /* 점은 무대 좌표(무대 가운데 기준)로 저장한다 → 부분 확대·발표자 보기·프로젝터 창에서도 슬라이드의 같은 자리에 그려짐 */
 function lzPaint(){if(!LZ.raf)LZ.raf=requestAnimationFrame(lzDraw);}
 function lzClear(){if(LZ.pts.length){LZ.pts=[];lzPaint();}}
@@ -541,7 +678,8 @@ function lzSize(){
 }
 function lzSet(v){
   if(LZ.on!==v)lkTx({t:'lzon',v});
-  LZ.on=v;LZ.pts=[];LZ.pt=null;LZ.down=null;
+  if(v&&LS.on)lsSet(false);   // 돋보기와 함께 켜지지 않음
+  LZ.on=v;LZ.pts=[];LZ.pt=null;LZ.down=null;LZ.tip=null;
   LZ.cv.classList.toggle('on',v);document.getElementById('b-laser').classList.toggle('on',v);
   if(v)lzSize();else lzPaint();
   pvSync();
@@ -549,14 +687,17 @@ function lzSet(v){
 function lzDraw(now){
   const g=LZ.g,r=LZ.r||vpR();LZ.raf=0;g.clearRect(0,0,r.width,r.height);
   if(!LZ.on)return;
+  const chasing=lzStep(now);
   LZ.pts=LZ.pts.filter(p=>p.t==null||now-p.t<LZ_FADE);
   const S=FS*ZV.z,cx=r.width/2+ZV.x,cy=r.height/2+ZV.y,X=p=>cx+p.x*S,Y=p=>cy+p.y*S;
   g.lineCap=g.lineJoin='round';
-  // 획마다 하나의 경로로 그린다(반투명 선분이 겹치는 이음매가 진해지지 않게)
+  // 획마다 하나의 경로로 그린다(반투명 선분이 겹치는 이음매가 진해지지 않게). 점과 점 사이는 중간점을 지나는 곡선으로(꺾이지 않게)
   for(let i=0;i<LZ.pts.length;){
     const s=LZ.pts[i].s,t=LZ.pts[i].t;let j=i;
-    g.beginPath();g.moveTo(X(LZ.pts[i]),Y(LZ.pts[i]));
-    while(j+1<LZ.pts.length&&LZ.pts[j+1].s===s){j++;g.lineTo(X(LZ.pts[j]),Y(LZ.pts[j]));}
+    while(j+1<LZ.pts.length&&LZ.pts[j+1].s===s)j++;
+    const P=LZ.pts;g.beginPath();g.moveTo(X(P[i]),Y(P[i]));
+    for(let k=i+1;k<j;k++)g.quadraticCurveTo(X(P[k]),Y(P[k]),(X(P[k])+X(P[k+1]))/2,(Y(P[k])+Y(P[k+1]))/2);
+    if(j>i)g.lineTo(X(P[j]),Y(P[j]));
     if(j>i){
       g.globalAlpha=LZ_ALPHA*(t==null?1:Math.max(0,1-(now-t)/LZ_FADE));
       g.lineWidth=6;g.strokeStyle='rgba(255,45,85,.22)';g.stroke();
@@ -571,14 +712,21 @@ function lzDraw(now){
     g.fillStyle=gl;g.beginPath();g.arc(x,y,22,0,Math.PI*2);g.fill();
     g.fillStyle='#ff2d55';g.strokeStyle='#fff';g.lineWidth=2;g.beginPath();g.arc(x,y,6.5,0,Math.PI*2);g.fill();g.stroke();
   }
-  if(LZ.pts.some(p=>p.t!=null))lzPaint();   // 사라지는 중인 선이 있으면 계속 그린다
+  if(chasing||LZ.pts.some(p=>p.t!=null))lzPaint();   // 펜 끝이 따라가는 중이거나 사라지는 중인 선이 있으면 계속 그린다
+  else LZ.lt=0;
 }
 function lzAt(p,draw){   // p: 무대 좌표
   LZ.pt=p;
-  if(draw){const l=LZ.pts[LZ.pts.length-1];if(!l||l.s!==LZ.seq||Math.hypot(l.x-p.x,l.y-p.y)*FS*ZV.z>=2)LZ.pts.push({x:p.x,y:p.y,t:null,s:LZ.seq});}
+  if(draw){
+    if(!LZ.tip){LZ.tip={x:p.x,y:p.y,vx:0,vy:0};LZ.acc=0;LZ.lt=0;LZ.pts.push({x:p.x,y:p.y,t:null,s:LZ.seq});}   // 새 획: 펜 끝을 누른 자리에
+    LZ.tgt={x:p.x,y:p.y};
+  }
   lzPaint();
 }
-function lzUp(touch){const t=performance.now();LZ.pts.forEach(p=>{if(p.t==null)p.t=t;});LZ.down=null;if(touch)LZ.pt=null;lzPaint();}
+function lzUp(touch){
+  // 손을 떼면 펜 끝을 마지막 자리까지 마저 보내고(최대 0.3초분) 획을 닫는다
+  if(LZ.tip){for(let n=0,now=performance.now();n<72&&lzStep(now+(n+1)*LZ_DT*1000);n++){}LZ.tip=null;}
+  const t=performance.now();LZ.pts.forEach(p=>{if(p.t==null)p.t=t;});LZ.down=null;if(touch)LZ.pt=null;lzPaint();}
 function lzTx(a,p){   // 레이저 움직임은 한 프레임씩 모아 다른 창에 보냄
   if(REMOTE||!LINK.on)return;
   LZ.q.push(p?[a,Math.round(p.x),Math.round(p.y)]:[a]);
@@ -586,7 +734,7 @@ function lzTx(a,p){   // 레이저 움직임은 한 프레임씩 모아 다른 �
 }
 function lzRx(q){
   q.forEach(([a,x,y])=>{const p={x,y};
-    if(a==='d'){LZ.seq++;LZ.down='r';lzAt(p,true);}
+    if(a==='d'){LZ.seq++;LZ.tip=null;LZ.down='r';lzAt(p,true);}
     else if(a==='m')lzAt(p,LZ.down!=null);
     else if(a==='u'||a==='U')lzUp(a==='U');
     else if(a==='l'){LZ.pt=null;lzPaint();}
@@ -596,8 +744,8 @@ function lzMount(){
   const cv=LZ.cv=document.createElement('canvas');cv.id='laser';document.body.appendChild(cv);
   LZ.g=cv.getContext('2d');
   const pt=e=>zvPoint(e.clientX,e.clientY);
-  cv.addEventListener('pointerdown',e=>{if(e.button!==0)return;e.preventDefault();LZ.down=e.pointerId;LZ.seq++;cv.setPointerCapture(e.pointerId);const p=pt(e);lzAt(p,true);lzTx('d',p);});
-  cv.addEventListener('pointermove',e=>{const p=pt(e);lzAt(p,LZ.down!=null);lzTx('m',p);});
+  cv.addEventListener('pointerdown',e=>{if(e.button!==0)return;e.preventDefault();LZ.down=e.pointerId;LZ.seq++;LZ.tip=null;cv.setPointerCapture(e.pointerId);const p=pt(e);lzAt(p,true);lzTx('d',p);});
+  cv.addEventListener('pointermove',e=>{const p=pt(e);lzAt(p,LZ.down!=null);lzTx('m',p);});   // 펜 끝이 스프링으로 쫓아가므로 마지막 위치만 있으면 됨
   const up=e=>{
     if(e.pointerId!==LZ.down)return;
     const p=pt(e),touch=e.pointerType!=='mouse';lzAt(p,true);lzTx('m',p);lzUp(touch);lzTx(touch?'U':'u');
@@ -606,6 +754,92 @@ function lzMount(){
   cv.addEventListener('pointerleave',()=>{if(LZ.down==null){LZ.pt=null;lzPaint();lzTx('l');}});
   cv.addEventListener('contextmenu',e=>e.preventDefault());
   addEventListener('resize',()=>{if(LZ.on)lzSize();});
+}
+
+/* ═══ 돋보기(Z, 아래 도구 줄 버튼, 2026-11-17 교사 요청: 사진·시뮬레이션을 더 자세히 — designbookmark.com 'Glass lens'를 바꿔 씀) ═══
+   둥근 유리 돋보기가 마우스(손가락)를 따라다니며 그 아래를 1.7배로 보여 주고, 누르고 있으면 2.4배. 원본 값 그대로: 따라가기 스프링 180/17, 배율 스프링 260/26,
+   움직이는 쪽으로 살짝 기울기(최대 6°), 가장자리로 갈수록 조금 더 휘어 보이게 같은 그림 세 겹(1·1.05·1.12배). 테두리·그림자 없이 굴절 띠·빛 테두리·반사로만 유리처럼.
+   돋보기 안 = 지금 장의 복사본: 장 안이 바뀌거나(MutationObserver) 움직이는 동안 최대 초당 30번 다시 복사하고, 등장 효과(WAAPI)로 보이게 된 상태(투명도·위치 등)·
+   막대 값·캔버스 그림도 옮겨 넣는다. 켜져 있는 동안 화면을 눌러도 장이 넘어가지 않음(방향키·휠은 그대로). 손가락이면 손가락에 가리지 않게 조금 위에.
+   레이저와 함께 켜지지 않음. 발표자 보기·프로젝터 창에서는 같은 자리에 보임(무대 좌표로 주고받음). Esc로 끔 */
+const LS={on:false,el:null,view:null,boxes:[],catch:null,X:null,Y:null,Z:null,O:null,L:150,raf:0,lt:0,src:null,mo:null,dirty:true,ct:0,pairs:null,down:null,q:null,qr:0};
+const LS_BEND=[1,1.05,1.12],LS_ZOOM=1.7,LS_PRESS=2.4;
+function lsSize(){
+  const r=vpR();Object.assign(LS.catch.style,{left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px'});
+  const sr=stage.getBoundingClientRect(),L=LS.L=Math.round(Math.max(120,Math.min(250,sr.width*.18)));   // 250px(교사 요청, 원본 150px). 발표자 보기처럼 무대가 작으면 무대 폭의 18%까지 줄임
+  LS.el.style.width=LS.el.style.height=L+'px';
+}
+function lsSet(v){
+  if(LS.on===v)return;
+  lkTx({t:'lson',v});   // 받은 신호로 켤 때는 lkTx가 스스로 보내지 않음(REMOTE)
+  if(v&&LZ.on)lzSet(false);
+  LS.on=v;LS.catch.classList.toggle('on',v);LS.el.classList.toggle('on',v);
+  const b=document.getElementById('b-lens');if(b)b.classList.toggle('on',v);
+  if(v){lsSize();LS.dirty=true;LS.O.x=LS.O.t=0;lsKick();}
+  else{LS.O.t=0;LS.boxes.forEach(b=>b.replaceChildren());LS.src=null;if(LS.mo){LS.mo.disconnect();LS.mo=null;}}
+}
+/* 지금 장을 복사해 세 겹에 넣는다. 등장 효과로 보이게 된 상태는 원본의 계산된 스타일을 옮겨 적음 */
+function lsCopy(force){
+  const sec=Deck.list[Deck.i];if(!sec)return;
+  if(LS.src!==sec){if(LS.mo)LS.mo.disconnect();LS.src=sec;LS.mo=new MutationObserver(()=>{LS.dirty=true;});
+    LS.mo.observe(sec,{subtree:true,childList:true,attributes:true,characterData:true});force=true;}
+  const now=performance.now();
+  const anims=document.getAnimations().filter(a=>{const t=a.effect&&a.effect.target;return t&&(t===sec||sec.contains(t));});
+  const moving=anims.some(a=>a.playState==='running');
+  if(force||((LS.dirty||moving)&&now-LS.ct>=33)){
+    LS.dirty=false;LS.ct=now;
+    const c=sec.cloneNode(true),path=el=>{const p=[];for(let e=el;e&&e!==sec;e=e.parentElement)p.unshift(Array.prototype.indexOf.call(e.parentElement.children,e));return p;};
+    const at=p=>p.reduce((e,i)=>e&&e.children[i],c);
+    new Set(anims.map(a=>a.effect.target)).forEach(t=>{const d=at(path(t));if(!d)return;const cs=getComputedStyle(t);
+      ['opacity','transform','clipPath','filter','strokeDashoffset','visibility','translate','scale','rotate'].forEach(k=>{d.style[k]=cs[k];});});
+    const fo=sec.querySelectorAll('input,select,textarea'),fc=c.querySelectorAll('input,select,textarea');
+    fo.forEach((e,i)=>{if(fc[i]){fc[i].value=e.value;fc[i].checked=e.checked;}});
+    // 복사본의 id는 그대로 둠: 수업 스타일(#s08 …)이 먹게. 엔진·장면 코드의 getElementById는 문서에서 먼저 나오는 원본을 찾음(돋보기는 body 맨 뒤)
+    LS.boxes.forEach((b,i)=>b.replaceChildren(i?c.cloneNode(true):c));
+    LS.pairs=[...sec.querySelectorAll('canvas')].map((cv,i)=>[cv,LS.boxes.map(b=>b.querySelectorAll('canvas')[i])]);
+  }
+  if(LS.pairs)LS.pairs.forEach(([cv,cs])=>cs.forEach(d=>{if(!d)return;try{const g=d.getContext('2d');g.clearRect(0,0,d.width,d.height);g.drawImage(cv,0,0);}catch(e){}}));
+}
+function lsKick(){if(!LS.raf){LS.lt=performance.now();LS.raf=requestAnimationFrame(lsLoop);}}
+function lsLoop(now){
+  LS.raf=0;const dt=Math.min((now-LS.lt)/1000,1/30)/4;LS.lt=now;
+  const st=(s,k,c)=>{const a=-k*(s.x-s.t)-c*s.v;s.v+=a*dt;s.x+=s.v*dt;};
+  for(let n=0;n<4;n++){st(LS.X,180,17);st(LS.Y,180,17);st(LS.Z,260,26);st(LS.O,420,32);}
+  if(LS.on&&LS.O.x>.01)lsCopy(false);
+  const L=LS.L,x=LS.X.x,y=LS.Y.x,sr=stage.getBoundingClientRect(),S=sr.width/SW,tilt=Math.max(-6,Math.min(6,LS.X.v/220));
+  LS.el.style.opacity=Math.max(0,Math.min(1,LS.O.x)).toFixed(3);
+  LS.el.style.transform='translate('+(x-L/2).toFixed(2)+'px,'+(y-L/2).toFixed(2)+'px) rotate('+tilt.toFixed(2)+'deg)';
+  LS.view.style.transform='rotate('+(-tilt).toFixed(2)+'deg)';
+  const ox=sr.left-(x-L/2),oy=sr.top-(y-L/2);
+  LS.boxes.forEach((b,i)=>{b.style.transform='translate('+L/2+'px,'+L/2+'px) scale('+(LS.Z.x*LS_BEND[i]).toFixed(4)+') translate('+(ox-L/2).toFixed(2)+'px,'+(oy-L/2).toFixed(2)+'px) scale('+S.toFixed(5)+')';});
+  if(LS.on||LS.O.x>.005)LS.raf=requestAnimationFrame(lsLoop);   // 켜져 있는 동안은 계속(시뮬레이션이 움직이면 따라감)
+}
+/* 화면 점 ↔ 무대 점 */
+function lsGo(sx,sy,snap){LS.X.t=sx;LS.Y.t=sy;if(snap){LS.X.x=sx;LS.Y.x=sy;LS.X.v=LS.Y.v=0;}LS.O.t=1;lsKick();}
+function lsTx(m){if(REMOTE||!LINK.on)return;LS.q=m;if(!LS.qr)LS.qr=requestAnimationFrame(()=>{LS.qr=0;lkTx(LS.q);});}
+function lsRx(m){
+  if(!LS.on)return;
+  if(m.h){LS.O.t=0;lsKick();return;}
+  const r=vpR(),S=FS*ZV.z,sx=r.left+r.width/2+ZV.x+m.x*S,sy=r.top+r.height/2+ZV.y+m.y*S;
+  LS.Z.t=m.p?LS_PRESS:LS_ZOOM;lsGo(sx,sy,LS.O.x<.05);
+}
+function lsMount(){
+  const el=LS.el=document.createElement('div');el.id='lens';el.setAttribute('aria-hidden','true');
+  el.innerHTML='<div class="ls-view">'+LS_BEND.map((b,i)=>'<div class="ls-layer l'+i+'"><div class="ls-stage"></div></div>').join('')+'</div><div class="ls-glass"></div>';
+  document.body.appendChild(el);LS.view=el.firstElementChild;LS.boxes=[...el.querySelectorAll('.ls-stage')];
+  const cat=LS.catch=document.createElement('div');cat.id='lens-catch';document.body.appendChild(cat);
+  const S0=(x,k)=>({x,v:0,t:x});LS.X=S0(innerWidth/2);LS.Y=S0(innerHeight/2);LS.Z=S0(LS_ZOOM);LS.O=S0(0);
+  const aim=e=>{const up=e.pointerType==='touch'?LS.L*.75:0;return [e.clientX,e.clientY-up];};
+  const send=(sx,sy,p)=>{const q=zvPoint(sx,sy);lsTx({t:'ls',x:Math.round(q.x),y:Math.round(q.y),p:!!p});};
+  cat.addEventListener('pointermove',e=>{const [x,y]=aim(e);lsGo(x,y,LS.O.x<.05);send(x,y,LS.down!=null);});
+  cat.addEventListener('pointerdown',e=>{if(e.button>0)return;e.preventDefault();LS.down=e.pointerId;try{cat.setPointerCapture(e.pointerId);}catch(_){}
+    LS.Z.t=LS_PRESS;const [x,y]=aim(e);lsGo(x,y,LS.O.x<.05);send(x,y,true);});
+  const up=e=>{if(e.pointerId!==LS.down)return;LS.down=null;LS.Z.t=LS_ZOOM;const [x,y]=aim(e);send(x,y,false);lsKick();};
+  cat.addEventListener('pointerup',up);cat.addEventListener('pointercancel',up);
+  cat.addEventListener('pointerleave',()=>{if(LS.down==null){LS.O.t=0;lsKick();lsTx({t:'ls',h:1});}});
+  cat.addEventListener('click',e=>e.stopPropagation());
+  cat.addEventListener('contextmenu',e=>e.preventDefault());
+  addEventListener('resize',()=>{if(LS.on)lsSize();});
 }
 
 /* ═══ 프로젝터 창 연결(2026-10-27 교사 요청) ═══
@@ -673,6 +907,8 @@ function lkDo(m){
     case 'blank':setBlank(m.c||'');break;
     case 'lzon':if(LZ.on!==!!m.v)lzSet(!!m.v);break;
     case 'lz':lzRx(m.q||[]);break;
+    case 'lson':if(LS.on!==!!m.v)lsSet(!!m.v);break;
+    case 'ls':lsRx(m);break;
     case 'zv':ZV.z=m.z;ZV.x=m.x*FS;ZV.y=m.y*FS;zvClamp();stApply(m.a);break;
     case 'pic':if(m.i===Deck.i&&!ZM){const f=Deck.list[Deck.i].querySelectorAll('.pic')[m.n];if(f)zoomOpen(f);}break;
     case 'picx':zoomClose(m.now);break;
@@ -1007,9 +1243,11 @@ Deck.start=function(){
   document.getElementById('b-notes').onclick=()=>setNotes(!notesEl.classList.contains('show'));
   document.getElementById('notes-x').onclick=()=>setNotes(false);
   lzMount();document.getElementById('b-laser').onclick=e=>{e.stopPropagation();lzSet(!LZ.on);e.currentTarget.blur();};
+  lsMount();document.getElementById('b-lens').onclick=e=>{e.stopPropagation();lsSet(!LS.on);e.currentTarget.blur();};
   document.getElementById('b-ov').onclick=e=>{e.stopPropagation();OV?closeToc():openToc();};
   document.getElementById('b-pv').onclick=e=>{e.stopPropagation();pvSet(!PV);e.currentTarget.blur();};
   document.getElementById('b-fs').onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();else rootEl.requestFullscreen&&rootEl.requestFullscreen();};
+  hudFx();   // 툴팁 + 도구 접기·펴기
   helpEl.addEventListener('click',e=>{if(e.target===helpEl)closeOverlays();});
   viewport.addEventListener('click',e=>{
     if(REMOTE)return;   // 프로젝터 창에서 따라 누른 단추의 클릭이 올라온 것
@@ -1030,7 +1268,7 @@ Deck.start=function(){
     if(e.target.closest&&e.target.closest('#markbox,#resume,.pv-fs'))return;
     if(OV){if(OV===1)tocKey(e);return;}
     const key=e.key;
-    if(key==='Escape'){if(LZ.on){lzSet(false);return;}if(ZV.z>1.01){zvReset();return;}closeOverlays();setNotes(false);setBlank('');return;}
+    if(key==='Escape'){if(LZ.on){lzSet(false);return;}if(LS.on){lsSet(false);return;}if(ZV.z>1.01){zvReset();return;}closeOverlays();setNotes(false);setBlank('');return;}
     if(blankEl.className){setBlank('');return;}
     if(helpEl.classList.contains('show'))return;
     if(e.shiftKey&&(key==='ArrowLeft'||key==='ArrowRight')){e.preventDefault();if(key==='ArrowLeft')prevPage();else nextPage();return;}   // Shift+←/→ = 장 넘기기(2026-11-03 교사 요청, 아래 메뉴 ◀ ▶·휠과 같음)
@@ -1042,6 +1280,7 @@ Deck.start=function(){
       case 'n':case 'N':if(PV)pvTab(!pvNT);else setNotes(!notesEl.classList.contains('show'));break;   // 발표자 보기에서는 아래 칸 탭(단계 ↔ 노트) 전환
       case 'v':case 'V':pvSet(!PV);break;
       case 'l':case 'L':if(!e.repeat)lzSet(!LZ.on);break;
+    case 'z':case 'Z':if(!e.repeat&&!e.ctrlKey&&!e.metaKey)lsSet(!LS.on);break;   // 돋보기
       case 'p':case 'P':if(!e.repeat)setPause(!PAUSED);break;
       case 'o':case 'O':openToc();break;
       case 'b':case 'B':toggleBlank('black');break;
