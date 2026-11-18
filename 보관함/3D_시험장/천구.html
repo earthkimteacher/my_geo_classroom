@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>시험 — 천구의 좌표계, 화면 가득 3D (three.js) - 진광고등학교 교사 김덕영</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<!-- 시험 장(2026-11-17 새 판): 3D가 화면 전체(1920×1080)를 쓰는 밤하늘 장면. 엔진은 저장소의 것(../../engine), 3D는 three.js 0.160.0(jsDelivr).
+     공용 common.js에서는 굵은 선(line)·정리(clear)만 가져오고, 화면 가득 보기(두 카메라·이름표·끌기)는 이 파일 안에서 따로 만듦 -->
+<link rel="stylesheet" href="../../engine/deck.css">
+<link rel="stylesheet" href="three.css">
+<style>
+/* 색 약속: 지평선·방위각 = 초록, 고도 = 주황, 천구의 적도·적경 = 파랑, 적위 = 보라, 춘분점 = 노랑, 천구의 북극·남극 = 빨강
+   어두운 면(장면 속 이름표·선) = 밝은 색, 흰 유리 카드 안 = 진한 색 */
+#cs{background:radial-gradient(120% 95% at 52% 42%,#0d1730 0%,#080c1a 58%,#04060d 100%);
+  --hor:#5BE0A8;--alt:#FFB340;--equ:#6CB8FF;--dec:#D7A6FF;--ecl:#FFD25E;--pole:#FF7A70;--gray:#a1a1a6}
+#cs .cel-view{position:absolute;left:0;top:0;width:1920px;height:1080px;z-index:1;touch-action:none}
+#cs .cel-view canvas{position:absolute;left:0;top:0;width:1920px!important;height:1080px!important;display:block}
+#cs .cel-pad{position:absolute;left:0;top:0;width:1920px;height:1080px;cursor:grab}
+#cs .cel-pad:active{cursor:grabbing}
+#cs .cel-pad.probe{cursor:crosshair}
+#cs .cel-lay{position:absolute;left:0;top:0;width:1920px;height:1080px;pointer-events:none;overflow:hidden}
+/* 장면 속 이름표(어두운 알약) */
+.cel-t{position:absolute;left:0;top:0;font-size:25px;font-weight:700;line-height:1.25;white-space:nowrap;padding:3px 11px;border-radius:10px;background:rgba(5,9,19,.74);color:#f5f5f7;letter-spacing:-.01em;pointer-events:none}
+.cel-t i{font-style:normal;font-weight:600;font-size:24px;opacity:.82}
+.cel-t.sm{font-size:24px;font-weight:600;background:rgba(5,9,19,.6)}
+.cel-t.b{font-size:27px;font-weight:800}
+.cel-t.hor,.cel-t .hor{color:var(--hor)} .cel-t.alt,.cel-t .alt{color:var(--alt)} .cel-t.equ,.cel-t .equ{color:var(--equ)} .cel-t.dec,.cel-t .dec{color:var(--dec)}
+.cel-t.ecl{color:var(--ecl)} .cel-t.pole{color:var(--pole)} .cel-t.gray{color:#c7c7cc} .cel-t.star{color:#FFE08A}
+.cel-t.pill{padding:8px 16px;border-radius:16px;background:rgba(5,9,19,.86);box-shadow:0 0 0 1.5px rgba(255,255,255,.22);font-size:26px;line-height:1.4;font-weight:600}
+.cel-t.pill b{display:inline-block;min-width:62px;text-align:right;font-weight:800;font-variant-numeric:tabular-nums}
+.cel-t.pill span{margin-right:14px} .cel-t.pill span:last-child{margin-right:0}
+.cel-t.pill em{font-style:normal;color:#c7c7cc;font-size:24px}
+/* 머리(작게, 왼쪽 위) */
+#cs .cel-hd{left:60px;top:40px;right:auto}
+#cs .cel-hd .eb{font-size:24px;margin-bottom:4px}
+#cs .cel-hd h2{font-size:46px}
+/* 설명 카드(흰 유리) — 단계마다 그 단계의 내용만 */
+#cs .cel-card{position:absolute;left:60px;bottom:170px;width:470px;padding:22px 28px 16px;border-radius:22px;background:rgba(255,255,255,.96);color:#1d1d1f;box-shadow:0 12px 44px rgba(0,0,0,.5);z-index:4;
+  --hor:#157F4A;--alt:#B25000;--equ:#005BB8;--dec:#7B3FB5;--ecl:#8A6500;--pole:#C9251B}
+#cs .cel-card .cb{display:none}
+#cs .cel-card .cb.on{display:block;animation:celIn .4s ease both}
+@keyframes celIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+#cs .cb .tg{font-size:25px;font-weight:800;color:#0066cc;margin-bottom:8px;letter-spacing:-.01em}
+#cs .cb p{font-size:29px;line-height:1.42;font-weight:600;margin:0 0 10px;letter-spacing:-.018em;word-break:keep-all}
+#cs .cb p.q{font-size:32px;font-weight:800;margin-bottom:12px}
+#cs .cb b{font-weight:800}
+#cs .c-hor{color:var(--hor)} #cs .c-alt{color:var(--alt)} #cs .c-equ{color:var(--equ)} #cs .c-dec{color:var(--dec)} #cs .c-ecl{color:var(--ecl)} #cs .c-pole{color:var(--pole)}
+#cs .op{position:relative;display:flex;align-items:center;gap:10px;font-size:28px;font-weight:700;line-height:1.3;padding:10px 12px;margin:0 -6px 6px;border-radius:14px;cursor:pointer;border:2px solid transparent;word-break:keep-all;transition:opacity .5s,background .2s}
+#cs .op i{font-style:normal;font-weight:800;color:#6e6e73}
+#cs .op.pick{background:#e8f1fd;border-color:#8fbdf5}
+#cs .op .ring{position:absolute;left:-6px;top:-5px;width:calc(100% + 12px);height:calc(100% + 10px);overflow:visible;pointer-events:none}
+#cs .op .ring path{fill:none;stroke:#C9251B;stroke-width:3.5;stroke-linecap:round;stroke-dasharray:1 1;stroke-dashoffset:1;opacity:0}
+#cs .cb.done .op .ring path{stroke-dashoffset:0;opacity:1;transition:stroke-dashoffset .8s ease .15s}
+#cs .cb.done .op:not(.ans){opacity:.38}
+#cs .cb .why{display:none}
+#cs .cb.done .why{display:block;animation:celIn .5s ease .7s both}
+/* 지금 서울 하늘 알림(오른쪽 위) */
+#cs .cel-now{position:absolute;right:60px;top:40px;max-width:800px;padding:10px 20px;border-radius:16px;background:rgba(5,9,19,.86);box-shadow:0 0 0 1.5px rgba(255,255,255,.22);color:#f5f5f7;font-size:26px;font-weight:700;line-height:1.4;z-index:4;display:none;text-align:right;word-break:keep-all}
+#cs .cel-now small{display:block;font-size:24px;font-weight:600;color:#c7c7cc}
+/* 구석 작은 창: 관측자가 본 하늘 */
+#cs .cel-inset{position:absolute;left:1420px;top:560px;width:440px;height:310px;border-radius:3px;box-shadow:0 0 0 2px rgba(255,255,255,.34),0 12px 34px rgba(0,0,0,.55);z-index:3;pointer-events:none;display:none}
+#cs .cel-inset .lay{position:absolute;left:0;top:0;width:100%;height:100%;overflow:hidden}
+#cs .cel-inset .cover{position:absolute;left:0;top:0;width:100%;height:100%;background:#060a14}
+#cs .cel-inset .cap{position:absolute;left:0;top:100%;width:100%;margin-top:9px;display:flex;align-items:center;justify-content:space-between;font-size:24px;font-weight:700;color:#e8e8ed;pointer-events:auto}
+/* 구석 작은 지구 */
+#cs .cel-earth{position:absolute;left:60px;top:136px;width:300px;height:290px;z-index:3;pointer-events:none;display:none}
+#cs .cel-earth .lay{position:absolute;left:0;top:0;width:100%;height:100%;overflow:hidden}
+#cs .cel-earth .cap{position:absolute;left:0;top:100%;margin-top:6px;white-space:nowrap;font-size:24px;font-weight:700;color:#e8e8ed}
+#cs .cel-earth .cap b{color:var(--pole);font-weight:800}
+/* 조작 막대(아래 가운데 떠 있는 어두운 유리) */
+#cs .cel-bar{left:0;right:0;margin:0 auto;top:934px;width:max-content;height:78px;gap:16px;padding:0 16px;border-radius:22px;background:rgba(24,28,42,.84);border:1px solid rgba(255,255,255,.16);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:#f5f5f7;font-size:24px;font-weight:600;box-shadow:0 10px 34px rgba(0,0,0,.45)}
+#cs .cel-bar label{gap:10px}
+#cs .cel-bar input[type=range]{width:150px;height:36px;accent-color:#6CB8FF}
+#cs .cel-bar .val{min-width:88px;color:#9fd0ff;font-weight:700;font-size:24px}
+#cs .cel-bar #cs-latv{min-width:96px}
+#cs .cel-bar button,#cs .cel-inset button{height:52px;padding:0 15px;border:0;border-radius:13px;background:rgba(255,255,255,.13);color:#f5f5f7;font:inherit;font-size:24px;font-weight:700;cursor:pointer;white-space:nowrap}
+#cs .cel-bar button.on,#cs .cel-inset button.on{background:#2f8ff5;color:#fff}
+#cs .cel-bar button.hint{box-shadow:0 0 0 2.5px #FFD25E}
+#cs .seg{display:flex;gap:4px;padding:4px;border-radius:16px;background:rgba(255,255,255,.08)}
+#cs .seg button{background:transparent;height:46px;border-radius:12px}
+#cs .cel-inset .seg button{height:40px;padding:0 13px}
+#cs #cs-play{min-width:60px;font-size:26px}
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+<section class="slide" id="cs" data-tile="black" data-title="천구의 좌표계 — 밤하늘에서 천구로" data-notes="three.js 시험 장(새 판) — 3D 장면이 화면 전체를 씁니다. 끌면 돌려 보고 휠·두 손가락으로 확대합니다(끌지 않고 그냥 누르면 다음 단계). 처음: 서울(북위 37.5°)에서 관측자 눈높이로 본 북쪽 밤하늘 — 북극성·북두칠성·카시오페이아자리는 실제 적경·적위(J2000)로 놓았습니다. 클릭 1 카메라가 뒤로 빠져나가 관측자를 감싼 천구가 드러납니다(우리가 보는 하늘 = 관측자 중심의 천구). 방금 보던 관측자의 하늘은 오른쪽 아래 작은 창에 남습니다(땅은 불투명, 북쪽·남쪽 단추로 보는 방향을 바꿈). 2 지평 좌표계: 별 S의 방위각(북점에서 지평선을 따라 시계 방향, 약 101°) → 고도(약 47°). 3 적도 좌표계: 천구의 적도·천구의 북극·춘분점, 적경(춘분점에서 동쪽으로 8h)·적위(+20°). 4 예측: 3시간 뒤 별 S는? 선택지를 누르면 고른 것이 표시됩니다. 5 확인: 3시간(45°) 지나 시간각 0 → 자오선(남쪽)에서 남중, 고도 = 90° − 37.5° + 20° = 72.5°. 6 일주 운동: 3시간 더(모두 6시간) — 방위각 약 259°, 고도 약 47°. 방위각·고도는 바뀌고 적경·적위는 그대로. 아래 조작 막대가 나옵니다. 7 두 시점: 처음 시각으로 돌아가(별이 거꾸로 도는 모습을 보이지 않으려고 잠깐 흐렸다가 옮김) 6시간을 다시 흘립니다 — 큰 화면은 바깥에서 본 천구, 작은 창은 관측자가 남쪽을 본 하늘 — 같은 별이 두 화면에서 함께 움직입니다(별 S는 왼쪽인 동쪽에서 들어와 남쪽 높이 지나 오른쪽인 서쪽으로). 8 천구의 북극의 고도 = 위도(37.5°), 왼쪽 아래 작은 지구: 관측자가 지구 꼭대기에 서 있게 돌려 놓은 모습이라 지구 자전축(빨강)이 큰 화면의 천구의 북극 방향과 정확히 나란합니다(큰 화면을 돌리면 함께 돎). 9 위도 90°: 천구의 북극 = 천정(고도 90°), 천구의 적도 = 지평선, 별은 지평선과 나란히. 10 위도 0°: 천구의 북극 = 북점(고도 0°), 천구의 남극 = 남점, 별은 지평선에 수직으로 뜨고 짐. 11 남위 37.5°: 천구의 북극은 북쪽 지평선 아래 37.5°, 천구의 남극이 남쪽 하늘 고도 37.5° — 남쪽을 보면 별이 천구의 남극을 중심으로 시계 방향. 12 처음 위도로 돌아와 직접 해 보기: 짚어 보기(가리킨 점의 방위각 → 고도, 적경·적위), 지금 서울 하늘. 계산: 지평 좌표 → 3D는 x = 동, y = 천정, −z = 북. 적도 좌표(시간각 H, 적위 δ, 위도 φ)는 sin(고도) = sin φ sin δ + cos φ cos δ cos H, 시간각 = 지방 항성시 − 적경. 지금 서울 하늘: JD = 유닉스 시각(ms)/86400000 + 2440587.5, 그리니치 항성시(도) = 280.46061837 + 360.98564736629 × (JD − 2451545.0), 지방 항성시 = 그리니치 항성시 + 126.98°(서울 경도). 위도는 37.5°로 둠(서울 시청은 37.57°), 세차·장동·대기 굴절 무시(J2000 좌표 그대로 — 2026년에는 약 0.4°쯤 차이). 해가 떠 있는 시각이면 알림에 낮이라고 나옵니다(해의 고도는 간단한 식으로 계산, 오차 약 0.01° 수준의 저정밀 식). 밝혀 둘 점: 별 S는 가상의 별(적경 8h, 적위 +20°). 배경의 작은 별들은 무작위로 흩어 둔 장식용 배경 별이며 실제 별자리가 아닙니다(실제 별은 북극성·북두칠성 7개·카시오페이아자리 5개뿐). 바깥 화면에서는 천구 밖에 별을 두지 않았습니다(별은 천구 위에 있는 것으로 나타내므로). 경과 시간 1시간 = 15° 회전으로 그렸습니다(항성시 기준 — 실제로는 태양시 1시간에 약 15.04°, 한 바퀴는 23시간 56분). 북극성은 천구의 북극에서 약 0.7° 떨어져 있어 아주 작은 원을 그립니다. 지평선의 낮은 언덕 실루엣(높이 2° 이하)은 장식이고 실제 지평선은 초록 선입니다. 위도 90°에서는 모든 방향이 남쪽(남극에서는 북쪽)이라 동서남북 표시가 뜻이 없어 흐리게 했습니다. 오개념 대비: 천구는 실제 구가 아니라 관측자를 중심으로 한 가상의 구(반지름은 임의), 별이 도는 것은 지구 자전 때문에 그렇게 보이는 것, 방위각은 북점에서 시계 방향(동쪽으로), 적경은 춘분점에서 동쪽(시계 반대 방향)으로, 북반구에서 별은 동 → 남 → 서, 천구의 북극을 중심으로 시계 반대 방향, 천구의 적도는 언제나 동점과 서점을 지남, 지평선 아래는 보이지 않음(바깥 화면에서는 흐리게, 관측자 화면에서는 땅에 가려짐). 작은 지구와 천구의 크기 비는 실제와 무관합니다(천구에 비하면 지구는 점).">
+  <div class="cel-view" id="cs-v"></div>
+  <div class="hd cel-hd" data-in><div class="eb"><b>시험</b>three.js 입체</div><h2>천구의 좌표계</h2></div>
+
+  <div class="cel-card" id="cs-card" data-in="250">
+    <div class="cb" data-k="0"><div class="tg">서울의 밤, 북쪽 하늘</div><p>북위 37.5°에서 북쪽을 바라본 밤하늘</p><p>북두칠성과 카시오페이아자리 사이에 북극성</p></div>
+    <div class="cb" data-k="1"><div class="tg">천구</div><p>관측자를 중심으로 한 <b>가상의 구</b></p><p>별까지의 거리는 빼고 <b>방향</b>만 나타냄(반지름은 임의)</p><p><b class="c-hor">지평선</b> 위 절반만 보임</p></div>
+    <div class="cb" data-k="2"><div class="tg">지평 좌표계</div><p><b class="c-hor">방위각</b>: 북점에서 지평선을 따라 <b>시계 방향</b>(동쪽)으로</p><p><b class="c-alt">고도</b>: 지평선에서 천체까지 올려 잰 각</p></div>
+    <div class="cb" data-k="3"><div class="tg">적도 좌표계</div><p><b class="c-equ">적경</b>: <b class="c-ecl">춘분점</b>에서 천구의 적도를 따라 <b>동쪽</b>(시계 반대 방향)으로, 0h~24h</p><p><b class="c-dec">적위</b>: 천구의 적도에서 천체까지(북 +, 남 −)</p></div>
+    <div class="cb" data-k="4 5" id="cs-quiz"><div class="tg">예측하기</div><p class="q">3시간 뒤 별 S는 어디에 있을까?</p>
+      <div class="op" data-o="1"><i>①</i>동쪽 하늘 낮게</div>
+      <div class="op ans" data-o="2"><i>②</i>남쪽 하늘 가장 높이(남중)<svg class="ring" viewBox="0 0 300 60" preserveAspectRatio="none"><path pathLength="1" d="M22,33 C16,10 118,3 198,5 C262,7 292,20 285,34 C277,54 152,58 72,54 C30,51 8,44 26,22"/></svg></div>
+      <div class="op" data-o="3"><i>③</i>서쪽 하늘 낮게</div>
+      <p class="why">3시간에 45° 돌아 자오선에 옴<br>남중 고도 = 90° − 37.5° + 20° = <b>72.5°</b></p></div>
+    <div class="cb" data-k="6"><div class="tg">일주 운동</div><p>지구가 <b>자전</b>하므로 천구가 도는 것처럼 보임</p><p><b class="c-pole">천구의 북극</b>을 중심으로 시계 반대 방향, 1시간에 약 15°</p><p><b class="c-hor">방위각</b>·<b class="c-alt">고도</b>는 바뀌고 <b class="c-equ">적경</b>·<b class="c-dec">적위</b>는 그대로</p></div>
+    <div class="cb" data-k="7"><div class="tg">두 시점</div><p>바깥에서 본 천구와 관측자가 본 하늘 — 같은 별, 같은 움직임</p><p>별은 <b>동 → 남 → 서</b>로</p></div>
+    <div class="cb" data-k="8"><div class="tg">위도와 천구의 북극</div><p><b class="c-pole">천구의 북극</b>의 고도 = 관측자의 <b>위도</b></p><p>지구 자전축을 늘인 방향이 천구의 북극</p></div>
+    <div class="cb" data-k="9"><div class="tg">북극 (북위 90°)</div><p><b class="c-pole">천구의 북극</b> = 천정</p><p><b class="c-equ">천구의 적도</b> = <b class="c-hor">지평선</b></p><p>별은 지평선과 나란히 돎</p></div>
+    <div class="cb" data-k="10"><div class="tg">적도 (위도 0°)</div><p><b class="c-pole">천구의 북극</b> = 북점(고도 0°)</p><p>별은 지평선에 수직으로 뜨고 짐</p></div>
+    <div class="cb" data-k="11"><div class="tg">남반구 (남위 37.5°)</div><p><b class="c-pole">천구의 남극</b>이 남쪽 하늘, 고도 37.5°</p><p>남쪽을 보면 별은 천구의 남극을 중심으로 <b>시계 방향</b></p></div>
+    <div class="cb" data-k="12"><div class="tg">직접 해 보기</div><p><b>짚어 보기</b>: 하늘의 한 점을 가리키면 방위각 → 고도, 적경·적위</p><p><b>지금 서울 하늘</b>: 지금 이 시각 별자리의 위치</p></div>
+  </div>
+
+  <div class="cel-now" id="cs-nowpill"></div>
+
+  <div class="cel-inset" id="cs-inset"><div class="lay"></div><div class="cover"></div>
+    <div class="cap"><span>관측자가 본 하늘</span><div class="seg" id="cs-idir"><button data-d="n">북쪽</button><button data-d="s">남쪽</button></div></div></div>
+
+  <div class="cel-earth" id="cs-earth"><div class="lay"></div><div class="cap">관측자의 위치 <span id="cs-elat">북위 37.5°</span> · <b>자전축</b></div></div>
+
+  <div class="ia-panel cel-bar" id="cs-bar" data-step="6" data-fx="rise">
+    <button id="cs-play">▶</button>
+    <label><span>시간</span><input id="cs-t" type="range" min="0" max="24" step="0.25" value="0"><span class="val" id="cs-tv">+0 h</span></label>
+    <label><span>위도</span><input id="cs-lat" type="range" min="-90" max="90" step="0.5" value="37.5"><span class="val" id="cs-latv">37.5°N</span></label>
+    <div class="seg" id="cs-view"><button data-v="out">바깥에서</button><button data-v="n">관측자 북쪽</button><button data-v="s">관측자 남쪽</button></div>
+    <button id="cs-probe">짚어 보기</button>
+    <button id="cs-now">지금 서울 하늘</button>
+    <button id="cs-home">처음 모습</button>
+  </div>
+</section>
+
+</div></div>
+
+<!-- 하단 컨트롤 -->
+<div id="progress"><i></i></div>
+<div id="stepdots"></div>
+<script src="../../engine/deck.js"></script>
+<script type="importmap">{"imports":{"three":"../../engine/vendor/three@0.160.0/build/three.module.min.js","three/addons/":"../../engine/vendor/three@0.160.0/examples/jsm/"}}</script>
+<script type="module">
+import {THREE,D2R,clamp,lerp,line,clear} from './common.js';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {Line2} from 'three/addons/lines/Line2.js';
+import {LineMaterial} from 'three/addons/lines/LineMaterial.js';
+import {LineGeometry} from 'three/addons/lines/LineGeometry.js';
+
+/* ── 천구 계산(관측자 중심, 반지름 1) — 앞 시험 장(천구_3D.html)에서 검증한 식 그대로 ──
+   지평 좌표 → 3D: x = 동쪽, y = 천정, −z = 북쪽.  v(방위각 A, 고도 h) = (cos h·sin A, sin h, −cos h·cos A)  (A는 북점에서 동쪽으로)
+   적도 좌표(시간각 H, 적위 δ, 위도 φ) → 3D: 천구의 북극 P = (0, sin φ, −cos φ), 천구의 적도의 남쪽 꼭대기 Q = (0, cos φ, sin φ), 서점 W = (−1, 0, 0)
+     v = sin δ·P + cos δ·(cos H·Q + sin H·W)   → sin(고도) = sin φ sin δ + cos φ cos δ cos H
+   시간각 H = 지방 항성시 − 적경(시간이 흐르면 H가 커져 별이 서쪽으로). φ < 0(남반구)도 같은 식 */
+const RA=120,DEC=20,PHI0=37.5,LST0=75;   // 별 S(가상의 별): 적경 8h, 적위 +20°. 처음 항성시 5h → 시간각 −45°
+const sin=Math.sin,cos=Math.cos,PI=Math.PI;
+const hv=(A,h)=>[cos(h*D2R)*sin(A*D2R),sin(h*D2R),-cos(h*D2R)*cos(A*D2R)];
+function ev(H,d,phi){const h=H*D2R,de=d*D2R,f=phi*D2R;
+  return [-cos(de)*sin(h), sin(de)*sin(f)+cos(de)*cos(h)*cos(f), -sin(de)*cos(f)+cos(de)*cos(h)*sin(f)];}
+const toHor=v=>{let A=Math.atan2(v[0],-v[2])/D2R;if(A<0)A+=360;if(A>=359.9995)A=0;return {A,h:Math.asin(clamp(v[1],-1,1))/D2R};};
+/* 3D 방향 → 적도 좌표(시간각, 적위) */
+const toEqu=(v,phi)=>{const f=phi*D2R,sf=sin(f),cf=cos(f);
+  return {H:Math.atan2(-v[0],v[1]*cf+v[2]*sf)/D2R,d:Math.asin(clamp(v[1]*sf-v[2]*cf,-1,1))/D2R};};
+/* 적도 좌표(적경 α, 적위 δ)의 '하늘 틀' 좌표와, 그 틀을 3D로 옮기는 행렬(위도 φ, 항성시 θ): M·loc(α,δ) = ev(θ − α, δ, φ) */
+const loc=(a,d)=>[cos(d*D2R)*cos(a*D2R),sin(d*D2R),-cos(d*D2R)*sin(a*D2R)];   // z를 뒤집어 행렬이 거울상이 아닌 회전이 되게(굵은 선이 뒤집혀 사라지지 않게)
+function basis(m,phi,lst){const f=phi*D2R,l=lst*D2R,sf=sin(f),cf=cos(f),cl=cos(l),sl=sin(l);
+  m.set(-sl,0,-cl,0,  cl*cf,sf,-sl*cf,0,  cl*sf,-cf,-sl*sf,0,  0,0,0,1);return m;}
+const sc=(v,k)=>v.map(x=>x*k);
+const arc=(f,n=64)=>[...Array(n+1)].map((_,i)=>f(i/n));
+const sm=x=>{x=clamp(x,0,1);return x*x*(3-2*x);};
+const short=d=>((d%360)+540)%360-180;
+/* 지금 시각의 지방 항성시(도): JD = ms/86400000 + 2440587.5, GMST = 280.46061837 + 360.98564736629·(JD − 2451545.0), LST = GMST + 경도 */
+const LON=126.98;
+const jdOf=ms=>ms/86400000+2440587.5;
+const lstAt=(ms,lon=LON)=>(((280.46061837+360.98564736629*(jdOf(ms)-2451545.0)+lon)%360)+360)%360;
+/* 해의 적경·적위(저정밀 식) → 낮인지 알려 주는 데만 씀 */
+function sunAt(ms){const n=jdOf(ms)-2451545.0,L=(280.460+.9856474*n)*D2R,g=(357.528+.9856003*n)*D2R,lam=L+(1.915*sin(g)+.020*sin(2*g))*D2R,e=(23.439-4e-7*n)*D2R;
+  return {ra:((Math.atan2(cos(e)*sin(lam),cos(lam))/D2R)+360)%360,dec:Math.asin(sin(e)*sin(lam))/D2R};}
+
+/* 실제 별(J2000): [이름, 적경 h m s, 적위 ° ′ ″, 크기] */
+const hms=(h,m,s)=>(h+m/60+s/3600)*15, dms=(d,m,s)=>d+m/60+s/3600;
+const REAL=[['북극성',hms(2,31,49),dms(89,15,51),6.2],
+  ['두베',hms(11,3,44),dms(61,45,4),5.4],['메라크',hms(11,1,51),dms(56,22,57),5],['페크다',hms(11,53,50),dms(53,41,41),5],['메그레즈',hms(12,15,26),dms(57,1,57),4.2],
+  ['알리오스',hms(12,54,2),dms(55,57,35),5.4],['미자르',hms(13,23,56),dms(54,55,31),5],['알카이드',hms(13,47,32),dms(49,18,48),5.2],
+  ['카프',hms(0,9,11),dms(59,8,59),5],['셰다르',hms(0,40,30),dms(56,32,15),5.2],['감마',hms(0,56,42),dms(60,43,0),5.2],['루크바',hms(1,25,49),dms(60,14,7),4.8],['세긴',hms(1,54,24),dms(63,40,12),4.4]];
+const CL=[[1,2],[2,3],[3,4],[4,1],[4,5],[5,6],[6,7],[8,9],[9,10],[10,11],[11,12]];   // 별자리 선(북두칠성 국자 + 자루, 카시오페이아 W)
+
+/* 색(어두운 면) */
+const COL={hor:0x5BE0A8,alt:0xFFB340,equ:0x6CB8FF,dec:0xD7A6FF,ecl:0xFFD25E,pole:0xFF7A70,gray:0xa1a1a6,ink:0xf5f5f7,gold:0xFFD25E};
+const W=1920,H=1080, IN={x:1420,y:560,w:440,h:310}, EA={x:60,y:136,w:300,h:290};
+const RIN=.004, OUT={az:21.6,alt:-18,r:5.15,ty:-.16,fov:30};
+const poseOf=m=>m==='out'?{...OUT}:m==='n'?{az:0,alt:27,r:RIN,ty:0,fov:66}:{az:180,alt:23,r:RIN,ty:0,fov:66};
+
+let G=null;
+const V0={w:W,h:H,mats:new Set()}, VE={w:EA.w,h:EA.h,mats:new Set()};
+const onLayer=(o,n)=>{o.traverse(x=>x.layers.set(n));return o;};
+function dotM(pos,o={}){const m=new THREE.Mesh(new THREE.SphereGeometry(o.r??.02,20,14),new THREE.MeshBasicMaterial({color:o.col??COL.ink,transparent:true,opacity:o.op??1,depthTest:o.depth??true}));
+  m.position.set(...pos);m.renderOrder=o.order??3;m.userData.base=o.op??1;return m;}
+function setOp(obj,o){if(obj.userData._o===o)return;obj.userData._o=o;obj.visible=o>.004;
+  obj.traverse(n=>{const m=n.material;if(!m)return;const b=n.userData.base??1;if(m.uniforms&&m.uniforms.uOp)m.uniforms.uOp.value=o*b;else m.opacity=o*b;});}
+function cone(end,prev,col,op,depth){const ks=lerp(1,.5,G.st?G.st.inside:0);const a=new THREE.Vector3(...end),d=a.clone().sub(new THREE.Vector3(...prev));if(d.lengthSq()<1e-12)return null;d.normalize();
+  const m=new THREE.Mesh(new THREE.ConeGeometry(.021*ks,.06*ks,16),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:op,depthTest:depth}));
+  m.position.copy(a).addScaledVector(d,-.022*ks);m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d);m.renderOrder=4;return m;}
+
+function setup(){
+  G={labels:[],ilabels:[],elabels:[],st:null,c:null,camBusy:false,last:0};
+  const R=G.R=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});R.setClearColor(0x000000,0);R.autoClear=false;
+  const S=G.scene=new THREE.Scene();
+  const cam=G.cam=new THREE.PerspectiveCamera(30,W/H,.001,40);cam.layers.enable(1);cam.layers.enable(2);
+  const camI=G.camI=new THREE.PerspectiveCamera(84,IN.w/IN.h,.001,40);camI.layers.enable(2);   // 작은 창: 0(함께) + 2(하늘·땅)
+  const pad=G.pad=document.createElement('div');pad.className='cel-pad';
+  const lay=G.lay=document.createElement('div');lay.className='cel-lay';
+  const ctl=G.ctl=new OrbitControls(cam,pad);ctl.enableDamping=true;ctl.dampingFactor=.09;ctl.enablePan=false;
+  G.fit=()=>{const st=document.getElementById('stage'),k=st?st.getBoundingClientRect().width/1920:1;R.setPixelRatio(clamp(k*(devicePixelRatio||1),.5,3));R.setSize(W,H,false);};
+  addEventListener('resize',()=>G.fit());
+  ctl.addEventListener('change',()=>{if(performance.now()-G.last>150&&!G._raf)G._raf=requestAnimationFrame(()=>{G._raf=0;frame(0);});});   // 일시정지(P) 중에 끌어 돌릴 때
+
+  /* ── 끌기·누르기: 끌면 돌리기(장은 안 넘어감), 끌지 않고 그냥 누르면 평소처럼 다음 단계. 짚어 보기가 켜져 있으면 가리킨 점을 잼 ── */
+  let pd=null,moved=false;
+  pad.addEventListener('pointerdown',e=>{pd=[e.clientX,e.clientY];moved=false;if(G.st&&G.st.probe.on)probeAt(e);});
+  pad.addEventListener('pointermove',e=>{if(pd&&Math.hypot(e.clientX-pd[0],e.clientY-pd[1])>6)moved=true;if(G.st&&G.st.probe.on&&(e.pointerType!=='mouse'||!e.buttons))probeAt(e);});
+  addEventListener('pointerup',()=>{pd=null;});
+  pad.addEventListener('click',e=>{if(moved||(G.st&&G.st.probe.on))e.stopPropagation();});
+  ['dblclick','wheel','touchstart','touchmove','touchend','gesturestart','gesturechange','contextmenu'].forEach(t=>
+    pad.addEventListener(t,e=>{e.stopPropagation();if(t==='contextmenu')e.preventDefault();},{passive:t!=='contextmenu'}));
+
+  /* ── 관측자가 보는 하늘(겹 2): 하늘 그러데이션 + 불투명한 땅(아래 반구) + 낮은 언덕 실루엣 ── */
+  G.dome=new THREE.Mesh(new THREE.SphereGeometry(3,48,32),new THREE.ShaderMaterial({side:THREE.BackSide,transparent:true,depthTest:false,depthWrite:false,uniforms:{uOp:{value:1}},
+    vertexShader:'varying vec3 vP;void main(){vP=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+    fragmentShader:'varying vec3 vP;uniform float uOp;void main(){float y=clamp(normalize(vP).y,0.,1.);vec3 c=mix(vec3(.085,.14,.27),vec3(.02,.03,.07),pow(y,.42));gl_FragColor=vec4(c,uOp);}'}));
+  G.dome.renderOrder=-20;
+  const gmat=new THREE.MeshBasicMaterial({color:0x090d10,side:THREE.DoubleSide,transparent:true});
+  G.ground=new THREE.Group();
+  G.ground.add(new THREE.Mesh(new THREE.SphereGeometry(.96,72,24,0,2*PI,PI/2,PI/2),gmat));
+  {const hill=a=>Math.max(.15,.55+.5*(sin(a*3*D2R+1)+.6*sin(a*7*D2R+2.2)+.4*sin(a*13*D2R+.7))),p=[],ix=[];   // 언덕 높이(°): 0.15~1.6
+    for(let a=0;a<=360;a++){p.push(...sc(hv(a,-3),.955),...sc(hv(a,hill(a)),.955));if(a<360){const i=a*2;ix.push(i,i+1,i+2,i+1,i+3,i+2);}}
+    const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));g.setIndex(ix);G.ground.add(new THREE.Mesh(g,gmat));}
+  G.ground.children.forEach(m=>m.renderOrder=-10);
+  S.add(onLayer(G.dome,2),onLayer(G.ground,2));
+
+  /* ── 바깥에서 본 천구(겹 1): 투명한 구 껍질(가장자리만 은은하게), 지평면 ── */
+  G.shell=new THREE.Mesh(new THREE.SphereGeometry(1,96,64),new THREE.ShaderMaterial({transparent:true,depthWrite:false,uniforms:{uOp:{value:0}},
+    vertexShader:'varying vec3 vN;varying vec3 vV;void main(){vec4 mv=modelViewMatrix*vec4(position,1.);vN=normalize(normalMatrix*normal);vV=normalize(-mv.xyz);gl_Position=projectionMatrix*mv;}',
+    fragmentShader:'varying vec3 vN;varying vec3 vV;uniform float uOp;void main(){float f=pow(1.-abs(dot(normalize(vN),normalize(vV))),2.6);gl_FragColor=vec4(.45,.72,1.,(.045+.34*f)*uOp);}'}));
+  G.shell.renderOrder=0;
+  G.disc=new THREE.Mesh(new THREE.CircleGeometry(1,96),new THREE.MeshBasicMaterial({color:0x29453a,transparent:true,opacity:.5,side:THREE.DoubleSide,depthWrite:false}));
+  G.disc.rotation.x=-PI/2;G.disc.renderOrder=0;G.disc.userData.base=.5;
+  S.add(onLayer(G.shell,1),onLayer(G.disc,1));
+
+  /* ── 지평선·동서남북(겹 0: 두 화면 모두), 자오선·천정·관측자(겹 1: 바깥 화면만) ── */
+  G.gRing=new THREE.Group();
+  G.gRing.add(line(V0,arc(t=>hv(t*360,0),160),{col:COL.hor,w:3,depth:false}));
+  [0,90,180,270].forEach(A=>G.gRing.add(dotM(hv(A,0),{r:.02,col:COL.hor,depth:false})));
+  G.gOut=new THREE.Group();
+  G.gOut.add(line(V0,arc(t=>[0,sin(t*2*PI),-cos(t*2*PI)],120),{col:COL.gray,w:1.5,op:.6}));
+  G.gOut.add(dotM([0,1,0],{r:.018,col:COL.ink}),dotM([0,0,0],{r:.028,col:COL.ink}));
+  S.add(G.gRing,onLayer(G.gOut,1));
+
+  /* ── 위도만 따르는 틀(gEq): 천구의 적도, 자전축 방향(천구의 북극 – 남극), 별 S의 일주권 ── */
+  G.gEq=new THREE.Group();G.gEq.matrixAutoUpdate=false;S.add(G.gEq);
+  G.eqL=new THREE.Group();
+  G.eqL.add(line(V0,arc(t=>loc(t*360,0),160),{col:COL.equ,w:3}));
+  G.axis=line(V0,[[0,-1.2,0],[0,1.2,0]],{col:COL.pole,w:2,dash:[.05,.035],op:.9});   // 관측자를 지나므로 관측자 시점에서는 숨김
+  G.eqL.add(dotM([0,1,0],{r:.024,col:COL.pole}),dotM([0,-1,0],{r:.024,col:COL.pole}));
+  G.dcirc=line(V0,arc(t=>loc(t*360,DEC),160),{col:COL.gold,w:2.2,dash:[.035,.028],op:.85});
+  G.gEq.add(G.eqL,G.dcirc,onLayer(G.axis,1));
+
+  /* ── 하늘과 함께 도는 틀(gSky): 별, 별자리 선, 적경선·적위선 격자, 춘분점, 별 S ── */
+  G.gSky=new THREE.Group();G.gSky.matrixAutoUpdate=false;S.add(G.gSky);
+  {const p=[];   // 격자: 적경선 2h마다, 적위선 30°마다(은은하게, 바깥 화면만)
+    for(let a=0;a<360;a+=30)for(let i=0;i<48;i++)p.push(...loc(a,-90+i*3.75),...loc(a,-90+(i+1)*3.75));
+    [-60,-30,30,60].forEach(d=>{for(let i=0;i<96;i++)p.push(...loc(i*3.75,d),...loc((i+1)*3.75,d));});
+    const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));
+    G.grid=new THREE.LineSegments(g,new THREE.LineBasicMaterial({color:COL.equ,transparent:true,opacity:.2,depthWrite:false}));G.grid.userData.base=.2;G.gSky.add(onLayer(G.grid,1));}
+  G.ve=dotM(loc(0,0),{r:.026,col:COL.ecl});G.gSky.add(G.ve);
+  G.sDot=new THREE.Group();G.sDot.add(dotM(loc(RA,DEC),{r:.022,col:0xFFF3C4}),dotM(loc(RA,DEC),{r:.04,col:0xFFC83A,op:.35,order:2}));G.gSky.add(G.sDot);
+  /* 별: 실제 별 13개 + 장식용 배경 별(무작위 — 실제 별자리 아님). 실제 별·별 S 둘레에는 배경 별을 두지 않음 */
+  const stars=[];REAL.forEach(r=>stars.push({v:loc(r[1],r[2]),s:r[3],b:1}));
+  {let a=20261117;const rnd=()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};
+    const keep=REAL.map(r=>loc(r[1],r[2])).concat([loc(RA,DEC)]),c7=cos(7*D2R);
+    while(stars.length<13+520){const z=rnd()*2-1,ra=rnd()*360,v=loc(ra,Math.asin(z)/D2R),u=rnd();
+      if(keep.some(k=>k[0]*v[0]+k[1]*v[1]+k[2]*v[2]>c7))continue;stars.push({v,s:1.6+2.6*u*u*u,b:.45+.55*u*u});}}
+  G.stars=stars;
+  {const g=new THREE.BufferGeometry();
+    g.setAttribute('position',new THREE.Float32BufferAttribute(stars.flatMap(s=>s.v),3));
+    g.setAttribute('aSize',new THREE.Float32BufferAttribute(stars.map(s=>s.s),1));g.setAttribute('aB',new THREE.Float32BufferAttribute(stars.map(s=>s.b),1));
+    G.starMat=new THREE.ShaderMaterial({transparent:true,depthWrite:false,uniforms:{uScale:{value:1},uDim:{value:.32},uOp:{value:1}},
+      vertexShader:'attribute float aSize;attribute float aB;uniform float uScale,uDim,uOp;varying float vA;void main(){vec4 wp=modelMatrix*vec4(position,1.);vA=aB*uOp*mix(uDim,1.,smoothstep(-.015,.015,wp.y));gl_Position=projectionMatrix*viewMatrix*wp;gl_PointSize=aSize*uScale;}',
+      fragmentShader:'varying float vA;void main(){float d=length(gl_PointCoord-.5);gl_FragColor=vec4(.9,.94,1.,smoothstep(.5,.12,d)*vA);}'});
+    const pts=new THREE.Points(g,G.starMat);pts.frustumCulled=false;pts.renderOrder=2;G.gSky.add(pts);}
+  G.cl=new THREE.Group();CL.forEach(([i,j])=>G.cl.add(line(V0,[loc(REAL[i][1],REAL[i][2]),loc(REAL[j][1],REAL[j][2])],{col:0xa9c0e6,w:2,op:.7})));G.gSky.add(G.cl);
+
+  /* ── 꼬리(짧게 사라지는 궤적): 모든 별은 가는 선, 별 S는 굵은 금색 선 ── */
+  const SEG=10,N=stars.length;
+  G.tr={SEG,pos:new Float32Array(N*SEG*6),col:new Float32Array(N*SEG*6),m:[...Array(SEG+1)].map(()=>new THREE.Matrix4()),on:false};
+  {const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(G.tr.pos,3));g.setAttribute('color',new THREE.BufferAttribute(G.tr.col,3));
+    G.tr.ls=new THREE.LineSegments(g,new THREE.LineBasicMaterial({vertexColors:true,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));
+    G.tr.ls.frustumCulled=false;G.tr.ls.visible=false;S.add(G.tr.ls);}
+  G.trS=new THREE.Group();S.add(G.trS);
+  G.trSmat=new LineMaterial({linewidth:4.5,vertexColors:true,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false});G.trSmat.resolution.set(W,H);V0.mats.add(G.trSmat);
+
+  /* ── 그때그때 다시 그리는 것(gDyn): 방위각·고도·적경·적위 호, 천구의 북극(남극) 고도 호 ── */
+  G.gDyn=new THREE.Group();S.add(G.gDyn);
+
+  /* ── 작은 지구(따로 된 장면): 관측자가 꼭대기에 서 있게 돌려 놓음 → 자전축이 큰 화면의 천구의 북극 방향과 나란함 ── */
+  const SE=G.sceneE=new THREE.Scene();G.camE=new THREE.PerspectiveCamera(30,EA.w/EA.h,.1,40);
+  G.gE=new THREE.Group();G.gE.matrixAutoUpdate=false;SE.add(G.gE);G.eAll=new THREE.Group();SE.add(G.eAll);
+  G.globe=new THREE.Mesh(new THREE.SphereGeometry(1,64,40),new THREE.ShaderMaterial({transparent:true,uniforms:{uOp:{value:1}},
+    vertexShader:'varying vec3 vN;varying vec3 vV;void main(){vec4 mv=modelViewMatrix*vec4(position,1.);vN=normalize(normalMatrix*normal);vV=normalize(-mv.xyz);gl_Position=projectionMatrix*mv;}',
+    fragmentShader:'varying vec3 vN;varying vec3 vV;uniform float uOp;void main(){float f=pow(1.-abs(dot(normalize(vN),normalize(vV))),2.);gl_FragColor=vec4(mix(vec3(.07,.2,.37),vec3(.36,.62,.92),f*.75),uOp);}'}));
+  G.gE.add(G.globe);
+  {const p=[],L=(a,d)=>sc(loc(a,d),1.004);
+    for(let a=0;a<360;a+=30)for(let i=0;i<36;i++)p.push(...L(a,-90+i*5),...L(a,-90+(i+1)*5));
+    [-60,-30,30,60].forEach(d=>{for(let i=0;i<72;i++)p.push(...L(i*5,d),...L((i+1)*5,d));});
+    const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));
+    const gl=new THREE.LineSegments(g,new THREE.LineBasicMaterial({color:0xa9cff5,transparent:true,opacity:.34}));gl.userData.base=.34;G.gE.add(gl);}
+  G.gE.add(line(VE,arc(t=>sc(loc(t*360,0),1.006),96),{col:COL.equ,w:3}));
+  G.gE.add(line(VE,[[0,-1.7,0],[0,1.7,0]],{col:COL.pole,w:3.5}));
+  {const cn=new THREE.Mesh(new THREE.ConeGeometry(.09,.24,20),new THREE.MeshBasicMaterial({color:COL.pole,transparent:true}));cn.position.set(0,1.78,0);G.gE.add(cn);}
+  {const d=new THREE.Mesh(new THREE.CircleGeometry(.62,48),new THREE.MeshBasicMaterial({color:COL.hor,transparent:true,opacity:.32,side:THREE.DoubleSide,depthWrite:false}));
+    d.rotation.x=-PI/2;d.position.y=1.004;d.userData.base=.32;d.renderOrder=2;G.eAll.add(d);}
+  G.eAll.add(line(VE,arc(t=>[.62*cos(t*2*PI),1.004,.62*sin(t*2*PI)],64),{col:COL.hor,w:2.5}));
+  G.eAll.add(line(VE,[[0,1,0],[0,1.4,0]],{col:COL.gray,w:1.6,op:.8}));
+  G.eAll.add(dotM([0,1.02,0],{r:.07,col:0xFFE9A8}));
+
+  /* ── 이름표(직접 화면 위치를 계산해 놓음 — 겹치면 덜 중요한 쪽을 숨김) ── */
+  const mk=(html,o)=>{const el=document.createElement('div');el.className='cel-t '+(o.cls||'');el.innerHTML=html;
+    const L=Object.assign({el,p:new THREE.Vector3(),par:null,dx:0,dy:0,dxIn:null,dyIn:null,pri:5,ax:.5,op:()=>1,w:0,h:0,_m:true,_h:html,shown:false},o);
+    if(o.pos)L.p.set(...o.pos);el.style.display='none';
+    L.set=h=>{if(L._h!==h){L._h=h;el.innerHTML=h;L._m=true;}};
+    (o.list||G.labels).push(L);(o.host||lay).append(el);return L;};
+  G.mk=mk;
+  const s=()=>G.st, out=()=>1-s().inside;
+  const polar=()=>Math.abs(s().phi)>89.4?.4:1;
+  [[0,'북점','N'],[90,'동점','E'],[180,'남점','S'],[270,'서점','W']].forEach(([A,k,e])=>mk(k+' <i>'+e+'</i>',{pos:sc(hv(A,0),1.13),cls:'hor',pri:6,dyIn:32,op:()=>Math.max(s().base,s().inside)*polar()}));
+  [[45,'북동'],[135,'남동'],[225,'남서'],[315,'북서']].forEach(([A,k])=>mk(k,{pos:hv(A,0),cls:'gray sm',pri:3,dyIn:32,op:()=>s().inside>.6?polar():0}));
+  mk('천정',{pos:[0,1.075,0],pri:4,op:()=>s().base});
+  mk('관측자',{pos:[0,0,0],cls:'sm',dy:32,pri:4,op:()=>s().base*out()});
+  mk('지평선',{pos:sc(hv(215,0),1.12),cls:'hor sm',pri:3,op:()=>s().base*out()});
+  mk('자오선',{pos:[0,sin(1.05)*1.06,cos(1.05)*1.06],cls:'gray sm',dx:-56,pri:3,op:()=>s().base*out()});
+  const poleUp=sign=>s().inside<.5||sign*s().phi>-2;
+  G.lbNP=mk('천구의 북극',{pos:[0,1.085,0],par:G.gEq,cls:'pole',ax:0,dx:14,dy:-8,pri:7,op:()=>s().eq*(poleUp(1)?1:0)});
+  G.lbSP=mk('천구의 남극',{pos:[0,-1.085,0],par:G.gEq,cls:'pole',ax:0,dx:14,dy:8,pri:7,op:()=>s().eq*(s().phi<10&&poleUp(-1)?1:0)});
+  mk('천구의 적도',{pos:sc(loc(163,0),1.1),par:G.gEq,cls:'equ sm',pri:3,op:()=>s().eq*out()});
+  mk('춘분점',{pos:sc(loc(0,0),1.12),par:G.gSky,cls:'ecl',pri:6,op:()=>s().eq});
+  G.lbS=mk('별 S <i>가상의 별</i>',{pos:loc(RA,DEC),par:G.gSky,cls:'star',ax:0,dx:26,dy:-12,pri:9,op:()=>s().sS});
+  const cnOp=()=>Math.max(s().cn,s().inside,s().now?1:0)*s().blink;
+  mk('북극성',{pos:loc(REAL[0][1],REAL[0][2]),par:G.gSky,cls:'sm',dy:-30,pri:2,op:cnOp});
+  mk('북두칠성',{pos:loc(190,62),par:G.gSky,cls:'sm',pri:2,op:cnOp});
+  mk('카시오페이아자리',{pos:loc(14,67),par:G.gSky,cls:'sm',pri:2,op:cnOp});
+  const subS=()=>!s().probe.on;
+  G.lbAz=mk('방위각',{cls:'hor b',pri:8,dyIn:34,op:()=>subS()?s().arcLab*s().hOp*(s().hA>.5?1:0):0});
+  G.lbAlt=mk('고도',{cls:'alt b',pri:8,dx:-74,op:()=>subS()?s().arcLab*s().hOp*(s().hH>.5?1:0):0});
+  G.lbRa=mk('적경',{cls:'equ b',pri:8,op:()=>subS()?s().arcLab*s().qOp*(s().qA>.5?1:0):0});
+  G.lbDec=mk('적위',{cls:'dec b',pri:8,ax:0,dx:24,dy:22,op:()=>subS()?s().arcLab*s().qOp*(s().qD>.5?1:0):0});
+  G.lbPole=mk('고도',{cls:'pole b',pri:8,ax:1,dx:-18,op:()=>s().pAlt>.5?1:0});
+  G.lbPill=mk('',{cls:'pill',pri:10,dy:-74,must:true,op:()=>s().probe.on?(s().probe.v?1:0):s().pill*s().sS});
+  G.sorted=G.labels.slice().sort((a,b)=>b.pri-a.pri);
+  /* 작은 창의 이름표 */
+  const ih=document.createElement('div');G.ihost=ih;ih.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%';
+  [[0,'북'],[45,'북동'],[90,'동'],[135,'남동'],[180,'남'],[225,'남서'],[270,'서'],[315,'북서']].forEach(([A,k])=>mk(k,{pos:hv(A,0),cls:'hor sm',dy:-24,pri:A%90?4:6,list:G.ilabels,host:ih,op:()=>polar()}));
+  mk('별 S',{pos:loc(RA,DEC),par:G.gSky,cls:'star sm',dy:30,pri:9,list:G.ilabels,host:ih,op:()=>s().sS});
+  mk('북극성',{pos:loc(REAL[0][1],REAL[0][2]),par:G.gSky,cls:'sm',dy:-26,pri:5,list:G.ilabels,host:ih,op:()=>s().phi>1?1:0});
+  mk('천구의 남극',{pos:[0,-1,0],par:G.gEq,cls:'pole sm',dy:-26,pri:5,list:G.ilabels,host:ih,op:()=>s().phi<-1?1:0});
+  G.ilabels.sort((a,b)=>b.pri-a.pri);
+  /* 작은 지구의 이름표 */
+  const eh=document.createElement('div');G.ehost=eh;eh.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%';
+  mk('관측자',{pos:[0,1.05,0],cls:'sm',ax:0,dx:20,dy:-4,pri:5,list:G.elabels,host:eh,op:()=>1});
+}
+
+/* ── 카메라 자세: 보는 방향(방위각·고도), 중심에서의 거리, 화각. 관측자 시점 = 중심에 바짝 붙음(거리 0.004) ── */
+function curPose(){const d=G.ctl.target.clone().sub(G.cam.position),r=d.length();d.divideScalar(r);
+  return {az:Math.atan2(d.x,-d.z)/D2R,alt:Math.asin(clamp(d.y,-1,1))/D2R,r,ty:G.ctl.target.y,fov:G.cam.fov};}
+const posOf=p=>{const d=hv(p.az,p.alt);return [-d[0]*p.r,p.ty-d[1]*p.r,-d[2]*p.r];};
+function applyPose(p){const d=hv(p.az,p.alt),q=p.pos||posOf(p);G.ctl.target.set(0,p.ty,0);G.cam.position.set(q[0],q[1],q[2]);G.cam.fov=p.fov;G.cam.up.set(0,1,0);G.cam.lookAt(q[0]+d[0],q[1]+d[1],q[2]+d[2]);}
+/* 안(관측자) ↔ 밖: 북쪽 하늘을 계속 바라본 채 뒤(남쪽 위)로 곧게 물러나고, 물러나는 동안 천천히 고개를 내려 천구 전체를 봄(밖 → 안은 그 반대) */
+function mixPose(a,b,e){const aIn=a.r<.5,bIn=b.r<.5;
+  if(aIn!==bIn){const I=aIn?a:b,O=aIn?b:a,u=aIn?e:1-e,eR=Math.pow(sm((u-.04)/.96),2),eD=sm((u-.18)/.82),pi=posOf(I),po=posOf(O);
+    return {pos:[lerp(pi[0],po[0],eR),lerp(pi[1],po[1],eR),lerp(pi[2],po[2],eR)],az:I.az+short(O.az-I.az)*eD,alt:lerp(I.alt,O.alt,eD),ty:lerp(I.ty,O.ty,eR),fov:lerp(I.fov,O.fov,eR)};}
+  const t=sm(e);return {az:a.az+short(b.az-a.az)*t,alt:lerp(a.alt,b.alt,t),r:lerp(a.r,b.r,t),ty:lerp(a.ty,b.ty,t),fov:lerp(a.fov,b.fov,t)};}
+function ctlMode(m){const c=G.ctl,inn=m!=='out';
+  c.rotateSpeed=inn?-.32:.8;c.enableZoom=!inn;c.minDistance=inn?RIN:3.2;c.maxDistance=inn?RIN:9;c.minPolarAngle=inn?1.0:.03;c.maxPolarAngle=inn?PI-.06:PI-.03;c.update();}
+async function toView(mode,ms,extra){const c=G.c,st=G.st,a=curPose(),b=poseOf(mode);
+  G.camBusy=true;st.view=mode;ui();
+  await c.tween(ms,e=>{applyPose(mixPose(a,b,e));if(extra)extra(e);},{ease:'linear'});
+  G.camBusy=false;ctlMode(mode);}
+
+/* ── 짚어 보기: 화면의 점 → 천구 위의 점(반지름 1인 구와 만나는 곳. 바깥에서는 앞쪽 점이 지평선 위면 그 점, 아니면 뒤쪽 점) ── */
+const RC=new THREE.Raycaster(),NDC=new THREE.Vector2();
+function probeAt(e){const st=G.st,r=G.pad.getBoundingClientRect();NDC.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);
+  RC.setFromCamera(NDC,G.cam);const o=RC.ray.origin,d=RC.ray.direction,b=o.dot(d),cc=o.lengthSq()-1,D=b*b-cc;if(D<0)return;
+  const t1=-b-Math.sqrt(D),t2=-b+Math.sqrt(D),at=t=>[o.x+d.x*t,o.y+d.y*t,o.z+d.z*t];let v;
+  if(t1>0){const n=at(t1),f=at(t2);v=n[1]>=0?n:(f[1]>=0?f:n);}else if(t2>0)v=at(t2);else return;
+  const l=Math.hypot(...v);st.probe.v=v.map(x=>x/l);}
+
+/* ── 숫자 표시 ── */
+const fA=v=>{const n=Math.round(v*10)/10;return (Math.abs(n*2-Math.round(n*2))<1e-9&&Math.abs(n-Math.round(n))>.1?n.toFixed(1):String(Math.round(v))).replace('-','−')+'°';};
+const fRA=a=>{a=((a%360)+360)%360;let m=Math.round(a/15*6)*10;const h=Math.floor(m/60)%24;m%=60;return h+'h'+(m?' '+m+'m':'');};
+const fDec=d=>{const r=Math.round(d);return (r>0?'+':r<0?'−':'')+Math.abs(r)+'°';};
+const fLat=p=>p===0?'0°':Math.abs(p).toFixed(1).replace('.0','')+'°'+(p>0?'N':'S');
+const fLatK=p=>p===0?'적도 0°':(p>0?'북위 ':'남위 ')+Math.abs(p).toFixed(1).replace('.0','')+'°';
+
+/* ── 지금 보여 줄 대상(별 S 또는 짚은 점)의 좌표 ── */
+function subject(st){
+  if(st.probe.on){if(!st.probe.v)return null;const v=st.probe.v,q=toEqu(v,st.phi);return {v,...toHor(v),H:q.H,d:q.d,ra:((st.lst-q.H)%360+360)%360,pr:true};}
+  const Hh=st.lst-RA,v=ev(Hh,DEC,st.phi);return {v,...toHor(v),H:Hh,d:DEC,ra:RA,pr:false};}
+
+function buildDyn(st){
+  clear(G.gDyn);const g=G.gDyn,phi=st.phi,lst=st.lst,sub=subject(st);G.sub=sub;
+  const add=(pts,o)=>{if(pts.length>1)g.add(line(V0,pts,o));};
+  if(sub){const {A,h,H:Hh,d,ra}=sub,pr=sub.pr;
+    const hA=pr?1:st.hA,hH=pr?1:st.hH,qA=pr?1:st.qA,qD=pr?1:st.qD,oH=pr?1:st.hOp*st.sS,oQ=pr?st.eq:st.qOp*st.eq*st.sS;
+    if(oH>.01){
+      if(hA>.003){const p=arc(t=>hv(A*t*hA,0),Math.max(6,Math.round(A*hA/3)));add(p,{col:COL.hor,w:7,op:oH,depth:false});const c=cone(p[p.length-1],p[p.length-2],COL.hor,oH,false);if(c)g.add(c);}
+      if(hH>.003){const p=arc(t=>hv(A,h*t*hH),Math.max(6,Math.round(Math.abs(h)/3)));add(p,{col:COL.alt,w:7,op:oH});const c=cone(p[p.length-1],p[p.length-2],COL.alt,oH,true);if(c)g.add(c);
+        add(arc(t=>hv(A,90*t),40),{col:COL.hor,w:1.8,dash:[.04,.03],op:.6*oH*hH});}   // 별을 지나는 수직권(점선)
+    }
+    if(oQ>.01){
+      if(qA>.003){const p=arc(t=>ev(lst-ra*t*qA,0,phi),Math.max(6,Math.round(ra*qA/3)));add(p,{col:COL.equ,w:7,op:oQ});const c=cone(p[p.length-1],p[p.length-2],COL.equ,oQ,true);if(c)g.add(c);}
+      if(qD>.003){const p=arc(t=>ev(Hh,d*t*qD,phi),Math.max(6,Math.round(Math.abs(d)/3)));add(p,{col:COL.dec,w:7,op:oQ});const c=cone(p[p.length-1],p[p.length-2],COL.dec,oQ,true);if(c)g.add(c);
+        add(arc(t=>ev(Hh,90*t,phi),40),{col:COL.dec,w:1.8,dash:[.04,.03],op:.6*oQ*qD});}   // 별을 지나는 시간권(점선)
+    }
+    if(pr)g.add(dotM(sub.v,{r:.022,col:0xffffff}));
+    G.lbAz.p.set(...sc(hv(A/2,0),1.2));G.lbAz.set('방위각 '+fA(A));
+    G.lbAlt.p.set(...hv(A,h/2));G.lbAlt.set('고도 '+fA(h));
+    G.lbRa.p.set(...sc(ev(lst-ra*.25,0,phi),1.18));G.lbRa.set('적경 '+fRA(ra));
+    G.lbDec.p.set(...ev(Hh,d/2,phi));G.lbDec.set('적위 '+fDec(d));
+    G.lbPill.p.set(...sub.v);
+    const low=h<0?' <em>지평선 아래</em>':'';
+    G.lbPill.set(pr
+      ?'<span class="hor">① 방위각 <b>'+fA(A)+'</b></span><span class="alt">② 고도 <b>'+fA(h)+'</b></span>'+low+(st.eq>.5?'<br><span class="equ">적경 <b style="min-width:108px">'+fRA(ra)+'</b></span><span class="dec">적위 <b>'+fDec(d)+'</b></span>':'')
+      :'<span class="hor">방위각 <b>'+fA(A)+'</b></span><span class="alt">고도 <b>'+fA(h)+'</b></span>'+low+'<br><span class="equ">적경 <b>'+fRA(ra)+'</b></span><span class="dec">적위 <b>'+fDec(d)+'</b></span>');
+  }
+  if(st.pAlt>.003){const a=Math.abs(phi),A0=phi>=0?0:180;   // 천구의 북극(남반구에서는 남극)의 고도 = 위도
+    if(a>.3){const p=arc(t=>hv(A0,a*t*st.pAlt),Math.max(6,Math.round(a/3)));add(p,{col:COL.pole,w:7,op:1});const c=cone(p[p.length-1],p[p.length-2],COL.pole,1,true);if(c)g.add(c);}
+    G.lbPole.p.set(...hv(A0,a/2));G.lbPole.set((phi>=0?'':'남극 ')+'고도 '+fA(a)+' = 위도');}
+}
+
+const dropS=()=>{while(G.trS.children.length){const l=G.trS.children[0];l.geometry.dispose();G.trS.remove(l);}};   // 재료는 그대로 두고 모양만 버림
+function trails(st){const T=G.tr,tl=st.trail,on=Math.abs(tl)>.05&&st.blink>.02;
+  if(!on){if(T.on){T.on=false;T.ls.visible=false;dropS();}return;}
+  T.on=true;T.ls.visible=true;const SEG=T.SEG,N=G.stars.length,gain=Math.min(1,Math.abs(tl)/4)*st.blink*.5;
+  for(let j=0;j<=SEG;j++)basis(T.m[j],st.phi,st.lst-tl*j/SEG);
+  const P=T.pos,C=T.col,dim=lerp(.3,1,st.inside);let k=0;
+  const w=[...Array(SEG+1)].map((_,j)=>Math.pow(1-j/SEG,1.6)*gain);
+  for(let i=0;i<N;i++){const v=G.stars[i].v,b=G.stars[i].b;let px,py,pz;
+    for(let j=0;j<=SEG;j++){const e=T.m[j].elements,x=e[0]*v[0]+e[4]*v[1]+e[8]*v[2],y=e[1]*v[0]+e[5]*v[1]+e[9]*v[2],z=e[2]*v[0]+e[6]*v[1]+e[10]*v[2];
+      if(j){const c0=w[j-1]*b*(py<0?dim:1),c1=w[j]*b*(y<0?dim:1);
+        P[k]=px;P[k+1]=py;P[k+2]=pz;P[k+3]=x;P[k+4]=y;P[k+5]=z;C[k]=c0*.8;C[k+1]=c0*.88;C[k+2]=c0;C[k+3]=c1*.8;C[k+4]=c1*.88;C[k+5]=c1;k+=6;}
+      px=x;py=y;pz=z;}}
+  T.ls.geometry.attributes.position.needsUpdate=true;T.ls.geometry.attributes.color.needsUpdate=true;
+  /* 별 S의 꼬리(굵게) */
+  dropS();
+  if(st.sS>.05){const n=24,p=[],c=[];for(let j=0;j<=n;j++){const f=j/n,v=ev(st.lst-RA-tl*1.4*f,DEC,st.phi),a=Math.pow(1-f,1.4)*gain*1.7*st.sS*(v[1]<0?dim:1);p.push(...v);c.push(a,a*.8,a*.32);}
+    const g=new LineGeometry();g.setPositions(p);g.setColors(c);const l=new Line2(g,G.trSmat);l.renderOrder=2;G.trS.add(l);}
+}
+
+function placeLabels(list,cam,w,h,inside,occ){const placed=occ?occ.slice():[],v=new THREE.Vector3(),q=new THREE.Vector3();
+  for(const L of list){const o=L.op(),el=L.el;
+    const hide=()=>{if(L.shown){L.shown=false;el.style.display='none';}};
+    if(!(o>.02)){hide();continue;}
+    v.copy(L.p);if(L.par)v.applyMatrix4(L.par.matrix);
+    q.copy(v).applyMatrix4(cam.matrixWorldInverse);if(q.z>-.0015){hide();continue;}
+    v.project(cam);
+    const dx=L.dxIn==null?L.dx:lerp(L.dx,L.dxIn,inside),dy=L.dyIn==null?L.dy:lerp(L.dy,L.dyIn,inside);
+    if(!L.shown){L.shown=true;el.style.display='';L._m=true;}
+    if(L._m||!L.w){L.w=el.offsetWidth;L.h=el.offsetHeight;L._m=false;}
+    let x=(v.x*.5+.5)*w+dx-L.w*L.ax,y=(-v.y*.5+.5)*h+dy-L.h/2;
+    if(L.must){if(Math.abs(v.x)>1||Math.abs(v.y)>1){hide();continue;}x=clamp(x,10,w-L.w-10);y=clamp(y,10,h-L.h-10);}
+    const r=[x-5,y-3,x+L.w+5,y+L.h+3];
+    if(r[0]<4||r[1]<4||r[2]>w-4||r[3]>h-4){hide();continue;}
+    if(!L.must&&placed.some(p=>r[0]<p[2]&&r[2]>p[0]&&r[1]<p[3]&&r[3]>p[1])){hide();continue;}
+    placed.push(r);el.style.opacity=Math.min(1,o).toFixed(2);el.style.transform='translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px)';}
+}
+
+function frame(dt){
+  const st=G.st,c=G.c;if(!st||!c||!c.alive)return;G.last=performance.now();
+  if(st.play&&dt>0){st.lst+=dt*15;sync();}                    // 시간 흐르기: 1초에 1시간(15°)
+  /* 꼬리 길이: 도는 빠르기를 따라 늘고, 멈추면 사라짐 */
+  let dl=st.lst-st._pl;st._pl=st.lst;if(Math.abs(dl)>12||c.instant||dt<=0)dl=0;
+  if(c.instant)st.trail=0;else if(dt>0){st.trail+=(clamp(dl/dt*.9,-24,24)-st.trail)*Math.min(1,dt*5);if(Math.abs(st.trail)<.03)st.trail=0;}
+  /* 카메라 */
+  if(!G.camBusy)G.ctl.update();
+  const cam=G.cam,r=cam.position.distanceTo(G.ctl.target);
+  st.inside=1-sm((r-.1)/1.1);const ins=st.inside,out=1-ins;
+  cam.setViewOffset(W,H,-70*out,0,W,H);                         // 바깥 화면에서는 천구를 조금 오른쪽으로(왼쪽 카드 자리)
+  /* 틀 */
+  basis(G.gEq.matrix,st.phi,0);basis(G.gSky.matrix,st.phi,st.lst);G.gEq.matrixWorldNeedsUpdate=G.gSky.matrixWorldNeedsUpdate=true;
+  /* 보이기 */
+  setOp(G.shell,st.base*out);setOp(G.disc,st.base*out);setOp(G.gRing,st.base);setOp(G.gOut,st.base*out);
+  setOp(G.eqL,st.eq);setOp(G.axis,st.eq*out);setOp(G.grid,st.eq*out);setOp(G.ve,st.eq);setOp(G.dcirc,st.dc*st.sS);setOp(G.sDot,st.sS*st.blink);setOp(G.cl,st.blink);
+  G.starMat.uniforms.uOp.value=st.blink;G.starMat.uniforms.uDim.value=lerp(.32,1,ins);
+  const key=[Math.round(ins*4),st.phi,st.lst,st.hA,st.hH,st.hOp,st.qA,st.qD,st.qOp,st.eq,st.sS,st.pAlt,st.probe.on,st.probe.v&&st.probe.v.join()].join('|');
+  if(key!==G._key){G._key=key;buildDyn(st);}
+  trails(st);
+  /* 그리기: ① 큰 화면 ② 작은 창(관측자가 본 하늘) ③ 작은 지구 — 한 렌더러에서 영역을 나눠 그림 */
+  const R=G.R,pr=R.getPixelRatio();
+  R.setScissorTest(false);R.setViewport(0,0,W,H);R.setClearColor(0x000000,0);R.clear();
+  G.dome.visible=G.ground.visible=ins>.004;G.dome.material.uniforms.uOp.value=ins;G.ground.children[0].material.opacity=ins;
+  G.starMat.uniforms.uScale.value=pr*(1+.45*ins);
+  R.render(G.scene,cam);
+  const iv=st.inset*out,evv=st.earth*out;
+  if(iv>.02){
+    st.insAz+=short((st.insDir==='n'?0:180)-st.insAz)*(c.instant||dt<=0?1:Math.min(1,dt*3.5));
+    const d=hv(st.insAz,34);G.camI.position.set(0,0,0);G.camI.up.set(0,1,0);G.camI.lookAt(d[0],d[1],d[2]);G.camI.updateMatrixWorld();
+    R.setScissorTest(true);R.setViewport(IN.x,H-IN.y-IN.h,IN.w,IN.h);R.setScissor(IN.x,H-IN.y-IN.h,IN.w,IN.h);R.setClearColor(0x060a14,1);R.clear();
+    G.dome.visible=G.ground.visible=true;G.dome.material.uniforms.uOp.value=1;G.ground.children[0].material.opacity=1;
+    G.starMat.uniforms.uScale.value=pr*.95;G.starMat.uniforms.uDim.value=1;
+    V0.mats.forEach(m=>m.resolution.set(IN.w*1.5,IN.h*1.5));
+    R.render(G.scene,G.camI);
+    V0.mats.forEach(m=>m.resolution.set(W,H));R.setClearColor(0x000000,0);
+  }
+  if(evv>.02){
+    basis(G.gE.matrix,st.phi,0);G.gE.matrixWorldNeedsUpdate=true;setOp(G.gE,evv);setOp(G.eAll,evv);
+    const d=cam.position.clone().sub(G.ctl.target).normalize();G.camE.position.copy(d).multiplyScalar(7.2).add(new THREE.Vector3(0,.12,0));G.camE.up.set(0,1,0);G.camE.lookAt(0,.12,0);G.camE.updateMatrixWorld();
+    R.setScissorTest(true);R.setViewport(EA.x,H-EA.y-EA.h,EA.w,EA.h);R.setScissor(EA.x,H-EA.y-EA.h,EA.w,EA.h);R.clear(false,true,false);
+    R.render(G.sceneE,G.camE);
+  }
+  R.setScissorTest(false);
+  /* 이름표 */
+  const occ=[[50,34,420,128]];
+  if(iv>.02)occ.push([IN.x-8,IN.y-8,IN.x+IN.w+8,IN.y+IN.h+60]);
+  if(evv>.02)occ.push([EA.x,EA.y,EA.x+EA.w,EA.y+EA.h+50]);
+  if(G.card){const b=G.card;occ.push([b.offsetLeft-6,b.offsetTop-6,b.offsetLeft+b.offsetWidth+6,b.offsetTop+b.offsetHeight+6]);}
+  if(st.k>=6)occ.push([70,926,1850,1020]);
+  if(st.now)occ.push([1050,34,1870,130]);
+  placeLabels(G.sorted,cam,W,H,ins,occ);
+  const ie=G.insetEl,ee=G.earthEl;
+  if(ie){ie.style.display=iv>.02?'block':'none';ie.querySelector('.cover').style.opacity=(1-iv).toFixed(2);ie.querySelector('.cap').style.opacity=iv.toFixed(2);
+    if(iv>.02)placeLabels(G.ilabels,G.camI,IN.w,IN.h,1,null);}
+  if(ee){ee.style.display=evv>.02?'block':'none';ee.style.opacity=evv.toFixed(2);if(evv>.02)placeLabels(G.elabels,G.camE,EA.w,EA.h,1,null);}
+}
+
+/* ── 조작 막대·알림을 지금 상태에 맞춤 ── */
+function sync(){const c=G.c,st=G.st;if(!c||!c.alive)return;const iT=c.$('#cs-t'),iL=c.$('#cs-lat');if(!iT)return;
+  const t=(((st.lst-st.lst0)/15%24)+24)%24;iT.value=t;iL.value=st.phi;
+  c.$('#cs-tv').textContent='+'+(Math.round(t*4)/4)+' h';c.$('#cs-latv').textContent=fLat(st.phi);c.$('#cs-elat').textContent=fLatK(st.phi);}
+function ui(){const c=G.c,st=G.st;if(!c||!c.alive||!c.$('#cs-play'))return;
+  c.$('#cs-play').textContent=st.play?'❚❚':'▶';
+  c.$$('#cs-view button').forEach(b=>b.classList.toggle('on',b.dataset.v===st.view));
+  c.$$('#cs-idir button').forEach(b=>b.classList.toggle('on',b.dataset.d===st.insDir));
+  c.$('#cs-probe').classList.toggle('on',st.probe.on);c.$('#cs-now').classList.toggle('on',!!st.now);G.pad.classList.toggle('probe',st.probe.on);
+  const np=c.$('#cs-nowpill');np.style.display=st.now?'block':'none';if(st.now)np.innerHTML=st.now;
+  sync();}
+function nowSky(){const st=G.st,ms=Date.now(),l=lstAt(ms),su=sunAt(ms),sh=toHor(ev(l-su.ra,su.dec,PHI0)).h;
+  const d=new Date(ms),f=new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(d);
+  const lh=l/15,hh=Math.floor(lh),mm=Math.floor((lh-hh)*60);
+  st.play=false;st.phi=PHI0;st.lst=l;st.lst0=l;st._pl=l;
+  st.now='지금 서울 하늘 · '+f+' · 지방 항성시 '+hh+'h '+mm+'m'+(sh>0?'<small>지금은 낮 — 햇빛에 가려 보이지 않을 뿐, 별은 이 자리에 있음</small>':'');
+  ui();}
+
+const init=()=>({phi:PHI0,lst:LST0,lst0:LST0,_pl:LST0,play:false,view:'n',inside:1,k:0,base:0,cn:1,sS:0,hA:0,hH:0,hOp:1,eq:0,qA:0,qD:0,qOp:1,arcLab:1,pill:0,dc:0,blink:1,
+  inset:0,insDir:'n',insAz:0,earth:0,pAlt:0,probe:{on:false,v:null},now:null,trail:0});
+
+Deck.scene('cs',{steps:12,
+  enter(c){
+    if(!G)setup();
+    G.c=c;const st=c.st=G.st=init();G._key='';
+    c.$('#cs-v').append(G.R.domElement,G.pad,G.lay);
+    G.insetEl=c.$('#cs-inset');G.earthEl=c.$('#cs-earth');G.card=c.$('#cs-card');
+    c.$('#cs-inset .lay').append(G.ihost);c.$('#cs-earth .lay').append(G.ehost);
+    [G.labels,G.ilabels,G.elabels].forEach(a=>a.forEach(L=>{L.shown=false;L.el.style.display='none';}));
+    G.fit();G.camBusy=false;applyPose(poseOf('n'));ctlMode('n');
+    c.setCard=k=>c.$$('#cs-card .cb').forEach(b=>b.classList.toggle('on',b.dataset.k.split(' ').includes(String(k))));
+    c.setCard(0);
+    /* 조작 */
+    const stop=e=>e.stopPropagation();
+    c.$('#cs-bar').addEventListener('click',stop);c.$('#cs-inset .cap').addEventListener('click',stop);
+    c.$$('#cs-quiz .op').forEach(o=>o.addEventListener('click',e=>{e.stopPropagation();if(c.$('#cs-quiz').classList.contains('done'))return;c.$$('#cs-quiz .op').forEach(x=>x.classList.toggle('pick',x===o&&!o.classList.contains('pick')));}));
+    c.$('#cs-play').addEventListener('click',()=>{st.play=!st.play;ui();});
+    c.$('#cs-t').addEventListener('input',e=>{st.lst=st.lst0+15*(+e.target.value);sync();});
+    c.$('#cs-lat').addEventListener('input',e=>{st.phi=+e.target.value;sync();});
+    c.$$('#cs-view button').forEach(b=>b.addEventListener('click',()=>{if(!G.camBusy)toView(b.dataset.v,1500);}));
+    c.$$('#cs-idir button').forEach(b=>b.addEventListener('click',()=>{st.insDir=b.dataset.d;ui();}));
+    c.$('#cs-probe').addEventListener('click',()=>{st.probe.on=!st.probe.on;st.probe.v=null;ui();});
+    c.$('#cs-now').addEventListener('click',()=>{if(st.now){st.now=null;st.lst=LST0;st.lst0=LST0;st._pl=LST0;ui();}else nowSky();});
+    c.$('#cs-home').addEventListener('click',()=>{st.play=false;st.lst=LST0;st.lst0=LST0;st._pl=LST0;st.phi=PHI0;st.now=null;st.probe.on=false;st.probe.v=null;ui();if(!G.camBusy)toView('out',800);});
+    ui();frame(0);
+    c.loop((t,dt)=>frame(dt));
+  },
+  async go(c,k){
+    const st=c.st;st.k=k;st.play=false;c.setCard(k);ui();
+    const to=(ms,tg,o)=>{const s0={};for(const n in tg)s0[n]=st[n];return c.tween(ms,e=>{for(const n in tg)st[n]=s0[n]+(tg[n]-s0[n])*e;},o);};
+    const flow=(deg,ms)=>{const l0=st.lst;return c.tween(ms,e=>{st.lst=l0+deg*e;sync();},{ease:'inOut'});};
+    const jump=async l=>{await to(300,{blink:0});st.lst=l;st.lst0=LST0;st._pl=l;st.now=null;ui();await to(350,{blink:1});};   // 시각을 옮길 때는 잠깐 흐렸다가(별이 거꾸로 도는 모습을 보이지 않게)
+    if(k===1){await toView('out',3400,e=>{st.base=sm((e-.42)/.45);st.inset=sm((e-.62)/.38);});}                    // 뒤로 빠져나가며 천구가 드러남
+    else if(st.view!=='out'||G.camBusy)await toView('out',900);
+    if(k===2){await to(600,{sS:1,cn:0});await to(1100,{hA:1},{ease:'inOut'});await c.wait(250);await to(800,{hH:1},{ease:'inOut'});}
+    if(k===3){await to(800,{eq:1,hOp:.4});await to(1100,{qA:1},{ease:'inOut'});await c.wait(250);await to(800,{qD:1},{ease:'inOut'});}
+    if(k===4){await to(500,{hOp:1});}
+    if(k===5){st.insDir='s';ui();await to(400,{pill:1,arcLab:0});await flow(LST0+45-st.lst,4500);c.$('#cs-quiz').classList.add('done');}
+    if(k===6){await to(500,{dc:1});await flow(LST0+90-st.lst,4500);}
+    if(k===7){await jump(LST0);st.insDir='s';ui();await c.wait(400);await flow(90,7500);}
+    if(k===8){st.insDir='n';ui();await to(600,{hOp:0,qOp:0,pill:0});await jump(LST0);await to(900,{pAlt:1,earth:1},{ease:'inOut'});}
+    if(k===9){await to(2400,{phi:90},{ease:'inOut'});sync();await flow(45,3200);}
+    if(k===10){await to(3000,{phi:0},{ease:'inOut'});sync();await flow(45,3200);}
+    if(k===11){st.insDir='s';ui();await to(2600,{phi:-PHI0},{ease:'inOut'});sync();await flow(45,3600);}
+    if(k===12){await to(2200,{phi:PHI0},{ease:'inOut'});await jump(LST0);st.insDir='n';ui();await to(600,{hOp:1,qOp:1,pill:1,pAlt:0});
+      c.$('#cs-probe').classList.add('hint');c.$('#cs-now').classList.add('hint');}
+    sync();frame(0);
+  }});
+
+/* 확인용(헤드리스 검사에서 값을 읽음) */
+window.__cel={get G(){return G;},ev,toHor,toEqu,lstAt,jdOf,sunAt,S:(t,phi=PHI0)=>toHor(ev(LST0+15*t-RA,DEC,phi)),pole:(phi,s=1)=>toHor(ev(0,90*s,phi)),applyPose,mixPose,poseOf,curPose,frame};
+Deck.start();
+</script>
+</body>
+</html>

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>시험 — 푄(높새바람) 입체 (three.js) - 진광고등학교 교사 김덕영</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<!-- 3D 후보 시험 장(2026-11-17, 저장소 밖): 지구시스템과학 III.03 대기 안정도와 강수의 10장(푄 — 높새바람, s09)·11장(직접 해 보기 — 산을 넘는 공기, s10)을
+     입체 블록 하나로 다시 구성. 숫자·식·색 약속은 원래 장 그대로(지표 15 ℃·이슬점 11 ℃·산 1500 m, 건조 10·습윤 5·이슬점 2 ℃/km, 상승 응결 고도 125(T − Td) m, 동해가 오른쪽) -->
+<link rel="stylesheet" href="../../engine/deck.css">
+<link rel="stylesheet" href="three.css">
+<style>
+.slide{--dry:#C4391B;--wet:#0077B6;--dew:#8944AB;--warm:#C0392B;--cold:#0A6FB5;--gray:#6e6e73}
+.c-dry{color:var(--dry)} .c-wet{color:var(--wet)} .c-dew{color:var(--dew)} .c-warm{color:var(--warm)} .c-cold{color:var(--cold)}
+#fh-v{left:0;top:0;width:1920px;height:1080px;border-radius:0;z-index:1;background:linear-gradient(180deg,#5d9bdb 0%,#a9d0ee 55%,#dfeaf2 100%)}
+#fh .gl{background:rgba(255,255,255,.95);box-shadow:0 6px 24px rgba(20,40,70,.18);border-radius:20px;color:#1d1d1f}
+#fh .hd{left:50px;top:40px;right:auto;padding:14px 28px 16px;z-index:4}
+#fh .hd .eb{font-size:24px;margin-bottom:2px;color:#6e6e73}
+#fh .hd h2{font-size:44px;color:#1d1d1f;white-space:nowrap}
+/* 설명 카드(왼쪽) */
+#fh-cap{position:absolute;left:50px;top:186px;width:560px;padding:20px 28px 22px;z-index:4;font-size:30px;line-height:1.42;font-weight:500;letter-spacing:-.01em}
+#fh-cap .cp{display:none}
+#fh-cap .cp.on{display:block;animation:fhin .45s ease both}
+@keyframes fhin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+#fh-cap .tm{display:block;font-size:26px;font-weight:800;color:var(--act);margin-bottom:4px}
+#fh-cap b{font-weight:800}
+#fh-cap .sub{display:block;margin-top:10px;padding-top:10px;border-top:2px solid rgba(0,0,0,.08);font-size:28px;color:#3a3a3c}
+#fh-cap .late{opacity:0;transition:opacity .6s}
+#fh-cap .late.on{opacity:1}
+#fh-cap .nw{white-space:nowrap}
+#fh-cap .cmp{display:grid;grid-template-columns:auto 1fr auto;gap:2px 16px;align-items:baseline;font-variant-numeric:tabular-nums;margin:2px 0 4px}
+#fh-cap .cmp i{font-style:normal;font-size:26px;font-weight:600;color:#5c5c61}
+#fh-cap .cmp b{white-space:nowrap}
+#fh-cap .cmp em{font-style:normal;font-weight:800;white-space:nowrap;text-align:right}
+/* 높이–온도 그래프(왼쪽 아래) */
+#fh-gr{position:absolute;left:50px;top:612px;width:560px;height:376px;padding:12px 18px 8px;z-index:4}
+#fh-gr .st{font-size:26px;font-weight:800;line-height:34px}
+#fh-g{display:block}
+#fh-g text{font-size:24px;font-weight:600;fill:#3a3a3c;font-variant-numeric:tabular-nums}
+#fh-g .halo{paint-order:stroke;stroke:#fff;stroke-width:6px;stroke-linejoin:round}
+/* 모식 지도(오른쪽 위) */
+#fh-map{position:absolute;right:50px;top:40px;width:296px;padding:10px 12px 8px;z-index:4}
+#fh-map .st{font-size:24px;font-weight:800;line-height:32px;text-align:center}
+#fh-map svg{display:block}
+#fh-map text{font-size:24px;font-weight:800}
+#fh-map .ys{opacity:0;transition:opacity .9s} #fh-map.ys .ys{opacity:.5}
+#fh-map .wd{stroke:#48484a;stroke-width:3.5;transition:stroke-width .8s,stroke .8s} #fh-map.wd .wd{stroke:#1d1d1f;stroke-width:6.5}
+#fh-map .wdh{fill:#48484a} #fh-map.wd .wdh{fill:#1d1d1f}
+#fh-map .wdl{opacity:0;transition:opacity .8s} #fh-map.wd .wdl{opacity:1}
+/* 시점 단추(위 가운데) */
+#fh-view{left:auto;right:372px;top:40px;bottom:auto;height:76px;gap:8px;padding:0 12px;z-index:5}
+#fh-view .ia-btn{height:54px;font-size:26px;padding:0 16px}
+#fh-view .ia-btn.sub.on{background:#1d1d1f;color:#fff}
+/* 감률 표(오른쪽 아래, 1~5단계) */
+#fh-tb{position:absolute;left:640px;top:806px;width:1230px;z-index:4;padding:8px 10px 10px;opacity:0;visibility:hidden;transition:opacity .6s,visibility .6s}
+#fh-tb.on{opacity:1;visibility:visible}
+#fh-tb table{width:100%;border-collapse:collapse;table-layout:fixed}
+#fh-tb th,#fh-tb td{padding:5px 12px;font-size:28px;line-height:1.3;text-align:center;white-space:nowrap;transition:background .5s}
+#fh-tb thead th{font-size:26px;font-weight:600;color:#5c5c61}
+#fh-tb thead th b{font-size:28px;font-weight:800;color:#1d1d1f;margin-right:12px}
+#fh-tb tbody th{width:150px;text-align:left;padding-left:18px;font-weight:700}
+#fh-tb td{font-weight:800;font-variant-numeric:tabular-nums}
+#fh-tb td span{opacity:0;transition:opacity .6s}
+#fh-tb td small{font-size:24px;font-weight:700;margin-left:12px}
+#fh-tb.s1 .k1 span,#fh-tb.s2 .k2 span,#fh-tb.s3 .k3 span{opacity:1}
+#fh-tb .cur{background:rgba(0,102,204,.09)}
+#fh-tb tbody tr+tr th,#fh-tb tbody tr+tr td{border-top:2px solid rgba(0,0,0,.06)}
+/* 직접 해 보기(8단계): 조작 줄 + 결과 줄 */
+#fh-panel{left:640px;right:auto;top:800px;bottom:auto;width:1230px;height:80px;gap:14px;padding:0 16px;font-size:28px;z-index:5;justify-content:space-between;opacity:0;visibility:hidden;transition:opacity .6s,visibility .6s}
+#fh-panel.on{opacity:1;visibility:visible}
+#fh-panel input[type=range]{width:150px}
+#fh-panel .val{min-width:92px}
+#fh-panel label{width:330px}
+#fh-panel .ia-btn{height:56px;font-size:28px}
+#fh-res{position:absolute;left:640px;top:892px;width:1230px;height:108px;z-index:4;display:flex;align-items:center;gap:22px;padding:0 22px;opacity:0;visibility:hidden;transition:opacity .6s,visibility .6s}
+#fh-res.on{opacity:1;visibility:visible}
+#fh-res .stt{display:flex;flex-direction:column;line-height:1.25;white-space:nowrap}
+#fh-res .stt i{font-style:normal;font-size:24px;font-weight:600;color:#5c5c61}
+#fh-res .stt b{font-size:32px;font-weight:800;color:var(--wet);font-variant-numeric:tabular-nums}
+#fh-res table{border-collapse:collapse;font-variant-numeric:tabular-nums}
+#fh-res th,#fh-res td{font-size:26px;line-height:32px;padding:0 12px;white-space:nowrap;text-align:right}
+#fh-res th{font-weight:600;color:#5c5c61;font-size:24px}
+#fh-res td{font-weight:800}
+#fh-res td small{font-size:24px;font-weight:800;margin-left:8px}
+#fh-note{margin-left:auto;font-size:26px;font-weight:800;line-height:1.3;padding:10px 20px;border-radius:16px;color:#fff;background:#6e6e73;text-align:center;opacity:0;transition:opacity .6s}
+#fh-note.on{opacity:1}
+#fh .fine{left:50px;bottom:36px;padding:4px 16px;border-radius:12px;background:rgba(255,255,255,.9);color:#3a3a3c;z-index:4}
+/* 3D 안의 이름표 */
+.v3-t.tag{padding:8px 16px 9px;border-radius:14px;background:rgba(255,255,255,.96);box-shadow:0 4px 14px rgba(20,40,70,.25);min-width:228px;text-align:left}
+.v3-t.tag .tt{font-size:24px;font-weight:800;color:#1d1d1f;border-bottom:2px solid rgba(0,0,0,.1);margin-bottom:2px}
+.v3-t.tag .tt:empty{display:none}
+.v3-t.tag .rw{display:flex;justify-content:space-between;gap:20px;font-size:26px;line-height:1.28}
+.v3-t.tag .rw i{font-style:normal;font-weight:600;color:#5c5c61;opacity:1;font-size:24px}
+.v3-t.tag .rw b{font-weight:800;font-variant-numeric:tabular-nums}
+.v3-t.pt{width:36px;height:36px;border-radius:50%;background:#1d1d1f;color:#fff;padding:0;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800}
+.v3-t.geo{background:rgba(255,255,255,.88);color:#3a3a3c;font-weight:800}
+.v3-t.sea{background:rgba(255,255,255,.88);color:#2f6f9f;font-weight:800}
+.v3-t.mt{background:rgba(255,255,255,.88);color:#4d5a36;font-weight:800}
+.v3-t.lcl{background:rgba(255,255,255,.94);color:#005a8c;font-weight:800}
+.v3-t.wind{background:#1d1d1f;color:#fff;font-weight:800;font-size:28px;padding:4px 18px;border-radius:99px}
+.v3-t.hot{background:#C0392B;color:#fff;font-weight:800}
+.v3-t.tk{background:none;color:#5c4a2a;font-weight:700;font-size:24px;padding:0}
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+<section class="slide" id="fh" data-tile="light" data-title="푄 — 높새바람 (입체)" data-notes="three.js 3D 후보 시험 장. 지구시스템과학 III.03의 10장(푄 — 높새바람)과 11장(직접 해 보기 — 산을 넘는 공기)을 입체 블록 하나로 묶었습니다. 교과서 94쪽 본문·그림 III-13, 참고서 예: 지표 기온 15 ℃, 이슬점 11 ℃인 공기가 높이 1500 m 산을 넘음 → 상승 응결 고도 125 × (15 − 11) = 500 m. 방향은 원래 장과 같이 동쪽이 오른쪽(동해가 오른쪽, 영서가 왼쪽)이고 공기는 오른쪽에서 왼쪽으로 움직입니다. 끌면 돌려 보고 휠로 확대하며, 끌지 않고 그냥 누르면 다음 단계입니다. 처음 화면: 태백산맥을 닮게 그린 모식 블록(실제 지형이 아님)과 동해에서 불어오는 바람 줄. 블록 위의 검은 점선이 자를 자리입니다. 클릭 1 블록의 앞쪽 절반을 걷어 내고 옆에서 봅니다(단면) — A 동해, B 상승 응결 고도, C 정상, D 영서. 2 A → B: 산 사면을 타고 오르며 단열 팽창, 불포화라 기온 −10 ℃/km(건조 단열 감률), 이슬점 −2 ℃/km, 상대 습도 증가(15·11 ℃ → 10·10 ℃). 도착하면 하늘색 수평면(상승 응결 고도 500 m)이 나타납니다 — 구름 밑면이 산맥을 따라 같은 높이로 평평하다는 것을 면으로 보여 줍니다. 3 B → C: 포화, 기온·이슬점 모두 −5 ℃/km(기온은 습윤 단열 감률), 상대 습도 100 % 일정, 구름이 덩어리가 올라간 높이까지 자라고 비가 내림(정상 5 ℃). 4 C → D: 내려가며 단열 압축, 구름이 없으므로 기온 +10 ℃/km(건조 단열 감률), 이슬점 +2 ℃/km, 상대 습도 감소(영서 도착 20 ℃·8 ℃, 상대 습도 약 46 %). 5 넘기 전후 비교: 기온 5 ℃ 높아지고 이슬점 3 ℃ 낮아짐 = 고온 건조(푄). A 위에 출발 값 꼬리표가 다시 나와 도착 값과 나란히 봅니다. 6 위에서 내려다본 지도 시점: 구름은 바람받이(영동) 쪽에만 있고 영서 쪽 하늘은 비어 있습니다. 우리나라의 푄 = 높새바람, 동풍. 7 영서 지방(주황). 8 직접 해 보기: 막대로 지표 기온(10~30 ℃), 이슬점(0 ℃~기온), 산 높이(500~3000 m)를 정하고 [넘기기]를 누르면 약 5초 동안 산을 넘습니다. 막대를 움직이면 덩어리는 처음 자리로 돌아갑니다. 계산: 상승 응결 고도 H = 125(T − Td) m. 산 높이 M ≥ H이면 정상 기온 = T − 10H − 5(M − H)(km 단위), 정상 이슬점 = 정상 기온, 내려오며 기온 +10 ℃/km·이슬점 +2 ℃/km. M < H이면 구름이 생기지 않아 도착 값 = 출발 값. 확인 값: 15/11 ℃, 1500 m → 500 m, 도착 20 ℃·8 ℃ / 15/2 ℃, 1500 m → 1625 m, 구름 없음, 15·2 ℃. 해 볼 질문: 산이 높을수록, 처음 공기가 습할수록 도착한 공기는 얼마나 더 고온 건조해질까? 왼쪽 아래 그래프는 덩어리가 지나온 높이와 기온(주황)·이슬점(보라)을 그대로 따라 그립니다(구름 속은 파랑, 기온 = 이슬점) — 올라갈 때는 5 ℃/km로 덜 식고 내려올 때는 10 ℃/km로 더 데워져 같은 높이로 돌아와도 기온이 높다는 것이 한눈에 보입니다. 학생 질문 대비: 이슬점은 왜 낮아졌나요? → 비로 수증기가 빠져나가 수증기량이 줄었기 때문. 높새바람은 늦봄과 초여름 사이 오호츠크해 기단의 세력이 강해질 때 잘 나타나며 영서 지방의 농작물 피해·산불 위험과 이어집니다(교과서 보충·참고서). 단순화와 과장: 지형은 태백산맥을 닮게 그린 모식(자르는 선의 단면은 원래 장과 같은 코사인 모양, 정상 1500 m), 높이는 1 km를 1칸으로 그려 가로(동서 6.2칸)에 견주어 수십 배 과장, 구름 덩이·빗줄기·바람 줄·공기 덩어리 크기(올라가면 조금 커짐)는 모식, 응결한 물은 모두 비로 내린다고 봄, 습윤 단열 감률은 5 ℃/km로 일정, 상대 습도는 포화 수증기압(마그누스 식)으로 계산. 오른쪽 위 작은 지도는 원래 장의 경위도 모식 지도를 줄인 것이고 네모가 입체 블록의 자리(어림)입니다.">
+  <div class="v3" id="fh-v"></div>
+  <div class="hd gl" data-in><div class="eb"><b>시험</b>three.js 입체 · 상승 응결 고도</div><h2>푄 — 산을 넘으면 왜 고온 건조해질까?</h2></div>
+  <div class="gl" id="fh-cap" data-in="300">
+    <div class="cp" data-k="0"><span class="tm">동해에서 불어온 공기</span>기온 <b class="c-dry">15 ℃</b>, 이슬점 <b class="c-dew">11 ℃</b>인 불포화 공기가 높이 <b>1500 m</b>인 산을 넘는다<span class="sub">산을 넘은 공기의 기온과 이슬점은 어떻게 달라질까?</span></div>
+    <div class="cp" data-k="1"><span class="tm">잘라서 옆에서 보기 — 단면</span>산맥을 동서로 잘랐다 · <b>동해가 오른쪽</b><span class="sub"><b>A</b> 동해 → <b>B</b> → <b>C</b> 정상 → <b>D</b> 영서</span></div>
+    <div class="cp" data-k="2"><span class="tm">A → B · 오를 때 · 불포화</span>단열 팽창 → 기온이 <b class="c-dry">건조 단열 감률</b>로 내려가 이슬점과 가까워진다<span class="sub late">500 m에서 기온 = 이슬점 = 10 ℃<br><b class="c-wet">상승 응결 고도</b> <span class="nw">125 × (15 − 11) = <b>500 m</b></span></span></div>
+    <div class="cp" data-k="3"><span class="tm">B → C · 오를 때 · 포화</span>수증기가 응결 → <b class="c-wet">구름</b>이 생기고 <b class="c-wet">비</b>가 내린다<br>응결열 때문에 기온이 <b class="c-wet">습윤 단열 감률</b>로 덜 내려간다<span class="sub late">정상(1500 m): 기온 = 이슬점 = <b>5 ℃</b></span></div>
+    <div class="cp" data-k="4"><span class="tm">C → D · 내려올 때 · 불포화</span>단열 압축 → 구름이 없으므로 기온이 <b class="c-dry">건조 단열 감률</b>로 올라간다<span class="sub late">영서 도착: 기온 <b class="c-dry">20 ℃</b> · 이슬점 <b class="c-dew">8 ℃</b></span></div>
+    <div class="cp" data-k="5"><span class="tm">넘기 전 → 넘은 뒤</span>
+      <div class="cmp"><i>기온</i><b>15 ℃ → 20 ℃</b><em class="c-warm">↑ 5 ℃</em><i>이슬점</i><b>11 ℃ → 8 ℃</b><em class="c-cold">↓ 3 ℃</em><i>상대 습도</i><b>77 % → 46 %</b><em class="c-cold">↓</em></div>
+      <span class="sub"><b>푄</b>: 불포화 상태의 공기 덩어리가 높은 산을 넘어오면서 <b class="c-warm">고온 건조</b>해지는 현상</span></div>
+    <div class="cp" data-k="6"><span class="tm">위에서 보면 — 지도</span><b>높새바람</b>: 우리나라에서 <b>동풍</b>이 불 때 태백산맥을 넘어 부는 고온 건조한 바람<span class="sub">구름과 비는 바람받이(영동) 쪽에만</span></div>
+    <div class="cp" data-k="7"><span class="tm">위에서 보면 — 지도</span><b>높새바람</b>: 우리나라에서 <b>동풍</b>이 불 때 태백산맥을 넘어 <b class="c-warm">영서</b> 지방으로 부는 고온 건조한 바람<span class="sub">늦봄~초여름 · 농작물 피해 · 산불 위험</span></div>
+    <div class="cp" data-k="8"><span class="tm">직접 해 보기 — 산을 넘는 공기</span>기온·이슬점·산 높이를 정하고 <b>[넘기기]</b><span class="sub">산이 높을수록, 처음 공기가 습할수록 도착한 공기는?</span></div>
+  </div>
+  <div class="gl" id="fh-gr" data-in="350"><div class="st">높이에 따른 기온 · 이슬점</div><svg id="fh-g" viewBox="0 0 524 320" width="524" height="320"></svg></div>
+  <div class="gl" id="fh-map" data-in="400"><div class="st">입체 그림의 자리</div><svg id="fh-ms" viewBox="0 0 272 318" width="272" height="318"></svg></div>
+  <div class="ia-panel gl" id="fh-view" data-in="400">
+    <button class="ia-btn sub on" data-m="3d">입체</button><button class="ia-btn sub" data-m="top">위에서(지도)</button><button class="ia-btn sub" data-m="sec">옆에서(단면)</button>
+  </div>
+  <div class="gl" id="fh-tb">
+    <table>
+      <thead><tr><th style="width:150px"></th><th class="k1"><b>A → B</b>오를 때 · 불포화</th><th class="k2"><b>B → C</b>오를 때 · 포화</th><th class="k3"><b>C → D</b>내려올 때 · 불포화</th></tr></thead>
+      <tbody>
+        <tr><th>기온</th><td class="k1"><span class="c-dry">−10 ℃/km<small>건조 단열 감률</small></span></td><td class="k2"><span class="c-wet">−5 ℃/km<small>습윤 단열 감률</small></span></td><td class="k3"><span class="c-dry">+10 ℃/km<small>건조 단열 감률</small></span></td></tr>
+        <tr><th class="c-dew">이슬점</th><td class="k1"><span class="c-dew">−2 ℃/km</span></td><td class="k2"><span class="c-dew">−5 ℃/km</span></td><td class="k3"><span class="c-dew">+2 ℃/km</span></td></tr>
+        <tr><th>상대 습도</th><td class="k1"><span>증가</span></td><td class="k2"><span>일정(100 %)</span></td><td class="k3"><span>감소</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="ia-panel gl" id="fh-panel">
+    <label><span>기온</span><input id="fh-T" type="range" min="10" max="30" step="1" value="15"><span class="val" id="fh-Tv">15 ℃</span></label>
+    <label><span>이슬점</span><input id="fh-D" type="range" min="0" max="30" step="1" value="11"><span class="val" id="fh-Dv">11 ℃</span></label>
+    <label><span>산 높이</span><input id="fh-M" type="range" min="500" max="3000" step="100" value="1500"><span class="val" id="fh-Mv">1500 m</span></label>
+    <button class="ia-btn" id="fh-go" type="button">넘기기</button>
+  </div>
+  <div class="gl" id="fh-res">
+    <div class="stt"><i>상승 응결 고도</i><b id="fh-H">500 m</b></div>
+    <table>
+      <tr><th></th><th>기온</th><th>이슬점</th><th>상대 습도</th></tr>
+      <tr><th>출발(A)</th><td class="c-dry" id="fh-aT">15 ℃</td><td class="c-dew" id="fh-aD">11 ℃</td><td id="fh-aR">77 %</td></tr>
+      <tr><th>도착(D)</th><td class="c-dry" id="fh-bT">?</td><td class="c-dew" id="fh-bD">?</td><td id="fh-bR">?</td></tr>
+    </table>
+    <div id="fh-note"></div>
+  </div>
+  <div class="fine">교과서 그림 III-13 · 참고서 예: 지표 15 ℃, 이슬점 11 ℃, 산 높이 1500 m · 태백산맥을 닮게 그린 모식 지형 · 높이·구름은 크게 과장 · 응결한 물은 모두 비로 내린다고 봄</div>
+</section>
+
+</div></div>
+
+<!-- 하단 컨트롤 -->
+<div id="progress"><i></i></div>
+<div id="stepdots"></div>
+<script src="../../engine/deck.js"></script>
+<script type="importmap">{"imports":{"three":"../../engine/vendor/three@0.160.0/build/three.module.min.js","three/addons/":"../../engine/vendor/three@0.160.0/examples/jsm/"}}</script>
+<script type="module">
+import {THREE,makeView,line,segs,dot,label,fade,clear,arrow,clamp,lerp,PRINT,STILL} from '../../engine/three-kit.js';
+
+/* ════════ 과학(원래 장 s09·s10과 같은 식) ════════
+   건조 단열 감률 10, 습윤 단열 감률 5, 이슬점 감률 2 ℃/km · 상승 응결 고도 H = (T − Td)/8 km = 125(T − Td) m
+   오를 때: h ≤ H이면 T − 10h, Td − 2h / h > H이면 T = Td = (T − 10H) − 5(h − H) · 내려올 때: 정상 값에서 기온 +10, 이슬점 +2 ℃/km
+   M < H이면 구름이 없어 도착 값 = 출발 값. 상대 습도 = e_s(Td)/e_s(T) (마그누스 식 — 원래 장 esW와 같은 계수) */
+const DEF={T:15,D:11,M:1.5};
+const esW=T=>6.112*Math.exp(17.62*T/(243.12+T)),rhOf=(T,Td)=>clamp(esW(Td)/esW(T)*100,0,100);
+const mkP=(T,D,M)=>({T,D,M,H:.125*(T-D)});
+/* 3D 좌표: X 동쪽(+) — 동해가 오른쪽, Z 남쪽(+), Y 높이. 1 km = KY 칸(크게 과장). 블록 X −3.2~3.0, Z −1.6~1.6 */
+const KY=1,XW=-3.2,XE=3,ZN=-1.6,ZS=1.6,BASE=-.3;
+const xL0=-1.5,xC0=.55,xR0=1.85,xA=2.4,xD=-2.3,R0=.11;
+/* 자르는 선(z = 0)의 단면: 원래 장과 같은 코사인 모양, 높이 비 0~1(× 산 높이) */
+const prof=(x,xL,xC,xR)=>x<=xL||x>=xR?0:(x<=xC?(1-Math.cos(Math.PI*(x-xL)/(xC-xL)))/2:(1+Math.cos(Math.PI*(x-xC)/(xR-xC)))/2);
+const hs=x=>prof(x,xL0,xC0,xR0);
+const xsW=f=>xC0+(xR0-xC0)*Math.acos(clamp(2*f-1,-1,1))/Math.PI;     // 바람받이(동쪽) 사면에서 높이 비 f인 곳
+const xsLee=f=>xL0+(xC0-xL0)*Math.acos(clamp(1-2*f,-1,1))/Math.PI;   // 바람그늘(서쪽) 사면
+function phys(x,p){
+  const h=hs(x)*p.M,cl=p.H<=p.M+1e-9;
+  if(x>=xC0){
+    if(!cl||h<=p.H)return {h,T:p.T-10*h,Td:p.D-2*h,sat:cl&&h>=p.H-1e-6};
+    const T=p.T-10*p.H-5*(h-p.H);return {h,T,Td:T,sat:true};
+  }
+  const Tt=cl?p.T-10*p.H-5*(p.M-p.H):p.T-10*p.M,Dt=cl?Tt:p.D-2*p.M,d=p.M-h;
+  return {h,T:Tt+10*d,Td:Dt+2*d,sat:false};
+}
+const sgn=v=>String(v).replace('-','−');
+function fN(v,d=0){const p=10**d;let r=Math.round(v*p)/p;if(Math.abs(r)<1e-9)r=0;return sgn(r.toFixed(d));}
+const smart=v=>fN(v,Math.abs(v-Math.round(v))<.05?0:1);
+const io=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,eo=t=>1-Math.pow(1-t,3);
+const rnd=(()=>{let s=20261117;return()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};})();
+
+/* ════════ 모식 지형: 자르는 선(z = 0)에서는 위 단면과 꼭 같고, 남북으로 가면 능선이 휘고 봉우리·골이 생김 ════════ */
+const wz=z=>1-Math.exp(-((z/.4)**2));
+const xoff=z=>.22*(Math.sin(1.15*z+.5)-Math.sin(.5));                 // 능선의 동서 위치(북쪽으로 갈수록 서쪽)
+const crest=z=>1-wz(z)*(.14+.09*Math.sin(3.3*z+1.2)+.05*Math.sin(7.1*z+.3));
+function unit(x,z){const xx=x-xoff(z),u=prof(xx,xL0,xC0,xR0)*crest(z);if(u<=0)return 0;
+  return Math.max(0,u+wz(z)*u*(1-u*u*u)*(.10*Math.sin(z*8.3+xx*1.7)+.06*Math.sin(z*15.1-xx*3.1+1)));}
+const coast=z=>xR0+xoff(z)+.17+.05*Math.sin(5*z+1)*wz(z);
+function Ys(x,z,M){const cz=coast(z);return x>cz?-Math.min(.16,(x-cz)*.45):unit(x,z)*M*KY;}
+const xB=p=>xsW(p.H/p.M);
+
+/* 카메라(시점마다, 산이 높으면 물러남) */
+const OFFX=305,OFFY=-10;
+const camOf=(mode,M)=>{const e=Math.max(0,M-1.5);
+  if(mode==='top')return {pos:[-.1,12.8,-.98],target:[-.1,0,-1]};
+  if(mode==='sec')return {pos:[-.1,1.6+e*.5,10.5+e*5.5],target:[-.1,.88+e*.28,0]};
+  return {pos:[.5,4.6+e*.8,10.4+e*3],target:[-.1,.8+e*.4,.1]};};
+
+let V=null,cur=null;
+const NX=124,NZ=64,NXW=124,CAP=1000,NW=54,NR=96;
+const clipZ=new THREE.Plane(new THREE.Vector3(0,0,-1),ZS+.01),clipY=new THREE.Plane(new THREE.Vector3(0,1,0),0);
+const col=h=>new THREE.Color(h);
+function makeWall(){const n=NXW*18,g=new THREE.BufferGeometry();
+  g.setAttribute('position',new THREE.BufferAttribute(new Float32Array(n*3),3));g.setAttribute('color',new THREE.BufferAttribute(new Float32Array(n*3),3));
+  const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({vertexColors:true,side:THREE.DoubleSide}));m.frustumCulled=false;return m;}
+const cEarth=col(0xddd0b0),cDeep=col(0xcbbd98),cWater=col(0x8cc2e6);
+function setWall(mesh,z,M){
+  const P=mesh.geometry.attributes.position.array,Cc=mesh.geometry.attributes.color.array;let o=0;
+  const put=(x,y,c)=>{P[o]=x;P[o+1]=y;P[o+2]=z;Cc[o]=c.r;Cc[o+1]=c.g;Cc[o+2]=c.b;o+=3;};
+  const quad=(x0,b0,t0,x1,b1,t1,c)=>{put(x0,b0,c);put(x1,b1,c);put(x1,t1,c);put(x0,b0,c);put(x1,t1,c);put(x0,t0,c);};
+  for(let i=0;i<NXW;i++){const x0=XW+(XE-XW)*i/NXW,x1=XW+(XE-XW)*(i+1)/NXW,a0=Ys(x0,z,M),a1=Ys(x1,z,M);
+    quad(x0,BASE,Math.min(a0,0),x1,BASE,Math.min(a1,0),cDeep);quad(x0,Math.min(a0,0),0,x1,Math.min(a1,0),0,cWater);quad(x0,0,Math.max(a0,0),x1,0,Math.max(a1,0),cEarth);}
+  mesh.geometry.attributes.position.needsUpdate=true;mesh.geometry.attributes.color.needsUpdate=true;
+}
+function setup(){
+  V=makeView({w:1920,h:1080,fov:30,pos:camOf('3d',1.5).pos,target:camOf('3d',1.5).target,minD:4,maxD:24,key:'fh'});
+  V.camera.setViewOffset(1920,1080,-OFFX,OFFY,1920,1080);
+  V.ctl.maxPolarAngle=Math.PI*.495;V.R.localClippingEnabled=true;
+  const S=V.scene;
+  S.add(new THREE.AmbientLight(0xffffff,1.15));const dl=new THREE.DirectionalLight(0xffffff,1.5);dl.position.set(3,6,5);S.add(dl);
+  /* 하늘(둥근 하늘 그러데이션) */
+  const sky=new THREE.Mesh(new THREE.SphereGeometry(70,32,24),new THREE.ShaderMaterial({side:THREE.BackSide,depthWrite:false,depthTest:false,
+    uniforms:{top:{value:col(0x5b98d8)},mid:{value:col(0xa9cfee)},hor:{value:col(0xdcebf6)},low:{value:col(0xe8f0f5)}},
+    vertexShader:'varying vec3 d;void main(){d=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+    fragmentShader:'uniform vec3 top,mid,hor,low;varying vec3 d;void main(){float e=normalize(d).y;vec3 c=mix(low,hor,smoothstep(-.95,-.5,e));c=mix(c,mid,smoothstep(-.5,-.12,e));c=mix(c,top,smoothstep(-.12,.4,e));gl_FragColor=vec4(c,1.);\n#include <colorspace_fragment>\n}'}));
+  sky.renderOrder=-10;sky.frustumCulled=false;S.add(sky);
+  /* 지형 */
+  const g=new THREE.PlaneGeometry(XE-XW,ZS-ZN,NX,NZ);g.rotateX(-Math.PI/2);g.translate((XE+XW)/2,0,0);
+  {const p=g.attributes.position,cs=[],t=new THREE.Color(),c0=col(0xcddba8),c1=col(0xa3bb7e),c2=col(0x8c9a70),c3=col(0xa59c84),sand=col(0xe3d8b4),bed=col(0xc9cdb8);
+    for(let n=0;n<p.count;n++){const x=p.getX(n),z=p.getZ(n),cz=coast(z),u=unit(x,z);
+      if(x>cz)t.lerpColors(sand,bed,clamp((x-cz)/.3,0,1));
+      else if(u<.5)t.lerpColors(c0,c1,clamp(u/.5,0,1));else if(u<.8)t.lerpColors(c1,c2,(u-.5)/.3);else t.lerpColors(c2,c3,clamp((u-.8)/.2,0,1));
+      if(x<=cz&&x>cz-.12)t.lerp(sand,1-(cz-x)/.12);
+      cs.push(t.r,t.g,t.b);}
+    g.setAttribute('color',new THREE.Float32BufferAttribute(cs,3));}
+  V.ter=new THREE.Mesh(g,new THREE.MeshStandardMaterial({vertexColors:true,roughness:1,metalness:0,clippingPlanes:[clipZ]}));S.add(V.ter);
+  V.sea=new THREE.Mesh(new THREE.PlaneGeometry(XE-1.6,ZS-ZN),new THREE.MeshStandardMaterial({color:0x79b6df,roughness:.55,metalness:0,transparent:true,opacity:.86,clippingPlanes:[clipZ]}));
+  V.sea.rotation.x=-Math.PI/2;V.sea.position.set((XE+1.6)/2,0,0);V.sea.renderOrder=1;S.add(V.sea);
+  /* 블록의 옆면: 앞(자른 면 — 움직임)·뒤(북쪽)·서·동 */
+  V.front=makeWall();V.back=makeWall();S.add(V.front,V.back);
+  {const gg=new THREE.BufferGeometry(),P=[],Cc=[];
+    const quad=(x,y0,y1,c)=>{[[ZN,y0],[ZS,y0],[ZS,y1],[ZN,y0],[ZS,y1],[ZN,y1]].forEach(([z,y])=>{P.push(x,y,z);Cc.push(c.r,c.g,c.b);});};
+    quad(XW,BASE,0,cDeep);quad(XE,BASE,-.16,cDeep);quad(XE,-.16,0,cWater);
+    gg.setAttribute('position',new THREE.Float32BufferAttribute(P,3));gg.setAttribute('color',new THREE.Float32BufferAttribute(Cc,3));
+    S.add(new THREE.Mesh(gg,new THREE.MeshBasicMaterial({vertexColors:true,side:THREE.DoubleSide,clippingPlanes:[clipZ]})));}
+  /* 상승 응결 고도 면(바람받이 쪽 하늘에만) */
+  V.gLcl=new THREE.Group();
+  V.lclM=new THREE.Mesh(new THREE.PlaneGeometry(XE-(xC0-.5),ZS-ZN),new THREE.MeshBasicMaterial({color:0x1f8fd6,transparent:true,opacity:.2,side:THREE.DoubleSide,depthWrite:false,clippingPlanes:[clipZ]}));
+  V.lclM.rotation.x=-Math.PI/2;V.lclM.position.set((XE+xC0-.5)/2,0,0);V.lclM.renderOrder=3;V.lclM.userData.base=.2;V.gLcl.add(V.lclM);S.add(V.gLcl);
+  /* 구름(공 여러 개 — 밑면은 상승 응결 고도에서 잘라 평평하게) */
+  V.cloud=new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1,2),new THREE.MeshLambertMaterial({color:0xffffff,emissive:0x8a97a8,emissiveIntensity:.62,clippingPlanes:[clipY]}),CAP);
+  V.cloud.count=0;V.cloud.frustumCulled=false;V.cloud.renderOrder=4;S.add(V.cloud);V.puffs=[];
+  /* 비·바람 줄 */
+  V.rain=segs(V,[...Array(NR)].map(()=>[[0,-9,0],[0,-9,0]]),{col:0x0077B6,w:2.6,op:.75,order:6});V.rain.frustumCulled=false;S.add(V.rain);V.drops=[];
+  V.wind=segs(V,[...Array(NW)].map(()=>[[0,-9,0],[0,-9,0]]),{col:0x2f4b63,w:3,op:.4,order:7});V.wind.frustumCulled=false;S.add(V.wind);
+  V.wp=[...Array(NW)].map((_,i)=>({x:lerp(XW,XE,rnd()),z:lerp(ZN+.12,ZS-.12,(i+.5)/NW)}));
+  /* 공기 덩어리 */
+  V.par=new THREE.Mesh(new THREE.SphereGeometry(1,40,24),new THREE.MeshStandardMaterial({color:0xffc89a,roughness:.6,transparent:true,depthTest:false}));V.par.renderOrder=21;
+  V.parO=new THREE.Mesh(new THREE.SphereGeometry(1,40,24),new THREE.MeshBasicMaterial({color:0xC4391B,side:THREE.BackSide,transparent:true,depthTest:false}));V.parO.renderOrder=20;
+  S.add(V.parO,V.par);
+  const tagHtml='<div class="tt"></div><div class="rw"><i>높이</i><b></b></div><div class="rw"><i>기온</i><b></b></div><div class="rw"><i>이슬점</i><b></b></div><div class="rw"><i>상대 습도</i><b></b></div>';
+  V.tag=label(tagHtml,[0,0,0],{cls:'tag',cx:.5,cy:1,dy:-10});V.dep=label(tagHtml,[0,0,0],{cls:'tag',cx:.5,cy:1,dy:-10});
+  V.gDep=new THREE.Group();V.gDep.add(V.dep);S.add(V.tag,V.gDep);
+  /* 묶음: 자른 면의 선, 이름표들, 영서 강조, 동풍 */
+  V.gCut=new THREE.Group();V.gCutL=new THREE.Group();V.gTrack=new THREE.Group();V.gMap=new THREE.Group();V.gSec=new THREE.Group();V.gPts=new THREE.Group();V.gLclLab=new THREE.Group();V.gYs=new THREE.Group();V.gWd=new THREE.Group();
+  S.add(V.gCut,V.gCutL,V.gTrack,V.gMap,V.gSec,V.gPts,V.gLclLab,V.gYs,V.gWd);
+  {const gg=new THREE.BufferGeometry(),P=[],I=[];for(let j=0;j<=32;j++){const z=lerp(ZN,ZS,j/32);P.push(XW,.008,z,xL0+xoff(z)+.12,.008,z);if(j<32){const a=j*2;I.push(a,a+2,a+1,a+1,a+2,a+3);}}
+    gg.setAttribute('position',new THREE.Float32BufferAttribute(P,3));gg.setIndex(I);
+    const m=new THREE.Mesh(gg,new THREE.MeshBasicMaterial({color:0xFF6A3D,transparent:true,opacity:.42,side:THREE.DoubleSide,depthWrite:false,clippingPlanes:[clipZ]}));m.userData.base=.42;m.renderOrder=2;V.gYs.add(m);
+    V.gYs.add(label('영서 · 고온 건조',[-2.45,0,-.7],{cls:'hot b'}));}
+  V.gWd.add(arrow([2.95,.34,.5],[1.95,.34,.5],{col:0x1d1d1f,head:.26,hr:.11,sr:.042}));V.gWd.add(label('동풍',[2.5,.34,.5],{cls:'wind',dy:-44}));
+  V.lastC=null;V.lastM=null;
+}
+/* 값(기온·이슬점·산 높이)이 바뀌면: 지형 높이·옆면·구름 덩이·빗줄기·이름표를 다시 놓음 */
+function build(st){
+  const p=st.p,M=p.M,cl=p.H<=M+1e-9,yb=p.H*KY;
+  if(V.lastM!==M){const pos=V.ter.geometry.attributes.position;for(let n=0;n<pos.count;n++)pos.setY(n,Ys(pos.getX(n),pos.getZ(n),M));pos.needsUpdate=true;V.ter.geometry.computeVertexNormals();setWall(V.back,ZN,M);V.lastM=M;V.lastC=null;}
+  V.lclM.position.y=yb;clipY.constant=-yb;
+  /* 구름 덩이: 바람받이 사면에서 바깥(동쪽)으로, 상승 응결 고도 ~ 그 줄의 능선 높이 */
+  const P=V.puffs=[];
+  if(cl)for(let z=ZN+.1;z<=ZS-.08;z+=.17){
+    const top=crest(z)*M*KY;if(top<=yb+.02)continue;
+    const sp=Math.max(.15,(top-yb)/6);
+    for(let y=yb+sp*.08;y<=top+sp*.25&&P.length<CAP;y+=sp){const xs=xoff(z)+xsW(clamp(y/top,0,1));
+      for(let dx=-.04;dx<=.62&&P.length<CAP;dx+=sp*1.05)P.push({x:xs+dx+(rnd()-.5)*.07,y:y+(rnd()-.5)*.04,z:z+(rnd()-.5)*.1,r:sp*(.78+.5*rnd()),hk:y/KY,a:0});}}
+  /* 빗줄기: 구름 밑면 아래, 바람받이 사면 위 */
+  V.drops=[];
+  if(cl)for(let i=0;i<NR;i++){const z=lerp(ZN+.08,ZS-.08,(i+rnd())/NR),top=crest(z)*M*KY;if(top<=yb+.02){V.drops.push(null);continue;}
+    const x=xoff(z)+xsW(clamp(yb/top,0,1))+.04+.56*rnd(),yg=Math.max(0,Ys(x,z,M));V.drops.push(yb-yg>.06?{x,z,yg,L:yb-yg,ph:rnd()}:null);}
+  /* 이름표 */
+  [V.gMap,V.gSec,V.gPts,V.gLclLab,V.gTrack].forEach(clear);
+  V.gMap.add(label('동해',[2.62,0,1.15],{cls:'sea b'}),label('영동',[coast(1.3)-.1,0,1.3],{cls:'geo sm'}),label('태백산맥',[xC0+xoff(.95),crest(.95)*M*KY,.95],{cls:'mt b',dy:-26}),label('영서',[-2.45,0,1.15],{cls:'geo b'}));
+  V.gSec.add(label('동해',[2.78,-.15,0],{cls:'sea sm'}),label('영동',[1.93,-.15,0],{cls:'geo sm'}),label('영서',[-2.85,-.15,0],{cls:'geo sm'}));
+  V.gSec.add(label((st.free?'산 높이 ':'태백산맥 ')+Math.round(M*1000)+' m',[xC0-.28,Math.min(.15,M*KY*.3),0],{cls:'mt sm'}));
+  const tks=[];
+  for(let h=.5;h<M-.2;h+=.5){if(cl&&Math.abs(h-p.H)<.2)continue;const f=h/M,x0=xsLee(f),x1=xsW(f);if(x1-x0<.75)continue;
+    tks.push([[x0,h*KY,.004],[x1,h*KY,.004]]);V.gSec.add(label(Math.round(h*1000)+' m',[x0+.2,h*KY,0],{cls:'tk',cx:0,dy:-18}));}
+  if(tks.length)V.gSec.add(segs(V,tks,{col:0xffffff,w:2,op:.75,order:9,depth:false}));
+  V.gPts.add(label('A',[xA,-.15,0],{cls:'pt'}),label('D',[xD,-.15,0],{cls:'pt'}),label('C',[xC0,M*KY>=.5?M*KY-.17:M*KY*.5,0],{cls:'pt'}));
+  if(cl&&p.H/M<.9&&p.H>.12)V.gPts.add(label('B',[xB(p)-.17,yb,0],{cls:'pt'}));
+  if(cl&&p.H<M-1e-6&&xsW(p.H/M)-xsLee(p.H/M)>1.95&&p.H>.25)V.gLclLab.add(label('상승 응결 고도 '+Math.round(p.H*1000)+' m',[xB(p)-.36,yb,0],{cls:'lcl',cx:1}));
+  else V.gLclLab.add(label('상승 응결 고도 '+Math.round(p.H*1000)+' m',[XE-.05,yb,0],{cls:'lcl',cx:1,cy:1,dy:-8}));
+  V.gTrack.add(line(V,[...Array(125)].map((_,i)=>{const x=lerp(XW,XE,i/124);return [x,Math.max(0,Ys(x,0,M))+.012,0];}),{col:0x1d1d1f,w:3,dash:[.09,.06],op:.85,order:8}));
+  V.dep.position.set(xA,2*R0+.05,0);
+  st.gdirty=true;
+}
+/* 자른 면의 테두리와 상승 응결 고도 선(자르는 자리 z = c가 바뀔 때마다) */
+function cutLines(c,st){
+  const p=st.p,M=p.M;clear(V.gCut);clear(V.gCutL);
+  const cz=coast(c),land=[],seaL=[[cz,.001,c+.004],[XE,.001,c+.004]];
+  for(let i=0;i<=NXW;i++){const x=lerp(XW,cz,i/NXW);land.push([x,Math.max(0,Ys(x,c,M)),c+.004]);}
+  V.gCut.add(line(V,land,{col:0x6f8452,w:3.2,order:9}),line(V,seaL,{col:0x4f93c4,w:3.2,order:9}));
+  if(p.H<=M+1e-9){const yb=p.H*KY,x1=xoff(c)+xsW(clamp(yb/Math.max(1e-6,crest(c)*M*KY),0,1));
+    V.gCutL.add(line(V,[[x1,yb,c+.006],[XE,yb,c+.006]],{col:0x0077B6,w:3.4,dash:[.1,.08],order:10,depth:false}));
+    V.gCutL.add(line(V,[[xC0-.5,yb,c+.006],[x1,yb,c+.006]],{col:0x0077B6,w:2.2,dash:[.06,.07],op:.45,order:10,depth:false}));}
+  else{const yb=p.H*KY;V.gCutL.add(line(V,[[xC0-.5,yb,c+.006],[XE,yb,c+.006]],{col:0x0077B6,w:3.4,dash:[.1,.08],order:10}));}
+}
+const m4=new THREE.Matrix4(),q0=new THREE.Quaternion(),v3=new THREE.Vector3(),s3=new THREE.Vector3(),cA=col(0xffc89a),cB=col(0xbfe3fb),cT=new THREE.Color();
+const setRows=(lab,tt,rows)=>{const key=tt+'|'+rows.join('|');if(lab.userData.key===key)return;lab.userData.key=key;const el=lab.element;el.querySelector('.tt').textContent=tt;
+  el.querySelectorAll('.rw b').forEach((b,i)=>{b.textContent=rows[i][0];b.style.color=rows[i][1]||'';});};
+/* 한 프레임: 상태(st) → 장면 */
+function frame(c,t,dt){
+  const st=c.st,p=st.p,M=p.M;
+  if(st.run){st.run.t+=dt;const u=clamp(st.run.t/st.run.dur,0,1);st.x=lerp(xA,xD,io(u));if(u>=1){st.run=null;st.moving=false;c.arrive(false);}}
+  const cz=lerp(ZS,0,st.cut);clipZ.constant=cz+.002;
+  if(cz!==V.lastC){setWall(V.front,cz,M);cutLines(cz,st);V.lastC=cz;}
+  const q=phys(st.x,p),cl=p.H<=M+1e-9,r=R0*(1+.2*q.h/1.5),py=q.h*KY+r+.012;
+  /* 공기 덩어리 · 꼬리표 */
+  cT.lerpColors(cA,cB,clamp((21-q.T)/17,0,1));V.par.material.color.copy(cT);V.parO.material.color.set(q.sat?0x0077B6:0xC4391B);
+  V.par.position.set(st.x,py,0);V.par.scale.setScalar(r);V.parO.position.copy(V.par.position);V.parO.scale.setScalar(r*1.13);
+  V.tag.position.set(st.x,py+r+.02,0);
+  const f=st.moving?(v=>fN(v)):smart,rh=q.sat?100:Math.min(rhOf(q.T,q.Td),99);
+  setRows(V.tag,st.free&&st.done?'도착(D)':(st.dep>.5?'넘은 뒤(D)':''),[[Math.round(q.h*1000)+' m','#1d1d1f'],[f(q.T)+' ℃',q.sat?'#0077B6':'#C4391B'],[f(q.Td)+' ℃','#8944AB'],[Math.round(rh)+' %',q.sat?'#0077B6':'#1d1d1f']]);
+  setRows(V.dep,st.free?'출발(A)':'넘기 전(A)',[['0 m','#1d1d1f'],[smart(p.T)+' ℃','#C4391B'],[smart(p.D)+' ℃','#8944AB'],[Math.round(Math.min(rhOf(p.T,p.D),p.D>=p.T?100:99))+' %','#1d1d1f']]);
+  fade(V.gDep,(st.free?clamp((xA-st.x-1.45)/.3,0,1):st.dep)*(1-st.topv));V.tag.element.style.opacity=(1-st.topv).toFixed(3);
+  /* 구름: 덩어리가 포화된 채 올라간 높이까지 생김(넘어간 뒤에는 다 생긴 채로) */
+  const ct=!cl?-1:(st.x<xC0?1e9:(q.sat?q.h+.03:-1));
+  const P=V.puffs;for(let i=0;i<P.length;i++){const u=P[i],on=u.hk<=ct;u.a=st.snap?(on?1:0):clamp(u.a+(on?dt/.55:-dt/.3),0,1);
+    const s=u.r*eo(u.a)*clamp((cz-u.z+.02)/.12,0,1);m4.compose(v3.set(u.x,u.y,u.z),q0,s3.set(Math.max(s,1e-5),Math.max(s*.82,1e-5),Math.max(s,1e-5)));V.cloud.setMatrixAt(i,m4);}
+  V.cloud.count=P.length;V.cloud.instanceMatrix.needsUpdate=true;
+  /* 비 */
+  const rOn=cl&&(st.x<xC0||(q.sat&&q.h>p.H+.25*(M-p.H)));st.rain=st.snap?(rOn?1:0):clamp(st.rain+(rOn?dt*2:-dt*2),0,1);
+  {const a=V.rain.geometry.attributes.instanceStart.data,arr=a.array;
+    for(let i=0;i<NR;i++){const d=V.drops[i],k=i*6;if(!d||d.z>cz-.02||st.rain<=0){arr[k+1]=arr[k+4]=-9;arr[k]=arr[k+3]=0;continue;}
+      const y=p.H*KY-((t*1.25+d.ph*d.L)%d.L);arr[k]=d.x;arr[k+1]=y;arr[k+2]=d.z;arr[k+3]=d.x-.012;arr[k+4]=Math.max(d.yg,y-.085);arr[k+5]=d.z;}
+    a.needsUpdate=true;V.rain.material.opacity=.75*st.rain;V.rain.visible=st.rain>.01;}
+  /* 바람 줄: 동 → 서, 지형을 타고 넘음 */
+  {const a=V.wind.geometry.attributes.instanceStart.data,arr=a.array;
+    for(let i=0;i<NW;i++){const w=V.wp[i],k=i*6;w.x-=dt*.85;if(w.x<XW+.3)w.x=XE;
+      if(w.z>cz-.03){arr[k+1]=arr[k+4]=-9;continue;}
+      const x1=Math.min(XE,w.x+.3);arr[k]=w.x;arr[k+1]=Math.max(0,Ys(w.x,w.z,M))+.07;arr[k+2]=w.z;arr[k+3]=x1;arr[k+4]=Math.max(0,Ys(x1,w.z,M))+.07;arr[k+5]=w.z;}
+    a.needsUpdate=true;V.wind.material.opacity=.36+.5*st.we;V.wind.material.linewidth=3+1.6*st.we;}
+  /* 보이기 */
+  const lc=st.lcl*(1-st.topv);
+  fade(V.gLcl,lc);fade(V.gCutL,lc);fade(V.gLclLab,lc*st.cut);
+  fade(V.gMap,1-st.cut);fade(V.gSec,st.cut);fade(V.gPts,st.cut*st.mk);fade(V.gTrack,(1-st.cut)*.9);fade(V.gCut,1);
+  fade(V.gYs,st.ys);fade(V.gWd,st.we);
+  if(st.gdirty||st.gx!==st.x){drawGraph(c,q);st.gx=st.x;st.gdirty=false;}
+  st.snap=false;
+  V.render();
+}
+/* ════════ 높이–온도 그래프: 덩어리가 지나온 길을 그대로(같은 phys) ════════ */
+const f1=v=>v.toFixed(1);
+function drawGraph(c,q){
+  const el=c.$('#fh-g');if(!el)return;const st=c.st,p=st.p,cl=p.H<=p.M+1e-9;
+  const W=524,H=320,L=96,R=36,Tp=12,B=40,top=phys(xC0,p),arr=phys(xD,p);
+  const lo=Math.floor((Math.min(top.T,top.Td,p.D,arr.Td)-1)/5)*5,hi=Math.ceil((Math.max(p.T,arr.T)+1)/5)*5,ym=Math.max(.5,Math.ceil(p.M*2-1e-9)/2);
+  const X=T=>L+(T-lo)/(hi-lo)*(W-L-R),Y=h=>H-B-(h/ym)*(H-B-Tp);
+  let s='';
+  for(let h=0;h<=ym+1e-9;h+=ym>2?1:.5)s+=`<line x1="${L}" x2="${W-R}" y1="${f1(Y(h))}" y2="${f1(Y(h))}" stroke="#e1e1e6" stroke-width="1.5"/><text x="${L-8}" y="${f1(Y(h)+8)}" text-anchor="end">${Math.round(h*1000)} m</text>`;
+  const dT=hi-lo>30?10:5;for(let T=lo;T<=hi;T+=dT)s+=`<line x1="${f1(X(T))}" x2="${f1(X(T))}" y1="${H-B}" y2="${H-B+6}" stroke="#8e8e93" stroke-width="2"/><text x="${f1(X(T))}" y="${H-10}" text-anchor="middle">${sgn(T)}${T===hi?' ℃':''}</text>`;
+  s+=`<path d="M${L},${Tp} V${H-B} H${W-R}" fill="none" stroke="#8e8e93" stroke-width="2"/>`;
+  if(cl&&st.lcl>.01)s+=`<line x1="${L}" x2="${W-R}" y1="${f1(Y(p.H))}" y2="${f1(Y(p.H))}" stroke="#0077B6" stroke-width="2.5" stroke-dasharray="8 6" opacity="${(st.lcl*.8).toFixed(2)}"/>`;
+  /* 마디: A → (B) → C → D */
+  const nodes=cl?[xA,xB(p),xC0,xD]:[xA,xC0,xD],kinds=cl?['up','sat','dn']:['up','dn'];
+  const pt=(x,key)=>{const v=phys(x,p);return [X(v[key]),Y(v.h)];};
+  const seg=(a,b,colr,w,dash)=>`<line x1="${f1(a[0])}" y1="${f1(a[1])}" x2="${f1(b[0])}" y2="${f1(b[1])}" stroke="${colr}" stroke-width="${w}" stroke-linecap="round"${dash?' stroke-dasharray="'+dash+'"':''}/>`;
+  const head=(a,b,colr)=>{const dx=b[0]-a[0],dy=b[1]-a[1],n=Math.hypot(dx,dy);if(n<46)return '';const ux=dx/n,uy=dy/n,mx=a[0]+dx*.58,my=a[1]+dy*.58;
+    return `<path d="M${f1(mx+ux*9)},${f1(my+uy*9)} L${f1(mx-ux*7-uy*7)},${f1(my-uy*7+ux*7)} L${f1(mx-ux*7+uy*7)},${f1(my-uy*7-ux*7)} Z" fill="${colr}"/>`;};
+  for(let i=0;i<kinds.length;i++){const x0=nodes[i],x1=nodes[i+1];if(st.x>=x0)break;const xe=Math.max(st.x,x1),k=kinds[i];
+    const a=pt(x0,'T'),b=pt(xe,'T'),ad=pt(x0,'Td'),bd=pt(xe,'Td');
+    if(k==='sat'){s+=seg(a,b,'#0077B6',5.5)+seg(ad,bd,'#8944AB',2.5,'5 7')+(xe===x1?head(a,b,'#0077B6'):'');}
+    else{s+=seg(ad,bd,'#8944AB',4)+seg(a,b,'#C4391B',4.5)+(xe===x1?head(a,b,'#C4391B')+head(ad,bd,'#8944AB'):'');}}
+  const nm=cl?['A','B','C','D']:['A','C','D'];
+  nodes.forEach((x,i)=>{if(st.x>x+1e-9)return;const a=pt(x,'T'),d=pt(x,'Td');
+    s+=`<circle cx="${f1(a[0])}" cy="${f1(a[1])}" r="5.5" fill="#1d1d1f"/>`+(Math.abs(a[0]-d[0])>3?`<circle cx="${f1(d[0])}" cy="${f1(d[1])}" r="5.5" fill="#8944AB"/>`:'');
+    const last=i===nodes.length-1,same=last&&Math.abs(a[0]-pt(xA,'T')[0])<16;
+    s+=`<text class="halo" x="${f1(a[0]+(same?-12:12))}" y="${f1(a[1]+(i===0||last?-10:9))}" text-anchor="${same?'end':'start'}" style="font-weight:800;fill:#1d1d1f">${nm[i]}</text>`;});
+  /* 지금 값 */
+  const cx=X(q.T),cd=X(q.Td),cy=Y(q.h);
+  s+=`<circle cx="${f1(cd)}" cy="${f1(cy)}" r="8" fill="#fff" stroke="#8944AB" stroke-width="4"/><circle cx="${f1(cx)}" cy="${f1(cy)}" r="8" fill="#fff" stroke="${q.sat?'#0077B6':'#C4391B'}" stroke-width="4"/>`;
+  /* 범례(오른쪽 위) */
+  [['기온','#C4391B'],['이슬점','#8944AB'],['구름 속','#0077B6']].forEach(([n,cc],i)=>{const y=Tp+16+i*31;s+=`<line x1="${W-R-150}" x2="${W-R-112}" y1="${y}" y2="${y}" stroke="${cc}" stroke-width="5" stroke-linecap="round"/><text class="halo" x="${W-R-102}" y="${y+8}" style="fill:${cc};font-weight:700">${n}</text>`;});
+  el.innerHTML=s;
+}
+/* ════════ 작은 모식 지도(원래 장의 경위도 모식 지도를 줄임) ════════ */
+function drawMap(el){
+  const X=lon=>(lon-124.6)*40+6,Y=lat=>(39.7-lat)*47+2,P=a=>a.map(q=>f1(X(q[0]))+','+f1(Y(q[1]))).join(' ');
+  const coastK=[[125.1,39.6],[125.1,39.35],[125.35,38.95],[125.15,38.75],[124.85,38.55],[124.7,38.15],[125.0,37.95],[125.5,37.75],[125.9,37.85],[126.15,37.72],[126.6,37.6],[126.6,37.42],[126.75,37.2],[126.85,36.97],[126.5,37.05],[126.15,36.85],[126.35,36.6],[126.55,36.35],[126.7,36.0],[126.55,35.78],[126.45,35.6],[126.6,35.4],[126.45,35.1],[126.35,34.85],[126.25,34.6],[126.45,34.33],[126.75,34.42],[127.1,34.55],[127.35,34.45],[127.6,34.65],[127.75,34.75],[128.0,34.9],[128.4,34.85],[128.65,34.75],[128.75,35.0],[129.05,35.1],[129.3,35.35],[129.45,35.6],[129.57,36.05],[129.4,36.1],[129.45,36.5],[129.42,37.0],[129.25,37.35],[129.1,37.55],[128.9,37.8],[128.6,38.15],[128.35,38.6],[128.0,38.95],[127.6,39.2],[127.55,39.6]];
+  const ridge=[[128.3,38.6],[128.45,38.15],[128.75,37.7],[128.95,37.2],[129.05,36.75],[129.1,36.3]];
+  let s=`<rect x="0" y="0" width="272" height="318" rx="10" fill="#d6e8f5"/><polygon points="${P(coastK)}" fill="#efe8d8" stroke="#a99d80" stroke-width="2" stroke-linejoin="round"/>`;
+  s+=`<ellipse cx="${f1(X(126.55))}" cy="${f1(Y(33.38))}" rx="17" ry="8" fill="#efe8d8" stroke="#a99d80" stroke-width="2"/>`;
+  s+=`<polygon class="ys" points="${P([[127.15,38.25],[127.8,38.5],[128.3,38.6],[128.45,38.15],[128.75,37.7],[128.95,37.2],[128.4,37.0],[127.75,37.05],[127.25,37.45]])}" fill="#FF6A3D"/>`;
+  s+=`<polyline points="${P(ridge)}" fill="none" stroke="#9c6b3c" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>`;
+  s+=`<rect x="${f1(X(127.45))}" y="${f1(Y(38.25))}" width="${f1(X(129.85)-X(127.45))}" height="${f1(Y(37.25)-Y(38.25))}" rx="4" fill="rgba(0,102,204,.08)" stroke="#1d1d1f" stroke-width="2.5"/>`;
+  s+=`<line x1="${f1(X(127.45))}" x2="${f1(X(129.85))}" y1="${f1(Y(37.75))}" y2="${f1(Y(37.75))}" stroke="#1d1d1f" stroke-width="2" stroke-dasharray="5 4"/>`;
+  s+=`<text x="${f1(X(128.55))}" y="${f1(Y(36.2))}" text-anchor="end" fill="#7a4f28" style="paint-order:stroke;stroke:#efe8d8;stroke-width:6px">태백산맥</text>`;
+  s+=`<text x="236" y="210" text-anchor="middle" fill="#4f7fa6">동해</text>`;
+  s+=`<path class="wd" d="M266 ${f1(Y(38.45))} L${f1(X(130.05))} ${f1(Y(37.95))}" fill="none" stroke-dasharray="10 7" stroke-linecap="round"/><polygon class="wdh" points="${f1(X(129.9))},${f1(Y(37.9))} ${f1(X(130.2))},${f1(Y(38.12))} ${f1(X(130.12))},${f1(Y(37.8))}"/>`;
+  s+=`<g class="wdl"><rect x="150" y="6" width="76" height="38" rx="19" fill="#1d1d1f"/><text x="188" y="34" text-anchor="middle" fill="#fff">동풍</text></g>`;
+  el.innerHTML=s;
+}
+
+Deck.scene('fh',{steps:8,
+  enter(c){
+    if(!V)setup();
+    V.mount(c.$('#fh-v'));cur=c;
+    const st=c.st={p:mkP(DEF.T,DEF.D,DEF.M),x:xA,cut:0,topv:0,mk:0,lcl:0,dep:0,we:0,ys:0,rain:0,mode:'3d',free:false,run:null,done:false,moving:false,snap:true,gdirty:true};
+    const I=id=>c.$('#fh-'+id),inT=I('T'),inD=I('D'),inM=I('M'),mapc=I('map'),tb=I('tb');
+    drawMap(I('ms'));
+    c.cap=k=>c.$$('#fh-cap .cp').forEach(e=>e.classList.toggle('on',e.dataset.k.split(' ').includes(String(k))));
+    c.late=k=>c.$$('#fh-cap .cp[data-k="'+k+'"] .late').forEach(e=>e.classList.add('on'));
+    c.tbl=k=>{tb.classList.toggle('on',k>=1&&k<=5);['s1','s2','s3'].forEach((n,i)=>tb.classList.toggle(n,k>=i+2));
+      tb.querySelectorAll('.k1,.k2,.k3').forEach(e=>e.classList.remove('cur'));if(k>=2&&k<=4)tb.querySelectorAll('.k'+(k-1)).forEach(e=>e.classList.add('cur'));};
+    c.camTok=0;
+    c.cam=(to,ms)=>{const tok=++c.camTok,f=V.camTo(to.pos,to.target);return c.tween(ms,e=>{if(tok===c.camTok)f(e);},{ease:'inOut'});};
+    c.btn=m=>c.$$('#fh-view .ia-btn').forEach(b=>b.classList.toggle('on',b.dataset.m===m));
+    c.view=(mode,ms=1500)=>{st.mode=mode;c.btn(mode);const c0=st.cut,t0=st.topv,c1=mode==='sec'?1:0,t1=mode==='top'?1:0;c.cam(camOf(mode,st.p.M),ms);
+      return c.tween(ms,e=>{st.cut=lerp(c0,c1,e);st.topv=lerp(t0,t1,e);},{ease:'inOut'});};
+    c.$$('#fh-view .ia-btn').forEach(b=>b.addEventListener('click',()=>c.view(b.dataset.m)));
+    [I('view'),I('panel')].forEach(e=>e.addEventListener('click',e2=>e2.stopPropagation()));
+    /* 직접 해 보기 */
+    const note=I('note');
+    c.clearArr=()=>{st.done=false;I('bT').textContent='?';I('bD').textContent='?';I('bR').textContent='?';note.classList.remove('on');};
+    c.arrive=()=>{const q=phys(xD,st.p),A=st.p,dT=q.T-A.T,dD=q.Td-A.D,ar=(d,cc)=>Math.abs(d)<.05?'':`<small class="${d>0?'c-warm':'c-cold'}">${d>0?'↑':'↓'} ${smart(Math.abs(d))}</small>`;
+      st.done=true;I('bT').innerHTML=smart(q.T)+' ℃'+ar(dT);I('bD').innerHTML=smart(q.Td)+' ℃'+ar(dD);I('bR').textContent=Math.round(Math.min(rhOf(q.T,q.Td),99))+' %';
+      if(A.H>A.M+1e-9){note.innerHTML='응결 고도가 산보다 높아 구름이 생기지 않음<br>→ 처음과 같다';note.style.background='#6e6e73';}
+      else if(Math.abs(dT)<.05){note.innerHTML='구름이 생기자마자 정상<br>→ 처음과 같다';note.style.background='#6e6e73';}
+      else{note.innerHTML='넘기 전보다 기온 ↑ · 습도 ↓<br>→ 고온 건조';note.style.background='#C0392B';}
+      note.classList.add('on');};
+    c.reset=()=>{const T=+inT.value;if(+inD.value>T)inD.value=T;const D=+inD.value,M=+inM.value/1000;st.p=mkP(T,D,M);
+      I('Tv').textContent=T+' ℃';I('Dv').textContent=D+' ℃';I('Mv').textContent=Math.round(M*1000)+' m';I('H').textContent=Math.round(st.p.H*1000)+' m';
+      I('aT').textContent=T+' ℃';I('aD').textContent=D+' ℃';I('aR').textContent=Math.round(Math.min(rhOf(T,D),D>=T?100:99))+' %';
+      st.run=null;st.moving=false;st.x=xA;st.snap=true;st.rain=0;c.clearArr();build(st);V.lastC=null;
+      if(st.free&&st.mode!=='top')c.cam(camOf(st.mode,M),350);};
+    [inT,inD,inM].forEach(el=>el.addEventListener('input',()=>{if(st.free)c.reset();}));
+    I('go').addEventListener('click',()=>{if(!st.free)return;c.reset();if(st.mode==='top')c.view('sec',900);st.run={t:0,dur:5};st.moving=true;});
+    c.cap(0);c.tbl(0);c.btn('3d');
+    build(st);V.lastC=null;
+    const h=camOf('3d',1.5);V.camera.position.set(h.pos[0]*1.1,h.pos[1]*1.12,h.pos[2]*1.1);V.ctl.target.set(...h.target);V.ctl.update();
+    frame(c,0,0);
+    c.cam(h,1500);
+    c.loop((t,dt)=>frame(c,t,dt));
+  },
+  async go(c,k){
+    const st=c.st,T=(ms,fn,o)=>c.tween(ms,fn,o),I=id=>c.$('#fh-'+id);
+    c.cap(k);c.tbl(k);
+    if(k===1){T(700,e=>{st.mk=e;});await c.view('sec',1900);}
+    if(k>=2&&k<=4){
+      if(st.mode!=='sec')await c.view('sec',900);
+      const xs=[xA,xB(st.p),xC0,xD],x0=xs[k-2],x1=xs[k-1];st.moving=true;
+      await T([2600,2800,3400][k-2],e=>{st.x=lerp(x0,x1,e);},{ease:'inOut'});st.x=x1;st.moving=false;
+      if(k===2)await T(600,e=>{st.lcl=e;st.gdirty=true;});
+      c.late(k);
+    }
+    if(k===5){if(st.mode!=='sec')await c.view('sec',900);await T(700,e=>{st.dep=e;});}
+    if(k===6){I('map').classList.add('wd');T(800,e=>{st.we=e;});await c.view('top',1900);}
+    if(k===7){I('map').classList.add('ys');await T(900,e=>{st.ys=e;});}
+    if(k===8){st.free=true;I('map').classList.remove('ys','wd');I('panel').classList.add('on');I('res').classList.add('on');
+      const d0=st.dep,w0=st.we,y0=st.ys;T(500,e=>{st.dep=d0*(1-e);st.we=w0*(1-e);st.ys=y0*(1-e);});st.lcl=1;st.mk=1;
+      c.reset();await c.view('sec',1500);}
+    if(c.instant){st.snap=true;frame(c,0,0);}
+  }});
+
+/* 검산용(헤드리스로 값을 읽음) */
+window.__fh={phys,hs,xsW,xsLee,xB,unit,Ys,crest,coast,rhOf,mkP,KY,xA,xD,xC0,DEF,get V(){return V;},get st(){return cur&&cur.st;},
+  table(T=15,D=11,M=1.5){const p=mkP(T,D,M),cl=p.H<=p.M,r=(n,x)=>{const q=phys(x,p);return {pt:n,x:+x.toFixed(4),h_m:Math.round(q.h*1000),T:+q.T.toFixed(3),Td:+q.Td.toFixed(3),RH:+rhOf(q.T,q.Td).toFixed(1),sat:q.sat};};
+    return {H_m:p.H*1000,rows:[r('A',xA)].concat(cl?[r('B',xB(p))]:[],[r('C',xC0),r('D',xD)])};},
+  scene(){const st=cur.st,p=st.p,P=V.puffs,on=P.filter(u=>u.a>.5);
+    return {lclPlaneY:V.lclM.position.y,lclPlane_m:Math.round(V.lclM.position.y/KY*1000),clipY_m:Math.round(-clipY.constant/KY*1000),puffs:P.length,puffsOn:on.length,
+      puffMinCenter_m:on.length?Math.round(Math.min(...on.map(u=>u.y))/KY*1000):null,puffMinBottom_m:on.length?Math.round(Math.min(...on.map(u=>u.y-u.r*.82))/KY*1000):null,puffMaxTop_m:on.length?Math.round(Math.max(...on.map(u=>u.y+u.r*.82))/KY*1000):null,
+      puffMinX:on.length?+Math.min(...on.map(u=>u.x-xoff(u.z))).toFixed(3):null,parcel:[+V.par.position.x.toFixed(3),+V.par.position.y.toFixed(3),+V.par.position.z.toFixed(3)],
+      tag:[...V.tag.element.querySelectorAll('.rw b')].map(b=>b.textContent),dep:[...V.dep.element.querySelectorAll('.rw b')].map(b=>b.textContent),cut:st.cut,mode:st.mode,rain:st.rain,
+      cam:V.camera.position.toArray().map(v=>+v.toFixed(2))};},
+  screen(x,y,z){const P=new THREE.Vector3(x,y,z).project(V.camera),r=V.L.domElement.getBoundingClientRect(),k=1920/r.width;return [Math.round((P.x+1)/2*r.width*k),Math.round((1-P.y)/2*r.height*k)];}};
+Deck.start();
+</script>
+</body>
+</html>

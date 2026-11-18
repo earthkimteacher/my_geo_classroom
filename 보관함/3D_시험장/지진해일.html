@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>시험 — 지진 해일 3D (three.js) - 진광고등학교 교사 김덕영</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<!-- 3D 후보 시험 장(2026-11-17, 저장소 밖): 해일 수업(지구시스템과학/II.04surge.html) 7·8번 화면(지진 해일, 직접 해 보기)을 three.js 입체로. 엔진·3D 도구는 저장소의 것 -->
+<link rel="stylesheet" href="../../engine/deck.css">
+<link rel="stylesheet" href="three.css">
+<style>
+.slide{--spd:#C4391B;--hh:#6f42c1;--up:#B25000}
+.c-spd{color:var(--spd)} .c-h{color:var(--hh)} .c-up{color:var(--up)}
+#ts-v{left:0;top:0;width:1920px;height:1080px;border-radius:0;z-index:1;background:linear-gradient(180deg,#8fc3ea 0%,#cfe6f5 38%,#eef5f9 62%,#e7eef2 100%)}
+#ts .gl{background:rgba(255,255,255,.95);box-shadow:0 6px 24px rgba(20,40,70,.2);border-radius:20px;color:#1d1d1f}
+#ts .hd{left:50px;top:40px;right:auto;padding:14px 28px 16px;z-index:4}
+#ts .hd .eb{font-size:24px;margin-bottom:2px;color:#6e6e73}
+#ts .hd h2{font-size:44px;color:#1d1d1f}
+#ts-cap{position:absolute;left:50px;top:190px;width:580px;padding:22px 30px 24px;z-index:4;font-size:30px;line-height:1.45;font-weight:500;letter-spacing:-.01em}
+#ts-cap .cp{display:none}
+#ts-cap .cp.on{display:block;animation:tsin .45s ease both}
+@keyframes tsin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+html.still #ts-cap .cp.on,html.print #ts-cap .cp.on{animation:none}
+#ts-cap .tm{display:block;font-size:26px;font-weight:800;color:var(--act);margin-bottom:6px}
+#ts-cap b{font-weight:800}
+#ts-cap .sub{display:block;margin-top:12px;padding-top:12px;border-top:2px solid rgba(0,0,0,.08);font-size:27px;color:#3a3a3c}
+#ts-cap .nw{white-space:nowrap}
+#ts-cap .opt{margin-top:8px;padding:7px 16px;border-radius:14px;background:rgba(0,0,0,.055);font-weight:700;font-size:27px;transition:opacity .5s,background .5s,color .5s}
+#ts-quiz.ans .opt{opacity:.4}
+#ts-quiz.ans .opt.ok{opacity:1;background:#1d1d1f;color:#fff}
+#ts-quiz .why{display:none}
+#ts-quiz.ans .why{display:block}
+/* 선두 파면의 값(왼쪽 아래) */
+#ts-read{position:absolute;left:50px;top:694px;width:580px;padding:16px 26px 18px;z-index:4}
+#ts-read .st{display:flex;align-items:baseline;font-size:26px;font-weight:800;line-height:36px}
+#ts-read .st em{margin-left:auto;font-style:normal;font-weight:600;font-size:24px;color:#6e6e73;font-variant-numeric:tabular-nums}
+#ts-read .eq{font-size:29px;font-weight:700;line-height:1.5;margin:6px 0 8px;white-space:nowrap;font-variant-numeric:tabular-nums}
+#ts-read .eq i{font-family:KaTeX_Math,'Times New Roman',serif;font-size:32px}
+#ts-read .eq .h{color:var(--hh)}
+#ts-read .bar{display:grid;grid-template-columns:66px 1fr 212px;align-items:center;gap:12px;font-size:27px;font-weight:600;line-height:44px}
+#ts-read .bar .tr{height:16px;border-radius:8px;background:rgba(0,0,0,.08);overflow:hidden}
+#ts-read .bar .tr i{display:block;height:100%;width:100%;border-radius:8px;background:var(--spd)}
+#ts-read .bar.wl .tr i{background:#0a6fb5}
+#ts-read .bar.ht .tr i{background:#1d1d1f}
+#ts-read .bar b{font-weight:800;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+#ts-read .bar.sp b{color:var(--spd)}
+/* 떠 있는 조작 막대 */
+#ts-panel{left:auto;right:50px;bottom:100px;height:80px;gap:20px;padding:0 20px;font-size:28px;z-index:5}
+#ts-panel .ia-btn{height:56px;font-size:26px;padding:0 18px}
+#ts-panel input[type=range]{width:300px}
+#ts-panel .val{min-width:150px}
+.ia-chk{display:flex;align-items:center;gap:10px;cursor:pointer}
+.ia-chk input{width:30px;height:30px;accent-color:var(--act);cursor:pointer}
+#ts .fine{left:50px;bottom:46px;padding:5px 16px;border-radius:12px;background:rgba(255,255,255,.9);color:#3a3a3c;z-index:4}
+html.print #ts-panel{display:none}
+html.print #ts-v{background:#fff}
+/* 3D 안의 이름표 */
+.v3-t.spd{color:#fff;background:var(--spd,#C4391B);font-weight:800;font-size:28px;font-variant-numeric:tabular-nums}
+.v3-t.dep{color:#fff;background:rgba(16,42,74,.82);font-weight:700}
+.v3-t.depl{color:#4a3a22;background:rgba(255,255,255,.86);font-weight:700}
+.v3-t.hh{color:#fff;background:#6f42c1;font-family:KaTeX_Math,'Times New Roman',serif;font-style:italic;font-size:30px;font-weight:700;padding:0 12px 2px}
+.v3-t.up{color:#fff;background:#B25000;font-weight:800}
+.v3-t.flt{color:#fff;background:#7a1f1f;font-weight:700}
+.v3-t.shp{color:#1d1d1f;background:rgba(255,255,255,.9);font-weight:700;font-size:24px}
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+<section class="slide" id="ts" data-tile="light" data-title="지진 해일 — 입체로 보기" data-notes="three.js 후보 시험 장. 해일 수업의 지진 해일 장과 그 직접 해 보기 장(옆 단면 하나)을 입체로 다시 구성했습니다. 문장은 원래 장(PPT)의 것이고, 제목 줄의 ①~⑤는 교과서 그림의 번호 글 그대로입니다. 끌면 돌려 보고 휠·두 손가락으로 확대하며, 끌지 않고 그냥 누르면 다음 단계(왼쪽 가장자리는 이전)입니다. [모형] 수심은 원래 장과 같은 값입니다: 깊은 바다 4000 m, 중간 1000 m, 해안 앞 20 m, 그 사이는 매끄러운 비탈, 해안선은 곧게 놓았습니다. 가로 거리는 화면 전체가 약 1200 km이고 어디서나 같은 축척입니다(지진이 난 곳에서 해안까지 860 km). 파면의 자리는 속도 v = √(gh)(g = 9.8 m/s²)로 실제 걸리는 시간을 계산해 그렸습니다(수심이 달라지는 곳에서 파면이 꺾이는 것까지 계산 — 얕은 곳에서는 파면이 해안선과 거의 나란해집니다. 교과 밖이라 화면에는 쓰지 않았습니다). 계산값: 수심 4000 m에서 198 m/s = 713 km/h, 1000 m에서 99 m/s = 356 km/h, 20 m에서 14 m/s = 50 km/h. 화면의 숫자는 원래 장과 같게 교과서 그림 값(약 700·350·50 km/h)으로 보여 주고, 그 사이 수심은 10 km/h 단위로 반올림합니다. 시간은 화면 1초 = 실제 10분으로 모든 단계에서 같습니다(지진 뒤 해안 도착까지 약 3시간 18분: 깊은 바다 400 km를 34분, 마지막 60 km를 약 1시간 23분). 파장 = 속도 × 주기이고 주기는 15분으로 놓았습니다(실제 지진 해일의 주기는 10분~1시간쯤) → 파장 약 180 km(4000 m), 약 90 km(1000 m), 약 13 km(20 m). 수심 4000 m도 파장의 1/20(약 9 km)보다 얕으므로 깊은 바다에서도 천해파입니다. 파고 배수는 원래 장과 같이 그린의 법칙(수심의 네제곱근에 반비례, 4000 m → 20 m에서 약 3.8배, 곧은 해안에서 부서지기 전까지)으로 계산했습니다. 퍼져 나가면서 낮아지는 효과는 그리지 않았습니다. 물결은 마루 세 개로 그렸습니다(실제로도 여러 차례 밀려오며 첫 물결이 가장 크지 않을 수도 있습니다). [과장한 점] 수심(4000 m를 약 200 km 길이로, 얕은 곳은 더 크게), 파고(깊은 바다 실제 1 m 안팎을 수 km 높이로), 배와 집의 크기, 단층이 솟은 높이(실제 수 m), 육지로 밀려든 거리. [단계] 처음: 잔잔한 바다와 해저 지형. 1 단면으로 잘라 단층이 솟는 모습 — 해저부터 해수면까지 바닷물 기둥 전체가 들려 올라갑니다(흰 화살표). 바람이 만드는 파도는 해수면 가까이만 움직이지만 지진 해일은 해수 전체가 움직입니다. 2 다시 전체 바다: 파면이 사방으로 둥글게 퍼집니다(화면 3.4초 = 34분에 400 km). 흰 선은 마루, 노란 가는 선은 20분마다의 선두 마루 자리입니다. 먼바다의 배는 높이 1 m 안팎의 물결이 주기 15분으로 천천히 지나가 거의 느끼지 못합니다(그림의 배는 과장된 높이만큼 오르내림). 3 예측하기: 얕은 바다로 들어서면 속도와 파면 간격은? 손을 들어 고르게 합니다. 4 확인: 수심 1000 m에서 약 350 km/h, 20 m에서 약 50 km/h로 느려지고, 앞 마루가 느려지는 동안 뒤 마루가 따라붙어 간격(파장)이 좁아집니다. 노란 선의 간격도 해안 쪽으로 갈수록 좁습니다. 5 단면: 보라 h가 선두 마루 자리의 수심입니다. 왼쪽 아래 식 카드에 그 값을 넣어 계산합니다. 6 해안 도착: 얕은 곳에서 물이 쌓여 파고가 높아지고 육지로 밀려듭니다. 실제 지진 해일은 깊은 바다에서 1 m 이하였다가 해안에서 수 m~수십 m가 되기도 합니다(2011년 동일본 지진 해일은 육지로 밀려 올라간 높이가 최대 약 40 m). 아래 막대: 재생, 시간 막대(끌어서 원하는 순간에 멈춤), 단면 보기, 처음 모습.">
+  <div class="v3" id="ts-v"></div>
+  <div class="hd gl" data-in><div class="eb"><b>시험</b>three.js 입체 · 지진 해일</div><h2>지진 해일</h2></div>
+  <div class="gl" id="ts-cap" data-in="300">
+    <div class="cp" data-k="0"><span class="tm">지진 해일</span>해저에서 지진, 화산 폭발, 단층 운동 등의 갑작스런 지각 변동이 발생할 때, <b>파장이 매우 긴 파동</b>이 형성되어 해안가로 밀려오면서 생긴 해일</div>
+    <div class="cp" data-k="1"><span class="tm">① 해저 지진 발생</span>해저의 <b class="c-up">단층</b>이 갑자기 솟는다<br>→ 그 위의 <b>바닷물 전체</b>가 들려 올라간다<span class="sub"><b>② 해수면 진동</b><br>해저부터 해수면까지 모두 움직인다<br>(바람이 만드는 파도와 다른 점)</span></div>
+    <div class="cp" data-k="2"><span class="tm">③ 깊은 바다에서 전파 속도가 매우 빠름</span>파면이 <b>사방으로</b> 퍼져 나간다<br>수심 4000 m에서 <b class="c-spd nw">약 700 km/h</b><span class="sub">먼바다의 배: 높이 1 m 안팎의 물결이 천천히 지나가 <b>거의 느끼지 못한다</b></span></div>
+    <div class="cp" id="ts-quiz" data-k="3 4"><span class="tm">예측하기</span>파면이 <b>얕은 바다</b>로 들어서면?
+      <div class="opt">① 빨라지고, 파면 간격이 넓어진다</div><div class="opt ok">② 느려지고, 파면 간격이 좁아진다</div><div class="opt">③ 속도와 간격이 그대로이다</div>
+      <span class="sub why">수심 <b class="c-h">h</b>가 얕을수록 느리다 → 뒤 파면이 따라붙어 <b>파장이 짧아진다</b></span></div>
+    <div class="cp" data-k="5"><span class="tm">단면으로 보기</span>해안가로 밀려오면서 속도가 <b>느려지고</b>, 파장이 <b>짧아지며</b>, 파고가 <b>높아진다</b>.<span class="sub">노란 점·선: 20분마다의 파면 자리<br><b class="c-h">h</b>: 파면이 있는 곳의 수심</span></div>
+    <div class="cp" data-k="6"><span class="tm">⑤ 해안 지역에 심각한 피해를 입힘</span><b>④ 얕은 바다에서는 파고가 상승함</b><br>앞은 느려지고 뒤는 따라와 물이 쌓인다<span class="sub">먼바다의 배는 거의 못 느끼지만 <b>해안에서는 피해가 크다</b></span></div>
+  </div>
+  <div class="gl" id="ts-read" data-in="350">
+    <div class="st">선두 파면이 있는 곳<em id="ts-clock">지진 후 0시간 00분</em></div>
+    <div class="eq"><i>v</i> = √(<i>g</i><i class="h">h</i>) = √(9.8 × <span class="h" id="ts-fh">4000</span>) <span id="ts-fm">≈ 198 m/s</span></div>
+    <div class="bar sp"><span>속도</span><div class="tr"><i id="ts-bv"></i></div><b id="ts-vv">약 700 km/h</b></div>
+    <div class="bar wl"><span>파장</span><div class="tr"><i id="ts-bl"></i></div><b id="ts-lv">약 180 km</b></div>
+    <div class="bar ht"><span>파고</span><div class="tr"><i id="ts-bh"></i></div><b id="ts-hv">처음의 1.0배</b></div>
+  </div>
+  <div class="ia-panel gl" id="ts-panel" data-in="400">
+    <button class="ia-btn" id="ts-go" type="button">재생 ▶</button>
+    <label><span>시간</span><input id="ts-t" type="range" min="0" max="200" step="1" value="0"><span class="val" id="ts-tv">0시간 00분</span></label>
+    <label class="ia-chk"><input type="checkbox" id="ts-sec">단면 보기</label>
+    <button class="ia-btn sub" id="ts-home" type="button">처음 모습</button>
+  </div>
+  <div class="fine">모식 그림 · 수심·파고·배와 집의 크기는 크게 과장(가로 거리는 같은 축척) · 속도는 v = √(gh), 파고 배수는 그린의 법칙으로 계산 · 화면 1초 = 실제 10분</div>
+</section>
+
+</div></div>
+
+<div id="progress"><i></i></div>
+<div id="stepdots"></div>
+<script src="../../engine/deck.js"></script>
+<script type="importmap">{"imports":{"three":"../../engine/vendor/three@0.160.0/build/three.module.min.js","three/addons/":"../../engine/vendor/three@0.160.0/examples/jsm/"}}</script>
+<script type="module">
+import {THREE,makeView,line,segs,dot,label,fade,clear,arrow,clamp,lerp,PRINT,STILL} from '../../engine/three-kit.js';
+
+/* ═══ 모형 (거리 km, 수심 m, 시간 s) ═══
+   x: 지진이 난 곳 0 → 해안선 XS = 860(동쪽 +), z: 해안선과 나란한 방향. 수심은 x만의 함수(곧은 해안) — 값은 원래 장(s06i)과 같은 4000·1000·20 m
+   속도 v = √(g·h). 걸리는 시간 T(x,z): 수심이 x로만 변하므로 빛의 굴절처럼 sinθ/v = 일정(θ = 진행 방향이 x축과 이루는 각)인 길을 따라 적분
+   물결 높이 η = A(x)·F(t − T): A = 그린의 법칙(h^(−1/4)), F = 주기 P인 물결 세 개(마루 s = 0, P, 2P) → 파장 = v·P가 저절로 수심에 따라 변함 */
+const G=9.8,P=900,XS=860,XMIN=-260,XMAX=940,ZH=350,V0=Math.sqrt(G*4000);
+const sC=(x,a,b,ha,hb)=>{const u=clamp((x-a)/(b-a),0,1);return ha+(hb-ha)*(1-Math.cos(Math.PI*u))/2;};
+function depth(x){if(x<400)return 4000;if(x<500)return sC(x,400,500,4000,1000);if(x<700)return 1000;if(x<800)return sC(x,700,800,1000,20);if(x<850)return 20;if(x<XS)return 20*(XS-x)/(XS-850);return 0;}
+const vel=x=>Math.sqrt(G*Math.max(depth(x),.05));
+const sm=u=>{u=clamp(u,0,1);return u*u*(3-2*u);};
+const Eenv=s=>sm((s+.3*P)/(.25*P))*Math.exp(-Math.max(s,0)/(2.2*P))*(1-sm((s-2.6*P)/(.6*P)));
+function F(s){if(s<-.3*P||s>3.2*P)return 0;const c=Math.cos(2*Math.PI*s/P);return Eenv(s)*(c>0?c:.7*c);}
+const A0=.024,green=h=>Math.pow(4000/Math.max(h,8),.25),Aof=x=>A0*green(depth(x));
+/* 격자 */
+const XN=[];{const add=(a,b,d)=>{for(let x=a;x<b-1e-6;x+=d)XN.push(Math.round(x*100)/100);};add(XMIN,700,5);add(700,800,2);add(800,XS,1);add(XS,XMAX,4);XN.push(XMAX);}
+const DZ=5,ZN=[];for(let z=-ZH;z<=ZH;z+=DZ)ZN.push(z);
+const NX=XN.length,NZ=ZN.length,i0=XN.indexOf(0),iD=XN.indexOf(400),iS=XN.indexOf(XS),j0=ZN.indexOf(0);
+/* 걸리는 시간 표 */
+const TG=new Float32Array(NX*NZ),AX=new Float32Array(NX);
+{const K=700,ps=[];for(let k=0;k<=K;k++)ps.push(Math.sin(k/K*62*Math.PI/180)/V0);
+  const cz=new Float64Array(K+1),ct=new Float64Array(K+1),TZ=[],TT=[];
+  for(let i=i0+1;i<=iS;i++){const a=XN[i-1],b=XN[i],ns=Math.max(1,Math.round((b-a)/(a>=800?.02:.25))),dx=(b-a)/ns;
+    for(let n=0;n<ns;n++){const v=vel(a+(n+.5)*dx);for(let k=0;k<=K;k++){const c=ps[k]*v,cs=Math.sqrt(1-c*c);cz[k]+=dx*c/cs;ct[k]+=dx*1000/(v*cs);}}
+    TZ[i]=cz.slice();TT[i]=ct.slice();}
+  const Tn=(i,za)=>{const x=XN[i];if(i<=iD)return Math.hypot(x,za)*1000/V0;const zt=TZ[i],tt=TT[i];let lo=0,hi=K;while(hi-lo>1){const m=(lo+hi)>>1;if(zt[m]<=za)lo=m;else hi=m;}const f=(za-zt[lo])/((zt[hi]-zt[lo])||1);return tt[lo]+(tt[hi]-tt[lo])*f;};
+  for(let j=0;j<NZ;j++)for(let i=0;i<NX;i++)TG[j*NX+i]=Tn(Math.min(i,iS),Math.abs(ZN[j]));   // 육지는 그 앞 해안선과 같은 때(밀려든 물의 수위 = 해안의 수위)
+  for(let i=0;i<NX;i++)AX[i]=Aof(Math.min(XN[i],XS));}
+const Tax=i=>TG[j0*NX+i];
+const TSH=Tax(iS),TMAX=TSH+1.6*P;
+const Tat=(i,z)=>{const f=clamp((z+ZH)/DZ,0,NZ-1),j=Math.min(NZ-2,Math.floor(f));return lerp(TG[j*NX+i],TG[(j+1)*NX+i],f-j);};
+/* 선두 마루가 x축 위에서 있는 곳(km) */
+function xLead(t){if(t<=0)return 0;if(t>=TSH)return XS;let lo=i0,hi=iS;while(hi-lo>1){const m=(lo+hi)>>1;if(Tax(m)<=t)lo=m;else hi=m;}return lerp(XN[lo],XN[hi],(t-Tax(lo))/((Tax(hi)-Tax(lo))||1));}
+const tAtX=x=>{let i=i0;while(i<iS&&XN[i+1]<=x)i++;return i>=iS?TSH:lerp(Tax(i),Tax(i+1),(x-XN[i])/(XN[i+1]-XN[i]));};
+const T2=tAtX(400),T4=tAtX(800);
+/* 등시선(T = L)을 격자에서 찾기 → [[x,z],[x,z]] 쌍(바다만) */
+function iso(L){const out=[];
+  for(let j=0;j<NZ-1;j++)for(let i=0;i<iS;i++){const n=j*NX+i,v=[TG[n]-L,TG[n+1]-L,TG[n+NX+1]-L,TG[n+NX]-L];
+    if((v[0]<0)===(v[1]<0)&&(v[1]<0)===(v[2]<0)&&(v[2]<0)===(v[3]<0))continue;
+    const Q=[[XN[i],ZN[j]],[XN[i+1],ZN[j]],[XN[i+1],ZN[j+1]],[XN[i],ZN[j+1]]],e=[];
+    for(let k=0;k<4;k++){const a=v[k],b=v[(k+1)%4];if((a<0)!==(b<0)){const t=a/(a-b),p=Q[k],q=Q[(k+1)%4];e.push([p[0]+(q[0]-p[0])*t,p[1]+(q[1]-p[1])*t]);}}
+    if(e.length>=2)out.push([e[0],e[1]]);if(e.length===4)out.push([e[2],e[3]]);}
+  return out;}
+/* 보여 줄 값 — 원래 장(s5vr)과 같은 규칙: 교과서 수심은 교과서 그림 값, 그 밖은 10 km/h(100 아래는 1 km/h) 단위 */
+const vShow=hd=>{const k={4000:700,1000:350,20:50}[hd];if(k)return k;const vk=Math.sqrt(G*hd)*3.6;return vk>=100?Math.round(vk/10)*10:Math.round(vk);};
+const hRound=h=>h>=100?Math.round(h/100)*100:Math.max(1,Math.round(h));
+const hm=s=>{const m=Math.round(s/60);return Math.floor(m/60)+'시간 '+String(m%60).padStart(2,'0')+'분';};
+
+/* ═══ 3D 좌표 ═══ 1칸 = 220 km. 해수면 Y = 0, 해저 Y = −DY(수심)(얕은 곳을 더 크게 — 원래 장과 같은 0.45제곱), 육지는 완만한 오르막 */
+const X=x=>(x-340)/220,Zw=z=>z/220,DY=h=>.9*Math.pow(h/4000,.45),SL=.0032,BASE=-1.2;
+const XF=-30,UB=.075;                                                    // 단층선(x = −30 km)과 솟은 높이(그림)
+const bump=(x,z)=>x<XF?0:UB*Math.exp(-Math.pow((x-XF)/70,2))*Math.exp(-Math.pow(z/70,2));
+const terrY=(x,z,u)=>x>=XS?(x-XS)*SL:-DY(depth(x))+u*bump(x,z);
+const SHIP=[120,-150],HOUSES=[[872,-20],[886,-62],[874,-118],[873,64],[887,150],[871,236],[880,-210],[876,-290]];
+
+const CAM=[                                           // 번호 = 단계 k
+  {pos:[-.9,3.5,6.9],target:[.1,-.42,0]},          // 0 처음: 앞쪽 위에서 바다 전체
+  {pos:[-2.1,.95,4.3],target:[-1.45,-.42,0]},      // 1 단층(단면)
+  {pos:[-1.0,5.9,4.3],target:[-.75,-.3,-.1]},      // 2 위에서: 둥글게 퍼지는 파면
+  {pos:[-1.0,5.9,4.3],target:[-.75,-.3,-.1]},      // 3 예측(2와 같음)
+  {pos:[.9,4.3,5.4],target:[.75,-.3,0]},           // 4 확인: 해안 쪽 절반
+  {pos:[.45,2.7,6.5],target:[.45,-.5,0]},         // 5 단면 정면
+  {pos:[1.5,1.3,3.0],target:[2.15,-.08,-.25]}];      // 6 해안
+const OFFX=250,OFFY=30;
+const CLIP=new THREE.Plane(new THREE.Vector3(0,0,-1),Zw(ZH)+.0005);
+
+let V=null,cur=null;
+const O={};   // 장면의 부품
+function strip(n,mat){const g=new THREE.BufferGeometry(),idx=[];g.setAttribute('position',new THREE.BufferAttribute(new Float32Array(n*6),3));
+  for(let i=0;i<n-1;i++){const a=i*2;idx.push(a,a+1,a+2,a+2,a+1,a+3);}g.setIndex(idx);const m=new THREE.Mesh(g,mat);m.frustumCulled=false;return m;}
+function vcol(mesh,fn){const n=mesh.geometry.attributes.position.count,c=new Float32Array(n*3),t=new THREE.Color();for(let k=0;k<n;k++){t.set(fn(k));c[k*3]=t.r;c[k*3+1]=t.g;c[k*3+2]=t.b;}mesh.geometry.setAttribute('color',new THREE.BufferAttribute(c,3));}
+function setup(){
+  V=makeView({w:1920,h:1080,fov:30,pos:CAM[0].pos,target:CAM[0].target,minD:1.4,maxD:12,key:'ts'});
+  V.camera.setViewOffset(1920,1080,-OFFX,OFFY,1920,1080);
+  V.R.localClippingEnabled=true;V.ctl.maxPolarAngle=Math.PI*.495;
+  const S=V.scene;
+  S.add(new THREE.AmbientLight(0xffffff,1.15));const dl=new THREE.DirectionalLight(0xffffff,1.5);dl.position.set(-3,5,2.5);S.add(dl);
+  /* 격자 면(해저·육지 / 해수면)이 함께 쓰는 삼각형 */
+  const idx=[];for(let j=0;j<NZ-1;j++)for(let i=0;i<NX-1;i++){const a=j*NX+i,b=a+1,c=a+NX,d=c+1;idx.push(a,c,b,b,c,d);}
+  /* 해저와 육지 */
+  {const g=new THREE.BufferGeometry(),p=new Float32Array(NX*NZ*3),col=new Float32Array(NX*NZ*3),t=new THREE.Color();
+    const cs=[[4000,0x4b5a75],[1000,0x7f8189],[20,0xcbb78a],[0,0xe4d4a6]].map(([h,c])=>[DY(h),new THREE.Color(c)]),cL0=new THREE.Color(0xd9cf9c),cL1=new THREE.Color(0x8fb56f);
+    for(let j=0;j<NZ;j++)for(let i=0;i<NX;i++){const n=(j*NX+i)*3,x=XN[i];p[n]=X(x);p[n+1]=terrY(x,ZN[j],0);p[n+2]=Zw(ZN[j]);
+      if(x>=XS)t.lerpColors(cL0,cL1,sm((x-XS)/18));else{const d=DY(depth(x));let k=0;while(k<2&&d<cs[k+1][0])k++;t.lerpColors(cs[k][1],cs[k+1][1],clamp((cs[k][0]-d)/(cs[k][0]-cs[k+1][0]),0,1));}
+      col[n]=t.r;col[n+1]=t.g;col[n+2]=t.b;}
+    g.setAttribute('position',new THREE.BufferAttribute(p,3));g.setAttribute('color',new THREE.BufferAttribute(col,3));g.setIndex(idx);g.computeVertexNormals();
+    O.terr=new THREE.Mesh(g,new THREE.MeshLambertMaterial({vertexColors:true,side:THREE.DoubleSide,clippingPlanes:[CLIP]}));O.terr.frustumCulled=false;S.add(O.terr);}
+  /* 해수면 */
+  {const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(new Float32Array(NX*NZ*3),3));g.setAttribute('color',new THREE.BufferAttribute(new Float32Array(NX*NZ*3),3));g.setIndex(idx);
+    const p=g.attributes.position.array;for(let j=0;j<NZ;j++)for(let i=0;i<NX;i++){const n=(j*NX+i)*3;p[n]=X(XN[i]);p[n+2]=Zw(ZN[j]);}
+    O.wBase=new Float32Array(NX*3);const cD=new THREE.Color(0x1c5fae),cS=new THREE.Color(0x4fb0de),t=new THREE.Color();
+    for(let i=0;i<NX;i++){t.lerpColors(cS,cD,clamp(DY(depth(Math.min(XN[i],XS)))/.9,0,1));O.wBase.set([t.r,t.g,t.b],i*3);}
+    O.water=new THREE.Mesh(g,new THREE.MeshPhongMaterial({vertexColors:true,transparent:true,opacity:.8,shininess:70,specular:0x4a6a88,side:THREE.DoubleSide,clippingPlanes:[CLIP]}));
+    O.water.renderOrder=2;O.water.frustumCulled=false;S.add(O.water);}
+  /* 자른 면(z = cut): 바닷물 벽 + 땅 벽. 그리고 왼쪽 끝·오른쪽 끝·뒤쪽 벽 */
+  O.face=new THREE.Group();S.add(O.face);
+  const mW=new THREE.MeshBasicMaterial({vertexColors:true,transparent:true,opacity:.9,side:THREE.DoubleSide,depthWrite:false}),mE=new THREE.MeshBasicMaterial({vertexColors:true,side:THREE.DoubleSide});
+  O.fW=strip(NX,mW);vcol(O.fW,k=>k%2?0x1b5f96:0x5ec0ec);O.fW.renderOrder=3;O.face.add(O.fW);
+  O.fE=strip(NX,mE);vcol(O.fE,k=>k%2?0x9c7f58:0xd8b98a);O.face.add(O.fE);
+  const mWc=mW.clone();mWc.clippingPlanes=[CLIP];const mEc=mE.clone();mEc.clippingPlanes=[CLIP];
+  O.lW=strip(NZ,mWc);vcol(O.lW,k=>k%2?0x1b5f96:0x5ec0ec);O.lW.renderOrder=3;S.add(O.lW);
+  {const quad=(pts,c0,c1)=>{const m=strip(2,mEc);m.geometry.attributes.position.array.set(pts.flat());vcol(m,k=>k%2?c1:c0);S.add(m);};
+    quad([[X(XMIN),-.9,Zw(-ZH)],[X(XMIN),BASE,Zw(-ZH)],[X(XMIN),-.9,Zw(ZH)],[X(XMIN),BASE,Zw(ZH)]],0xd8b98a,0x9c7f58);
+    quad([[X(XMAX),(XMAX-XS)*SL,Zw(-ZH)],[X(XMAX),BASE,Zw(-ZH)],[X(XMAX),(XMAX-XS)*SL,Zw(ZH)],[X(XMAX),BASE,Zw(ZH)]],0xd8b98a,0x9c7f58);
+    const bk=strip(NX,mE);const p=bk.geometry.attributes.position.array;for(let i=0;i<NX;i++){p.set([X(XN[i]),terrY(XN[i],-ZH,0),Zw(-ZH),X(XN[i]),BASE,Zw(-ZH)],i*6);}vcol(bk,k=>k%2?0x9c7f58:0xd8b98a);S.add(bk);}
+  O.gFL=new THREE.Group();O.face.add(O.gFL);                           // 자른 면의 선(해수면·해저)
+  /* 자른 면 위의 것들(면을 따라 움직임) */
+  O.depL=[[200,-DY(4000)*.55,'수심 4000 m','dep'],[600,-DY(1000)*.5,'수심 1000 m','dep'],[790,-DY(20)-.2,'수심 20 m','depl']].map(([x,y,t,cls])=>{const l=label(t,[X(x),y,.012],{cls});O.face.add(l);return l;});
+  O.gFault=new THREE.Group();O.face.add(O.gFault);
+  O.gFault.add(line(V,[[X(XF),-.9,.006],[X(XF)-.16,BASE,.006]],{col:0x7a1f1f,w:4}));
+  O.gFault.add(label('해저 단층',[X(XF)-.13,BASE+.09,.012],{cls:'flt',cx:1,dx:-10}));
+  O.gUp=new THREE.Group();O.face.add(O.gUp);
+  O.gUp.add(arrow([X(15),BASE+.04,.02],[X(15),-.95,.02],{col:0xE0731A,head:.09,hr:.045,sr:.018}));
+  O.gUp.add(label('솟음',[X(15)+.07,BASE+.13,.02],{cls:'up',cx:0}));
+  O.gLift=new THREE.Group();O.face.add(O.gLift);
+  O.gH=new THREE.Group();O.face.add(O.gH);O.hLab=label('h',[0,0,.012],{cls:'hh',cx:1,dx:-12});O.face.add(O.hLab);
+  O.gDots=new THREE.Group();O.face.add(O.gDots);
+  /* 단층선(해저 위) */
+  O.fLine=line(V,[[X(XF),-.9+.004,Zw(-75)],[X(XF),-.9+.004,Zw(75)]],{col:0x7a1f1f,w:4});O.fLine.material.clippingPlanes=[CLIP];S.add(O.fLine);
+  /* 20분마다의 선두 마루 자리(노란 가는 선) */
+  O.isoN=Math.floor(TSH/1200);O.iso=[];O.isoX=[];
+  for(let n=1;n<=O.isoN;n++){const l=segs(V,iso(n*1200).map(([a,b])=>[[X(a[0]),.006,Zw(a[1])],[X(b[0]),.006,Zw(b[1])]]),{col:0xFFD60A,w:2.2,op:.9,depth:false,order:6});
+    l.material.clippingPlanes=[CLIP];S.add(l);O.iso.push(l);const xx=xLead(n*1200);O.isoX.push(xx);
+    const d=dot([X(xx),.0,.004],{r:.02,col:0xFFD60A,order:9});d.material.depthTest=false;O.gDots.add(d);}
+  O.gCrest=new THREE.Group();S.add(O.gCrest);
+  /* 배 */
+  {const g=new THREE.Group(),hull=new THREE.Mesh(new THREE.BoxGeometry(.13,.026,.04),new THREE.MeshLambertMaterial({color:0xb23a2e})),cab=new THREE.Mesh(new THREE.BoxGeometry(.045,.03,.03),new THREE.MeshLambertMaterial({color:0xffffff}));
+    hull.position.y=.008;cab.position.set(-.02,.035,0);g.add(hull,cab);g.add(label('배',[0,.06,0],{cls:'shp',dy:-18}));g.position.set(X(SHIP[0]),0,Zw(SHIP[1]));O.ship=g;S.add(g);
+    let i=0;while(XN[i+1]<=SHIP[0])i++;O.shipT=Tat(i,SHIP[1]);}
+  /* 집 */
+  HOUSES.forEach(([x,z])=>{const g=new THREE.Group(),b=new THREE.Mesh(new THREE.BoxGeometry(.06,.045,.06),new THREE.MeshLambertMaterial({color:0xffffff})),r=new THREE.Mesh(new THREE.ConeGeometry(.055,.04,4),new THREE.MeshLambertMaterial({color:0xd9534f}));
+    b.position.y=.0225;r.position.y=.065;r.rotation.y=Math.PI/4;g.add(b,r);g.position.set(X(x),(x-XS)*SL-.004,Zw(z));g.userData.z=z;S.add(g);(O.houses=O.houses||[]).push(g);});
+  /* 속도 이름표(선두 마루를 따라감) */
+  O.vL=label('약 700 km/h',[0,0,0],{cls:'spd',dy:-34});S.add(O.vL);
+  O.vL2=label('약 700 km/h',[0,0,0],{cls:'spd',dy:-34});S.add(O.vL2);
+}
+
+/* 그리기 + 무대 밖으로 나간 이름표는 감춤(잘려 보이지 않게) */
+function rend(){V.render();if(!cur)return;const b=V.L.domElement.getBoundingClientRect(),cards=cur.$$('#ts-cap,#ts-read,#ts-panel,.hd').map(e=>e.getBoundingClientRect());
+  V.L.domElement.querySelectorAll('.v3-t').forEach(e=>{if(e.style.display==='none')return;const r=e.getBoundingClientRect();
+    if(r.left<b.left+4||r.right>b.right-4||r.top<b.top+4||r.bottom>b.bottom-4||cards.some(q=>r.left<q.right&&r.right>q.left&&r.top<q.bottom&&r.bottom>q.top))e.style.display='none';});}   // 무대 밖·글 카드 뒤에 걸린 이름표는 감춤
+/* 지금 상태(st)를 그림: st = {t 지진 뒤 시간(s), u 단층이 솟은 정도 0~1, cut 자른 자리 z(km, ZH = 자르지 않음)} */
+function draw(st){
+  const {t,u,cut}=st,cw=Zw(cut),sec=cut<ZH-1,onAx=Math.abs(cut)<1;
+  CLIP.constant=cw+.0005;O.face.position.z=cw;
+  /* 해수면 */
+  const wp=O.water.geometry.attributes.position,wc=O.water.geometry.attributes.color,pa=wp.array,ca=wc.array,wb=O.wBase;
+  for(let j=0;j<NZ;j++)for(let i=0;i<NX;i++){const n=j*NX+i,f=u*F(t-TG[n]),k=n*3,b=i*3;pa[k+1]=AX[i]*f;
+    if(f>=0){const e=f*.5;ca[k]=wb[b]+(.86-wb[b])*e;ca[k+1]=wb[b+1]+(.95-wb[b+1])*e;ca[k+2]=wb[b+2]+(1-wb[b+2])*e;}
+    else{const e=-f*.9;ca[k]=wb[b]+(.03-wb[b])*e;ca[k+1]=wb[b+1]+(.16-wb[b+1])*e;ca[k+2]=wb[b+2]+(.4-wb[b+2])*e;}}
+  wp.needsUpdate=true;wc.needsUpdate=true;O.water.geometry.computeVertexNormals();
+  /* 해저(단층이 솟은 만큼) */
+  if(O.uDrawn!==u){const tp=O.terr.geometry.attributes.position,a=tp.array;for(let j=0;j<NZ;j++)for(let i=i0-12;i<i0+52;i++)a[(j*NX+i)*3+1]=terrY(XN[i],ZN[j],u);tp.needsUpdate=true;O.terr.geometry.computeVertexNormals();O.uDrawn=u;}
+  /* 자른 면 */
+  const eta=i=>u*AX[i]*F(t-Tat(i,cut));
+  {const a=O.fW.geometry.attributes.position.array,b=O.fE.geometry.attributes.position.array,top=[],bed=[];
+    for(let i=0;i<NX;i++){const x=XN[i],gy=terrY(x,cut,u),wy=Math.max(eta(i),gy),xx=X(x);a.set([xx,wy,0,xx,gy,0],i*6);b.set([xx,gy,0,xx,BASE,0],i*6);
+      if(x<=XS||wy>gy+.0005)top.push([xx,wy,.003]);bed.push([xx,gy,.003]);}
+    O.fW.geometry.attributes.position.needsUpdate=true;O.fE.geometry.attributes.position.needsUpdate=true;
+    clear(O.gFL);O.gFL.add(line(V,bed,{col:0x8a6c44,w:3,order:4}));O.gFL.add(line(V,top,{col:0x0a4f80,w:3.5,order:5}));}
+  {const a=O.lW.geometry.attributes.position.array,xx=X(XMIN);for(let j=0;j<NZ;j++)a.set([xx,u*AX[0]*F(t-TG[j*NX]),Zw(ZN[j]),xx,-.9,Zw(ZN[j])],j*6);O.lW.geometry.attributes.position.needsUpdate=true;}
+  /* 마루 선(흰색) — 마루 k는 T = t − kP인 곳 */
+  clear(O.gCrest);
+  if(u>.5)for(let k=0;k<3;k++){const L=t-k*P;if(L<P*.3)continue;const ek=Eenv(k*P);
+    const l=segs(V,iso(L).map(([a,b])=>[[X(a[0]),Aof(a[0])*ek+.004,Zw(a[1])],[X(b[0]),Aof(b[0])*ek+.004,Zw(b[1])]]),{col:0xffffff,w:k?2.4:3.4,op:k?.8:1,order:7});l.material.clippingPlanes=[CLIP];O.gCrest.add(l);}
+  O.iso.forEach((l,n)=>{const on=u>.5&&t>=(n+1)*1200-1;l.visible=on;O.gDots.children[n].visible=on&&onAx;});
+  O.depL.forEach(l=>fade(l,st.k===2||st.k===3?0:1));   // 위에서 내려다보는 단계에서는 자른 면의 수심 이름표를 감춤(조작 막대 뒤에 걸림)
+  /* 단층·솟음·바닷물 기둥 화살표 */
+  fade(O.gFault,Math.abs(cut)<72?1:0);O.fLine.visible=!onAx;
+  fade(O.gUp,onAx?u*(1-sm(t/500)):0);
+  clear(O.gLift);const lo=onAx?u*(1-sm(t/400)):0;
+  if(lo>.02){[14,32,50].forEach(x=>{const y0=terrY(x,0,u)+.035,y1=u*Aof(x)*F(-Math.abs(x)*1000/V0)-.03;O.gLift.add(arrow([X(x),y0,.02],[X(x),lerp(y0+.12,y1,u),.02],{col:0xffffff,head:.11,hr:.04,sr:.014}));});fade(O.gLift,lo*.95);}
+  /* 선두 마루: 속도 이름표, 수심 h 치수선, 식 카드 */
+  const xc=Math.min(xLead(t),XS-2),h=depth(xc),hd=hRound(h),vms=Math.sqrt(G*hd),yc=u*Aof(xc)*F(0);
+  const run=u>.5&&t>150&&t<TSH-30;
+  fade(O.vL,run?1:0);O.vL.position.set(X(xc),yc,Math.min(cw,0));O.vL.element.textContent='약 '+vShow(hd)+' km/h';
+  const xs=-V0*t/1000;fade(O.vL2,u>.5&&t>150&&xs>XMIN+20?1:0);O.vL2.position.set(X(xs),A0,Math.min(cw,0));
+  clear(O.gH);const hOn=onAx&&u>.5&&t<TSH-30&&DY(h)>.05;
+  if(hOn){const yb=terrY(xc,0,u);O.gH.add(line(V,[[X(xc),yc-.012,.008],[X(xc),yb+.006,.008]],{col:0x6f42c1,w:5,order:8,depth:false}));
+    [[yc-.012,1],[yb+.006,-1]].forEach(([y,s])=>O.gH.add(line(V,[[X(xc)-.022,y-.035*s,.008],[X(xc),y,.008],[X(xc)+.022,y-.035*s,.008]],{col:0x6f42c1,w:5,order:8,depth:false})));
+    O.hLab.position.set(X(xc),(yc+yb)/2,.012);}
+  fade(O.hLab,hOn?1:0);
+  /* 배(해수면을 따라 오르내림) */
+  O.ship.position.y=u*Aof(SHIP[0])*F(t-O.shipT);
+  O.houses.forEach(g=>g.visible=g.userData.z<=cut+1);
+  /* 읽은 값 */
+  if(cur){const $=cur.$.bind(cur),gf=green(h),vk=vShow(hd),lam=vms*P/1000;
+    $('#ts-clock').textContent='지진 후 '+hm(t);$('#ts-fh').textContent=hd;$('#ts-fm').textContent='≈ '+(vms>=20?Math.round(vms):vms.toFixed(1))+' m/s';
+    $('#ts-vv').textContent='약 '+vk+' km/h';$('#ts-lv').textContent='약 '+(lam>=50?Math.round(lam/10)*10:lam>=10?Math.round(lam):lam.toFixed(1))+' km';$('#ts-hv').textContent='처음의 '+gf.toFixed(1)+'배';
+    $('#ts-bv').style.width=(vms/V0*100).toFixed(1)+'%';$('#ts-bl').style.width=(vms/V0*100).toFixed(1)+'%';$('#ts-bh').style.width=(gf/green(0)*100).toFixed(1)+'%';
+    const r=$('#ts-t');r.value=Math.round(t/60);$('#ts-tv').textContent=hm(t);const cb=$('#ts-sec');cb.checked=sec;}
+  st.dirty=false;
+}
+const DEF=k=>({u:k>=1?1:0,t:k>=6?TSH:k>=4?T4:k>=2?T2:0,cut:(k===1||k>=5)?0:ZH,cam:CAM[k]});
+Deck.scene('ts',{steps:6,
+  enter(c){
+    if(!V)setup();
+    V.mount(c.$('#ts-v'));cur=c;
+    const st=c.st={t:0,u:0,cut:ZH,k:0,play:false,dirty:true};
+    const r=c.$('#ts-t'),go=c.$('#ts-go');r.max=Math.round(TMAX/60);
+    c.cap=k=>c.$$('#ts-cap .cp').forEach(e=>e.classList.toggle('on',e.dataset.k.split(' ').includes(String(k))));
+    c.camTok=0;
+    c.cam=(to,ms)=>{const tok=++c.camTok,f=V.camTo(to.pos,to.target);return c.tween(ms,e=>{if(tok===c.camTok)f(e);},{ease:'inOut'});};
+    c.T=(ms,fn,o)=>c.tween(ms,e=>{fn(e);st.dirty=true;},o);
+    c.stop=()=>{st.play=false;go.textContent='재생 ▶';};
+    c.runTo=t1=>{const t0=st.t;return c.T(t1>t0?(t1-t0)/600*1000:500,e=>{st.t=lerp(t0,t1,e);},{ease:'linear'});};   // 화면 1초 = 실제 600초
+    c.cutTo=(z,ms=1300)=>{const z0=st.cut;return c.T(ms,e=>{st.cut=lerp(z0,z,e);},{ease:'inOut'});};
+    r.addEventListener('input',()=>{c.stop();st.t=+r.value*60;if(st.t>0)st.u=1;st.dirty=true;});
+    go.addEventListener('click',()=>{if(st.play){c.stop();return;}if(st.t>=TMAX-1)st.t=0;st.u=1;st.play=true;go.textContent='멈춤 ❚❚';st.dirty=true;});
+    c.$('#ts-sec').addEventListener('change',e=>c.cutTo(e.target.checked?0:ZH));
+    c.$('#ts-home').addEventListener('click',()=>{c.stop();const d=DEF(Deck.k),s0={...st};c.cam(d.cam,1000);c.T(1000,e=>{st.t=lerp(s0.t,d.t,e);st.u=lerp(s0.u,d.u,e);st.cut=lerp(s0.cut,d.cut,e);},{ease:'inOut'});});
+    c.$('#ts-panel').addEventListener('click',e=>e.stopPropagation());
+    c.cap(0);
+    V.camera.position.set(CAM[0].pos[0]*1.12,CAM[0].pos[1]*1.15,CAM[0].pos[2]*1.12);V.ctl.target.set(...CAM[0].target);V.ctl.update();
+    draw(st);rend();
+    c.cam(CAM[0],1600);
+    c.loop((t,dt)=>{if(st.play){st.t=Math.min(TMAX,st.t+dt*600);st.dirty=true;if(st.t>=TMAX){st.play=false;go.textContent='다시 재생 ▶';}}if(st.dirty)draw(st);rend();});
+  },
+  async go(c,k){
+    const st=c.st,d=DEF(k),qz=c.$('#ts-quiz');c.cap(k);c.stop();st.k=k;
+    if(k<=3)qz.classList.remove('ans');
+    if(k===1){c.cam(d.cam,1500);if(st.t>0)await c.runTo(0);await c.cutTo(0,1200);await c.wait(250);await c.T(1500,e=>{st.u=e;},{ease:'out'});}
+    if(k===2){c.cam(d.cam,1500);await c.cutTo(ZH,1200);await c.runTo(T2);}
+    if(k===4){c.cam(d.cam,2200);await c.runTo(T4);qz.classList.add('ans');}
+    if(k===5){c.cam(d.cam,1600);await c.cutTo(0,1500);}
+    if(k===6){c.cam(d.cam,2400);await c.runTo(TSH);}
+    st.t=d.t;st.u=d.u;st.cut=d.cut;if(k>=4)qz.classList.add('ans');
+    if(c.instant){V.camTo(d.cam.pos,d.cam.target)(1);V.ctl.update();}
+    draw(st);rend();
+  }});
+
+/* 검산용(헤드리스로 값을 읽음) */
+window.__ts={depth,vel,F,TG,XN,ZN,xLead,tAtX,T2,T4,TSH,TMAX,P,V0,green,Aof,iso,Tat,get V(){return V;},get st(){return cur&&cur.st;},draw,
+  set(o){Object.assign(cur.st,o);draw(cur.st);rend();return cur.st;},
+  /* 그려진 해수면(3D 그물의 꼭짓점 높이)에서 마루를 직접 찾음: x축(z = 0)을 따라 높이가 극대인 곳(km)과 그 높이 */
+  crests(t){this.set({t,u:1});const a=O.water.geometry.attributes.position.array,out=[];
+    for(let i=i0+1;i<iS-1;i++){const y=a[(j0*NX+i)*3+1],yl=a[(j0*NX+i-1)*3+1],yr=a[(j0*NX+i+1)*3+1];
+      if(y>1e-4&&y>=yl&&y>yr){const dl=XN[i]-XN[i-1],dr=XN[i+1]-XN[i],den=(y-yl)*dr+(y-yr)*dl,off=den?.5*((y-yl)*dr*dr-(y-yr)*dl*dl)/den:0;out.push({x:+(XN[i]-off).toFixed(2),y:+y.toFixed(5)});}}
+    return out.reverse();},
+  /* 보고용 측정: 그려진 그물에서 읽은 선두 마루의 속도(두 시각의 자리 차이)와 마루 사이 간격 */
+  report(){const T=this,o={},keep={...cur.st};o.calc=[4000,1000,20].map(h=>[h,+Math.sqrt(G*h).toFixed(2),+(Math.sqrt(G*h)*3.6).toFixed(1)]);o.T2=T2;o.T4=T4;o.TSH=TSH;
+    /* 그물의 꼭짓점 높이에서: half = 선두 마루 앞 비탈에서 높이가 마루 높이의 절반인 곳, zeros = 뒤따르는 마루들의 앞쪽에서 높이가 0인 곳(꼭짓점 사이는 직선으로 이음) */
+    const fr=t=>{T.set({t,u:1});const a=O.water.geometry.attributes.position.array,y=i=>a[(j0*NX+i)*3+1],r={half:null,zeros:[]};
+      for(let i=iS-2;i>i0;i--){const p=y(i)/AX[i],q=y(i+1)/AX[i+1];if(r.half==null&&p>=.5&&q<.5)r.half=XN[i]+(XN[i+1]-XN[i])*(p-.5)/(p-q);if(y(i)>0&&y(i+1)<0&&r.half!=null&&XN[i]<r.half-1)r.zeros.push(+(XN[i]+(XN[i+1]-XN[i])*y(i)/(y(i)-y(i+1))).toFixed(2));}return r;};
+    const sp=(t,dt)=>{const a=fr(t).half,b=fr(t+dt).half,h=depth((a+b)/2);return {t,dt,x0:+a.toFixed(2),x1:+b.toFixed(2),h:Math.round(h),kmh:+((b-a)*3600/dt).toFixed(1),theory:+(Math.sqrt(G*h)*3.6).toFixed(1)};};
+    o.speed=[sp(300,1200),sp(3000,1200),sp(7200,2400)];   // 수심이 일정한 구간 안에서 잼
+    const wl=t=>{const z=fr(t).zeros,c=T.crests(t);return {t:Math.round(t),zeros:z,lambda:+(z[0]-z[1]).toFixed(2),h:Math.round(depth((z[0]+z[1])/2)),crestY:c.map(q=>q.y)};};
+    o.wl=[wl(1900),wl(tAtX(690)),wl(tAtX(848))];o.z=[T.crestZ(600),T.crestZ(1200)];o.x=[T.crests(600)[0].x,T.crests(1200)[0].x];T.set(keep);return JSON.stringify(o);},
+  /* z축 방향(해안선과 나란한 방향, 깊은 바다)으로 마루까지의 거리 */
+  crestZ(t){this.set({t,u:1});const a=O.water.geometry.attributes.position.array;let best=0,by=0;for(let j=j0+1;j<NZ-1;j++){const y=a[(j*NX+i0)*3+1];if(y>by){by=y;best=ZN[j];}}return best;}
+};
+Deck.start();
+</script>
+</body>
+</html>

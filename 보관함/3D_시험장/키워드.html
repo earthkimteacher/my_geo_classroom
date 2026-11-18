@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>시험 — 오늘의 키워드(천구의 좌표계) 3D (three.js) - 진광고등학교 교사 김덕영</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<!-- 시험 장(2026-11-17): 저장소 밖. '천구의 좌표계' 수업의 오늘의 키워드 장 — 칸마다 그 개념의 작은 3D가 천천히 돎.
+     엔진은 저장소의 것을 그대로 씀(../../engine), 3D는 three.js 0.160.0(jsDelivr).
+     WebGL 맥락은 하나: 카드 띠(x 120~1800, y 250~990)를 덮는 투명 캔버스 한 장에, 칸마다 자기 장면·카메라를 그 칸의 그림 자리(.k3)에 setViewport/setScissor로 그림 -->
+<link rel="stylesheet" href="../../engine/deck.css">
+<link rel="stylesheet" href="three.css">
+<style>
+/* 색 약속(천구의 좌표계 수업): 지평선·방위각 = 초록, 고도 = 주황, 천구의 적도·적경 = 파랑, 적위 = 보라, 춘분점 = 노랑, 천구의 북극·남극 = 빨강, 보조 = 회색 */
+.slide{--hor:#157F4A;--alt:#B25000;--equ:#005BB8;--dec:#7B3FB5;--ecl:#8A6500;--pole:#C9251B;--gray:#6e6e73}
+.c-hor{color:var(--hor)} .c-alt{color:var(--alt)} .c-equ{color:var(--equ)} .c-dec{color:var(--dec)} .c-ecl{color:var(--ecl)} .c-pole{color:var(--pole)} .c-gray{color:var(--gray)} .c-ink{color:#1d1d1f}
+/* 오늘의 키워드(개념 흐름): 1 천구 › 2 지평 좌표계 / 3 적도 좌표계 › 4 일주 운동 › 5 위도와 천구의 북극 */
+#kw .k-card{position:absolute;z-index:3;background:#fff;border-radius:18px;padding:20px 24px 18px;display:flex;flex-direction:column}
+#kw .k-hd{display:flex;align-items:center;gap:12px;font-size:30px;font-weight:800;letter-spacing:-.025em;color:#1d1d1f;white-space:nowrap}
+#kw .k-no{flex:none;width:42px;height:42px;border-radius:50%;background:var(--act);color:#fff;font-size:26px;font-weight:800;display:grid;place-items:center;letter-spacing:0}
+#kw .k-sub{font-size:26px;font-weight:600;color:#5c5c61;letter-spacing:-.015em;margin-top:6px;word-break:keep-all;line-height:1.3}
+#kw .k-hd .k-sub{margin:0 0 0 auto}
+#kw .k-body{flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px;min-height:0}
+#kw .k-row{flex:1;display:grid;grid-template-columns:256px 1fr;align-items:center;gap:20px;margin-top:12px;min-height:0}
+/* 작은 3D가 놓이는 자리(그림은 위의 투명 캔버스에 그려짐) */
+#kw .k3{position:relative;flex:none;width:100%;border-radius:14px;background:#f4f6f9}
+#kw #kw-lab{position:absolute;left:120px;top:250px;width:1680px;height:740px;z-index:6;pointer-events:none}
+#kw .k3-t{position:absolute;left:0;top:0;font-size:24px;font-weight:700;line-height:1.2;white-space:nowrap;padding:1px 9px;border-radius:9px;background:rgba(255,255,255,.86);color:#1d1d1f;translate:-50% -50%;pointer-events:none}
+#kw .k-side{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+#kw .k-chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+#kw .k-chip{font-size:26px;font-weight:700;line-height:1.3;padding:1px 13px;border-radius:9999px;border:2.5px solid currentColor;white-space:nowrap;font-variant-numeric:tabular-nums}
+#kw .k-lg{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:700;line-height:1.3;white-space:nowrap;letter-spacing:-.015em}
+#kw .k-lg i{flex:none;display:block;background:currentColor}
+#kw .k-lg i.d{width:14px;height:14px;border-radius:50%;margin:0 6px}
+#kw .k-lg i.l{width:26px;height:5px;border-radius:3px}
+#kw .k-lgs{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+#kw .k-lgs.row{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:4px 18px;margin-top:0}
+#kw .k-st{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:10px 12px}
+#kw .k-st b{font-size:26px;font-weight:800;color:#1d1d1f;letter-spacing:-.02em;white-space:nowrap}
+#kw .k-mid{display:flex;justify-content:center}
+#kw #kw-gl{position:absolute;left:120px;top:250px;width:1680px;height:740px;z-index:5;pointer-events:none}
+#kw #kw-gl canvas{position:absolute;left:0;top:0;width:100%!important;height:100%!important;display:block}
+#kw #kw-arw{z-index:2}
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+<section class="slide" id="kw" data-tile="parchment" data-title="오늘의 키워드" data-notes="three.js 시험 장 — 천구의 좌표계 수업의 오늘의 키워드입니다. 이 수업에서 배울 개념이 이어지는 흐름을 한 장에 놓았고, 칸마다 그 개념의 작은 입체 그림이 천천히 돕니다(클릭 단계 없음). 1 천구: 관측자를 중심으로 한 가상의 구입니다. 실제로 있는 구가 아니고 반지름도 정할 수 없으며, 별까지의 거리와 관계없이 방향만 나타냅니다. 관측자 머리 위의 점이 천정, 천구와 지평면이 만나는 원이 지평선입니다. 2 지평 좌표계: 지평선이 기준입니다. 방위각(초록)은 북점에서 지평선을 따라 시계 방향(동쪽)으로, 고도(주황)는 지평선에서 천체까지 잰 각입니다. 그림의 별은 방위각 약 101°, 고도 약 47°입니다(서울 북위 37.5°, 적경 8h·적위 +20°인 별의 시간각이 −45°일 때를 계산한 값). 3 적도 좌표계: 천구의 적도가 기준입니다. 적경(파랑)은 춘분점에서 천구의 적도를 따라 동쪽(시계 반대 방향)으로, 적위(보라)는 천구의 적도에서 천체까지 잰 각입니다. 2번 칸과 같은 별·같은 순간이며 적경 8h(120°), 적위 +20°입니다. 천구의 적도는 동점과 서점을 지납니다. 4 일주 운동: 지구가 자전하므로 천구가 천구의 북극을 중심으로 하루에 한 바퀴(1시간에 약 15°) 도는 것처럼 보입니다. 북쪽 하늘을 보면 별이 시계 반대 방향으로 돕니다. 이때 방위각·고도는 계속 바뀌고 적경·적위는 그대로입니다 — 2·3번 칸과 같은 색 알약으로 이었습니다. 그림은 60초에 한 바퀴로 빠르게 돌린 것이고, 별 뒤의 짧은 선은 지난 3시간 동안 지나온 길입니다. 5 위도와 천구의 북극: 천구의 북극의 고도 = 관측자의 위도입니다. 위 그림은 지구 위의 관측자입니다 — 천구의 북극은 지구 자전축과 나란한 방향(빨간 화살표)에 있고, 관측자의 지평면(초록)에서 그 방향까지 잰 각(주황)이 지구 중심에서 잰 위도(회색)와 같습니다. 아래 그림은 그 관측자의 천구입니다. 위도가 서울 37.5°에서 65°, 10°로 천천히 바뀌면 두 그림과 두 숫자가 함께 바뀝니다. 과장·단순화한 점: 지구 그림에서 지평면과 관측자를 지구에 비해 크게 그렸고, 실제로는 별이 매우 멀어 지구 어디에서 보아도 천구의 북극 방향이 자전축과 나란합니다. 1시간에 15°는 근삿값(항성일 23시간 56분), 세차 운동은 무시했습니다. 색은 이 수업 끝까지 같은 뜻으로 씁니다(초록 지평선·방위각, 주황 고도, 파랑 천구의 적도·적경, 보라 적위, 노랑 춘분점, 빨강 천구의 북극).">
+  <div class="hd" data-in><div class="eb">학습 안내</div><h2>오늘의 키워드</h2></div>
+  <svg class="full-svg" viewBox="0 0 1920 1080" id="kw-arw">
+    <g fill="none" stroke="#aeaeb2" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+      <path data-in="450" data-fx="fade" d="M435 405 L455 425 L435 445"/>
+      <path data-in="750" data-fx="fade" d="M435 795 L455 815 L435 835"/>
+      <path data-in="1150" data-fx="fade" d="M1005 405 L1025 425 L1005 445"/>
+      <path data-in="1150" data-fx="fade" d="M1005 795 L1025 815 L1005 835"/>
+      <path data-in="1550" data-fx="fade" d="M1405 600 L1425 620 L1405 640"/>
+    </g>
+  </svg>
+
+  <div class="k-card" id="kw-c1" style="left:120px;top:250px;width:300px;height:740px" data-in="200">
+    <div class="k-hd"><span class="k-no">1</span>천구</div>
+    <div class="k-sub">관측자가 중심인<br>가상의 구</div>
+    <div class="k-body">
+      <div class="k3" id="kw-f1" style="height:300px"></div>
+      <div class="k-lgs row"><div class="k-lg c-hor"><i class="l"></i>지평선</div></div>
+    </div>
+  </div>
+
+  <div class="k-card" id="kw-c2" style="left:470px;top:250px;width:520px;height:350px" data-in="600">
+    <div class="k-hd"><span class="k-no">2</span>지평 좌표계<span class="k-sub">지평선 기준</span></div>
+    <div class="k-row">
+      <div class="k3" id="kw-f2" style="height:256px"></div>
+      <div class="k-side">
+        <span class="k-chip c-hor">방위각</span><span class="k-chip c-alt">고도</span>
+        <div class="k-lgs"><div class="k-lg c-hor"><i class="l"></i>지평선</div><div class="k-lg c-hor"><i class="d"></i>북점</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="k-card" id="kw-c3" style="left:470px;top:640px;width:520px;height:350px" data-in="900">
+    <div class="k-hd"><span class="k-no">3</span>적도 좌표계<span class="k-sub">천구의 적도 기준</span></div>
+    <div class="k-row">
+      <div class="k3" id="kw-f3" style="height:256px"></div>
+      <div class="k-side">
+        <span class="k-chip c-equ">적경</span><span class="k-chip c-dec">적위</span>
+        <div class="k-lgs"><div class="k-lg c-equ"><i class="l"></i>천구의 적도</div><div class="k-lg c-pole"><i class="d"></i>천구의 북극</div><div class="k-lg c-ecl"><i class="d"></i>춘분점</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="k-card" id="kw-c4" style="left:1040px;top:250px;width:350px;height:740px" data-in="1300">
+    <div class="k-hd"><span class="k-no">4</span>일주 운동</div>
+    <div class="k-sub">1시간에 약 15°</div>
+    <div class="k-body">
+      <div class="k3" id="kw-f4" style="height:320px"></div>
+      <div class="k-lgs row"><div class="k-lg c-pole"><i class="d"></i>천구의 북극</div></div>
+      <div class="k-st">
+        <b>바뀜</b><div class="k-chips"><span class="k-chip c-hor">방위각</span><span class="k-chip c-alt">고도</span></div>
+        <b>그대로</b><div class="k-chips"><span class="k-chip c-equ">적경</span><span class="k-chip c-dec">적위</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="k-card" id="kw-c5" style="left:1440px;top:250px;width:360px;height:740px" data-in="1700">
+    <div class="k-hd"><span class="k-no">5</span>위도와 천구의 북극</div>
+    <div class="k-sub">천구의 북극의 고도 = 위도</div>
+    <div class="k-body" style="gap:10px">
+      <div class="k3" id="kw-f5a" style="height:236px"></div>
+      <div class="k-mid"><span class="k-chip c-gray">위도 <span id="kw-lat">37.5°</span></span></div>
+      <div class="k3" id="kw-f5b" style="height:236px"></div>
+      <div class="k-mid"><span class="k-chip c-alt">고도 <span id="kw-palt">37.5°</span></span></div>
+    </div>
+  </div>
+
+  <div id="kw-gl"></div>
+  <div id="kw-lab"></div>
+  <div class="fine">모식 그림 · 서울(북위 37.5°) 기준 · 색은 이 수업 끝까지 같은 뜻 · 일주 운동은 빠르게 돌린 것</div>
+</section>
+
+</div></div>
+
+<!-- 하단 컨트롤 -->
+<div id="progress"><i></i></div>
+<div id="stepdots"></div>
+<script src="../../engine/deck.js"></script>
+<script>window.KW={items:['천구','지평 좌표계','적도 좌표계','일주 운동','위도와 천구의 북극'],at:[-1]};</script>
+<script type="importmap">{"imports":{"three":"../../engine/vendor/three@0.160.0/build/three.module.min.js","three/addons/":"../../engine/vendor/three@0.160.0/examples/jsm/"}}</script>
+<script type="module">
+import {THREE,D2R,clamp,lerp,line,dot,arrow,clear} from './common.js';
+
+/* ── 천구 계산(천구_3D.html과 같은 식. 관측자 중심, 반지름 1) ──
+   지평 좌표 → 3D: x = 동쪽, y = 천정, −z = 북쪽.  v(방위각 A, 고도 h) = (cos h·sin A, sin h, −cos h·cos A)  (A는 북점에서 동쪽으로)
+   적도 좌표(시간각 H, 적위 δ, 위도 φ) → 3D: 천구의 북극 P = (0, sin φ, −cos φ)
+     v = (−cos δ sin H, sin δ sin φ + cos δ cos H cos φ, −sin δ cos φ + cos δ cos H sin φ)   → sin(고도) = sin φ sin δ + cos φ cos δ cos H
+   시간각 H = 항성시 − 적경(시간이 흐르면 H가 커져 별이 서쪽으로). 적경은 춘분점(적경 0)에서 동쪽(H가 작아지는 쪽)으로 */
+const RA=120,DEC=20,PHI0=37.5,LST0=75;   // 별: 적경 8h(120°), 적위 +20°, 서울. 항성시 5h → 시간각 −45°(방위각 약 101°, 고도 약 47°), 춘분점은 서남서 낮은 하늘
+const hv=(A,h)=>[Math.cos(h*D2R)*Math.sin(A*D2R),Math.sin(h*D2R),-Math.cos(h*D2R)*Math.cos(A*D2R)];
+function ev(H,d,phi){const s=Math.sin,c=Math.cos,h=H*D2R,de=d*D2R,f=phi*D2R;
+  return [-c(de)*s(h), s(de)*s(f)+c(de)*c(h)*c(f), -s(de)*c(f)+c(de)*c(h)*s(f)];}
+const toHor=v=>{let A=Math.atan2(v[0],-v[2])/D2R;if(A<0)A+=360;return {A,h:Math.asin(clamp(v[1],-1,1))/D2R};};
+const sc=(v,k)=>v.map(x=>x*k);
+const arc=(f,n=64)=>[...Array(n+1)].map((_,i)=>f(i/n));
+const COL={hor:0x157F4A,alt:0xB25000,equ:0x005BB8,dec:0x7B3FB5,ecl:0xd6a100,pole:0xC9251B,gray:0x8e8e93,ink:0x1d1d1f,star:0xffb300};
+const TAU=Math.PI*2;
+
+/* ── 렌더러 하나 + 칸마다 장면·카메라 ── */
+const GW=1680,GH=740;   // 캔버스가 덮는 띠(무대 px)
+let R=null,cells=null,fadeScene,fadeCam,fadeMat,curPR=0;
+const info={};   // 확인용 계산 값(헤드리스에서 읽음)
+
+function cell(id,w,h,o){   // 칸 하나: V = {w,h,mats}는 common.js의 line()이 쓰는 모양(선 굵기를 무대 px로 맞춤)
+  const scene=new THREE.Scene(),cam=new THREE.PerspectiveCamera(o.fov||30,w/h,.05,100);
+  return {id,w,h,mats:new Set(),scene,cam,el:null,labels:[],
+    orbit(th,el,d,tg=[0,0,0]){cam.position.set(tg[0]+d*Math.cos(el)*Math.sin(th),tg[1]+d*Math.sin(el),tg[2]+d*Math.cos(el)*Math.cos(th));cam.lookAt(tg[0],tg[1],tg[2]);}};
+}
+/* 천구 바탕: 투명한 구 + 지평면 + 지평선 + 관측자 */
+function skyBase(C,o={}){
+  const g=new THREE.Group();
+  const gd=new THREE.Mesh(new THREE.CircleGeometry(1,72),new THREE.MeshBasicMaterial({color:0xcfe0c4,transparent:true,opacity:o.gd??.5,side:THREE.DoubleSide,depthWrite:false}));
+  gd.rotation.x=-Math.PI/2;gd.renderOrder=2;g.add(gd);
+  const sp=new THREE.Mesh(new THREE.SphereGeometry(1,48,32),new THREE.MeshBasicMaterial({color:0x7fb2e8,transparent:true,opacity:.09,side:THREE.DoubleSide,depthWrite:false}));
+  sp.renderOrder=0;g.add(sp);
+  g.add(line(C,arc(t=>hv(t*360,0),96),{col:COL.hor,w:o.hw??3,op:o.hop??1}));
+  g.add(dot([0,0,0],{r:.045,col:COL.ink}));
+  C.scene.add(g);return g;
+}
+/* 각을 보이는 부채꼴(꼭짓점 o에서 호 pts까지 옅게 칠함) */
+function fan(o,pts,col,op=.22){const g=new THREE.BufferGeometry(),a=[];
+  for(let i=0;i<pts.length-1;i++)a.push(...o,...pts[i],...pts[i+1]);
+  g.setAttribute('position',new THREE.Float32BufferAttribute(a,3));
+  const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:op,side:THREE.DoubleSide,depthWrite:false}));m.renderOrder=2;m.userData.base=op;return m;}
+const Z3=[0,0,0];
+const starDot=(g,v,r=.06)=>{g.add(dot(v,{r,col:COL.star}));g.add(dot(v,{r:r*1.7,col:0xffd54a,op:.35}));};
+
+function setup(){
+  R=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});   // preserveDrawingBuffer: 돋보기(Z)가 그림을 복사할 수 있게
+  R.setClearColor(0x000000,0);R.autoClear=false;
+  fadeScene=new THREE.Scene();fadeCam=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+  fadeMat=new THREE.MeshBasicMaterial({color:0xf5f5f7,transparent:true,depthTest:false,depthWrite:false});
+  fadeScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),fadeMat));
+  const sv=ev(LST0-RA,DEC,PHI0),{A,h}=toHor(sv);info.star={A,h};
+
+  /* ① 천구: 투명한 구 + 지평면 + 관측자 + 천정, 천구에 붙어 보이는 별 몇 개 */
+  const c1=cell('kw-f1',252,300,{fov:30});{
+    const g=skyBase(c1);
+    g.add(dot([0,1,0],{r:.04,col:COL.ink}));
+    g.add(line(c1,[[0,0,0],[0,1,0]],{col:COL.gray,w:2,dash:[.06,.045]}));
+    [[25,55],[80,28],[150,62],[205,22],[260,44],[320,34],[110,-30],[290,-40]].forEach(([a,al])=>g.add(dot(hv(a,al),{r:.032,col:COL.star,op:al<0?.45:1})));
+    c1.labels=[{t:'천정',p:[0,1,0],dy:-26},{t:'관측자',p:[0,0,0],dx:58,dy:-22}];
+    c1.update=T=>c1.orbit(-.38+TAU*T/48,.3,4.9,[0,.06,0]);
+  }
+  /* ② 지평 좌표계: 방위각(북점 → 동쪽으로, 초록 굵은 호), 고도(주황 굵은 호) */
+  const c2=cell('kw-f2',256,256,{fov:30});{
+    const g=skyBase(c2,{hw:2,hop:.6,gd:.3});
+    g.add(dot(hv(0,0),{r:.055,col:COL.hor}));                                             // 북점
+    g.add(line(c2,[[0,0,0],hv(0,0)],{col:COL.hor,w:2,op:.7}));
+    g.add(line(c2,[[0,0,0],hv(A,0)],{col:COL.hor,w:2,op:.7}));
+    g.add(line(c2,[[0,0,0],sv],{col:COL.gray,w:2}));
+    g.add(line(c2,arc(t=>hv(A,90-(90-h)*t),32),{col:COL.gray,w:2,dash:[.05,.04],op:.8}));   // 별을 지나는 수직권
+    g.add(dot([0,1,0],{r:.03,col:COL.gray}));
+    g.add(fan(Z3,arc(t=>hv(A*t,0),40),COL.hor,.3));g.add(fan(Z3,arc(t=>hv(A,h*t),24),COL.alt,.26));
+    g.add(line(c2,arc(t=>hv(A*t,0),40),{col:COL.hor,w:7}));
+    g.add(line(c2,arc(t=>hv(A,h*t),24),{col:COL.alt,w:7}));
+    starDot(g,sv);
+    c2.update=T=>c2.orbit(-.38+TAU*T/54,.34,4.75,[0,.08,0]);
+  }
+  /* ③ 적도 좌표계: 기울어진 천구의 적도·천구의 북극·춘분점, 적경(춘분점 → 동쪽으로, 파랑 굵은 호), 적위(보라 굵은 호). ②와 같은 별·같은 순간 */
+  const c3=cell('kw-f3',256,256,{fov:30});{
+    const g=skyBase(c3,{hw:2,hop:.55,gd:.35});
+    const P=ev(0,90,PHI0),Pn=ev(0,-90,PHI0),H=LST0-RA,VE=ev(LST0,0,PHI0);
+    g.add(line(c3,arc(t=>ev(t*360,0,PHI0),96),{col:COL.equ,w:3}));
+    g.add(line(c3,[sc(Pn,1.15),sc(P,1.15)],{col:COL.pole,w:2,dash:[.06,.045]}));
+    g.add(dot(P,{r:.05,col:COL.pole}));g.add(dot(Pn,{r:.04,col:COL.pole,op:.45}));
+    g.add(dot(VE,{r:.055,col:COL.ecl}));
+    g.add(line(c3,arc(t=>ev(H,90-(90-DEC)*t,PHI0),32),{col:COL.gray,w:2,dash:[.05,.04],op:.8}));   // 별을 지나는 시간권
+    g.add(fan(Z3,arc(t=>ev(LST0-RA*t,0,PHI0),40),COL.equ,.24));g.add(fan(Z3,arc(t=>ev(H,DEC*t,PHI0),16),COL.dec,.3));
+    g.add(line(c3,[Z3,VE],{col:COL.equ,w:2,op:.7}));g.add(line(c3,[Z3,ev(H,0,PHI0)],{col:COL.equ,w:2,op:.7}));g.add(line(c3,[Z3,sv],{col:COL.gray,w:2}));
+    g.add(line(c3,arc(t=>ev(LST0-RA*t,0,PHI0),40),{col:COL.equ,w:7}));
+    g.add(line(c3,arc(t=>ev(H,DEC*t,PHI0),16),{col:COL.dec,w:7}));
+    starDot(g,sv);
+    const eq=t=>ev(t,0,PHI0);info.equE=eq(-90);info.equW=eq(90);info.pole=toHor(P);info.ve=toHor(VE);
+    info.raDir={ve:toHor(VE).A,next:toHor(ev(LST0-10,0,PHI0)).A};   // 적경이 커지는 쪽(동쪽)인지 확인용
+    c3.update=T=>c3.orbit(-.38+TAU*T/54,.34,4.75,[0,.04,0]);
+  }
+  /* ④ 일주 운동: 별들이 천구의 북극을 중심으로(북쪽을 보면 시계 반대 방향) 돎. 짧은 선 = 지난 3시간(45°) 동안 지나온 길 */
+  const c4=cell('kw-f4',302,320,{fov:30});{
+    const g=skyBase(c4);
+    const P=ev(0,90,PHI0),Pn=ev(0,-90,PHI0),Pv=new THREE.Vector3(...P);
+    g.add(line(c4,[sc(Pn,1.15),sc(P,1.15)],{col:COL.pole,w:2,dash:[.06,.045]}));
+    g.add(dot(P,{r:.05,col:COL.pole}));
+    const sky=new THREE.Group();g.add(sky);
+    const stars=[[70,20],[48,150],[20,-45],[-8,60],[35,250]].map(([d,H0])=>{
+      sky.add(line(c4,arc(t=>ev(H0-45*(1-t),d,PHI0),24),{col:0xd69a00,w:3,op:.75}));
+      const m=dot(ev(H0,d,PHI0),{r:.055,col:COL.star});sky.add(m);return m;});
+    /* 시간각이 커지는 쪽으로 도는 회전 방향을 계산으로 정함(축 P에 대해 +인지 −인지) */
+    const q=new THREE.Quaternion().setFromAxisAngle(Pv,10*D2R),t0=new THREE.Vector3(...ev(0,0,PHI0)).applyQuaternion(q);
+    const sgn=t0.distanceTo(new THREE.Vector3(...ev(10,0,PHI0)))<t0.distanceTo(new THREE.Vector3(...ev(-10,0,PHI0)))?1:-1;
+    c4.orbit(-.38,.36,4.9,[0,.05,0]);
+    const wp=new THREE.Vector3();
+    c4.update=T=>{sky.quaternion.setFromAxisAngle(Pv,sgn*TAU*T/60);sky.updateMatrixWorld(true);
+      stars.forEach(m=>{m.getWorldPosition(wp);m.material.opacity=wp.y>=0?1:.35;});};
+    /* 확인용: 북쪽 하늘의 별이 화면에서 시계 반대 방향으로 도는지(화면 좌표의 외적 > 0) */
+    c4.cam.updateMatrixWorld(true);
+    const pj=v=>new THREE.Vector3(...v).project(c4.cam),p0=pj(P),a=pj(ev(150,70,PHI0)),b=pj(ev(152,70,PHI0));
+    info.ccw=(a.x-p0.x)*(b.y-p0.y)-(a.y-p0.y)*(b.x-p0.x);info.sgn=sgn;
+  }
+  /* ⑤ 위: 지구 위의 관측자 — 천구의 북극 방향(빨강)은 자전축과 나란. 지평면(초록)에서 그 방향까지의 각(주황) = 위도(회색) */
+  const c5a=cell('kw-f5a',312,236,{fov:30});{
+    const S=c5a.scene;
+    const e=new THREE.Mesh(new THREE.SphereGeometry(1,48,32),new THREE.MeshBasicMaterial({color:0x8fbfe8,transparent:true,opacity:.3,depthWrite:false}));e.renderOrder=0;S.add(e);
+    S.add(line(c5a,arc(t=>[Math.cos(t*TAU),0,Math.sin(t*TAU)],72),{col:COL.gray,w:2}));                 // 지구의 적도
+    S.add(line(c5a,[[0,-1.1,0],[0,1.25,0]],{col:COL.pole,w:2,dash:[.07,.05]}));                         // 자전축
+    S.add(line(c5a,[[0,0,0],[1,0,0]],{col:COL.gray,w:2}));
+    const dyn=new THREE.Group();S.add(dyn);
+    c5a.orbit(.3,.2,5.15,[.25,.28,0]);
+    c5a.set=phi=>{clear(dyn);const f=phi*D2R,O=[Math.cos(f),Math.sin(f),0],n=[-Math.sin(f),Math.cos(f),0];
+      dyn.add(line(c5a,[[0,0,0],O],{col:COL.gray,w:2}));
+      const la=arc(t=>[.52*Math.cos(f*t),.52*Math.sin(f*t),0],16);dyn.add(fan(Z3,la,0x6e6e73,.3));dyn.add(line(c5a,la,{col:0x6e6e73,w:6}));       // 위도(지구 중심에서)
+      const gd=new THREE.Mesh(new THREE.CircleGeometry(.5,48),new THREE.MeshBasicMaterial({color:0x9fd0a8,transparent:true,opacity:.75,side:THREE.DoubleSide,depthWrite:false}));
+      gd.position.set(...sc(O,1.01));gd.lookAt(...sc(O,3));gd.renderOrder=2;dyn.add(gd);            // 관측자의 지평면(접평면)
+      const Q=sc(O,1.012),add=(a,b,k)=>a.map((x,i)=>x+b[i]*k);
+      dyn.add(line(c5a,arc(t=>{const a=t*TAU,u=n,w=[0,0,1];return add(add(Q,u,.5*Math.cos(a)),w,.5*Math.sin(a));},48),{col:COL.hor,w:3}));   // 지평선
+      dyn.add(line(c5a,[Q,add(Q,n,.5)],{col:COL.hor,w:2}));                                          // 지평면 위의 북쪽 방향
+      dyn.add(arrow(Q,add(Q,[0,1,0],.6),{col:COL.pole,sr:.022,hr:.07,head:.2}));                    // 천구의 북극 방향(자전축과 나란)
+      const pa=arc(t=>{const a=f*t;return add(add(Q,n,.44*Math.cos(a)),O,.44*Math.sin(a));},16);dyn.add(fan(Q,pa,COL.alt,.3));dyn.add(line(c5a,pa,{col:COL.alt,w:6}));   // 지평면(북쪽)에서 천구의 북극 방향까지: n에서 천정(O) 쪽으로 φ만큼 → (0,1,0)
+      dyn.add(dot(Q,{r:.06,col:COL.ink}));};
+  }
+  /* ⑤ 아래: 그 관측자의 천구 — 북점에서 천구의 북극까지의 고도(주황) = 위도 */
+  const c5b=cell('kw-f5b',312,236,{fov:30});{
+    const g=skyBase(c5b);g.add(dot(hv(0,0),{r:.055,col:COL.hor}));
+    const dyn=new THREE.Group();g.add(dyn);
+    c5b.orbit(-1.05,.2,4.55,[0,.05,0]);   // 서쪽에서 조금 남쪽으로 비켜 본 모습(자오선이 거의 옆으로 펼쳐져 고도 호가 잘 보임, 북쪽이 왼쪽)
+    c5b.set=phi=>{clear(dyn);const P=ev(0,90,phi),Pn=ev(0,-90,phi);
+      dyn.add(line(c5b,arc(t=>ev(t*360,0,phi),96),{col:COL.equ,w:2.5,op:.8}));
+      dyn.add(line(c5b,[sc(Pn,1.12),sc(P,1.12)],{col:COL.pole,w:2,dash:[.06,.045]}));
+      dyn.add(line(c5b,[[0,0,0],hv(0,0)],{col:COL.hor,w:2,op:.7}));
+      dyn.add(fan(Z3,arc(t=>hv(0,phi*t),24),COL.alt,.26));dyn.add(line(c5b,arc(t=>hv(0,phi*t),24),{col:COL.alt,w:7}));
+      dyn.add(dot(P,{r:.055,col:COL.pole}));};
+  }
+  cells=[c1,c2,c3,c4,c5a,c5b];
+  cells.forEach(C=>C.mats.forEach(m=>m.resolution.set(C.w,C.h)));
+  window.__kw=info;
+}
+/* ⑤의 위도: 서울 37.5°에서 머물다 65° → 10° → 37.5°로 천천히 */
+const io=x=>x<.5?2*x*x:1-2*(1-x)*(1-x);
+function phiAt(T){const t=T%46;
+  if(t<6)return PHI0; if(t<14)return lerp(PHI0,65,io((t-6)/8)); if(t<16)return 65;
+  if(t<28)return lerp(65,10,io((t-16)/12)); if(t<30)return 10; if(t<38)return lerp(10,PHI0,io((t-30)/8)); return PHI0;}
+
+function draw(c,T){
+  const box=c.$('#kw-gl');if(!box||!R.domElement.isConnected)return;
+  const br=box.getBoundingClientRect(),s=br.width/GW;if(!(s>0))return;
+  const pr=clamp(s*(devicePixelRatio||1),.5,2.5);
+  if(Math.abs(pr-curPR)>1e-3){curPR=pr;R.setPixelRatio(pr);R.setSize(GW,GH,false);}
+  const phi=phiAt(T);
+  if(c.phi==null||Math.abs(phi-c.phi)>.004){c.phi=phi;cells[4].set(phi);cells[5].set(phi);
+    const tx=phi.toFixed(1)+'°';c.$('#kw-lat').textContent=tx;c.$('#kw-palt').textContent=(toHor(ev(0,90,phi)).h).toFixed(1)+'°';
+    cells[4].mats.forEach(m=>m.resolution.set(cells[4].w,cells[4].h));cells[5].mats.forEach(m=>m.resolution.set(cells[5].w,cells[5].h));}
+  R.setScissorTest(false);R.clear();R.setScissorTest(true);
+  for(const C of cells){
+    if(!C.el||!C.el.isConnected){C.el=c.$('#'+C.id);C.card=C.el.closest('.k-card');C.lab=null;}
+    const r=C.el.getBoundingClientRect(),x=(r.left-br.left)/s,y=(r.top-br.top)/s,w=r.width/s,h=r.height/s;
+    const op=+getComputedStyle(C.card).opacity;
+    if(C.update)C.update(T);
+    const vy=GH-y-h;R.setViewport(x,vy,w,h);R.setScissor(x,vy,w,h);
+    if(op>.003){R.render(C.scene,C.cam);if(op<.997){fadeMat.opacity=1-op;R.render(fadeScene,fadeCam);}}   // 카드가 나타나는 동안은 그림도 함께 옅게(바탕색을 덮어 흐리게)
+    if(C.labels.length){   // 그림 안 이름표(①의 천정·관측자): 화면 좌표로 옮겨 카드 안 글자로
+      if(!C.lab){const lb=c.$('#kw-lab');C.lab=C.labels.map(L=>{const d=document.createElement('div');d.className='k3-t';d.textContent=L.t;lb.appendChild(d);return d;});}
+      C.cam.updateMatrixWorld(true);
+      C.labels.forEach((L,i)=>{const v=new THREE.Vector3(...L.p).project(C.cam);
+        C.lab[i].style.opacity=op.toFixed(3);C.lab[i].style.transform='translate('+(x+(v.x+1)/2*w+(L.dx||0)).toFixed(1)+'px,'+(y+(1-v.y)/2*h+(L.dy||0)).toFixed(1)+'px)';});
+    }
+  }
+}
+
+Deck.scene('kw',{steps:0,
+  enter(c){
+    if(!R)setup();
+    c.$('#kw-gl').appendChild(R.domElement);curPR=0;cells.forEach(C=>{C.el=null;});c.phi=null;
+    let T=0;const still=document.documentElement.classList.contains('still');   // 정지 화면: 처음 모습(서울 37.5°) 그대로
+    draw(c,0);
+    c.loop((t,dt)=>{if(!still)T+=Math.min(dt,.1);draw(c,T);});
+    /* 정지 화면(?still=1)이나 일시정지 중에도 한 번 그린 모습이 남게: 등장이 끝난 뒤 다시 그림 */
+    [60,400,1200,2600].forEach(ms=>setTimeout(()=>{if(R.domElement.isConnected&&c.$('#kw-gl')&&c.$('#kw-gl').contains(R.domElement))draw(c,T);},ms));
+  }});
+Deck.start();
+</script>
+</body>
+</html>

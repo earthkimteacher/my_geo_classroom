@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>시험 — 위도에 따른 조석 양상, 입체 (three.js) - 진광고등학교 교사 김덕영</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<!-- 시험 장(2026-11-17, 저장소 밖): 조석 수업(지구시스템과학/II.05tide.html) 11~15장(만조가 하루에 몇 번? · A·B·C 지점 · 종합)을 3D 한 장면으로.
+     모형·숫자는 원래 장 그대로: 해수면 = 달 방향이 긴 축인 회전 타원체(긴 반지름 250/170, 짧은 반지름 186/170 — 지구 반지름 1), A 65°N · B 35°N · C 0°, 달의 적위 28.5°, 조석의 하루 24.84시간. 2판: 교사 말대로 달의 적위 0° 단계·막대를 뺌 -->
+<link rel="stylesheet" href="../../engine/deck.css">
+<link rel="stylesheet" href="three.css">
+<style>
+.slide{--sea:#0077B6;--pt:#D9480F;--dec:#8A6800}
+.c-sea{color:var(--sea)} .c-pt{color:var(--pt)} .c-dec{color:var(--dec)}
+/* 화면 가득 3D: 우주(짙은 남색) — 지구·해수면·달이 한 장면 */
+#tl-v{left:0;top:0;width:1920px;height:1080px;border-radius:0;z-index:1;background:radial-gradient(ellipse at 46% 48%,#14244a 0%,#0a1330 55%,#050a1c 100%)}
+html.print #tl-v{background:#fff}
+#tl .gl{background:rgba(255,255,255,.96);box-shadow:0 6px 24px rgba(0,0,0,.35);border-radius:20px;color:#1d1d1f}
+html.print #tl .gl{box-shadow:none;outline:2.5px solid #c7c7cc}
+#tl .hd{left:50px;top:40px;right:auto;width:450px;box-sizing:border-box;padding:14px 26px 16px;z-index:4}
+#tl .hd .eb{font-size:24px;margin-bottom:2px;color:#6e6e73}
+#tl .hd h2{font-size:42px;color:#1d1d1f;white-space:nowrap}
+#tl-clock{position:absolute;left:50px;top:178px;width:450px;box-sizing:border-box;padding:10px 26px;z-index:4;display:flex;align-items:baseline;gap:16px;font-variant-numeric:tabular-nums;white-space:nowrap}
+#tl-clock span{font-size:26px;font-weight:600;color:#6e6e73}
+#tl-clock b{font-size:36px;font-weight:800;color:var(--pt)}
+#tl-clock em{margin-left:auto;font-style:normal;font-size:24px;font-weight:600;color:#6e6e73}
+#tl-cap{position:absolute;left:50px;top:262px;width:450px;box-sizing:border-box;padding:22px 26px 24px;z-index:4;font-size:30px;line-height:1.45;font-weight:500;letter-spacing:-.01em}
+#tl-cap .cp{display:none}
+#tl-cap .cp.on{display:block;animation:tlin .45s ease both}
+@keyframes tlin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+html.still #tl-cap .cp.on,html.print #tl-cap .cp.on{animation:none}
+#tl-cap .tm{display:block;font-size:26px;font-weight:800;color:var(--act);margin-bottom:6px}
+#tl-cap b{font-weight:800}
+#tl-cap .sub{display:block;margin-top:12px;padding-top:12px;border-top:2px solid rgba(0,0,0,.08);font-size:27px;color:#3a3a3c}
+#tl-cap .df{display:block;margin-top:10px;font-size:27px;line-height:1.4}
+#tl-cap .df:first-of-type{margin-top:0}
+#tl-cap .df b.t{color:var(--act);font-size:30px}
+/* 오른쪽: 세 지점의 해수면 높이 그래프 */
+#tl-gr{position:absolute;left:1290px;top:88px;width:580px;height:884px;box-sizing:border-box;padding:18px 22px 0;z-index:4}
+#tl-gr .gb{height:258px}
+#tl-gr .gt{display:flex;align-items:center;gap:12px;height:44px;font-size:27px;font-weight:800;white-space:nowrap}
+#tl-gr .gt .nm{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:var(--pt);color:#fff;font-size:26px}
+#tl-gr .gt .la{font-weight:600;color:#3a3a3c;font-size:26px}
+#tl-gr .gt .ty{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:24px;font-weight:600;color:#3a3a3c;opacity:0;transition:opacity .5s}
+#tl-gr .gt .ty.on{opacity:1}
+#tl-gr .gt .ty b{padding:2px 14px;border-radius:999px;background:var(--act);color:#fff;font-size:26px;font-weight:800}
+#tl-gr svg{display:block;overflow:visible}
+#tl-gr svg text{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums}
+#tl-gr svg .ax{font-weight:600;fill:#6e6e73}
+#tl-gr svg .mk text{paint-order:stroke;stroke:#fff;stroke-width:6px;stroke-linejoin:round}
+html.print #tl-gr svg .mk text{stroke:none}
+#tl-gr .gb.cur svg .bx{stroke:var(--pt);stroke-width:3}
+#tl-gr .xl{font-size:24px;font-weight:600;color:#6e6e73;text-align:right;line-height:34px}
+/* 조작 줄 */
+#tl-panel{left:50px;top:892px;width:1200px;box-sizing:border-box;height:80px;gap:16px;padding:0 18px;font-size:27px;z-index:5}
+#tl-panel .seg{display:flex;gap:6px;align-items:center}
+#tl-panel .seg>span{font-size:25px;font-weight:700;color:#6e6e73;margin-right:2px}
+#tl-panel .ia-btn{height:54px;font-size:25px;padding:0 15px}
+#tl-panel .ia-btn.sq{width:50px;padding:0}
+#tl-panel .ia-btn.sub.on{background:#1d1d1f;color:#fff}
+html.print #tl-panel{display:none}
+#tl .fine{left:50px;right:auto;bottom:44px;padding:5px 16px;border-radius:12px;background:rgba(255,255,255,.9);color:#3a3a3c;z-index:4;white-space:nowrap}
+/* 3D 안의 이름표 */
+.v3-t.pt{background:var(--pt,#D9480F);color:#fff;font-size:28px;font-weight:800;padding:1px 12px;border-radius:999px;transition:opacity .2s}
+.v3-t.moon{background:rgba(255,255,255,.92);color:#1d1d1f;font-size:28px}
+.v3-t.decl{background:#FFD60A;color:#1d1d1f;font-size:26px;font-weight:800}
+.v3-t.np{background:rgba(255,255,255,.9);color:#1d1d1f;font-size:26px;padding:0 10px}
+.v3-t.eq{background:rgba(255,255,255,.82);font-size:24px;font-weight:600;color:#3a3a3c}
+.v3-t.sea{background:rgba(255,255,255,.92);color:#0077B6;font-size:26px}
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+<section class="slide" id="tl" data-tile="black" data-title="위도에 따른 조석 양상 — 입체" data-notes="three.js 시험 장. 조석 수업의 ‘만조가 하루에 몇 번?’·‘A·B·C 지점의 조석’·‘한눈에 비교’ 장의 내용을 3D 한 장면으로 모았습니다. 원래 장에서는 ‘옆에서 본 지구’와 ‘북극 위에서 내려다본 단면’ 두 그림을 학생이 머릿속에서 합쳐야 했는데, 여기서는 같은 장면을 카메라만 돌려 보여 줍니다. 끌면 돌려 보고 휠·두 손가락으로 확대합니다. 장면을 끌지 않고 그냥 누르면 다음 단계로 넘어갑니다(왼쪽 가장자리는 이전). 모형(원래 장과 같음): 평형 조석론 — 지구 전체가 바다로 덮여 있고 바닷물이 기조력에 바로 반응한다고 가정합니다. 해수면은 달의 방향이 긴 축인 회전 타원체(지구 반지름을 1로 할 때 긴 반지름 1.47, 짧은 반지름 1.09 — 매우 크게 과장, 실제 대양에서 달에 의한 평형 조석의 높이 차는 1 m에 못 미침)이고, 그래프의 높이는 그 지점 위 해수면까지의 거리를 0(가장 낮음)~1(가장 높음)로 나타낸 상대값입니다. 지점과 달 바로 아래 지점 사이의 각을 θ라 하면 cosθ = sin(위도)·sin(달의 적위) + cos(위도)·cos(달의 적위)·cos(경과 각)이고 해수면 높이는 cos²θ가 클수록 높습니다. A 65°N · B 35°N · C 0°, 달의 적위 28.5°(최대 약 28.5°), 조석의 하루 24시간 50분(24.84시간). 시간 약속(수능 그림과 같음): 0시는 그 지점이 달 쪽에 있을 때(달의 남중)이고 가로축은 0~24시 50분, 세로 점선은 24시입니다. 하루(24시간)가 지나도 지점은 아직 달 쪽으로 돌아오지 않고 50분이 더 지나야 다시 달 쪽에 옵니다 — 지구가 한 바퀴 자전하는 동안 달도 약 13° 공전하기 때문입니다. 이 장면은 달이 늘 같은 자리에 보이도록 달과 함께 도는 시점에서 그렸습니다(그래서 지구가 한 바퀴 도는 데 24시간 50분). 과장한 것: 해수면 높이 변화(매우 크게), 달까지의 거리(실제는 지구 반지름의 약 60배 — 그림은 약 2배. 달의 크기는 지구의 약 0.27배로 실제 비율). 처음 화면: 옆에서 본 지구. 세 지점 A·B·C가 같은 경도선(주황 선) 위에 있고, 달은 적도면에서 28.5° 위쪽 방향에 있습니다(노란 호 = 달의 적위). 클릭 1: 해수면(파란 타원체)이 나타납니다. 달 쪽과 달 반대편의 해수면이 높고, 지구의 적도면이 달의 공전 궤도면에 대해 기울어져 있어서 해수면이 높은 곳도 적도에 대해 기울어져 있습니다. 위도선마다 그 위도의 해수면을 이은 하늘색 선이 함께 나타납니다. 클릭 2: 카메라가 비스듬히 올라가고 지구가 하루 동안 자전합니다(10초 = 조석의 하루). 주황 점은 지표면에 고정된 지점, 하늘색 기둥은 그 지점 위의 바닷물이고 기둥의 길이가 오른쪽 그래프에 실시간으로 그려집니다. 뒤로 돌아간 지점은 흐리게 비쳐 보입니다. 왜 그런지는 말로 설명합니다: A는 달 쪽에서만 해수면이 높은 곳을 지나 만조가 되고 달 반대편에서는 비켜 가서 간조가 됩니다. B는 달 쪽에서 높은 만조, 달 반대편에서도 만조이지만 가장자리만 스쳐 낮은 만조가 됩니다. C는 달 쪽과 달 반대편에서 똑같은 높이의 만조가 됩니다. 클릭 3: 조석 양상의 이름 — A 일주조, B 혼합조, C 반일주조. 클릭 4~6: 북극 위에서 내려다봅니다(달은 오른쪽, 지구는 시계 반대 방향으로 자전). 파란 띠는 그 위도에서 지표면과 해수면 사이의 바닷물로, 원래 수업의 ‘북극 위에서 내려다본 단면’과 같은 것입니다. A(65°N)는 띠가 달 쪽만 두껍고, B(35°N)는 달 쪽은 아주 두껍고 달 반대편은 조금 두꺼우며, C(적도)는 달 쪽과 달 반대편이 똑같이 두껍습니다. 단계마다 지구가 하루 자전하며 그 지점이 띠를 따라 돕니다(10초). 아래 조작 줄의 [옆에서] [비스듬히] [북극 위에서]로 언제든 시점을 바꿀 수 있고, [띠 A B C]로 띠를 켜고 끕니다. 그래프의 이름표는 원래 장과 같은 기준입니다: 두 만조의 높이 차가 0.1(상대값)보다 크면 ‘높은 만조·낮은 만조’(혼합조), 작으면 그냥 ‘만조’(반일주조), 만조가 한 번이면 일주조. 값(상대 높이): 적위 28.5°일 때 A 만조 0.54 한 번(간조 0.00), B 높은 만조 0.98·낮은 만조 0.14(간조 0.00 두 번, 높이 같음), C 만조 0.68 두 번. 꼭 덧붙일 말: 이것은 평형 조석론 모형입니다. 실제 조석은 대륙과 해안 지형·해저 수심의 영향을 받아 훨씬 복잡하고, 위도가 비슷한 우리나라 동해안과 서해안도 조석 양상이 매우 다릅니다. 평형 조석론에서는 두 간조의 높이가 항상 같습니다(교과서 혼합조 그림은 간조 높이도 다름 — 원래 수업의 [실제 바다] 전환 참고, 이 시험 장에는 넣지 않았습니다).">
+  <div class="v3" id="tl-v"></div>
+  <div class="hd gl" data-in><div class="eb"><b>시험</b>three.js 입체</div><h2>위도에 따른 조석 양상</h2></div>
+  <div class="gl" id="tl-clock" data-in="200"><span>경과 시간</span><b id="tl-ck">0시간 00분</b></div>
+  <div class="gl" id="tl-cap" data-in="300">
+    <div class="cp" data-k="0"><span class="tm">달의 적위</span>지구의 적도면은 달의 공전 궤도면에 대해 <b>기울어져 있다</b><span class="sub">달의 적위 <b class="c-dec">28.5°</b>(최대)<br><b class="c-pt">A</b> 65°N · <b class="c-pt">B</b> 35°N · <b class="c-pt">C</b> 0°</span></div>
+    <div class="cp" data-k="1"><span class="tm">해수면</span>달 쪽과 달 반대편의 <b class="c-sea">해수면</b>이 높다<span class="sub">해수면이 높은 곳도 적도에 대해 <b>기울어져 있다</b></span></div>
+    <div class="cp" data-k="2"><span class="tm">지구의 자전</span>세 지점이 <b>위도선</b>을 따라 하루에 한 바퀴 돈다<span class="sub"><b class="c-pt">주황 점</b> 지표면의 지점<br><b class="c-sea">파란 기둥</b> 그 지점의 해수면 높이</span></div>
+    <div class="cp" data-k="3"><span class="tm">조석 양상</span>
+      <span class="df"><b class="t">일주조</b> 하루에 만조와 간조가 각각 <b>한 번씩</b></span>
+      <span class="df"><b class="t">혼합조</b> 각각 <b>두 번씩</b>, 연속된 두 만조(간조)의 <b>높이가 서로 다르다</b></span>
+      <span class="df"><b class="t">반일주조</b> 각각 <b>두 번씩</b>, 연속된 두 만조(간조)의 <b>높이가 거의 같다</b></span></div>
+    <div class="cp" data-k="4"><span class="tm">북극 위에서 보면</span><b class="c-pt">A</b> 고위도 65°N<span class="sub"><b class="c-sea">파란 띠</b> A 지점이 지나는 위도의 해수면 높이</span></div>
+    <div class="cp" data-k="5"><span class="tm">북극 위에서 보면</span><b class="c-pt">B</b> 중위도 35°N<span class="sub"><b class="c-sea">파란 띠</b> B 지점이 지나는 위도의 해수면 높이</span></div>
+    <div class="cp" data-k="6"><span class="tm">북극 위에서 보면</span><b class="c-pt">C</b> 적도 0°<span class="sub"><b class="c-sea">파란 띠</b> C 지점이 지나는 위도의 해수면 높이</span></div>
+  </div>
+  <div class="gl" id="tl-gr" data-in="350">
+    <div class="gb" data-i="0"><div class="gt"><span class="nm">A</span><span>고위도</span><span class="la">65°N</span><span class="ty"><b></b><span></span></span></div><svg viewBox="0 0 536 214" width="536" height="214"></svg></div>
+    <div class="gb" data-i="1"><div class="gt"><span class="nm">B</span><span>중위도</span><span class="la">35°N</span><span class="ty"><b></b><span></span></span></div><svg viewBox="0 0 536 214" width="536" height="214"></svg></div>
+    <div class="gb" data-i="2"><div class="gt"><span class="nm">C</span><span>적도</span><span class="la">0°</span><span class="ty"><b></b><span></span></span></div><svg viewBox="0 0 536 214" width="536" height="214"></svg></div>
+    <svg viewBox="0 0 536 34" width="536" height="34" id="tl-xa"></svg>
+    <div class="xl">해수면 높이(상대값) · 시간(시) · 10초 = 하루</div>
+  </div>
+  <div class="ia-panel gl" id="tl-panel" data-in="400">
+    <div class="seg"><button class="ia-btn sub on" data-v="side">옆에서</button><button class="ia-btn sub" data-v="obl">비스듬히</button><button class="ia-btn sub" data-v="top">북극 위에서</button></div>
+    <div class="seg"><span>띠</span><button class="ia-btn sub sq" data-f="0">A</button><button class="ia-btn sub sq" data-f="1">B</button><button class="ia-btn sub sq" data-f="2">C</button></div>
+    <button class="ia-btn" id="tl-play">하루 재생</button>
+  </div>
+  <div class="fine">평형 조석론 모식 · 해수면 높이 변화는 매우 크게 과장(실제 대양에서 1 m 미만) · 달까지의 거리는 줄여 그림 · 실제 조석은 지형·수심의 영향으로 훨씬 복잡하다</div>
+</section>
+
+</div></div>
+
+<div id="progress"><i></i></div>
+<div id="stepdots"></div>
+<script src="../../engine/deck.js"></script>
+<script type="importmap">{"imports":{"three":"../../engine/vendor/three@0.160.0/build/three.module.min.js","three/addons/":"../../engine/vendor/three@0.160.0/examples/jsm/"}}</script>
+<script type="module">
+import {THREE,makeView,line,dot,label,fade,clamp,lerp,D2R,PRINT,STILL} from '../../engine/three-kit.js';
+
+/* ── 모형(원래 장 II.05tide.html의 S11과 같은 식) ──
+   좌표: Y = 자전축(북쪽 +), 달의 방향 u = (cosδ, sinδ, 0), 위도 f·경도 l(달 쪽 = 0)인 지점 n = (cos f cos l, sin f, −cos f sin l)
+   해수면: 달 방향이 긴 축인 회전 타원체 r(n) = 1/√(c²/a² + (1−c²)/b²), c = n·u = cosθ, a = 250/170, b = 186/170 (지구 반지름 1)
+   높이(상대값) h = (r − b)/(a − b): 0(가장 낮음)~1(가장 높음). 경도 l = 2π·t/24.84시간(0시 = 달 쪽, 달의 남중) */
+const TAU=Math.PI*2,P=24.84,LATS=[65,35,0],NM=['A','B','C'],DEL0=28.5,RA=250/170,RB=186/170;
+const nOf=(f,l)=>[Math.cos(f)*Math.cos(l),Math.sin(f),-Math.cos(f)*Math.sin(l)];
+const uOf=d=>[Math.cos(d*D2R),Math.sin(d*D2R),0];
+const rOf=(n,u)=>{const c=n[0]*u[0]+n[1]*u[1]+n[2]*u[2];return 1/Math.sqrt(c*c/(RA*RA)+(1-c*c)/(RB*RB));};
+const hOf=(n,u)=>(rOf(n,u)-RB)/(RA-RB);
+const lon=t=>TAU*t/P;
+const H=(la,t,d)=>hOf(nOf(la*D2R,lon(t)),uOf(d));
+/* 만조·간조(극값): c² 의 극값 — l = 0(만조), l = π(tan f·tan δ < 1이면 두 번째 만조, 아니면 간조), c = 0인 곳(cos l = −tan f·tan δ, 간조) */
+function extOf(la,d){
+  const k=Math.tan(la*D2R)*Math.tan(d*D2R),ex=[{t:0,hi:true}];
+  if(k<1-1e-9){const l1=Math.acos(-k);ex.push({t:P*l1/TAU,hi:false},{t:P/2,hi:true},{t:P*(1-l1/TAU),hi:false});}
+  else ex.push({t:P/2,hi:false});
+  ex.push({t:P,hi:true});
+  ex.forEach(e=>{e.h=H(la,e.t,d);});
+  [true,false].forEach(hi=>{const g=ex.filter(e=>e.hi===hi),hs=g.map(e=>e.h),top=Math.max(...hs),bot=Math.min(...hs),uneq=g.length>1&&top-bot>.1;   // 원래 장과 같은 기준(높이 차 0.1)
+    g.forEach(e=>{e.lab=(uneq?(e.h>(top+bot)/2?'높은 ':'낮은 '):'')+(hi?'만조':'간조');});});
+  const nHi=ex.filter(e=>e.hi&&e.t<P-1e-6).length,uneq=ex.some(e=>e.lab.length>2);
+  return {ex,nHi,type:nHi===1?'일주조':uneq?'혼합조':'반일주조'};
+}
+const fmtHM=t=>{const m=Math.round(t*60);return Math.floor(m/60)+'시간 '+String(m%60).padStart(2,'0')+'분';};
+
+/* ── 3D 장면 ── */
+const CD=10,MD=1.95;   // 카메라 거리, 달까지의 거리(그림 — 실제는 약 60)
+const camAt=(az,el)=>[CD*Math.sin(az*D2R)*Math.cos(el*D2R),CD*Math.sin(el*D2R),CD*Math.cos(az*D2R)*Math.cos(el*D2R)];
+const CAM={side:{pos:camAt(0,3),target:[0,0,0]},obl:{pos:camAt(22,22),target:[0,0,0]},top:{pos:[0,9.2,.02],target:[0,0,0]}};
+const SEA=PRINT?0x0077B6:0x64D2FF,INK=PRINT?0x3a3a3c:0xffffff,PT=0xFF6A3D,NR=120;
+let V=null,S=null;
+function earthTex(){
+  const c=document.createElement('canvas');c.width=1024;c.height=512;const g=c.getContext('2d');
+  const gr=g.createLinearGradient(0,0,0,512);gr.addColorStop(0,'#2a6aa3');gr.addColorStop(.5,'#3e90cc');gr.addColorStop(1,'#2a6aa3');g.fillStyle=gr;g.fillRect(0,0,1024,512);
+  g.strokeStyle='rgba(255,255,255,.22)';g.lineWidth=2;
+  for(let i=0;i<12;i++){const x=i*1024/12+1;g.beginPath();g.moveTo(x,0);g.lineTo(x,512);g.stroke();}
+  const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=4;return t;
+}
+function setup(){
+  V=makeView({w:1920,h:1080,fov:30,pos:CAM.side.pos,target:[0,0,0],minD:5,maxD:18,key:'tl'});
+  V.camera.setViewOffset(1920,1080,110,20,1920,1080);   // 지구를 화면 중심에서 왼쪽 110·위 20 px로(오른쪽 그래프 카드를 피해)
+  const sc=V.scene;S={};
+  sc.add(new THREE.AmbientLight(0xffffff,1.9));const dl=new THREE.DirectionalLight(0xffffff,1.6);dl.position.set(-.5,.6,1);V.camera.add(dl);sc.add(V.camera);   // 빛은 카메라를 따라감(태양 방향을 뜻하지 않음)
+  if(!PRINT){const p=[];for(let i=0;i<650;i++){const a=Math.random()*TAU,z=Math.random()*2-1,q=Math.sqrt(1-z*z);p.push(70*q*Math.cos(a),70*z,70*q*Math.sin(a));}
+    const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));
+    sc.add(new THREE.Points(g,new THREE.PointsMaterial({color:0xffffff,size:2.2,sizeAttenuation:false,transparent:true,opacity:.6})));}
+  /* 지구(자전하는 묶음): 경도선 무늬 + 세 위도선 + 관측 지점이 놓인 경도선 + 세 지점 */
+  const gE=S.gE=new THREE.Group();sc.add(gE);
+  gE.add(new THREE.Mesh(new THREE.SphereGeometry(1,96,64),new THREE.MeshLambertMaterial({map:earthTex()})));
+  LATS.forEach(la=>{const f=la*D2R,p=[];for(let j=0;j<=NR;j++)p.push(nOf(f,TAU*j/NR).map(v=>v*1.004));gE.add(line(V,p,{col:0xffffff,w:la?2.5:3,op:.85}));});
+  {const p=[];for(let f=-90;f<=90;f+=3)p.push(nOf(f*D2R,0).map(v=>v*1.005));gE.add(line(V,p,{col:PT,w:3.5,op:.9}));}
+  S.dots=LATS.map(la=>{const n=nOf(la*D2R,0),d=dot(n.map(v=>v*1.01),{r:.052,col:PT});gE.add(d);
+    const gh=dot(n.map(v=>v*1.01),{r:.052,col:PT,op:.3,order:9});gh.material.depthTest=false;gE.add(gh);return d;});
+  /* 자전축·극 */
+  sc.add(line(V,[[0,-1.42,0],[0,1.42,0]],{col:INK,w:3,op:.9}));
+  S.lN=label('N',[0,1.52,0],{cls:'np'});S.lS=label('S',[0,-1.52,0],{cls:'np'});sc.add(S.lN,S.lS);
+  /* 자전 방향(서 → 동, 북극 위에서 보면 시계 반대) */
+  {const p=[],r=.3,y=1.16;for(let a=200;a<=320;a+=6)p.push([r*Math.cos(a*D2R),y,-r*Math.sin(a*D2R)]);sc.add(line(V,p,{col:INK,w:3,op:.8}));
+    const a=320*D2R,cone=new THREE.Mesh(new THREE.ConeGeometry(.045,.13,16),new THREE.MeshBasicMaterial({color:INK,transparent:true,opacity:.85}));
+    const tg=new THREE.Vector3(-Math.sin(a),0,-Math.cos(a));cone.position.set(r*Math.cos(a),y,-r*Math.sin(a)).addScaledVector(tg,.04);cone.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),tg);sc.add(cone);}
+  /* 적도면 */
+  const ring=new THREE.Mesh(new THREE.RingGeometry(1.0,1.95,96),new THREE.MeshBasicMaterial({color:PRINT?0x8e8e93:0xffffff,transparent:true,opacity:PRINT?.12:.07,side:THREE.DoubleSide,depthWrite:false}));
+  ring.rotation.x=-Math.PI/2;ring.renderOrder=0;sc.add(ring);
+  {const p=[];for(let j=0;j<=NR;j++){const a=TAU*j/NR;p.push([1.95*Math.cos(a),0,1.95*Math.sin(a)]);}sc.add(line(V,p,{col:INK,w:1.5,op:.35}));}
+  sc.add(line(V,[[1.0,0,0],[2.25,0,0]],{col:INK,w:2.5,op:.75,dash:[.07,.05]}));
+  S.lEq=label('적도면',[-1.52,0,0],{cls:'eq',cy:-.25});sc.add(S.lEq);
+  /* 달의 방향(적위만큼 기울어지는 묶음): 달, 지구 중심–달 선 */
+  const gM=S.gM=new THREE.Group();sc.add(gM);
+  gM.add(new THREE.Mesh(new THREE.SphereGeometry(.27,48,32),new THREE.MeshLambertMaterial({color:0xc9c9cf})));gM.children[0].position.set(MD,0,0);
+  gM.add(line(V,[[1.0,0,0],[MD-.3,0,0]],{col:INK,w:2.5,op:.75,dash:[.07,.05]}));
+  S.lMoon=label('달',[MD,.44,0],{cls:'moon'});gM.add(S.lMoon);
+  S.gArc=new THREE.Group();sc.add(S.gArc);S.arc=null;
+  S.lDec=label('달의 적위 28.5°',[1.6,-.3,0],{cls:'decl',cx:.7});sc.add(S.lDec);
+  /* 해수면(1단계부터): 타원체 + 긴 축(달 쪽·반대쪽) + 위도별 해수면 선 + 지점 위의 물기둥 */
+  const gW=S.gW=new THREE.Group();sc.add(gW);
+  const gB=S.gB=new THREE.Group();gW.add(gB);
+  const bm=new THREE.Mesh(new THREE.SphereGeometry(1,96,64),new THREE.MeshPhongMaterial({color:0x2f9bea,transparent:true,opacity:PRINT?.2:.27,depthWrite:false,shininess:70,specular:0x8fd0ff}));
+  bm.scale.set(RA,RB,RB);bm.renderOrder=2;bm.userData.base=bm.material.opacity;gB.add(bm);
+  {const p=[];for(let j=0;j<=NR;j++){const a=TAU*j/NR;p.push([RA*Math.cos(a),RB*Math.sin(a),0]);}gB.add(line(V,p,{col:SEA,w:2,op:.7,order:3}));}
+  gB.add(line(V,[[-1.78,0,0],[-RA,0,0]],{col:SEA,w:2.5,op:.8,dash:[.07,.05]}),line(V,[[RA,0,0],[1.0,0,0]],{col:SEA,w:1,op:0}));
+  S.rings=LATS.map(()=>{const l=line(V,Array.from({length:NR+1},(_,j)=>[j,0,0]),{col:SEA,w:3,op:.95,order:4});gW.add(l);return l;});
+  S.cols=LATS.map(()=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(.024,.024,1,12),new THREE.MeshBasicMaterial({color:SEA,transparent:true}));m.renderOrder=5;gW.add(m);
+    const cap=new THREE.Mesh(new THREE.CylinderGeometry(.075,.075,.016,24),new THREE.MeshBasicMaterial({color:SEA,transparent:true}));cap.renderOrder=5;gW.add(cap);
+    const gm=new THREE.Mesh(m.geometry,new THREE.MeshBasicMaterial({color:SEA,transparent:true,depthTest:false}));gm.renderOrder=8;gm.userData.base=.25;gW.add(gm);return {m,cap,gm};});
+  /* 띠(북극 위에서 본 단면): 그 위도의 지표면 ~ 해수면 */
+  S.bands=LATS.map(()=>{const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(new Float32Array((NR+1)*6),3));
+    const ix=[];for(let j=0;j<NR;j++){const a=j*2;ix.push(a,a+1,a+2,a+1,a+3,a+2);}g.setIndex(ix);
+    const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({color:PRINT?0x0077B6:0x1e9bff,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false}));m.renderOrder=3;m.visible=false;sc.add(m);return m;});
+  S.lP=NM.map(nm=>{const l=label(nm,[0,0,0],{cls:'pt'});sc.add(l);return l;});
+  S.del=null;
+}
+/* 달의 적위가 바뀔 때 다시 만드는 것: 해수면 선·띠·적위 호 */
+function buildDel(d){
+  const u=uOf(d);S.del=d;S.gB.rotation.z=S.gM.rotation.z=d*D2R;
+  LATS.forEach((la,i)=>{const f=la*D2R,p=[],bp=S.bands[i].geometry.attributes.position;
+    for(let j=0;j<=NR;j++){const n=nOf(f,TAU*j/NR),r=rOf(n,u);p.push(n[0]*r,n[1]*r,n[2]*r);bp.setXYZ(j*2,n[0]*1.006,n[1]*1.006,n[2]*1.006);bp.setXYZ(j*2+1,n[0]*r,n[1]*r,n[2]*r);}
+    S.rings[i].geometry.setPositions(p);bp.needsUpdate=true;S.bands[i].geometry.computeBoundingSphere();});
+  if(S.arc){S.gArc.remove(S.arc);S.arc.geometry.dispose();V.mats.delete(S.arc.material);S.arc.material.dispose();S.arc=null;}
+  if(d>.3){const p=[];for(let j=0;j<=24;j++){const a=d*D2R*j/24;p.push([1.72*Math.cos(a),1.72*Math.sin(a),0]);}S.arc=line(V,p,{col:0xFFD60A,w:5,order:6});S.gArc.add(S.arc);}
+  S.lDec.element.textContent='달의 적위 '+(Math.round(d*10)/10)+'°';
+}
+const _a=new THREE.Vector3(),_b=new THREE.Vector3(),_y=new THREE.Vector3(0,1,0),_q=new THREE.Vector3();
+function hidden(p){   // 카메라에서 볼 때 지구에 가리는가
+  const o=V.camera.position;_q.copy(p).sub(o);const A=_q.lengthSq(),B=2*o.dot(_q),C=o.lengthSq()-1,D=B*B-4*A*C;if(D<=0)return false;const s=(-B-Math.sqrt(D))/(2*A);return s>0&&s<1;
+}
+function draw3(st){
+  if(S.del!==st.del)buildDel(st.del);
+  const u=uOf(st.del),l=lon(st.t),up=V.camera.position.y/V.camera.position.length();S.gE.rotation.y=l;
+  fade(S.gW,st.w);
+  LATS.forEach((la,i)=>{const n=nOf(la*D2R,l),r=rOf(n,u),o=S.cols[i],len=Math.max(r-1,.001);
+    _a.set(...n);o.m.position.copy(_a).multiplyScalar(1+len/2);o.m.scale.set(1,len,1);o.m.quaternion.setFromUnitVectors(_y,_a);
+    o.gm.position.copy(o.m.position);o.gm.scale.copy(o.m.scale);o.gm.quaternion.copy(o.m.quaternion);
+    o.cap.position.copy(_a).multiplyScalar(r);o.cap.quaternion.copy(o.m.quaternion);
+    const lp=S.lP[i],rr=(st.w>.5?r:1)+(i===2&&up>.8?.32:.17);lp.position.set(n[0]*rr,n[1]*rr,n[2]*rr);_b.set(n[0],n[1],n[2]).multiplyScalar(1.06);lp.element.style.opacity=hidden(_b)?.45:1;
+    const b=S.bands[i],bo=st.w*st.band[i];b.visible=bo>.01;b.material.opacity=bo*(PRINT?.5:.62);
+    S.rings[i].material.opacity=st.w*(st.foc<0||st.foc===i?.95:.3);});
+  [S.lS,S.lEq,S.lDec].forEach(o=>{o.element.style.visibility=up>.8?'hidden':'';});
+}
+
+/* ── 오른쪽 그래프(세 지점의 해수면 높이) ── */
+const GX0=22,GSX=492/P,GY=h=>62+(1-h)*104,GX=t=>GX0+GSX*t,NS='http://www.w3.org/2000/svg';
+const el=(tag,at,par)=>{const e=document.createElementNS(NS,tag);for(const k in at)e.setAttribute(k,at[k]);if(par)par.appendChild(e);return e;};
+function graphBase(c){
+  c.G=c.$$('#tl-gr .gb').map((gb,i)=>{const sv=gb.querySelector('svg');sv.textContent='';
+    el('rect',{class:'bx',x:1,y:1,width:534,height:212,rx:10,fill:'none',stroke:'#d2d2d7','stroke-width':2},sv);
+    el('line',{x1:GX(24),y1:3,x2:GX(24),y2:211,stroke:'#8e8e93','stroke-width':2.5,'stroke-dasharray':'7 7'},sv);
+    el('text',{class:'ax',x:GX(24)-8,y:203,'text-anchor':'end'},sv).textContent='24시';
+    const full=el('path',{fill:'none',stroke:'#D9480F','stroke-opacity':.3,'stroke-width':4,'stroke-linejoin':'round'},sv);
+    const tr=el('path',{fill:'none',stroke:'#D9480F','stroke-width':6,'stroke-linecap':'round','stroke-linejoin':'round'},sv);
+    const mk=el('g',{class:'mk','text-anchor':'middle'},sv),gd=el('circle',{r:10,fill:'#D9480F',stroke:'#fff','stroke-width':3,opacity:0},sv);
+    return {gb,sv,full,tr,mk,gd,ty:gb.querySelector('.ty'),E:null,del:null};});
+  const xa=c.$('#tl-xa');xa.textContent='';
+  [[0,'0'],[6,'6'],[12,'12'],[18,'18']].forEach(([t,s])=>{el('text',{class:'ax',x:GX(t),y:26,'text-anchor':'middle'},xa).textContent=s;});
+  el('text',{class:'ax',x:536,y:26,'text-anchor':'end'},xa).textContent='24시 50분';
+}
+function drawG(c){
+  const st=c.st;
+  c.G.forEach((g,i)=>{const la=LATS[i];
+    if(g.del!==st.del){g.del=st.del;g.E=extOf(la,st.del);
+      const q=[];for(let k=0;k<=248;k++){const t=P*k/248;q.push(GX(t).toFixed(1)+' '+GY(H(la,t,st.del)).toFixed(1));}g.full.setAttribute('d','M'+q.join(' L'));
+      g.mk.textContent='';g.E.ex.forEach(e=>{const x=GX(e.t),y=GY(e.h),col=e.hi?'#D9480F':'#0077B6',m=e.lab.length>2?54:26,mg=el('g',{},g.mk);
+        el('circle',{cx:x.toFixed(1),cy:y.toFixed(1),r:9,fill:'#fff',stroke:col,'stroke-width':4},mg);
+        el('text',{x:clamp(x,m,536-m).toFixed(1),y:(e.hi?y-18:y+36).toFixed(1),fill:col},mg).textContent=e.lab;});
+      g.ty.firstElementChild.textContent=g.E.type;g.ty.lastElementChild.textContent='만조 '+g.E.nHi+'번';}
+    g.full.style.display=st.full?'':'none';
+    if(st.g){const q=[];for(let s=0;s<st.t;s+=.1)q.push(GX(s).toFixed(1)+' '+GY(H(la,s,st.del)).toFixed(1));q.push(GX(st.t).toFixed(1)+' '+GY(H(la,st.t,st.del)).toFixed(1));g.tr.setAttribute('d','M'+q.join(' L'));
+      g.gd.setAttribute('cx',GX(st.t).toFixed(2));g.gd.setAttribute('cy',GY(H(la,st.t,st.del)).toFixed(2));g.gd.setAttribute('opacity',1);}
+    else{g.tr.setAttribute('d','');g.gd.setAttribute('opacity',0);}
+    [...g.mk.children].forEach((m,j)=>m.setAttribute('opacity',st.g&&(st.full||st.t>=g.E.ex[j].t-.02)?1:0));
+    g.ty.classList.toggle('on',!!st.ty);g.gb.classList.toggle('cur',st.foc===i);});
+  c.ck.textContent=fmtHM(st.t);
+}
+
+/* ── 단계 ── 0 옆에서 본 지구 · 1 해수면 · 2 자전 + 그래프 · 3 조석 양상 이름 · 4~6 북극 위에서(A·B·C 띠)  */
+const DEF=k=>({w:k>=1?1:0,g:k>=2,full:k>=2,ty:k>=3,foc:k>=4?k-4:-1,del:DEL0,t:k>=2?P:0,view:k>=4?'top':k>=2?'obl':'side'});
+let cur=null;
+Deck.scene('tl',{steps:6,
+  enter(c){
+    if(!V)setup();
+    V.mount(c.$('#tl-v'));cur=c;
+    const st=c.st={...DEF(0),band:[0,0,0]};
+    c.ck=c.$('#tl-ck');graphBase(c);
+    const pn=c.$('#tl-panel');
+    c.cap=k=>c.$$('#tl-cap .cp').forEach(e=>e.classList.toggle('on',e.dataset.k.split(' ').includes(String(k))));
+    c.btn=()=>{c.$$('#tl-panel [data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===st.view));c.$$('#tl-panel [data-f]').forEach(b=>b.classList.toggle('on',+b.dataset.f===st.foc));};
+    c.camTok=0;c.pt=0;c.bt=0;
+    c.cam=(name,ms)=>{st.view=name;c.btn();const tok=++c.camTok,f=V.camTo(CAM[name].pos,CAM[name].target);return c.tween(ms,e=>{if(tok===c.camTok)f(e);},{ease:'inOut'});};
+    c.play=ms=>{const tok=++c.pt;st.g=true;return c.tween(ms,e=>{if(tok===c.pt)st.t=P*e;},{ease:'linear'});};   // 자전은 등속
+    c.focus=(i,ms=500)=>{st.foc=i;c.btn();const tok=++c.bt,b0=[...st.band];return c.tween(ms,e=>{if(tok===c.bt)st.band=b0.map((v,j)=>lerp(v,j===i?1:0,e));});};
+    c.snap=k=>{const d=DEF(k);Object.assign(st,d,{band:[0,1,2].map(j=>j===d.foc?1:0)});c.camTok++;c.pt++;c.bt++;V.camera.position.set(...CAM[d.view].pos);V.ctl.target.set(0,0,0);V.ctl.update();
+      c.btn();c.cap(k);};
+    c.$$('#tl-panel [data-v]').forEach(b=>b.addEventListener('click',()=>c.cam(b.dataset.v,1300)));
+    c.$$('#tl-panel [data-f]').forEach(b=>b.addEventListener('click',()=>{if(st.w<.5)st.w=1;c.focus(st.foc===+b.dataset.f?-1:+b.dataset.f);}));
+    c.$('#tl-play').addEventListener('click',()=>{st.full=st.full||st.g;c.play(10000);});
+    pn.addEventListener('click',e=>e.stopPropagation());
+    c.d=()=>{draw3(st);drawG(c);V.render();};
+    c.snap(0);c.d();
+    c.loop(()=>c.d());
+  },
+  async go(c,k){
+    const st=c.st;c.snap(k-1);c.cap(k);
+    if(k===1){await c.tween(1400,e=>{st.w=e;});}
+    if(k===2){await c.cam('obl',1400);st.full=false;await c.play(10000);st.full=true;}
+    if(k===3){st.ty=true;}
+    if(k>=4){c.focus(k-4,700);if(k===4)await c.cam('top',1700);st.t=0;await c.play(10000);}
+    c.snap(k);c.d();
+  }});
+
+/* 검산용(헤드리스로 값을 읽음) */
+window.__tl={H,extOf,lon,P,LATS,get V(){return V;},get st(){return cur&&cur.st;},
+  set(o){Object.assign(cur.st,o);cur.d();},
+  table(d){return LATS.map((la,i)=>{const E=extOf(la,d);
+      let nH=0,nL=0;const dt=.002;for(let t=0;t<P-1e-9;t+=dt){const a=H(la,t-dt,d),b=H(la,t,d),cc=H(la,t+dt,d);if(b>a&&b>=cc)nH++;if(b<a&&b<=cc)nL++;}   // 따로 센 값(수치)
+      return {pt:NM[i],lat:la,del:d,type:E.type,nHi:E.nHi,nHiScan:nH,nLoScan:nL,ex:E.ex.map(e=>(e.hi?'만':'간')+'@'+e.t.toFixed(2)+'h='+e.h.toFixed(3)+'('+e.lab+')').join(' ')};});},
+  sync(){const st=cur.st;cur.d();V.scene.updateMatrixWorld(true);const p=new THREE.Vector3();
+    return LATS.map((la,i)=>{S.dots[i].getWorldPosition(p);const l3=(Math.atan2(-p.z,p.x)+TAU)%TAU,g=cur.G[i],tg=(+g.gd.getAttribute('cx')-GX0)/GSX,hg=1-(+g.gd.getAttribute('cy')-62)/104;
+      const col=S.cols[i].m.scale.y,u=uOf(st.del);
+      return {pt:NM[i],t:+st.t.toFixed(3),t3D:+(l3/TAU*P).toFixed(3),tGraph:+tg.toFixed(3),lat3D:+(Math.asin(p.y/p.length())/D2R).toFixed(2),hGraph:+hg.toFixed(3),h3D:+((1+col-RB)/(RA-RB)).toFixed(3),hModel:+H(la,st.t,st.del).toFixed(3)};});},
+  screen(i){const p=new THREE.Vector3();S.dots[i].getWorldPosition(p);p.project(V.camera);return [Math.round((p.x+1)/2*1920),Math.round((1-p.y)/2*1080)];}
+};
+Deck.start();
+</script>
+</body>
+</html>

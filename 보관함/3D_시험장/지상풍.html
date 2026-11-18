@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>후보 — 지상풍: 등압선이 원형일 때, 입체 (three.js) - 진광고등학교 교사 김덕영</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<!-- 3D 후보 시험 장(2026-11-17, 저장소 밖): 바람 수업(지구시스템과학/III.04-05wind.html) 24번 화면 '지상풍 — 등압선이 원형일 때'(s21)를 입체로. 엔진·three.js·three-kit은 저장소의 것 -->
+<link rel="stylesheet" href="../../engine/deck.css">
+<link rel="stylesheet" href="three.css">
+<style>
+.slide{--wind:#00796B;--gray:#6e6e73;--hor:#157F4A}
+.c-wind{color:var(--wind)} .c-fric{color:#1E8B3E}
+/* 화면 가득 3D: 하늘은 3D 안의 둥근 하늘 — 아래는 불러오기 전의 바탕 */
+#sf-v{left:0;top:0;width:1920px;height:1080px;border-radius:0;z-index:1;background:linear-gradient(180deg,#5d9bdb 0%,#a9d0ee 55%,#dfeaf2 100%)}
+html.print #sf-v{background:#fff}
+#sf .gl{background:rgba(255,255,255,.95);box-shadow:0 6px 24px rgba(20,40,70,.18);border-radius:20px;color:#1d1d1f}
+#sf .hd{left:50px;top:40px;right:auto;width:580px;height:150px;padding:18px 28px 0;z-index:4;box-sizing:border-box}
+#sf .hd .eb{font-size:24px;margin-bottom:4px;color:#6e6e73}
+#sf .hd h2{font-size:40px;color:#1d1d1f;line-height:1.2;letter-spacing:-.03em}
+#sf-cap{position:absolute;left:650px;top:40px;width:1220px;height:150px;padding:0 30px;z-index:4;font-size:30px;line-height:1.4;font-weight:500;letter-spacing:-.015em;box-sizing:border-box;display:flex;align-items:center}
+#sf-cap .cp{display:none}
+#sf-cap .cp.on{display:block;animation:sfin .45s ease both}
+@keyframes sfin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+#sf-cap .tm{display:inline-block;font-size:26px;font-weight:800;color:#fff;background:#1d1d1f;border-radius:10px;padding:1px 14px;margin-right:12px;vertical-align:2px}
+#sf-cap b{font-weight:800}
+#sf-cap .sub{display:block;margin-top:4px;font-size:27px;color:#3a3a3c}
+#sf-cap .q{color:#B25000;font-weight:800}
+#sf-panel{left:auto;right:50px;bottom:40px;height:80px;gap:18px;padding:0 20px;font-size:28px;z-index:5}
+#sf-panel .seg{display:flex;gap:6px}
+#sf-panel .ia-btn{height:56px;font-size:26px;padding:0 18px}
+#sf-panel .ia-btn.sub.on{background:#1d1d1f;color:#fff}
+#sf-panel input[type=range]{width:230px}
+#sf-panel .val{min-width:170px}
+#sf .fine{left:50px;bottom:52px;padding:5px 16px;border-radius:12px;background:rgba(255,255,255,.9);color:#3a3a3c;z-index:4}
+/* 3D 안의 이름표 */
+.v3-t.wind{color:var(--wind)}
+.v3-t.hl{width:58px;height:58px;padding:0;border-radius:50%;border:3px solid #1d1d1f;background:#fff;color:#1d1d1f;font-size:32px;font-weight:800;line-height:56px;text-align:center;box-sizing:border-box}
+.v3-t.ttl{background:#1d1d1f;color:#fff;font-size:26px;font-weight:700;padding:3px 14px}
+.v3-t.up{color:#3a3a3c}
+.v3-t.wx{background:rgba(255,255,255,.95);color:#1d1d1f;font-size:28px;font-weight:800;box-shadow:0 2px 8px rgba(20,40,70,.2)}
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+<section class="slide" id="sf" data-tile="light" data-title="지상풍 — 등압선이 원형일 때 (입체)" data-notes="three.js 3D 후보 시험 장. 바람 수업 24번 화면 ‘지상풍 — 등압선이 원형일 때’(교과서 106쪽, 그림 III-32)를 입체로 다시 만든 것입니다. 원래 장은 위에서 본 평면 두 개라 ‘지상에서 모여든 공기가 왜 올라가는지’가 보이지 않았습니다 — 여기서는 지상과 높은 곳을 하나의 공기 기둥으로 이어 보여 줍니다. 장면: 왼쪽(서쪽)이 지상 저기압, 오른쪽(동쪽)이 지상 고기압, 회색 원은 지상의 등압선, 청록 줄은 공기의 움직임(바람)입니다. 북반구. 끌면 돌려 보고 휠로 확대합니다. 장면을 끌지 않고 그냥 누르면 다음 단계(왼쪽 가장자리는 이전). 아래 [비스듬히]·[위에서] 단추로 시점을 바꿉니다. 클릭 1 (위에서 본 모습 — 원래 장과 같은 그림) 저기압: 바람이 시계 반대 방향으로 돌며 등압선을 비스듬히 가로질러 중심으로 불어 들어간다. 바람과 등압선이 이루는 각(경각)은 30°(원래 장과 같은 값, 교과서 육지 20°~35°). 여기서 묻습니다: 중심으로 모여든 공기는 어디로 갈까? → 2 (비스듬히 본 모습) 모여든 공기는 위로 올라가고(상승 기류), 높은 곳에서 퍼져 나간다. → 3 공기가 올라가는 곳에 구름이 생긴다 → 저기압에서는 날씨가 흐리거나 비가 온다. 왜 올라가는 공기에서 구름이 생기는지는 다음 수업 ‘구름 생성’에서 배운다고 예고합니다(올라가면 주위 기압이 낮아져 부피가 커지고 온도가 내려가 수증기가 물방울이 된다 — 여기서는 말로만). → 4 (위에서) 고기압: 바람이 시계 방향으로 돌며 등압선을 비스듬히 가로질러 불어 나간다. 묻습니다: 불어 나간 공기의 자리는 무엇이 채울까? → 5 (비스듬히) 높은 곳에서 모여든 공기가 내려와(하강 기류) 채운다. 내려오는 공기에서는 구름이 생기기 어려워 고기압에서는 날씨가 맑다. → 6 같은 기압 배치에서 마찰이 없는 높이(약 1 km 위, 자유 대기)의 바람(경도풍, 진회색 점선)은 등압선에 나란하게 불어 모여들지도 퍼져 나가지도 않는다. 지표 부근에서만 마찰력이 풍속을 줄여 바람이 등압선을 가로지르므로, 저기압에는 공기가 모여들고 고기압에서는 불어 나간다(원래 장 카드 첫 줄). 경각 막대(0°~45°, 3° 간격): 마찰이 클수록 경각이 커진다 — 해양 18°, 평야 30°, 산악 45°(앞 장 ‘직접 해 보기 — 마찰력과 경각’의 값). 0°(마찰 없음)로 내리면 바람이 등압선을 따라 돌기만 하고 모여들지 않아 상승 기류도 사라진다 — 모여드는 까닭이 마찰력임을 확인하는 조작입니다. 계산: 지상의 흐름 줄은 등압선(원)과 경각 θ를 이루는 나선(θ가 일정하므로 로그 나선)을 따라 움직입니다 — 저기압은 중심 쪽으로 풍속 × sin θ, 등압선을 따라 시계 반대 방향으로 풍속 × cos θ, 고기압은 그 반대. 풍속은 지균풍 풍속 × cos θ(앞 장과 같은 식)로 두어 경각이 클수록 느립니다. 상승·하강 기류의 빠르기는 모여드는 양(sin θ × cos θ)에 비례하게 그렸습니다. 모식(과장)인 것: 기둥의 높이와 상승·하강의 빠르기는 크게 과장했습니다 — 실제 저기압·고기압은 너비가 1000 km쯤인데 대류권 높이는 10 km쯤이고, 상승·하강 속도는 수평 바람의 100분의 1 이하(초속 몇 cm)입니다. 높은 곳의 퍼져 나감·모여듦은 공기가 빠져나가고 들어오는 방향만 나타낸 것입니다(실제 상층의 바람은 등압선에 거의 나란하게 불면서 조금씩 퍼지거나 모입니다). 구름 모양·높이도 모식. 학생 질문 대비: 중심으로 계속 모인 공기는 어디로 가나요? → 상승 기류가 되어 위로 빠져나간다. 남반구는 회전 방향이 반대(지상 저기압은 시계 방향으로 불어 들어가고, 지상 고기압은 시계 반대 방향으로 불어 나간다 — 완자). 원형 등압선에서는 원심력도 작용한다는 설명(원래 장 노트)은 그대로 덧붙일 수 있습니다.">
+  <div class="v3" id="sf-v"></div>
+  <div class="hd gl" data-in><div class="eb"><b>시험</b>three.js 입체</div><h2>지상풍 — 등압선이 원형일 때</h2></div>
+  <div class="gl" id="sf-cap" data-in="300">
+    <div class="cp" data-k="0"><span class="tm">지상 일기도</span>왼쪽은 <b>지상 저기압</b>, 오른쪽은 <b>지상 고기압</b> — 회색 원은 <b>등압선</b><span class="sub"><span class="q">지상의 바람은 어느 쪽으로 불까?</span> (북반구)</span></div>
+    <div class="cp" data-k="1"><span class="tm">저기압</span>바람이 <b>시계 반대 방향</b>으로 돌며 등압선을 비스듬히 가로질러 <b class="c-wind">불어 들어간다</b><span class="sub"><b class="c-fric">마찰력</b> 때문에 바람이 등압선과 각(경각)을 이룬다 · <span class="q">모여든 공기는 어디로 갈까?</span></span></div>
+    <div class="cp" data-k="2"><span class="tm">모여든 공기</span>지상에서 <b>모여든</b> 공기는 <b class="c-wind">올라가고</b>(상승 기류), 높은 곳에서 <b>퍼져 나간다</b><span class="sub">지상과 높은 곳이 하나의 공기 기둥으로 이어진다</span></div>
+    <div class="cp" data-k="3"><span class="tm">저기압의 날씨</span>공기가 <b>올라가는 곳</b>에 <b>구름</b>이 생긴다 → 저기압에서는 날씨가 <b>흐리거나 비</b>가 온다<span class="sub">상승 기류 → 구름</span></div>
+    <div class="cp" data-k="4"><span class="tm">고기압</span>바람이 <b>시계 방향</b>으로 돌며 등압선을 비스듬히 가로질러 <b class="c-wind">불어 나간다</b><span class="sub"><span class="q">불어 나간 공기의 자리는 무엇이 채울까?</span></span></div>
+    <div class="cp" data-k="5"><span class="tm">빈자리</span>높은 곳에서 <b>모여든</b> 공기가 <b class="c-wind">내려와</b>(하강 기류) 채우고, 지상에서 불어 나간다<span class="sub">내려오는 곳에는 구름이 생기기 어렵다 → 고기압에서는 날씨가 <b>맑다</b></span></div>
+    <div class="cp" data-k="6"><span class="tm">마찰이 없다면</span>약 1 km 위에서는 바람이 <b>등압선에 나란하게</b> 분다(점선) → 모여들지도 퍼져 나가지도 않는다<span class="sub">지표 부근에서만 <b class="c-fric">마찰력</b> 때문에 바람이 등압선을 가로지른다 → 모여들고 불어 나간다</span></div>
+  </div>
+  <div class="ia-panel gl" id="sf-panel" data-in="400">
+    <div class="seg"><button class="ia-btn sub on" id="sf-b3" type="button">비스듬히</button><button class="ia-btn sub" id="sf-b2" type="button">위에서</button></div>
+    <label><span>경각</span><input id="sf-th" type="range" min="0" max="45" step="3" value="30"><span class="val" id="sf-thv">30° 평야</span></label>
+    <button class="ia-btn sub" id="sf-home" type="button">처음 모습</button>
+  </div>
+  <div class="fine">모식 그림 · 북반구 · 경각 30°로 그림 · 기둥의 높이와 상승·하강의 빠르기는 크게 과장</div>
+</section>
+
+</div></div>
+
+<!-- 하단 컨트롤 -->
+<div id="progress"><i></i></div>
+<div id="stepdots"></div>
+<script src="../../engine/deck.js"></script>
+<script type="importmap">{"imports":{"three":"../../engine/vendor/three@0.160.0/build/three.module.min.js","three/addons/":"../../engine/vendor/three@0.160.0/examples/jsm/"}}</script>
+<script type="module">
+import {THREE,makeView,line,segs,dot,label,fade,clear,arrow,clamp,lerp,D2R,PRINT,STILL} from '../../engine/three-kit.js';
+
+/* ── 모형 ──
+   좌표: X 동쪽 +, Z 남쪽 +(북쪽 −Z), Y 위. 계산은 (x 동, y 북) 평면에서 하고 그릴 때 Z = −y.
+   두 기압계: 저기압 중심 (−1.35, 0), 고기압 중심 (+1.35, 0). 등압선 반지름 .385·.74·1.1(원래 장의 58·112·166 px 비율), 흐름 줄은 r = .265 ~ 1.22(원래 40 ~ 184 px).
+   지상풍(북반구): 등압선의 접선 t(저기압 시계 반대, 고기압 시계 방향)에서 기압이 낮은 쪽 n(저기압 중심 쪽, 고기압 바깥쪽)으로 경각 θ만큼 기움
+     바람 = t·cos θ + n·sin θ,  풍속 = V0·cos θ(지균풍 풍속 × cos θ — 원래 '마찰력과 경각' 장의 식)
+     → dr/dt = ∓ 풍속·sin θ, r·da/dt = ± 풍속·cos θ (θ가 일정하면 로그 나선 — 원래 장과 같음)
+   상승·하강 빠르기 ∝ 모여드는 양 sin θ·cos θ (θ = 30°일 때 1). 높이 H와 빠르기는 모식(크게 과장) */
+const SYS=[{lo:true,cx:-1.35,sgn:1,PH:[20,110,200,290],am:290},{lo:false,cx:1.35,sgn:-1,PH:[65,155,245,335],am:335}];
+const RISO=[.385,.74,1.1],RIN=.265,ROUT=1.22,RU=.92,RM=.74,H=1.5,YR=.5;
+const V0=.42/Math.cos(30*D2R),W0=.34,U0=.3,DS=.085,R1=.52,LIFT=.2;
+const WIND=0x00796B,sm=t=>t*t*(3-2*t);
+const tv=(S,a)=>[-S.sgn*Math.sin(a),S.sgn*Math.cos(a)];              // 등압선의 접선(바람이 도는 방향)
+const nv=(S,a)=>[-S.sgn*Math.cos(a),-S.sgn*Math.sin(a)];             // 기압이 낮은 쪽(저기압: 중심 쪽, 고기압: 바깥쪽)
+const windDir=(S,a,th)=>{const t=tv(S,a),n=nv(S,a),c=Math.cos(th),s=Math.sin(th);return [t[0]*c+n[0]*s,t[1]*c+n[1]*s];};
+const speed=th=>V0*Math.cos(th);
+const conv=th=>Math.sin(th)*Math.cos(th)/(Math.sin(30*D2R)*Math.cos(30*D2R));   // 모여드는 양(30°일 때 1)
+/* 지상의 공기 한 걸음: (r, a) → 길이 ds만큼(ds < 0이면 거꾸로 — 꼬리) */
+function adv(S,r,a,th,ds){
+  const r1=r-S.sgn*Math.sin(th)*ds,rm=Math.max((r+r1)/2,.05);
+  return [r1,a+S.sgn*Math.cos(th)*ds/rm];
+}
+const W3=(S,r,a,y)=>[S.cx+r*Math.cos(a),y,-r*Math.sin(a)];
+const ySurf=(r,col)=>.024+col*LIFT*sm(clamp((R1-r)/(R1-RIN),0,1));
+function rng(s){return()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const rnd=rng(20261117);
+
+const HOME={pos:[0,3.07,7.15],target:[0,.5,0]},TOP={pos:[0,8.9,.15],target:[0,0,.12]},CLO={pos:[-.3,2.9,6.9],target:[-.3,.5,0]};
+const OFFY=-45;   // 장면을 조금 아래로(위쪽 글 카드 자리)
+
+let V=null,cur=null;
+/* 흐름 줄 묶음: 꼬리 세 마디(머리 쪽이 진함) */
+function mkPop(n){
+  const g=new THREE.Group(),tiers=[.92,.55,.26].map(op=>{const s=segs(V,Array.from({length:n},()=>[[0,0,0],[0,0,0]]),{col:WIND,w:4.6,op,order:11});s.frustumCulled=false;g.add(s);return s;});
+  return {g,tiers,n};
+}
+function put(pop,i,P){for(let j=0;j<3;j++){const arr=pop.tiers[j].geometry.attributes.instanceStart.data.array,a=P[j+1],b=P[j];
+  arr[i*6]=a[0];arr[i*6+1]=a[1];arr[i*6+2]=a[2];arr[i*6+3]=b[0];arr[i*6+4]=b[1];arr[i*6+5]=b[2];}}
+const flush=pop=>pop.tiers.forEach(t=>{t.geometry.attributes.instanceStart.data.needsUpdate=true;});
+
+const NS=30,NC=13,NA=14;
+function setup(){
+  V=makeView({w:1920,h:1080,fov:30,pos:HOME.pos,target:HOME.target,minD:3,maxD:12,key:'sf'});
+  V.camera.setViewOffset(1920,1080,0,OFFY,1920,1080);
+  V.ctl.maxPolarAngle=Math.PI*.49;
+  const S=V.scene;
+  S.add(new THREE.AmbientLight(0xffffff,1.5));const dl=new THREE.DirectionalLight(0xffffff,1.6);dl.position.set(-1.5,5,2.5);S.add(dl);
+  if(!PRINT){
+    const sky=new THREE.Mesh(new THREE.SphereGeometry(60,32,24),new THREE.ShaderMaterial({side:THREE.BackSide,depthWrite:false,depthTest:false,
+      uniforms:{top:{value:new THREE.Color(0x4f8fd4)},mid:{value:new THREE.Color(0xa6cdec)},hor:{value:new THREE.Color(0xd5e7f4)},low:{value:new THREE.Color(0xe4edf3)}},
+      vertexShader:'varying vec3 d;void main(){d=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+      fragmentShader:'uniform vec3 top,mid,hor,low;varying vec3 d;void main(){float e=normalize(d).y;vec3 c=mix(low,hor,smoothstep(-.95,-.6,e));c=mix(c,mid,smoothstep(-.6,-.3,e));c=mix(c,top,smoothstep(-.3,.3,e));gl_FragColor=vec4(c,1.);\n#include <colorspace_fragment>\n}'}));
+    sky.renderOrder=-10;sky.frustumCulled=false;S.add(sky);
+  }
+  /* 땅(지상 일기도가 놓인 판) */
+  const slab=new THREE.Mesh(new THREE.BoxGeometry(5.5,.07,2.8),new THREE.MeshBasicMaterial({color:0xb9b4a8}));slab.position.y=-.037;S.add(slab);
+  const gp=new THREE.Mesh(new THREE.PlaneGeometry(5.5,2.8),new THREE.MeshBasicMaterial({color:0xf4f1e8}));gp.rotation.x=-Math.PI/2;S.add(gp);
+  S.add(line(V,[[-2.75,.002,1.4],[2.75,.002,1.4],[2.75,.002,-1.4],[-2.75,.002,-1.4],[-2.75,.002,1.4]],{col:0x8e8e93,w:2.2}));
+  [['북',[0,0,-1.4],0,-24],['동',[2.75,0,0],34,0],['서',[-2.75,0,0],-34,0]].forEach(([t,p,dx,dy])=>S.add(label(t,p,{cls:'hor sm',dx,dy})));
+  const circ=(S0,r,y,n=96)=>Array.from({length:n+1},(_,i)=>W3(S0,r,i/n*Math.PI*2,y));
+  SYS.forEach((S0,si)=>{
+    RISO.forEach(r=>S.add(line(V,circ(S0,r,.006),{col:0x8e8e93,w:3.2})));
+    S.add(label(S0.lo?'저':'고',[S0.cx,.01,0],{cls:'hl'}));
+    S.add(label(S0.lo?'지상 저기압':'지상 고기압',[S0.cx,0,1.4],{cls:'ttl',dy:30}));
+    /* 지상의 흐름 줄 */
+    S0.sp=mkPop(NS);S0.r=new Float32Array(NS);S0.a=new Float32Array(NS);S0.age=new Float32Array(NS);S0.life=new Float32Array(NS);
+    for(let i=0;i<NS;i++){S0.r[i]=RIN+(ROUT-RIN)*(i+rnd()*.8)/NS;S0.a[i]=rnd()*Math.PI*2;S0.age[i]=1+rnd()*5;S0.life[i]=6+rnd()*3;}
+    /* 기둥(상승·하강)과 높은 곳(퍼져 나감·모여듦)의 흐름 줄 */
+    S0.cp=mkPop(NC);S0.cy=new Float32Array(NC);S0.cs=[];for(let i=0;i<NC;i++){S0.cy[i]=.12+(H-.2)*(i+rnd()*.7)/NC;S0.cs.push([rnd(),rnd()*Math.PI*2]);}
+    S0.ap=mkPop(NA);S0.ar=new Float32Array(NA);S0.aa=[];for(let i=0;i<NA;i++){S0.ar[i]=.3+.82*((i*5%NA)+rnd()*.7)/NA;S0.aa.push((i+.5*rnd())/NA*Math.PI*2);}
+    S0.gS=new THREE.Group();S0.gS.add(S0.sp.g);S0.gArr=new THREE.Group();S0.gS.add(S0.gArr);S0.gMk=new THREE.Group();S0.gS.add(S0.gMk);
+    S0.gC=new THREE.Group();S0.gC.add(S0.cp.g,S0.ap.g);
+    /* 공기 기둥의 테두리(아주 옅게)와 높은 곳의 원 */
+    const cyl=new THREE.Mesh(new THREE.CylinderGeometry(.3,.3,H,40,1,true),new THREE.MeshBasicMaterial({color:WIND,transparent:true,opacity:.07,side:THREE.DoubleSide,depthWrite:false}));
+    cyl.position.set(S0.cx,H/2,0);cyl.userData.base=.07;cyl.renderOrder=2;S0.gC.add(cyl);
+    const dsc=new THREE.Mesh(new THREE.CircleGeometry(ROUT,64),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.16,side:THREE.DoubleSide,depthWrite:false}));
+    dsc.rotation.x=-Math.PI/2;dsc.position.set(S0.cx,H-.012,0);dsc.userData.base=.16;dsc.renderOrder=2;S0.gC.add(dsc);
+    S0.gC.add(line(V,circ(S0,ROUT,H-.01),{col:0x5d7591,w:2,dash:[.06,.05],op:.7}));
+    const up=S0.lo;   // 저기압: 올라감·퍼져 나감, 고기압: 내려옴·모여듦
+    S0.gC.add(arrow(up?[S0.cx,.34,0]:[S0.cx,.92,0],up?[S0.cx,.92,0]:[S0.cx,.34,0],{col:WIND,head:.16,hr:.07,sr:.026}));
+    [45,135,225,315].forEach(d=>{const a=d*D2R,p0=W3(S0,.48,a,H),p1=W3(S0,.9,a,H);S0.gC.add(arrow(up?p0:p1,up?p1:p0,{col:WIND,head:.13,hr:.052,sr:.018}));});
+    S0.gC.add(label(up?'상승 기류':'하강 기류',[S0.cx,.63,0],{cls:'wind b',dx:up?-112:112}));
+    S0.gC.add(label(up?'퍼져 나간다':'모여든다',[S0.cx,H,0],{cls:'wind b',dy:-46}));
+    S.add(S0.gS,S0.gC);
+    /* 마찰이 없는 높이(약 1 km 위)의 바람: 등압선에 나란한 원(진회색 점선) + 방향 */
+    S0.gR=new THREE.Group();
+    S0.gR.add(line(V,circ(S0,RU,YR),{col:0x3a3a3c,w:3.6,dash:[.09,.065]}));
+    [90,270].forEach(d=>{const a=d*D2R,t=tv(S0,a),p=W3(S0,RU,a,YR);
+      const hd=new THREE.Mesh(new THREE.ConeGeometry(.06,.17,20),new THREE.MeshBasicMaterial({color:0x3a3a3c,transparent:true}));
+      hd.position.set(p[0]+t[0]*.03,p[1],p[2]-t[1]*.03);hd.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),new THREE.Vector3(t[0],0,-t[1]));S0.gR.add(hd);});
+    if(S0.lo)S0.gR.add(label('약 1 km 위: 등압선에 나란하게',[0,1.0,0],{cls:'up b'}));
+    S.add(S0.gR);
+  });
+  /* 구름(저기압 위, 상승 기류가 있는 곳)과 땅의 그늘 */
+  const L=SYS[0];V.gCloud=new THREE.Group();
+  const cm=new THREE.MeshLambertMaterial({color:0xffffff,transparent:true});
+  [[0,0,0,.3],[-.3,-.04,.05,.23],[.3,-.03,-.04,.25],[.1,.1,.16,.2],[-.12,.12,-.14,.21],[-.52,-.09,-.02,.15],[.54,-.08,.06,.16],[.16,-.07,-.24,.19],[-.2,-.08,.22,.18]].forEach(([x,y,z,r])=>{
+    const m=new THREE.Mesh(new THREE.SphereGeometry(r,24,16),cm);m.position.set(x,y,z);m.scale.y=.72;V.gCloud.add(m);});
+  V.gCloud.position.set(L.cx,1.1,0);V.cm=cm;
+  V.shade=new THREE.Mesh(new THREE.CircleGeometry(.62,48),new THREE.MeshBasicMaterial({color:0x26323f,transparent:true,opacity:.13,depthWrite:false}));
+  V.shade.rotation.x=-Math.PI/2;V.shade.position.set(L.cx,.004,0);V.shade.userData.base=.13;
+  V.lbCloud=label('구름 → 흐림 · 비',[L.cx,1.1,0],{cls:'wx',dx:-250,dy:-10});
+  V.lbFine=label('맑음',[SYS[1].cx,1.1,0],{cls:'wx',dx:120,dy:-10});
+  V.gWx=new THREE.Group();V.gWx.add(V.lbCloud);V.gFine=new THREE.Group();V.gFine.add(V.lbFine);
+  S.add(V.gCloud,V.shade,V.gWx,V.gFine);
+}
+/* 바람 화살표 넷(원래 장과 같은 자리)과 경각 표시 — 경각이 바뀌면 다시 그림 */
+function buildArrows(st){
+  const th=st.th*D2R;
+  SYS.forEach(S0=>{
+    clear(S0.gArr);clear(S0.gMk);S0.arrowDirs=[];
+    S0.PH.forEach(d=>{const a=d*D2R,w=windDir(S0,a,th),c=[S0.cx+RM*Math.cos(a),RM*Math.sin(a)];S0.arrowDirs.push({a:d,w});
+      S0.gArr.add(arrow([c[0]-w[0]*.19,.034,-(c[1]-w[1]*.19)],[c[0]+w[0]*.19,.034,-(c[1]+w[1]*.19)],{col:WIND,head:.13,hr:.055,sr:.02}));});
+    /* 경각: 등압선의 접선(점선)과 바람이 이루는 각 */
+    const a=S0.am*D2R,t=tv(S0,a),w=windDir(S0,a,th),c=[S0.cx+RM*Math.cos(a),RM*Math.sin(a)],y=.03;
+    S0.gMk.add(line(V,[[c[0]-t[0]*.24,y,-(c[1]-t[1]*.24)],[c[0]+t[0]*.5,y,-(c[1]+t[1]*.5)]],{col:0x1d1d1f,w:2.6,dash:[.045,.035],order:9}));
+    if(st.th>=3){const n=nv(S0,a),pts=[];for(let i=0;i<=16;i++){const q=th*i/16;pts.push([c[0]+(t[0]*Math.cos(q)+n[0]*Math.sin(q))*.34,y,-(c[1]+(t[1]*Math.cos(q)+n[1]*Math.sin(q))*.34)]);}
+      S0.gMk.add(line(V,pts,{col:0x1d1d1f,w:2.6,order:9}));}
+    S0.gMk.add(label('경각 '+st.th+'°',[c[0]+t[0]*.62,y,-(c[1]+t[1]*.62)],{cls:'ink b',dx:S0.lo?56:-56,dy:S0.lo?4:4}));
+  });
+}
+/* 흐름 줄 움직이기 */
+function stepAll(st,dt){
+  const th=st.th*D2R,v=speed(th),g=conv(th),spiral=st.th>=6;
+  SYS.forEach(S0=>{
+    for(let i=0;i<NS;i++){
+      let [r,a]=adv(S0,S0.r[i],S0.a[i],th,v*dt);S0.age[i]+=dt;
+      const out=S0.lo?r<RIN:r>ROUT;
+      if((spiral&&out)||(!spiral&&S0.age[i]>S0.life[i])||r<RIN*.9||r>ROUT*1.02){r=spiral?(S0.lo?ROUT:RIN):RIN+.06+(ROUT-RIN-.12)*rnd();a=rnd()*Math.PI*2;S0.age[i]=0;S0.life[i]=6+rnd()*3;}
+      S0.r[i]=r;S0.a[i]=a;
+    }
+    const dir=S0.lo?1:-1;
+    for(let i=0;i<NC;i++){let y=S0.cy[i]+dir*W0*g*dt;if(y>H-.06)y=.12;else if(y<.12)y=H-.06;S0.cy[i]=y;}
+    for(let i=0;i<NA;i++){let r=S0.ar[i]+dir*U0*g*dt;if(r>1.12)r=.3;else if(r<.3)r=1.12;S0.ar[i]=r;}
+  });
+}
+const colPos=(S0,i,y)=>{const [sd,a0]=S0.cs[i],rho=(.05+.17*sd)*(1+1.1*sm(clamp((y-(H-.38))/.32,0,1))+.7*sm(clamp((.42-y)/.3,0,1)));return W3(S0,rho,a0+S0.sgn*.5*y,y);};
+function drawAll(st){
+  const th=st.th*D2R,g=clamp(conv(th)/.3,0,1),spiral=st.th>=6;
+  SYS.forEach(S0=>{
+    const col=S0.lo?st.cL:st.cH;
+    for(let i=0;i<NS;i++){
+      const r=S0.r[i],a=S0.a[i];
+      let fd=sm(clamp((ROUT-r)/.12,0,1))*sm(clamp((r-RIN)/.1,0,1))*sm(clamp(S0.age[i]/.4,0,1));
+      if(!spiral)fd*=sm(clamp((S0.life[i]-S0.age[i])/.4,0,1));
+      const P=[W3(S0,r,a,ySurf(r,col))];let rr=r,aa=a;
+      for(let j=0;j<3;j++){[rr,aa]=adv(S0,rr,aa,th,-DS*fd);P.push(W3(S0,rr,aa,ySurf(rr,col)));}
+      put(S0.sp,i,P);
+    }
+    const dir=S0.lo?1:-1;
+    for(let i=0;i<NC;i++){const y=S0.cy[i],fd=sm(clamp((y-.12)/.16,0,1))*sm(clamp((H-.06-y)/.16,0,1))*g,P=[];
+      for(let j=0;j<4;j++)P.push(colPos(S0,i,clamp(y-dir*j*.075*fd,.1,H-.04)));put(S0.cp,i,P);}
+    for(let i=0;i<NA;i++){const r=S0.ar[i],fd=sm(clamp((r-.3)/.12,0,1))*sm(clamp((1.12-r)/.14,0,1))*g,P=[];
+      for(let j=0;j<4;j++)P.push(W3(S0,clamp(r-dir*j*.075*fd,.28,1.14),S0.aa[i],H+.012));put(S0.ap,i,P);}
+    flush(S0.sp);flush(S0.cp);flush(S0.ap);
+  });
+}
+/* 묶음의 투명도: 위에서 볼 때는 지상의 그림(일기도)만 보이게 기둥·구름을 옅게 */
+function applyFade(st){
+  const pol=V.ctl.getPolarAngle(),tf=sm(clamp((pol-.1)/.42,0,1)),gv=clamp(conv(st.th*D2R)/.3,0,1);   // gv: 모여드는 양이 0이면(경각 0°) 상승·하강·구름도 없음
+  SYS.forEach(S0=>{fade(S0.gS,S0.lo?st.sL:st.sH);fade(S0.gC,(S0.lo?st.cL:st.cH)*tf*gv);fade(S0.gR,st.ring);fade(S0.gMk,(S0.lo?st.sL:st.sH)*(S0.lo?st.mL:st.mH));});
+  const s=Math.max(.001,sm(st.cloud));V.gCloud.visible=st.cloud*gv>.003;V.gCloud.scale.setScalar(s);V.cm.opacity=lerp(.32,1,tf)*gv;V.cm.depthWrite=tf*gv>.9;
+  fade(V.shade,st.cloud*gv);fade(V.gWx,st.cloud*tf*gv);fade(V.gFine,st.fine*tf*gv);
+}
+const DEF=k=>({sL:k>=1?1:0,mL:k>=1?1:0,cL:k>=2?1:0,cloud:k>=3?1:0,sH:k>=4?1:0,mH:k>=4?1:0,cH:k>=5?1:0,fine:k>=5?1:0,ring:k>=6?1:0});
+const CAM=k=>k===1||k===4?TOP:k===3?CLO:HOME;
+const KEYS=['sL','mL','cL','cloud','sH','mH','cH','fine','ring'];
+const NAME={0:'마찰 없음',18:'해양',30:'평야',45:'산악'};
+Deck.scene('sf',{steps:6,
+  enter(c){
+    if(!V)setup();
+    V.mount(c.$('#sf-v'));cur=c;
+    const st=c.st=Object.assign(DEF(0),{th:30});
+    const iT=c.$('#sf-th'),tv_=c.$('#sf-thv');
+    c.sync=()=>{iT.value=st.th;tv_.textContent=st.th+'°'+(NAME[st.th]?' '+NAME[st.th]:'');};
+    c.cap=k=>c.$$('#sf-cap .cp').forEach(e=>e.classList.toggle('on',e.dataset.k===String(k)));
+    c.btn=top=>{c.$('#sf-b2').classList.toggle('on',top);c.$('#sf-b3').classList.toggle('on',!top);};
+    c.camTok=0;
+    c.cam=(to,ms)=>{const tok=++c.camTok,f=V.camTo(to.pos,to.target);c.btn(to===TOP);return c.tween(ms,e=>{if(tok===c.camTok)f(e);},{ease:'inOut'});};
+    c.to=(d,ms)=>{const s0={...st};return c.tween(ms,e=>{KEYS.forEach(n=>{st[n]=lerp(s0[n],d[n],e);});});};
+    iT.addEventListener('input',()=>{st.th=+iT.value;c.sync();buildArrows(st);applyFade(st);});
+    c.$('#sf-b2').addEventListener('click',()=>c.cam(TOP,1300));
+    c.$('#sf-b3').addEventListener('click',()=>c.cam(HOME,1300));
+    c.$('#sf-home').addEventListener('click',()=>{st.th=30;c.sync();buildArrows(st);c.cam(CAM(Deck.k),1000);c.to(DEF(Deck.k),600);});
+    c.$('#sf-panel').addEventListener('click',e=>e.stopPropagation());
+    c.cap(0);c.btn(false);c.sync();buildArrows(st);
+    V.camera.position.set(HOME.pos[0],HOME.pos[1]*1.2,HOME.pos[2]*1.15);V.ctl.target.set(...HOME.target);V.ctl.update();
+    drawAll(st);applyFade(st);V.render();
+    c.cam(HOME,1500);
+    c.loop((t,dt)=>{if(!PRINT&&!STILL)stepAll(st,Math.min(dt,.05));drawAll(st);applyFade(st);V.render();});
+  },
+  async go(c,k){
+    const st=c.st,d=DEF(k);c.cap(k);
+    if(c.instant){Object.assign(st,d);const cm=CAM(k);c.camTok++;V.camera.position.set(...cm.pos);V.ctl.target.set(...cm.target);V.ctl.update();c.btn(cm===TOP);drawAll(st);applyFade(st);V.render();return;}
+    /* 물러날 때 사라질 것은 먼저 지우고, 시점을 옮긴 다음, 새로 나올 것을 보여 줌(답이 먼저 보이지 않게) */
+    const keep={};KEYS.forEach(n=>{keep[n]=Math.min(st[n],d[n]);});await c.to(keep,300);
+    await c.cam(CAM(k),1300);
+    await c.to(d,k===3?1500:1100);
+  }});
+
+/* 검산용(헤드리스로 값을 읽음) */
+window.__sf={SYS,adv,windDir,conv,speed,get V(){return V;},get st(){return cur&&cur.st;},
+  checks(thDeg){
+    const th=(thDeg??cur.st.th)*D2R,out={theta:thDeg??cur.st.th,speedRatio:+(speed(th)/speed(0)).toFixed(4),conv:+conv(th).toFixed(4)};
+    out.sys=SYS.map(S0=>{
+      const r=.74,a=1.0,[r1,a1]=adv(S0,r,a,th,.002);
+      const p0=[r*Math.cos(a),r*Math.sin(a)],p1=[r1*Math.cos(a1),r1*Math.sin(a1)],d=[p1[0]-p0[0],p1[1]-p0[1]],dl=Math.hypot(...d);
+      const tccw=[-Math.sin(a),Math.cos(a)],dotT=(d[0]*tccw[0]+d[1]*tccw[1])/dl,rad=(d[0]*Math.cos(a)+d[1]*Math.sin(a))/dl;
+      const cross=p0[0]*d[1]-p0[1]*d[0];
+      /* 화면(위에서 본 카메라)에서도 같은 방향인지: 두 점을 실제 카메라로 투영 */
+      const cam=new THREE.PerspectiveCamera(30,16/9,.05,200);cam.position.set(...TOP.pos);cam.lookAt(0,0,0);cam.updateMatrixWorld();
+      const pj=p=>{const v=new THREE.Vector3(S0.cx+p[0],0,-p[1]).project(cam);return [v.x,v.y];},c0=pj([0,0]),s0=pj(p0),s1=pj(p1);
+      const scr=(s0[0]-c0[0])*(s1[1]-s0[1])-(s0[1]-c0[1])*(s1[0]-s0[0]);
+      return {name:S0.lo?'저기압':'고기압',angleToIsobar:+(Math.acos(clamp(Math.abs(dotT),0,1))/D2R).toFixed(3),rotation:cross>0?'시계 반대':'시계',radial:rad<-1e-9?'중심 쪽(불어 들어감)':rad>1e-9?'바깥쪽(불어 나감)':'없음',
+        screenTop:scr>0?'화면에서 시계 반대':'화면에서 시계',arrows:(S0.arrowDirs||[]).map(o=>{const q=o.a*D2R,t=[-Math.sin(q),Math.cos(q)];return +(Math.acos(clamp(Math.abs(o.w[0]*t[0]+o.w[1]*t[1]),0,1))/D2R).toFixed(3);}),
+        vertical:S0.lo?'상승':'하강'};});
+    return out;}};
+Deck.start();
+</script>
+</body>
+</html>

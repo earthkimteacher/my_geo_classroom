@@ -1,0 +1,36 @@
+/* three.js 시험 장 공용 스타일(2026-11-17). 격자: 내용 x 120~1800, y 250~990. 글자는 무대 기준 24px 이상 */
+.v3{position:absolute;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#fdfdfd 0%,#eef1f5 100%);z-index:2;touch-action:none}
+.v3 .v3-gl{position:absolute;left:0;top:0;width:100%!important;height:100%!important;display:block}
+.v3 .v3-lab{position:absolute!important;left:0;top:0;cursor:grab}
+.v3 .v3-lab:active{cursor:grabbing}
+/* 3D 안의 이름표 */
+.v3-t{font-size:26px;font-weight:700;line-height:1.2;white-space:nowrap;padding:2px 10px;border-radius:9px;background:rgba(255,255,255,.82);color:#1d1d1f;pointer-events:none;letter-spacing:-.01em}
+.v3-t i{font-style:normal;font-weight:600;opacity:.75;font-size:24px}
+.v3-t.sm{font-size:24px;font-weight:600;background:rgba(255,255,255,.65)}
+.v3-t.b{font-size:28px;font-weight:800}
+.v3-t.hor{color:var(--hor)} .v3-t.alt{color:var(--alt)} .v3-t.equ{color:var(--equ)} .v3-t.dec{color:var(--dec)} .v3-t.ecl{color:var(--ecl)} .v3-t.pole{color:var(--pole)} .v3-t.gray{color:var(--gray)} .v3-t.ink{color:#1d1d1f}
+.v3-t.pgf{color:#C9251B} .v3-t.iso{color:#2a4a6b} .v3-t.hi{color:#B25000} .v3-t.lo{color:#005BB8}
+/* 읽은 값(왼쪽 위) */
+.v3-read{position:absolute;left:22px;top:22px;z-index:3;display:flex;flex-direction:column;gap:4px;padding:14px 20px;border-radius:14px;background:rgba(255,255,255,.88);box-shadow:0 1px 4px rgba(0,0,0,.08);pointer-events:none;min-width:250px}
+.v3-read .r{display:none;justify-content:space-between;gap:24px;font-size:28px;font-weight:600;line-height:1.35}
+.v3-read .r.on{display:flex}
+.v3-read .r b{font-weight:800;font-variant-numeric:tabular-nums}
+.v3-read:not(:has(.r.on)){display:none}
+.v3 .v3-home{position:absolute;right:18px;top:18px;z-index:4;height:52px;font-size:26px;padding:0 18px}
+.v3-hint{position:absolute;right:18px;bottom:14px;z-index:3;font-size:24px;font-weight:600;color:#8e8e93;pointer-events:none}
+/* 조작 줄(바람·안정도 수업의 .ia-panel과 같은 모양) */
+.ia-panel{position:absolute;height:88px;display:flex;align-items:center;gap:26px;padding:0 26px;border-radius:18px;background:#fff;font-size:30px;font-weight:600;color:var(--ink);z-index:5}
+.ia-panel label{display:flex;align-items:center;gap:14px;white-space:nowrap}
+.ia-panel input[type=range]{width:190px;height:40px;accent-color:var(--act);cursor:pointer}
+.ia-panel .val{min-width:118px;font-variant-numeric:tabular-nums;color:var(--act);font-weight:700}
+.ia-btn{border:0;border-radius:12px;height:60px;padding:0 22px;font:inherit;font-size:28px;font-weight:700;color:#fff;background:#1d1d1f;cursor:pointer;white-space:nowrap}
+.ia-btn.sub{background:#d1d1d6;color:#1d1d1f}
+.ia-btn.on{background:var(--act)}
+/* 오른쪽 카드 */
+.v3-card{padding:22px 34px;display:flex;flex-direction:column;justify-content:center}
+.v3-card .ws-row{grid-template-columns:1fr;gap:2px;font-size:30px;line-height:1.45;padding:16px 0}
+.v3-card .ws-row:first-child{border-top:0}
+.v3-card .ws-row .tm{font-size:27px}
+.v3-card .ws-row b{font-weight:800}
+.v3-card .ws-row.cur{background:none}
+.v3-card .ws-row.cur .tm{color:var(--act)}
