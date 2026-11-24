@@ -559,7 +559,7 @@ html.print #s25d-st{background:#3a3a3c}
   #s11 .s11-def{left:120px;top:250px;width:440px;padding:22px 34px;background:rgba(255,255,255,.96);border:0}
   #s11 .s11-def .ws-row{font-size:30px;line-height:1.5;padding:12px 0}
   #s11 .s11-def .ws-row .tm.term{font-size:34px}
-  #s11 .s11-eq{left:120px;top:812px;width:440px;height:178px;padding:16px 34px;display:flex;flex-direction:column;justify-content:center;gap:2px}
+  #s11 .s11-eq{left:120px;top:770px;width:440px;height:178px;padding:16px 34px;display:flex;flex-direction:column;justify-content:center;gap:2px}
   #s11 .s11-eq .r{display:grid;grid-template-columns:80px 1fr;align-items:baseline;font-size:38px;white-space:nowrap;font-weight:700;letter-spacing:-.01em;font-variant-numeric:tabular-nums;line-height:1.5}
   #s11 .s11-eq .tm{font-size:30px;font-weight:700;color:#5c5c61}
   #s11 .s11-eq b{font-weight:800}
@@ -576,7 +576,7 @@ html.print #s25d-st{background:#3a3a3c}
     <div class="r"><span class="tm">흡수</span><span><b class="c-sun">100</b> − <b class="c-sun">30</b> = <b>70</b></span></div>
     <div class="r"><span class="tm">방출</span><span><b class="c-ir">12</b> + <b class="c-ir">58</b> = <b>70</b></span></div>
   </div>
-  <div class="fine">태양 복사 = 100일 때의 값(교과서 84쪽, 출처: 『대기과학』, 2016.) · 띠의 굵기 = 에너지양 · 띠의 모양은 흐름을 나눠 보인 것(빛의 실제 경로 아님)</div>
+  <div class="fine">태양 복사 = 100일 때의 값(교과서 84쪽, 출처: 『대기과학』, 2016.) · 띠의 굵기 = 에너지양<br>띠의 모양은 흐름을 나눠 보인 것(빛의 실제 경로 아님)</div>
 </section>
 
 <!-- ═══ s12 ═══ -->
@@ -620,13 +620,14 @@ html.print #s25d-st{background:#3a3a3c}
       </tbody>
     </table>
   </div>
-  <div class="fine">교과서 84쪽 탐구(출처: 『대기과학』, 2016.) · 태양 복사 = 100일 때의 값 · 띠의 굵기 = 에너지양 · 띠의 모양은 흐름을 나눠 보인 것</div>
+  <div class="fine">교과서 84쪽 탐구(『대기과학』, 2016.) · 태양 복사 = 100일 때의 값 · 띠의 굵기 = 에너지양 · 띠 모양은 흐름을 나눠 보인 것</div>
 </section>
 
 <!-- ═══ s13 ═══ -->
 <section class="slide" id="s13" data-tile="dark" data-title="직접 해 보기 — 이산화 탄소 농도와 지구 열수지" data-notes="조작 방법: 아래 막대를 오른쪽으로 끌면 대기 중 이산화 탄소 농도가 증가합니다(보라 분자가 늘어남). 교과서 84쪽 탐구 과정 2를 풀기 전에 학생들에게 예상하게 한 뒤 조작합니다 — 대기가 흡수하는 에너지양(132), 대기가 지표로 방출하는 에너지양(94), 지표 온도는 어떻게 될까? 막대를 올리면 132 띠와 94 띠의 오른쪽에 밝은 띠가 붙으며 굵어지고(늘어난 부분), 지표 온도계가 올라갑니다. 태양 복사 100과 반사 30은 변하지 않습니다 — 지구에 들어오는 태양 복사 에너지양은 온실 기체의 양과 관계가 없습니다. 과장한 점: 실제로 늘어나는 양은 100 가운데 1쯤이라 그대로 그리면 보이지 않아서, 늘어난 부분만 실제보다 훨씬 크게 그렸습니다. 그래서 숫자는 보이지 않고 ‘132보다 증가’, ‘94보다 증가’로만 표시합니다. 온도계에도 눈금 숫자가 없습니다. 대기가 우주로 방출하는 58 띠의 왼쪽에도 밝은 띠가 붙습니다(교과서 정리 예시 답안: 58과 94도 각각 증가).">
   <style>
   #s13 .ia-panel .s13-end{font-size:28px;font-weight:700;color:#5c5c61}
+  html.scrub #s13 .ia-panel label.scrub input+.s13-end{margin-left:auto}   /* 스크러버에서는 막대가 글자 뒤로 깔려 양 끝 이름이 붙어 보임 → 오른쪽 끝 이름을 막대 오른쪽 끝으로 */
   #s13 .ia-panel input[type=range]{width:560px}
   </style>
   <div class="hd" data-in><div class="eb"><b>2</b>지구 온난화</div><h2>직접 해 보기 — 이산화 탄소 농도와 지구 열수지</h2></div>
@@ -753,7 +754,7 @@ html.print #s25d-st{background:#3a3a3c}
   #s16-card{left:120px;top:846px;width:1150px;padding:20px 34px;font-size:36px;line-height:52px;letter-spacing:-.015em;font-weight:600}
   #s16-card b{font-weight:800}
   #s16-card .q{font-weight:800;color:var(--act)}
-  #s16 .fine{left:auto;right:120px}
+  #s16 .fine{left:120px}   /* 오른쪽 아래는 도구 줄에 가려서 왼쪽 아래(카드 밑)로 */
   </style>
   <div class="scene"><svg id="s16-map" viewBox="0 0 1920 1080"></svg></div>
   <div class="hd" data-in><div class="eb"><b>3</b>사막화</div><h2>사막은 어디에 있을까?</h2></div>
@@ -771,7 +772,7 @@ html.print #s25d-st{background:#3a3a3c}
   #s17 .ws-card{left:1230px;top:250px;width:570px;background:rgba(255,255,255,.96);border:0}
   #s17 .ws-card .ws-row{padding:14px 0}
   #s17 .cl{transition:opacity .7s}
-  #s17 .fine{left:1230px}
+  #s17 .fine{left:1230px;bottom:auto;top:938px}   /* 오른쪽 카드 바로 밑(아래 도구 줄보다 위) */
   </style>
   <div class="scene">
     <svg id="s17-bg" viewBox="0 0 1920 1080"></svg>
@@ -930,13 +931,13 @@ html.print #s25d-st{background:#3a3a3c}
   #s23 .ws-card{top:662px;height:328px;display:flex;flex-direction:column;justify-content:center}
   #s23 .ws-card .ws-row{font-size:32px;line-height:1.4;grid-template-columns:1fr;padding:12px 16px}
   #s23 .s23-t{font-size:28px;font-weight:800;color:var(--t2);padding:0 16px 8px;letter-spacing:-.01em}
-  #s23 .s23-def{left:640px;top:78px;width:880px;padding:16px 30px;font-size:32px;font-weight:600;line-height:1.45;letter-spacing:-.015em}
+  #s23 .s23-def{left:520px;top:78px;width:1000px;padding:16px 30px;font-size:32px;font-weight:600;line-height:1.45;letter-spacing:-.015em}
   #s23 .s23-def .nm{display:inline-block;margin-right:14px;padding:0 18px;border-radius:9999px;background:#FFE7C2;color:#B25000;font-weight:800}
-  #s23 .s23-nt{position:absolute;right:120px;bottom:40px;font-size:24px;color:var(--t3);z-index:3}
+  #s23 .s23-def .nt{display:block;margin-top:4px;font-size:24px;font-weight:500;color:#5c5c61}   /* 오른쪽 아래(도구 줄에 가림)에 있던 발생 주기를 정의 카드 안으로 — 입체로 다시 보기 장과 같은 모양 */
   </style>
   <div class="scene"><svg id="s23-sv" viewBox="0 0 1920 1080"></svg></div>
   <div class="hd" data-in><div class="eb"><b>4</b>엘니뇨</div><h2>엘니뇨 발생 시</h2></div>
-  <div class="glass gl s23-def" data-step="5" data-fx="rise"><span class="nm">엘니뇨</span><b>동태평양</b> 적도 부근 해역의 <b>수온</b>이 평상시보다 <span class="bk"><span class="n">4</span><span class="a" data-step="5" data-delay="500">높아지는</span></span> 현상</div>
+  <div class="glass gl s23-def" data-step="5" data-fx="rise"><span class="nm">엘니뇨</span><b>동태평양</b> 적도 부근 해역의 <b>수온</b>이 평상시보다 <span class="bk"><span class="n">4</span><span class="a" data-step="5" data-delay="500">높아지는</span></span> 현상<span class="nt">2년~7년에 한 번씩 불규칙하게 발생 · 보통 9개월~2년 지속</span></div>
 
   <div class="ws-card" style="left:120px;width:480px">
     <div class="s23-t">서태평양 적도 부근 해역</div>
@@ -953,7 +954,6 @@ html.print #s25d-st{background:#3a3a3c}
     <div class="ws-row" data-r="4" data-step="4"><span><b>상승 기류</b> → 강수량 증가<br>(홍수 발생)</span></div>
   </div>
   <div class="fine">모식 그림 · 깊이와 높이는 과장 · 해수면의 높이 차이는 나타내지 않음</div>
-  <div class="s23-nt">2년~7년에 한 번씩 불규칙하게 발생 · 보통 9개월~2년 지속</div>
 </section>
 
 <!-- ═══ s24 ═══ -->
@@ -964,6 +964,7 @@ html.print #s25d-st{background:#3a3a3c}
   #s24 .ia-panel{gap:22px}
   #s24 .ia-panel input[type=range]{width:300px}
   #s24 .s24-e{font-size:28px;font-weight:700;color:var(--t2)}
+  html.scrub #s24 .ia-panel label.scrub input+.s24-e{margin-left:auto}   /* 13장과 같은 까닭 */
   html.print #s24 .s24-st{background:#3a3a3c}
   </style>
   <div class="hd" data-in><div class="eb"><b>4</b>엘니뇨</div><h2>직접 해 보기 — 무역풍의 세기</h2></div>
@@ -1145,7 +1146,7 @@ html.print #s25d-st{background:#3a3a3c}
   <div class="hd" data-in><div class="eb"><b>4</b>엘니뇨</div><h2>스스로 확인하기</h2></div>
   <div class="sc-list">
     <div class="sc-q" data-q="1" data-in="200"><span class="no">➊</span><div><b>사막화</b> 발생의 <b>인위적인 원인</b>으로는 가축의 과잉 방목, 과도한 경작, 무분별한 삼림 벌채 등이 있다. ( <span class="opt ok" data-ring="1">○</span>, <span class="opt">×</span> )</div></div>
-    <div class="sc-q" data-q="2" data-in="350"><span class="no">➋</span><div><b>엘니뇨</b>가 발생하면 동태평양 적도 부근 해역은 심층에서 올라오는 차가운 해수의 흐름이 약해져 평상시보다 수온이 ( <span class="opt ok" data-ring="2">높아진다</span>, <span class="opt">낮아진다</span> ).</div></div>
+    <div class="sc-q" data-q="2" data-in="350"><span class="no">➋</span><div><b>엘니뇨</b>가 발생하면 동태평양 적도 부근 해역은 심층에서 올라오는 차가운 해수의 흐름이 약해져 평상시보다 수온이 <span style="white-space:nowrap">( <span class="opt ok" data-ring="2">높아진다</span>, <span class="opt">낮아진다</span> ).</span></div></div>
     <div class="sc-div" data-in="500">추가 정리 문제</div>
     <div class="sc-q" data-q="3" data-in="600"><span class="no">1</span><div>사막은 위도 30°보다 60° 부근에 많이 분포한다. ( <span class="opt">○</span>, <span class="opt ok" data-ring="3">×</span> )
       <div class="sc-a" data-step="3" data-delay="350"><span class="h">해설</span>사막은 <b>하강 기류</b>가 발생하는 <b>위도 30° 부근</b>에 많이 분포한다.</div></div></div>
@@ -2658,7 +2659,7 @@ function s15build(R,live){
   [[300,92],[610,84]].forEach(p=>[[-70,6,96,9],[10,-6,110,10],[80,8,84,8]].forEach(e=>svgEl('ellipse',{cx:p[0]+e[0],cy:p[1]+e[1],rx:e[2],ry:e[3],fill:'#fff',opacity:.9},g)));
   o.lc=[[170,262],[440,270],[716,258]].map((p,i)=>({x:p[0],y:p[1],i,inc:s15ray(g),ref:s15ray(g,7),thr:s15ray(g),c:cloud(g,p[0],p[1],1.05,{fill:'#F4F7FA'})}));
   o.hc={inc:s15ray(g),ref:s15ray(g,2.5),thr:s15ray(g)};
-  s15lab(g,372,132,'높은 구름');s15lab(g,560,312,'낮은 구름');o.rf4=s15lab(g,772,120,'반사',KT.sun);
+  s15lab(g,372,132,'높은 구름');s15lab(g,560,312,'낮은 구름');o.rf4=s15lab(g,758,150,'반사',KT.sun);   // 칸(860) 안에 들어오게, 반사되는 빛줄기 오른쪽
   /* 5 빙하: 빙하가 줄면 반사가 줄고 바다가 흡수하는 빛이 늘어남 */
   g=o.g[5];sky(g,200);svgEl('rect',{y:190,width:860,height:180,fill:'url(#s15-sea)'},g);
   o.wg=svgEl('ellipse',{cx:580,cy:206,rx:150,ry:40,fill:'url(#s15-wg)',opacity:0},g);
@@ -2943,7 +2944,8 @@ Deck.scene('s18',{steps:8,enter(c){
 /* s19 사막과 사막화 지역: 교과서 그림 II-12(그림 파일) 위에 강조를 얹음 — 사헬, 고비 사막 → 우리나라 황사
    (색칠된 지역을 두르던 점선 타원은 실제 경계와 달라 뺌 — 2026-11-11 교사 결정).
    덧그림 좌표는 그림의 반 크기(908×444) 기준. 아래 띠 그림: 황사가 편서풍을 타고 이동하는 모습(옆에서 본 모식) */
-const S19={P:[[360,128],[408,104],[447,147]],sahel:'M22 234C80 246 150 238 236 248',n:64};
+const S19={P:[[372,108],[414,92],[447,147]],   // 출발점은 교과서 그림의 '고비 사막' 글자 위쪽(글자를 가리지 않게)
+sahel:'M22 234C80 246 150 238 236 248',n:64};
 const s19B=u=>{const P=S19.P,a=(1-u)*(1-u),b=2*u*(1-u),c=u*u;return [a*P[0][0]+b*P[1][0]+c*P[2][0],a*P[0][1]+b*P[1][1]+c*P[2][1]];};
 function s19build(){
   const o=$id('s19-ov'),A='#0066cc';
@@ -3025,7 +3027,7 @@ function s20build(){
   for(let i=0;i<4;i++)svgEl('path',{class:'hz',fill:'none',stroke:'#fff','stroke-opacity':.55,'stroke-width':3,'stroke-linecap':'round','data-x':850+i*85},s);
   txt(s,120,803,'남태평양',{'font-size':30,'font-weight':800,fill:'#fff','fill-opacity':.95,'data-in':400});
   pill(svgEl('g',{'data-in':500,'data-fx':'fade'},s),1300,640,'안데스산맥',{fs:28});
-  txt(s,36,744,'서',Object.assign({'font-size':28,'font-weight':800,fill:'#1d1d1f'},halo('#DDEEFA',6)));txt(s,1884,690,'동',Object.assign({'font-size':28,'font-weight':800,fill:'#1d1d1f','text-anchor':'end'},halo('#DDEEFA',6)));
+  const we=[txt(s,36,744,'서',Object.assign({'font-size':28,'font-weight':800,fill:'#1d1d1f'},halo('#DDEEFA',6))),txt(s,1884,690,'동',Object.assign({'font-size':28,'font-weight':800,fill:'#1d1d1f','text-anchor':'end'},halo('#DDEEFA',6)))];
   /* 1단계: 고기압과 하강 기류(공기가 내려와 지표 부근에서 퍼짐) */
   const g1=svgEl('g',{'data-step':1,'data-fx':'fade','data-dur':900},s);
   [[170,-1],[290,-1],[470,1],[580,1]].forEach((q,i)=>{const x=q[0],e=x+q[1]*78,y0=392-(i%2)*18;
@@ -3047,6 +3049,7 @@ function s20build(){
   S.cl.forEach((q,j)=>{for(let i=0;i<7;i++){const x=q[0]+(i-3)*17*q[2];svgEl('line',{x1:x,x2:f1(x-5),stroke:KT.cold,'stroke-width':3.5,'stroke-linecap':'round',class:'rn','data-y0':q[1]+8,'data-y1':f1(s20Y(x)-6),'data-p':f2(rnd(j*17+i*5))},g3);}
     cloud(g3,q[0],q[1],q[2],{fill:j?'#F4F7FA':'#E9EEF3'});});
   pill(g3,1730,740,'습한 공기',{fs:28});
+  we.forEach(e=>s.appendChild(e));   // 서·동 글자를 맨 위로(3단계의 빗줄기·바람 점선이 글자 위로 지나가지 않게)
 }
 s20build();
 function s20draw(c,t){
@@ -3397,7 +3400,7 @@ function s27build(R){
   const T0=G167.trend[0],T1=G167.trend[1];
   o.tr=svgEl('line',{x1:f1(s27X(T0[0])),y1:f1(s27Y(T0[1])),x2:f1(s27X(T1[0])),y2:f1(s27Y(T1[1])),stroke:'#6e6e73','stroke-width':4,'stroke-dasharray':'10 9','stroke-linecap':'round','clip-path':'url(#s27-cp)'},s);
   o.trg=svgEl('line',{x1:f1(s27X(T0[0])),y1:f1(s27Y(T0[1])),x2:f1(s27X(T1[0])),y2:f1(s27Y(T1[1])),stroke:K.warm,'stroke-width':22,'stroke-linecap':'round',opacity:0,'clip-path':'url(#s27-cp)'},s);
-  o.trl=txt(s,S.x1-6,f1(s27Y(T1[1])+96),'온도 증가 경향',Object.assign({'font-size':26,'font-weight':800,fill:'#6e6e73','text-anchor':'end'},halo('#fff',7)));
+  o.trl=txt(s,S.x1-6,f1(s27Y(T1[1])+136),'온도 증가 경향'   /* +136: 1년·5년 평균 선이 지나가지 않는 자리(계산으로 찾음) */,Object.assign({'font-size':26,'font-weight':800,fill:'#6e6e73','text-anchor':'end'},halo('#fff',7)));
   // 1년 평균(가는 선) · 5년 평균(굵은 선)
   const P1=G167.y1.filter(p=>p[0]>=1970).map(p=>[s27X(p[0]),s27Y(p[1])]),P5=G167.y5.filter(p=>p[0]>=1970).map(p=>[s27X(p[0]),s27Y(p[1])]);
   const g1=svgEl('g',{'clip-path':'url(#s27-c1)'},s);
@@ -4064,7 +4067,7 @@ function setup(){
   O.h4=line(V,ell(X(1245),.72,.66),{col:0x005BB8,w:6,dash:[.03,.09]});O.h10=line(V,ell(X(1180),1.02,.7),{col:0xB25000,w:6,dash:[.03,.09]});Sc.add(O.h4,O.h10);
   /* 이름표 */
   O.fl=[label('따뜻한 해수',[X(640),DEP(362),ZH+.02],{cls:'bare wm'}),label('찬 해수',[X(700),DEP(468),ZH+.02],{cls:'bare cw'}),...O.uL];O.fl.forEach(l=>{l.userData.front=true;l.userData.o=l.userData.o??1;});
-  Sc.add(label('서',[-3.24,-.16,ZH],{cls:'big'}),label('동',[3.24,-.16,ZH],{cls:'big'}),
+  Sc.add(label('서',[-3.24,-.16,ZH],{cls:'big'}),label('동',[3.62,-.16,ZH+.4],{cls:'big'}),   // 동쪽에서 보는 시점에서도 블록 옆면에 걸리지 않게 오른쪽 앞으로
     label('동남아시아',[-2.78,.2,-.2]),label('남아메리카',[2.8,.24,-.2]),O.fl[0],O.fl[1]);
   O.R=[...Array(44)].map((_,i)=>[rnd(i*7+1),rnd(i*7+2),rnd(i*7+3),rnd(i*7+4),rnd(i*7+5)]);
 }
