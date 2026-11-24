@@ -3,7 +3,7 @@
    이 파일을 고치면 모든 수업에 적용됨. 수업 파일은 무대(#viewport > #stage > section.slide) 바로 뒤에
    <script src="../engine/deck.js"> 태그(닫는 태그까지)를 두고, 그다음 <script>에서 Deck.scene(…)을 등록한 뒤 Deck.start()를 부른다. */
 /* 도구 줄(HUD)·발표자 노트·도움말·화면 끄기 마크업 — 예전에는 수업 파일마다 무대 뒤에 있었음 */
-document.body.insertAdjacentHTML('beforeend',"<div id=\"hud\">\n  <button id=\"b-pause\" aria-label=\"애니메이션 일시정지 (P)\"><svg class=\"i-pause\" viewBox=\"0 0 20 20\"><path d=\"M7 4.5v11M13 4.5v11\"/></svg><svg class=\"i-play\" viewBox=\"0 0 20 20\"><path d=\"M7 4.5l9 5.5-9 5.5z\"/></svg></button>\n  <button id=\"b-mark\" aria-label=\"책갈피 (M)\"><svg viewBox=\"0 0 20 20\"><path d=\"M5.5 3h9v14l-4.5-3.5L5.5 17z\"/></svg></button>\n  <button id=\"b-notes\" aria-label=\"발표자 노트 (N)\"><svg viewBox=\"0 0 20 20\"><path d=\"M4 5h12M4 10h12M4 15h7\"/></svg></button>\n  <button id=\"b-laser\" aria-label=\"레이저 포인터 (L)\"><svg viewBox=\"0 0 20 20\"><circle cx=\"10\" cy=\"10\" r=\"2.6\"/><path d=\"M10 2.5v3M10 14.5v3M2.5 10h3M14.5 10h3\"/></svg></button>\n  <button id=\"b-lens\" aria-label=\"돋보기 (Z)\"><svg viewBox=\"0 0 20 20\"><circle cx=\"8.5\" cy=\"8.5\" r=\"5\"/><path d=\"M12.3 12.3 17 17\"/></svg></button>\n  <button id=\"b-ov\" aria-label=\"목차 (O)\"><svg viewBox=\"0 0 20 20\"><rect x=\"3\" y=\"3\" width=\"5.5\" height=\"5.5\" rx=\"1\"/><rect x=\"11.5\" y=\"3\" width=\"5.5\" height=\"5.5\" rx=\"1\"/><rect x=\"3\" y=\"11.5\" width=\"5.5\" height=\"5.5\" rx=\"1\"/><rect x=\"11.5\" y=\"11.5\" width=\"5.5\" height=\"5.5\" rx=\"1\"/></svg></button>\n  <button id=\"b-pv\" aria-label=\"발표자 보기 · 프로젝터 창 연결 (V)\"><svg viewBox=\"0 0 20 20\"><rect x=\"2.5\" y=\"3.5\" width=\"15\" height=\"10\" rx=\"1.5\"/><path d=\"M7 17h6M10 13.5V17\"/></svg></button>\n  <button id=\"b-fs\" aria-label=\"전체 화면 (F)\"><svg viewBox=\"0 0 20 20\"><path d=\"M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4\"/></svg></button>\n  <button id=\"b-tools\" aria-label=\"도구 열기\" aria-expanded=\"false\"><svg viewBox=\"0 0 20 20\"><path d=\"M10 4v12M4 10h12\"/></svg></button>\n  <button id=\"b-prev\" aria-label=\"이전 장 (Shift+←)\"><svg viewBox=\"0 0 20 20\"><path d=\"M12.5 4 6.5 10l6 6\"/></svg></button>\n  <div class=\"count\" id=\"count\">1 / 1</div>\n  <button id=\"b-next\" aria-label=\"다음 장 (남은 단계 건너뜀, Shift+→)\"><svg viewBox=\"0 0 20 20\"><path d=\"M7.5 4l6 6-6 6\"/></svg></button>\n  <i id=\"hud-tail\"></i><div id=\"hud-tip\" role=\"tooltip\"></div>\n</div>\n<div id=\"notes\"><button id=\"notes-x\" aria-label=\"노트 닫기 (N 또는 Esc)\">✕</button><div class=\"nh\"><b id=\"notes-t\"></b>발표자 노트</div><p id=\"notes-p\"></p></div>\n<div class=\"overlay\" id=\"help\"><div class=\"box\"><h3>단축키</h3><table>\n  <tr><td><kbd>→</kbd> <kbd>Space</kbd></td><td>다음 (클릭도 가능)</td></tr>\n  <tr><td><kbd>←</kbd></td><td>이전</td></tr>\n  <tr><td><kbd>Shift</kbd>+<kbd>→</kbd> · 휠 아래로 · 아래 ▶ 버튼</td><td>다음 장 (남은 단계 건너뜀)</td></tr>\n  <tr><td><kbd>Shift</kbd>+<kbd>←</kbd> · 휠 위로 · 아래 ◀ 버튼</td><td>이전 장</td></tr>\n  <tr><td><kbd>N</kbd></td><td>발표자 노트 (발표자 보기에서는 아래 칸의 단계 ↔ 노트 전환)</td></tr>\n  <tr><td><kbd>O</kbd></td><td>목차 (누르면 그 장으로)</td></tr>\n  <tr><td><kbd>B</kbd> <kbd>W</kbd></td><td>검은 화면 / 흰 화면</td></tr>\n  <tr><td><kbd>F</kbd></td><td>전체 화면</td></tr>\n  <tr><td><kbd>V</kbd></td><td>발표자 보기 — 이 창에서 조작 (단계·노트·이전/다음 장 미리보기). 위 ‘프로젝터 창 열기’로 연 창을 프로젝터 화면으로 옮겨 크게 (아이패드는 길게 눌러 ‘새 창에서 열기’)</td></tr>\n  <tr><td><kbd>M</kbd></td><td>책갈피 목록 (반마다 저장 · 눌러서 이동)</td></tr>\n  <tr><td><kbd>P</kbd></td><td>애니메이션 일시정지 · 이어서 재생 (멈춘 상태에서 → 도 재생)</td></tr>\n  <tr><td><kbd>L</kbd></td><td>레이저 포인터 켜기·끄기 (누른 채 움직이면 선, 떼면 사라짐)</td></tr>\n  <tr><td><kbd>Z</kbd></td><td>돋보기 켜기·끄기 (마우스를 따라 1.7배, 누르고 있으면 2.4배)</td></tr>\n  <tr><td>두 손가락 벌리기<br>트랙패드 핀치 · Ctrl+휠</td><td>부분 확대 (확대 중 끌어서 옮기기 · 두 번 톡이나 Esc로 원래대로)</td></tr>\n  <tr><td><kbd>Esc</kbd></td><td>덮개 닫기</td></tr></table></div></div>\n<div id=\"blank\"></div>\n\n");
+document.body.insertAdjacentHTML('beforeend',"<div id=\"hud\">\n  <button id=\"b-pause\" aria-label=\"애니메이션 일시정지 (P)\"><svg class=\"i-pause\" viewBox=\"0 0 20 20\"><path d=\"M7 4.5v11M13 4.5v11\"/></svg><svg class=\"i-play\" viewBox=\"0 0 20 20\"><path d=\"M7 4.5l9 5.5-9 5.5z\"/></svg></button>\n  <button id=\"b-mark\" aria-label=\"책갈피 (M)\"><svg viewBox=\"0 0 20 20\"><path d=\"M5.5 3h9v14l-4.5-3.5L5.5 17z\"/></svg></button>\n  <button id=\"b-notes\" aria-label=\"발표자 노트 (N)\"><svg viewBox=\"0 0 20 20\"><path d=\"M4 5h12M4 10h12M4 15h7\"/></svg></button>\n  <button id=\"b-laser\" aria-label=\"레이저 포인터 (L)\"><svg viewBox=\"0 0 20 20\"><circle cx=\"10\" cy=\"10\" r=\"2.6\"/><path d=\"M10 2.5v3M10 14.5v3M2.5 10h3M14.5 10h3\"/></svg></button>\n  <button id=\"b-lens\" aria-label=\"돋보기 (Z)\"><svg viewBox=\"0 0 20 20\"><circle cx=\"8.5\" cy=\"8.5\" r=\"5\"/><path d=\"M12.3 12.3 17 17\"/></svg></button>\n  <button id=\"b-ov\" aria-label=\"목차 (O)\"><svg viewBox=\"0 0 20 20\"><rect x=\"3\" y=\"3\" width=\"5.5\" height=\"5.5\" rx=\"1\"/><rect x=\"11.5\" y=\"3\" width=\"5.5\" height=\"5.5\" rx=\"1\"/><rect x=\"3\" y=\"11.5\" width=\"5.5\" height=\"5.5\" rx=\"1\"/><rect x=\"11.5\" y=\"11.5\" width=\"5.5\" height=\"5.5\" rx=\"1\"/></svg></button>\n  <button id=\"b-pv\" aria-label=\"발표자 보기 · 프로젝터 창 연결 (V)\"><svg viewBox=\"0 0 20 20\"><rect x=\"2.5\" y=\"3.5\" width=\"15\" height=\"10\" rx=\"1.5\"/><path d=\"M7 17h6M10 13.5V17\"/></svg></button>\n  <button id=\"b-fs\" aria-label=\"전체 화면 (F)\"><svg viewBox=\"0 0 20 20\"><path d=\"M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4\"/></svg></button>\n  <button id=\"b-prev\" aria-label=\"이전 장 (Shift+←)\"><svg viewBox=\"0 0 20 20\"><path d=\"M12.5 4 6.5 10l6 6\"/></svg></button>\n  <div class=\"count\" id=\"count\">1 / 1</div>\n  <button id=\"b-next\" aria-label=\"다음 장 (남은 단계 건너뜀, Shift+→)\"><svg viewBox=\"0 0 20 20\"><path d=\"M7.5 4l6 6-6 6\"/></svg></button>\n  <i id=\"hud-tail\"></i><div id=\"hud-tip\" role=\"tooltip\"></div>\n</div>\n<div id=\"notes\"><button id=\"notes-x\" aria-label=\"노트 닫기 (N 또는 Esc)\">✕</button><div class=\"nh\"><b id=\"notes-t\"></b>발표자 노트</div><p id=\"notes-p\"></p></div>\n<div class=\"overlay\" id=\"help\"><div class=\"box\"><h3>단축키</h3><table>\n  <tr><td><kbd>→</kbd> <kbd>Space</kbd></td><td>다음 (클릭도 가능)</td></tr>\n  <tr><td><kbd>←</kbd></td><td>이전</td></tr>\n  <tr><td><kbd>Shift</kbd>+<kbd>→</kbd> · 휠 아래로 · 아래 ▶ 버튼</td><td>다음 장 (남은 단계 건너뜀)</td></tr>\n  <tr><td><kbd>Shift</kbd>+<kbd>←</kbd> · 휠 위로 · 아래 ◀ 버튼</td><td>이전 장</td></tr>\n  <tr><td><kbd>N</kbd></td><td>발표자 노트 (발표자 보기에서는 아래 칸의 단계 ↔ 노트 전환)</td></tr>\n  <tr><td><kbd>O</kbd></td><td>목차 (누르면 그 장으로)</td></tr>\n  <tr><td><kbd>B</kbd> <kbd>W</kbd></td><td>검은 화면 / 흰 화면</td></tr>\n  <tr><td><kbd>F</kbd></td><td>전체 화면</td></tr>\n  <tr><td><kbd>V</kbd></td><td>발표자 보기 — 이 창에서 조작 (단계·노트·이전/다음 장 미리보기). 위 ‘프로젝터 창 열기’로 연 창을 프로젝터 화면으로 옮겨 크게 (아이패드는 길게 눌러 ‘새 창에서 열기’)</td></tr>\n  <tr><td><kbd>M</kbd></td><td>책갈피 목록 (반마다 저장 · 눌러서 이동)</td></tr>\n  <tr><td><kbd>P</kbd></td><td>애니메이션 일시정지 · 이어서 재생 (멈춘 상태에서 → 도 재생)</td></tr>\n  <tr><td><kbd>L</kbd></td><td>레이저 포인터 켜기·끄기 (누른 채 움직이면 선, 떼면 사라짐)</td></tr>\n  <tr><td><kbd>Z</kbd></td><td>돋보기 켜기·끄기 (마우스를 따라 1.7배, 누르고 있으면 2.4배)</td></tr>\n  <tr><td>두 손가락 벌리기<br>트랙패드 핀치 · Ctrl+휠</td><td>부분 확대 (확대 중 끌어서 옮기기 · 두 번 톡이나 Esc로 원래대로)</td></tr>\n  <tr><td><kbd>Esc</kbd></td><td>덮개 닫기</td></tr></table></div></div>\n<div id=\"blank\"></div>\n\n");
 /* ═══════════════════════════════════════════════════════════════
    엔진: 1920×1080 무대 · 장면(enter + 클릭 단계 go) · 선언형 등장 · 복원 후 순간 재생
    ═══════════════════════════════════════════════════════════════ */
@@ -553,29 +553,23 @@ function pokeHud(){
     hud.classList.remove('show');if(HF.hide)HF.hide();
   },2500);
 }
-/* 아래 도구 줄 움직임(2026-11-17 교사 요청, designbookmark.com의 Morph tooltip·Goo menu를 바꿔 씀)
-   ① 툴팁 하나가 버튼 사이를 늘어나며 옮겨 다님: 가는 쪽 끝은 단단한 스프링(620/36), 반대쪽 끝은 무른 스프링(190/19), 꼬리 300/22 — 원본 값 그대로.
-   ② ◀·쪽 번호·▶ 말고 도구 7개는 + 단추에 접혀 있다가 일렬로 미끄러져 나옴. 원본은 둥글게 퍼지는 방울(goo)이지만
-      교사 결정으로 일렬, 방울 붙는 효과는 뺌(정신없음), 펼치기는 원본(230/15, 간격 45ms)보다 빠르게(420/28, 간격 25ms — 덜 출렁임).
-      펼칠 때는 먼 것부터, 접을 때는 가까운 것부터 출발해 서로 앞지르지 않음. 펼친 상태는 도구 줄이 숨었다 나와도 그대로.
+/* 아래 도구 줄 툴팁(2026-11-17 교사 요청, designbookmark.com의 Morph tooltip을 바꿔 씀)
+   툴팁 하나가 버튼 사이를 늘어나며 옮겨 다님: 가는 쪽 끝은 단단한 스프링(620/36), 반대쪽 끝은 무른 스프링(190/19), 꼬리 300/22 — 원본 값 그대로.
+   (2026-11-17에 넣었던 도구 접기·펴기(+ 단추)는 2026-11-24 교사 결정으로 뺌 — 도구는 늘 펼쳐 둠)
    스프링: x'' = −k(x − 목표) − c·x', 움직이는 동안만 requestAnimationFrame을 돌림(일시정지 P와 무관). 손가락 터치에서는 툴팁을 띄우지 않음 */
 const HF={};
 function hudFx(){
   const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const S=(x,k=400,c=30)=>({x,v:0,t:x,k,c:RM?2*Math.sqrt(k):c}),tune=(s,k,c)=>{s.k=k;s.c=RM?2*Math.sqrt(k):c;};
   const step=(s,dt)=>{const a=-s.k*(s.x-s.t)-s.c*s.v;s.v+=a*dt;s.x+=s.v*dt;},cl=(v,a,b)=>Math.max(a,Math.min(b,v));
-  const LEAD=[620,36],TRAIL=[190,19],OUT=[420,28],OUT_SC=[450,17],IN=[520,34],IN_SC=[420,30],GAP=.025;
-  const $=id=>document.getElementById(id),main=$('b-tools'),tip=$('hud-tip'),tail=$('hud-tail');
-  // 도구(지금 순서 그대로) — 이름, 단축키. f: 0 = 제자리(펼침), 1 = + 단추 위치(접힘)
-  const tools=[['b-pause',()=>PAUSED?'이어서 재생':'일시정지','P'],['b-mark','책갈피','M'],['b-notes','발표자 노트','N'],['b-laser','레이저 포인터','L'],['b-lens','돋보기','Z'],
-    ['b-ov','목차','O'],['b-pv','발표자 보기','V'],['b-fs','전체 화면','F']].map(([id,name,key])=>{const el=$(id);el.classList.add('tl');el.tabIndex=-1;
-      return {el,name,key,ic:el.querySelectorAll('svg'),f:S(1),s:S(.5,420,22),p:S(1,520,16),pend:null};});
-  const tg=[...tools.map(t=>({el:t.el,name:t.name,key:t.key,tool:t})),{el:main,name:()=>HF.open?'도구 닫기':'도구 열기',key:''},
-    {el:$('b-prev'),name:'이전 장',key:'Shift ←'},{el:$('b-next'),name:'다음 장',key:'Shift →'}];
+  const LEAD=[620,36],TRAIL=[190,19];
+  const $=id=>document.getElementById(id),tip=$('hud-tip'),tail=$('hud-tail');
+  // 버튼(지금 순서 그대로) — 이름, 단축키
+  const tg=[['b-pause',()=>PAUSED?'이어서 재생':'일시정지','P'],['b-mark','책갈피','M'],['b-notes','발표자 노트','N'],['b-laser','레이저 포인터','L'],['b-lens','돋보기','Z'],
+    ['b-ov','목차','O'],['b-pv','발표자 보기','V'],['b-fs','전체 화면','F'],['b-prev','이전 장','Shift ←'],['b-next','다음 장','Shift →']].map(([id,name,key])=>({el:$(id),name,key}));
   tg.forEach(t=>{t.lab=document.createElement('span');t.lab.className='hlab';tip.appendChild(t.lab);t.o=S(0,420,32);t.dir=0;t.w=96;});
-  const EL=S(0,...LEAD),ER=S(0,...LEAD),TX=S(0,300,22),A=S(0,420,24),M={sc:S(1,520,16),rot:S(0,320,20)};
-  let cur=-1,hideT=0,raf=0,last=0;HF.open=false;
-  const dist=t=>main.offsetLeft-t.el.offsetLeft;          // 제자리에서 + 단추까지(transform은 offsetLeft에 안 들어감)
+  const EL=S(0,...LEAD),ER=S(0,...LEAD),TX=S(0,300,22),A=S(0,420,24);
+  let cur=-1,hideT=0,raf=0,last=0;
   const cx=t=>t.el.offsetLeft+t.el.offsetWidth/2;
   function fill(t){const n=typeof t.name==='function'?t.name():t.name;t.lab.innerHTML=n+(t.key?'<kbd>'+t.key+'</kbd>':'');t.lab.classList.toggle('nokey',!t.key);t.w=t.lab.offsetWidth||t.w;}
   function place(i,snap){const c=cx(tg[i]),h=tg[i].w/2;[[EL,c-h],[ER,c+h],[TX,c]].forEach(([s,v])=>{s.t=v;if(snap){s.x=v;s.v=0;}});}
@@ -591,41 +585,19 @@ function hudFx(){
   function leave(){clearTimeout(hideT);hideT=setTimeout(()=>{hideT=0;A.t=0;cur=-1;kick();},140);}
   HF.hide=()=>{clearTimeout(hideT);hideT=0;A.t=0;A.x=0;A.v=0;cur=-1;kick();};
   tg.forEach((t,i)=>{
-    t.el.addEventListener('pointerenter',e=>{if(e.pointerType==='touch'||(t.tool&&!HF.open))return;point(i);});
+    t.el.addEventListener('pointerenter',e=>{if(e.pointerType==='touch')return;point(i);});
     t.el.addEventListener('pointerleave',e=>{if(e.pointerType!=='touch')leave();});
     t.el.addEventListener('click',()=>{if(cur===i)setTimeout(()=>{if(cur===i)point(i);},30);});   // '일시정지 ↔ 이어서 재생'처럼 이름이 바뀌면 다시 씀
   });
-  function setOpen(v){
-    if(v===HF.open)return;HF.open=v;
-    hud.classList.toggle('open',v);main.setAttribute('aria-expanded',v);main.setAttribute('aria-label',v?'도구 닫기':'도구 열기');
-    M.rot.t=v?135:0;M.sc.v-=v?3:1.6;
-    const n=tools.length;
-    tools.forEach((t,i)=>{t.el.tabIndex=v?0:-1;
-      if(v){t.pend={t:i*GAP,to:0,k:OUT};t.s.t=1;tune(t.s,...OUT_SC);}
-      else{t.pend={t:(n-1-i)*GAP*.66,to:1,k:IN};t.s.t=.5;tune(t.s,...IN_SC);}});
-    if(cur>-1&&tg[cur].el===main)point(cur);else if(!v&&cur>-1&&tg[cur].tool)leave();
-    kick();
-  }
-  main.addEventListener('click',e=>{e.stopPropagation();setOpen(!HF.open);main.blur();});
-  tools.forEach(t=>t.el.addEventListener('pointerdown',()=>{t.p.x=.78;t.p.v=0;kick();}));
   function kick(){if(!raf){last=performance.now();raf=requestAnimationFrame(loop);}}
   function loop(now){
     const dt=Math.min((now-last)/1000,1/30)/4;last=now;
-    const all=[EL,ER,TX,A,M.sc,M.rot,...tg.map(t=>t.o),...tools.flatMap(t=>[t.f,t.s,t.p])];
-    for(let k=0;k<4;k++){
-      tools.forEach(t=>{if(t.pend&&(t.pend.t-=dt)<=0){tune(t.f,...t.pend.k);t.f.t=t.pend.to;t.pend=null;}});
-      all.forEach(s=>step(s,dt));
-    }
+    const all=[EL,ER,TX,A,...tg.map(t=>t.o)];
+    for(let k=0;k<4;k++)all.forEach(s=>step(s,dt));
     render();
-    raf=tools.some(t=>t.pend)||all.some(s=>Math.abs(s.x-s.t)>.001||Math.abs(s.v)>.001)?requestAnimationFrame(loop):0;
+    raf=all.some(s=>Math.abs(s.x-s.t)>.001||Math.abs(s.v)>.001)?requestAnimationFrame(loop):0;
   }
   function render(){
-    main.style.transform='scale('+M.sc.x.toFixed(4)+')';main.firstElementChild.style.transform='rotate('+M.rot.x.toFixed(2)+'deg)';
-    tools.forEach(t=>{const D=dist(t),f=t.f.x;
-      t.el.style.transform='translateX('+(f*D).toFixed(2)+'px) scale('+t.s.x.toFixed(4)+')';
-      t.el.style.opacity=cl((D*(1-f)-18)/40,0,1).toFixed(3);           // + 밑에 숨어 있다가 빠져나오며 보임
-      t.el.style.pointerEvents=HF.open?'':'none';
-      t.ic.forEach(s=>s.style.scale=t.p.x.toFixed(4));});
     const a=cl(A.x,0,1.15),op=cl(A.x,0,1),W=hud.clientWidth;
     const l0=Math.min(EL.x,ER.x-30),w=ER.x-l0,l=cl(l0,0,Math.max(0,W-w));   // 오른쪽 끝(▶)에서도 화면 밖으로 나가지 않게
     tip.style.width=w.toFixed(2)+'px';tip.style.opacity=op.toFixed(3);
@@ -1253,7 +1225,7 @@ Deck.start=function(){
   document.getElementById('b-ov').onclick=e=>{e.stopPropagation();OV?closeToc():openToc();};
   document.getElementById('b-pv').onclick=e=>{e.stopPropagation();pvSet(!PV);e.currentTarget.blur();};
   document.getElementById('b-fs').onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();else rootEl.requestFullscreen&&rootEl.requestFullscreen();};
-  hudFx();   // 툴팁 + 도구 접기·펴기
+  hudFx();   // 툴팁
   helpEl.addEventListener('click',e=>{if(e.target===helpEl)closeOverlays();});
   viewport.addEventListener('click',e=>{
     if(REMOTE)return;   // 프로젝터 창에서 따라 누른 단추의 클릭이 올라온 것

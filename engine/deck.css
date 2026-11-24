@@ -157,7 +157,7 @@ body:not(.on-light) #kwbar .kw.cur{background:#2997ff;color:#fff}
 #hud button.on{background:#ffd60a}
 #hud{position:fixed;right:22px;bottom:18px;display:flex;align-items:center;gap:8px;z-index:50;opacity:0;transform:translateY(8px);transition:opacity .35s var(--ease-out),transform .35s var(--ease-out);pointer-events:none}
 #hud.show{opacity:1;transform:none}
-#hud.show>button,html.paused #hud>button{pointer-events:auto}   /* 줄 자체는 클릭을 받지 않음(접힌 도구 자리의 빈 공간이 슬라이드 클릭을 막지 않게) — 단추만 */
+#hud.show>button,html.paused #hud>button{pointer-events:auto}   /* 줄 자체는 클릭을 받지 않음(단추 사이 빈틈이 슬라이드 클릭을 막지 않게) — 단추만 */
 #hud button{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(210,210,215,.64);color:#1d1d1f;-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);transition:transform .15s var(--ease-out)}
 #hud button:active{transform:scale(.92)}
 #hud #b-laser.on{background:#ff2d55;color:#fff}
@@ -170,11 +170,7 @@ body.notes-open #hud{bottom:calc(34vh + 18px)}   /* 노트가 열려도 컨트�
 #laser.on{display:block}
 html.still #laser{display:none!important}
 #hud button svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-/* 도구 접기·펴기와 툴팁(deck.js hudFx, 2026-11-17): 도구 7개(.tl)는 JS가 transform·opacity로 + 단추(#b-tools) 쪽으로 접음 */
-#hud .tl,#b-tools{will-change:transform}
-#b-tools{position:relative}
-#b-tools svg{width:22px;height:22px}
-#hud:not(.open):has(#b-pause.on,#b-laser.on,#b-lens.on,#b-pv.on) #b-tools::after{content:'';position:absolute;top:5px;right:5px;width:9px;height:9px;border-radius:50%;background:#0066cc;box-shadow:0 0 0 2px #fff}   /* 접혀 있어도 일시정지·레이저·돋보기·발표자 보기가 켜져 있으면 + 에 파란 점 */
+/* 툴팁(deck.js hudFx, 2026-11-17). 도구 접기·펴기(+ 단추)는 2026-11-24 교사 결정으로 뺌 — 도구는 늘 펼쳐 둠 */
 #hud #b-lens.on{background:#0066cc;color:#fff}
 /* 돋보기(deck.js lsMount, 2026-11-17 — designbookmark Glass lens): 테두리·그림자 없이 굴절 띠·빛 테두리·반사로만 유리처럼 */
 #lens-catch{position:fixed;z-index:48;display:none;cursor:none;touch-action:none}
@@ -230,8 +226,8 @@ body.on-light #progress i{background:rgba(0,0,0,.22)}
 body.on-light #stepdots{background:rgba(255,255,255,.9);box-shadow:0 1px 6px rgba(0,0,0,.28)} body.on-light #stepdots .pg{color:#1d1d1f} body.on-light #stepdots .pg small{color:#6e6e73} body.on-light #stepdots i{background:rgba(0,0,0,.18)} body.on-light #stepdots i.on{background:rgba(0,0,0,.7)}
 body.notes-open #stepdots{bottom:calc(34vh + 12px)}
 @media (max-width:1440px){
-  body:has(#hud.show.open) #stepdots,html.paused body:has(#hud.open) #stepdots{bottom:72px}   /* 2026-11-17: 도구를 접으면 줄이 짧아 가운데까지 안 오므로 펼쳤을 때만 */
-  body.notes-open:has(#hud.show.open) #stepdots,html.paused body.notes-open:has(#hud.open) #stepdots{bottom:calc(34vh + 72px)}
+  body:has(#hud.show) #stepdots,html.paused #stepdots{bottom:72px}
+  body.notes-open:has(#hud.show) #stepdots,html.paused body.notes-open #stepdots{bottom:calc(34vh + 72px)}
 }
 
 /* 덮개: 노트·도움말·화면 끄기 */
