@@ -80,11 +80,49 @@ a:focus-visible{outline:3px solid var(--act);outline-offset:3px;border-radius:6p
   .card{transition:border-color .2s}
   .card:hover{transform:none}
 }
+/* 오늘 방문자 수(Firebase) — 머리 오른쪽 위, 좁은 화면에서는 제목 위. 누르면 최근 7일 막대그래프 */
+header{position:relative}
+.visitBox{position:absolute;top:0;right:0;z-index:5}
+.visitBox[hidden]{display:none}
+.visit{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:15px;font-weight:600;color:var(--t2);padding:5px 14px;border-radius:9999px;border:1px solid var(--line);background:var(--card);cursor:pointer}
+.visit:hover{border-color:var(--act)}
+.visit:focus-visible,.vbar:focus-visible,.vx:focus-visible{outline:3px solid var(--act);outline-offset:3px}
+.visit b{color:var(--ink);font-variant-numeric:tabular-nums}
+.visit i{width:8px;height:8px;border-radius:50%;background:var(--sim);display:inline-block}
+.visit em{font-style:normal;font-size:11px;transition:transform .2s}
+.visit[aria-expanded="true"] em{transform:rotate(180deg)}
+.vpanel{position:absolute;top:calc(100% + 8px);right:0;width:320px;padding:14px 16px 12px;border-radius:16px;border:1px solid var(--line);background:var(--card);box-shadow:0 8px 28px var(--shadow)}
+.vpanel[hidden]{display:none}
+.vh{display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:700;color:var(--ink)}
+.vx{font:inherit;font-size:20px;line-height:1;color:var(--t2);background:none;border:0;padding:2px 6px;border-radius:8px;cursor:pointer}
+.vread{margin:6px 0 10px;font-size:14px;color:var(--t2);min-height:21px}
+.vread b{color:var(--ink);font-size:18px;font-variant-numeric:tabular-nums;margin-left:2px}
+.vbars{display:flex;align-items:stretch;gap:2px;border-top:0}
+.vbar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:150px;padding:0;font:inherit;background:none;border:0;border-radius:8px;cursor:pointer;color:var(--t2)}
+.vbar:hover{background:var(--bg)}
+.vnum{font-size:12px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;visibility:hidden}
+.vbar[aria-pressed="true"] .vnum{visibility:visible}
+.vfill{width:60%;max-width:26px;background:var(--act);opacity:.35;border-radius:4px 4px 0 0}
+.vbar[aria-pressed="true"] .vfill{opacity:1}
+.vlab{width:100%;padding-top:5px;border-top:1px solid var(--line);font-size:12px;text-align:center}
+.vbar[aria-pressed="true"] .vlab{color:var(--ink);font-weight:700}
+@media (max-width:640px){
+  .visitBox{position:relative;display:inline-block;margin-bottom:14px}
+  .vpanel{left:0;right:auto;width:min(320px,calc(100vw - 48px))}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
+    <div class="visitBox" id="visit" hidden>
+      <button class="visit" id="visitBtn" type="button" aria-expanded="false" aria-controls="vpanel" title="최근 7일 방문자 보기"><i></i><span>오늘 방문자 <b id="visitN"></b>명</span><em aria-hidden="true">▾</em></button>
+      <div class="vpanel" id="vpanel" hidden role="dialog" aria-label="최근 7일 방문자">
+        <div class="vh"><span>최근 7일 방문자</span><button class="vx" id="vx" type="button" aria-label="닫기">×</button></div>
+        <div class="vread" id="vread" aria-live="polite"></div>
+        <div class="vbars" id="vbars"></div>
+      </div>
+    </div>
     <div class="eb">진광고등학교 · 교사 김덕영</div>
     <h1>과학 수업 자료</h1>
     <p>수업 슬라이드와 시뮬레이터를 모았습니다. 카드를 누르면 바로 열립니다.</p>
@@ -158,6 +196,57 @@ SUBJECTS.forEach(s=>{
   });
   list.appendChild(sec);
 });
+/* 오늘 방문자 수 — Firebase Firestore의 visits/날짜(한국 시간) 문서에 n을 셉니다.
+   같은 브라우저는 하루 한 번만 1을 더합니다. 실패하면 숫자 칸을 숨긴 채 둡니다.
+   숫자 칸을 누르면 최근 7일 막대그래프가 열리고, 막대(날짜)를 누르면 그날 명수가 나옵니다. */
+(()=>{
+  const DB='https://firestore.googleapis.com/v1/projects/my-geo-classroom/databases/(default)/documents';
+  const KEY='AIzaSyAj_fY9TfF3u62fjEgrcO6Zx_zvV9EEubM';
+  const day=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul'}).format(new Date());   // 2026-11-25
+  const $=id=>document.getElementById(id);
+  const show=n=>{if(!n)return;$('visitN').textContent=Number(n).toLocaleString('ko-KR');$('visit').hidden=false;};
+  let seen=null;try{seen=localStorage.getItem('visitDay');}catch(e){}
+  if(seen===day){
+    fetch(DB+'/visits/'+day+'?key='+KEY).then(r=>r.ok?r.json():null).then(d=>show(d&&d.fields&&d.fields.n&&d.fields.n.integerValue)).catch(()=>{});
+  }else{
+    fetch(DB+':commit?key='+KEY,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({writes:[{transform:{
+      document:'projects/my-geo-classroom/databases/(default)/documents/visits/'+day,
+      fieldTransforms:[{fieldPath:'n',increment:{integerValue:'1'}}]}}]})})
+    .then(r=>r.ok?r.json():null)
+    .then(d=>{const n=d&&d.writeResults&&d.writeResults[0].transformResults&&d.writeResults[0].transformResults[0].integerValue;
+      if(n){try{localStorage.setItem('visitDay',day);}catch(e){}show(n);}})
+    .catch(()=>{});
+  }
+  /* 최근 7일 그래프 — 처음 열 때 한 번만 불러옵니다. 기록이 없는 날은 0명 */
+  const [y,m,d]=day.split('-').map(Number),days=[];
+  for(let i=6;i>=0;i--)days.push(new Date(Date.UTC(y,m-1,d-i)).toISOString().slice(0,10));
+  const name=k=>{const t=new Date(k+'T00:00:00Z');return (t.getUTCMonth()+1)+'월 '+t.getUTCDate()+'일('+'일월화수목금토'[t.getUTCDay()]+')';};
+  const getN=k=>fetch(DB+'/visits/'+k+'?key='+KEY).then(r=>r.status===404?0:r.ok?r.json().then(j=>Number(j.fields&&j.fields.n&&j.fields.n.integerValue||0)):Promise.reject(r.status));
+  const btn=$('visitBtn'),panel=$('vpanel'),bars=$('vbars'),read=$('vread');
+  let data=null,sel=6;
+  const say=i=>{read.textContent=name(days[i])+' ';read.appendChild(el('b',null,data[i].toLocaleString('ko-KR')));read.append('명');};
+  const pick=i=>{sel=i;[...bars.children].forEach((c,j)=>c.setAttribute('aria-pressed',j===i));say(i);};
+  const draw=()=>{
+    const max=Math.max(1,...data);bars.textContent='';
+    days.forEach((k,i)=>{
+      const c=el('button','vbar');c.type='button';c.setAttribute('aria-label',name(k)+' '+data[i]+'명');
+      const f=el('span','vfill');f.style.height=data[i]?Math.max(4,Math.round(data[i]/max*100))+'px':'2px';
+      c.append(el('span','vnum',data[i].toLocaleString('ko-KR')),f,el('span','vlab',i===6?'오늘':k.slice(5).replace('-','/').replace(/^0/,'')));
+      c.onclick=()=>pick(i);c.onmouseenter=()=>say(i);c.onmouseleave=()=>say(sel);
+      bars.appendChild(c);
+    });
+    pick(sel);
+  };
+  const open=o=>{
+    panel.hidden=!o;btn.setAttribute('aria-expanded',o);
+    if(o&&!data){read.textContent='불러오는 중…';
+      Promise.all(days.map(getN)).then(a=>{data=a;draw();}).catch(()=>{read.textContent='기록을 불러오지 못했습니다.';});}
+  };
+  btn.onclick=()=>open(panel.hidden);
+  $('vx').onclick=()=>{open(false);btn.focus();};
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden){open(false);btn.focus();}});
+  document.addEventListener('click',e=>{if(!panel.hidden&&!$('visit').contains(e.target))open(false);});
+})();
 </script>
 </body>
 </html>
