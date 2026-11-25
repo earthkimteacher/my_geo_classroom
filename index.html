@@ -315,7 +315,7 @@ SUBJECTS.forEach(s=>{
   const scroll=()=>{const max=document.documentElement.scrollHeight-innerHeight;cam=max>0?Math.min(1,scrollY/max)*3:0;};
   const cloud=(x,y,s)=>{c.beginPath();[[0,0,26],[30,-14,30],[62,-4,24],[86,6,18],[-22,8,16]].forEach(([dx,dy,r])=>{c.moveTo(x+(dx+r)*s,y+dy*s);c.arc(x+dx*s,y+dy*s,r*s,0,6.3);});c.rect(x-22*s,y+2*s,108*s,22*s);c.fill();};
   const surf=(x,k)=>Y(2)+ (6+k*3)*Math.sin(x/(90+k*40)+t*(.9-k*.2)+k*2)+k*16;      // 물결 k번째 겹
-  const bed=x=>3.52-.2*Math.exp(-((((x/W)-.72)/.1)**2))+.035*Math.sin(x/W*7);       // 해저 지형(화면 높이 단위), 오른쪽에 해산
+  const bed=x=>3.52-.16*Math.exp(-((((x/W)-.72)/Math.max(.15,150/W))**2))+.035*Math.sin(x/W*7);       // 해저 지형(화면 높이 단위), 오른쪽에 완만한 해산(좁은 화면에서도 뾰족하지 않게 폭을 150px 이상으로)
   function draw(){
     c.clearRect(0,0,W,H);
     /* 하늘: 우주 → 대기 */
