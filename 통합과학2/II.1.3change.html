@@ -122,6 +122,102 @@ html.print .tbl tr.cur td,html.print .tbl tr.cur th,html.print .ws-card .ws-row.
 .strk i{position:absolute;left:-6px;right:-6px;top:50%;height:5px;margin-top:-2px;border-radius:3px;background:var(--ir);transform-origin:left center}
 /* 글자 둘레 흰 띠는 학생용 인쇄에서 뺀다(pdf.js에서 덩어리로 그려짐) */
 html.print text[paint-order="stroke"]{stroke:none}
+/* ═══ s15d 비추는 각 — 지구본에서 보기(three.js 3D, 2026-11-18 구판 s13d로 만듦, 2026-11-25 신판으로 옮김) ═══ */
+#s15d{--act:#0066cc;--sunC:#8A6500;--irC:#C9251B;--warmC:#B25000;--coldC:#005BB8}
+#s15d-v{left:0;top:0;width:1920px;height:1080px;border-radius:0;z-index:1;background:radial-gradient(ellipse at 62% 45%,#0c1730 0%,#05080f 70%)}
+html.print #s15d-v{background:linear-gradient(180deg,#fdfdfd,#e9eef5)}
+#s15d .gl{background:rgba(255,255,255,.96);box-shadow:0 6px 24px rgba(0,0,0,.35);border-radius:20px;color:#1d1d1f}
+#s15d .hd{left:50px;top:40px;right:auto;padding:14px 28px 16px;z-index:4}
+#s15d .hd .eb{font-size:24px;margin-bottom:2px;color:#6e6e73}
+#s15d .hd h2{font-size:44px;color:#1d1d1f}
+#s15d-cap{position:absolute;left:50px;top:184px;width:560px;box-sizing:border-box;padding:22px 30px 24px;z-index:4;font-size:30px;line-height:1.45;font-weight:500;letter-spacing:-.01em}
+#s15d-cap .cp{display:none}
+#s15d-cap .cp.on{display:block;animation:s15din .45s ease both}
+@keyframes s15din{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+#s15d-cap .tm{display:block;font-size:26px;font-weight:800;color:var(--act);margin-bottom:6px}
+#s15d-cap b{font-weight:800}
+#s15d-cap .sub{display:block;margin-top:10px;padding-top:10px;border-top:2px solid rgba(0,0,0,.08);font-size:26px;line-height:1.42;color:#3a3a3c}
+#s15d-cap .nw{white-space:nowrap} #s15d-cap .num{font-variant-numeric:tabular-nums}
+#s15d-cap .opts{display:flex;gap:8px;margin-top:12px}
+#s15d-cap .opt{padding:8px 12px;border-radius:14px;background:rgba(0,0,0,.055);font-weight:700;font-size:26px;white-space:nowrap;transition:opacity .5s,background .5s,color .5s}
+#s15d-quiz.ans .opt{opacity:.4}
+#s15d-quiz.ans .opt.ok{opacity:1;background:#1d1d1f;color:#fff}
+#s15d-quiz .why{display:none}
+#s15d-quiz.ans .why{display:block}
+#s15d-cap .bk{margin-left:40px}
+#s15d-cap svg{display:block;margin-top:8px}
+#s15d-cap svg text{font-size:24px;font-weight:700;fill:#3a3a3c}
+.c-sunC{color:var(--sunC)} .c-irC{color:var(--irC)} .c-warmC{color:var(--warmC)} .c-coldC{color:var(--coldC)}
+/* 왼쪽 아래: 빛의 발자국(넓이 비교) / 위도별 에너지 그래프 */
+#s15d-fp,#s15d-gr{position:absolute;left:50px;bottom:46px;width:560px;box-sizing:border-box;padding:16px 20px 16px;z-index:4;transition:opacity .5s}
+#s15d-fp.off,#s15d-gr.off{opacity:0;visibility:hidden}
+#s15d .st{display:flex;align-items:baseline;gap:10px;font-size:26px;font-weight:800;line-height:36px}
+#s15d .st em{margin-left:auto;font-style:normal;font-weight:600;font-size:24px;color:#6e6e73}
+#s15d-fps text,#s15d-grs text{font-size:24px;font-weight:700;fill:#3a3a3c;font-variant-numeric:tabular-nums}
+#s15d-fp .nums{display:grid;grid-template-columns:1fr 1fr 1.35fr;gap:10px;margin-top:6px}
+#s15d-fp .nums div{padding:8px 12px 6px;border-radius:14px;background:rgba(0,0,0,.055)}
+#s15d-fp .nums span{display:block;font-size:24px;font-weight:600;color:#6e6e73;line-height:1.25;white-space:nowrap}
+#s15d-fp .nums b{display:block;font-size:36px;font-weight:800;line-height:1.25;font-variant-numeric:tabular-nums;white-space:nowrap}
+#s15d-fp .nums div:last-child b{color:var(--warmC)}
+#s15d-grs .halo{paint-order:stroke;stroke:#fff;stroke-width:6px;stroke-linejoin:round}
+/* 조작 줄 */
+#s15d-panel{left:auto;right:50px;bottom:46px;height:80px;gap:16px;padding:0 18px;font-size:28px;z-index:5}
+#s15d #s15d-panel{width:auto;top:auto;bottom:90px}   /* 2026-11-25 신판으로 옮기며: 신판 전역 .ia-panel(left·width·top 고정)을 풀고, 아래 도구 줄과 겹치지 않게 아래 끝을 990에 맞춤 */
+#s15d-panel .seg{display:flex;gap:6px}
+#s15d-panel .ia-btn{height:56px;font-size:26px;padding:0 16px}
+#s15d-panel .ia-btn.sub.on{background:#1d1d1f;color:#fff}
+#s15d-panel input[type=range]{width:230px}
+#s15d-panel .val{min-width:96px}
+#s15d .fine{left:50px;right:auto;top:auto;bottom:2px;padding:3px 14px;border-radius:10px;background:rgba(255,255,255,.9);color:#3a3a3c;z-index:4;white-space:nowrap}
+/* 3D 안의 이름표 */
+:where(#s15d) .v3-t.beam{background:#fff;font-size:27px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+:where(#s15d) .v3-t.beam b{color:#B25000;font-weight:800}
+:where(#s15d) .v3-t.gho{background:rgba(255,255,255,.9);font-size:24px;font-weight:700}
+:where(#s15d) .v3-t.lat{background:rgba(10,14,24,.72);color:#fff;font-size:24px;font-weight:600}
+:where(#s15d) .v3-t.sunp{background:#FFD60A;color:#1d1d1f;font-size:25px;font-weight:800}
+:where(#s15d) .v3-t.hot{background:#FFE9A8;color:#6b4a00;font-weight:800} .v3-t.cool{background:#D6E8FF;color:#00428a;font-weight:800}
+:where(#s15d) .v3-t.mv{background:#FF8A1F;color:#1d1d1f;font-weight:800}
+:where(#s15d) .v3{position:absolute;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#fdfdfd 0%,#eef1f5 100%);z-index:2;touch-action:none}
+:where(#s15d) .v3 .v3-gl{position:absolute;left:0;top:0;width:100%!important;height:100%!important;display:block}
+:where(#s15d) .v3 .v3-lab{position:absolute!important;left:0;top:0;cursor:grab}
+:where(#s15d) .v3 .v3-lab:active{cursor:grabbing}
+:where(#s15d) .v3-t{font-size:26px;font-weight:700;line-height:1.2;white-space:nowrap;padding:2px 10px;border-radius:9px;background:rgba(255,255,255,.82);color:#1d1d1f;pointer-events:none;letter-spacing:-.01em}
+:where(#s15d) .v3-t i{font-style:normal;font-weight:600;opacity:.75;font-size:24px}
+:where(#s15d) .v3-t.sm{font-size:24px;font-weight:600;background:rgba(255,255,255,.65)}
+:where(#s15d) .v3-t.b{font-size:28px;font-weight:800}
+:where(#s15d) .v3-t.hor{color:var(--hor)}
+:where(#s15d) .v3-t.alt{color:var(--alt)}
+:where(#s15d) .v3-t.equ{color:var(--equ)}
+:where(#s15d) .v3-t.dec{color:var(--dec)}
+:where(#s15d) .v3-t.ecl{color:var(--ecl)}
+:where(#s15d) .v3-t.pole{color:var(--pole)}
+:where(#s15d) .v3-t.gray{color:var(--gray)}
+:where(#s15d) .v3-t.ink{color:#1d1d1f}
+:where(#s15d) .v3-t.pgf{color:#C9251B}
+:where(#s15d) .v3-t.iso{color:#2a4a6b}
+:where(#s15d) .v3-t.hi{color:#B25000}
+:where(#s15d) .v3-t.lo{color:#005BB8}
+:where(#s15d) .v3-read{position:absolute;left:22px;top:22px;z-index:3;display:flex;flex-direction:column;gap:4px;padding:14px 20px;border-radius:14px;background:rgba(255,255,255,.88);box-shadow:0 1px 4px rgba(0,0,0,.08);pointer-events:none;min-width:250px}
+:where(#s15d) .v3-read .r{display:none;justify-content:space-between;gap:24px;font-size:28px;font-weight:600;line-height:1.35}
+:where(#s15d) .v3-read .r.on{display:flex}
+:where(#s15d) .v3-read .r b{font-weight:800;font-variant-numeric:tabular-nums}
+:where(#s15d) .v3-read:not(:has(.r.on)){display:none}
+:where(#s15d) .v3 .v3-home{position:absolute;right:18px;top:18px;z-index:4;height:52px;font-size:26px;padding:0 18px}
+:where(#s15d) .v3-hint{position:absolute;right:18px;bottom:14px;z-index:3;font-size:24px;font-weight:600;color:#8e8e93;pointer-events:none}
+:where(#s15d) .ia-panel{position:absolute;height:88px;display:flex;align-items:center;gap:26px;padding:0 26px;border-radius:18px;background:#fff;font-size:30px;font-weight:600;color:var(--ink);z-index:5}
+:where(#s15d) .ia-panel label{display:flex;align-items:center;gap:14px;white-space:nowrap}
+:where(#s15d) .ia-panel input[type=range]{width:190px;height:40px;accent-color:var(--act);cursor:pointer}
+:where(#s15d) .ia-panel .val{min-width:118px;font-variant-numeric:tabular-nums;color:var(--act);font-weight:700}
+:where(#s15d) .ia-btn{border:0;border-radius:12px;height:60px;padding:0 22px;font:inherit;font-size:28px;font-weight:700;color:#fff;background:#1d1d1f;cursor:pointer;white-space:nowrap}
+:where(#s15d) .ia-btn.sub{background:#d1d1d6;color:#1d1d1f}
+:where(#s15d) .ia-btn.on{background:var(--act)}
+:where(#s15d) .v3-card{padding:22px 34px;display:flex;flex-direction:column;justify-content:center}
+:where(#s15d) .v3-card .ws-row{grid-template-columns:1fr;gap:2px;font-size:30px;line-height:1.45;padding:16px 0}
+:where(#s15d) .v3-card .ws-row:first-child{border-top:0}
+:where(#s15d) .v3-card .ws-row .tm{font-size:27px}
+:where(#s15d) .v3-card .ws-row b{font-weight:800}
+:where(#s15d) .v3-card .ws-row.cur{background:none}
+:where(#s15d) .v3-card .ws-row.cur .tm{color:var(--act)}
 /* ═══ s25d 적도 부근 태평양 — 입체로 보기(three.js 3D, 2026-11-18 덧붙임, 2026-11-25 s21 뒤로 옮김) ═══ */
 .slide{--wind:#157F4A;--warm:#B25000;--cold:#005BB8}
 #s25d-v{left:0;top:0;width:1920px;height:1080px;border-radius:0;z-index:1;background:linear-gradient(180deg,#A6D2FA 0%,#DCEEFF 52%,#F4F9FF 74%,#FFFFFF 100%)}
@@ -347,8 +443,74 @@ html.print #s25d-st{background:#3a3a3c}
   <div class="fine">모식 그림 · 실제 호수 모양과 다름 · 면적: 교과서 82쪽</div>
 </section>
 
+<!-- ═══ s03b ═══ -->
+<section class="slide" id="s03b" data-tile="black" data-title="열은 어떻게 이동할까?" data-notes="중학교에서 배운 열의 이동 세 가지를 복습하고 복사로 이어 갑니다. 1단계 전도: 금속 막대의 한쪽 끝을 가열하면, 입자들은 제자리에서 떨기만 하면서 이웃 입자에 차례로 열을 전달합니다(주황이 가열한 쪽부터 번짐). 주로 고체에서 일어납니다. 예: 뜨거운 국에 담근 숟가락 손잡이가 뜨거워짐. 2단계 대류: 냄비 아래를 가열하면 데워진 물(주황)은 위로 올라가고 위의 찬 물(파랑)은 내려오며 돕니다. 물질이 직접 움직이며 열을 옮기는 방법으로, 액체와 기체에서 일어납니다. 예: 에어컨은 위에, 난방기는 아래에 둠. 3단계 복사: 그런데 태양과 지구 사이는 물질이 거의 없는 우주 공간입니다. 물질이 없으면 전도도 대류도 일어날 수 없는데, 태양의 열은 어떻게 올까? → 다음 장 난로 실험. 그림은 모식 그림입니다.">
+  <style>
+  #s03b .st{animation:s03btw 3.4s ease-in-out infinite}
+  @keyframes s03btw{0%,100%{opacity:1}50%{opacity:.3}}
+  html.still #s03b .st,html.print #s03b .st{animation:none}
+  #s03b .s03b-ttl{position:absolute;top:258px;font-size:48px;font-weight:800;line-height:1.2;letter-spacing:-.02em;color:#fff;z-index:3}
+  #s03b .s03b-card{top:724px;width:520px;height:266px;padding:0 30px;display:flex;flex-direction:column;justify-content:center;font-size:36px;font-weight:600;line-height:1.5;letter-spacing:-.015em}
+  #s03b .s03b-card b{font-weight:800}
+  #s03b .s03b-card .ex{display:flex;align-items:center;gap:12px;margin-top:10px;font-size:28px;font-weight:600;color:#5c5c61;white-space:nowrap}
+  #s03b .s03b-card .ex+.ex{margin-top:6px}
+  </style>
+  <div class="scene"><svg id="s03b-sv" viewBox="0 0 1920 1080"></svg></div>
+  <div class="hd" data-in><div class="eb"><b>1</b>온실 효과<span class="rv">중학교 과학 복습</span></div><h2>열은 어떻게 이동할까?</h2></div>
+  <div class="s03b-ttl" style="left:120px" data-in="200" data-fx="fade">전도</div>
+  <div class="s03b-ttl" style="left:700px" data-in="300" data-fx="fade">대류</div>
+  <div class="s03b-ttl" style="left:1280px" data-in="400" data-fx="fade">복사</div>
+  <div class="glass gl s03b-card" style="left:120px" data-step="1" data-fx="up"><span>입자는 <b>제자리</b>에서 떨며<br>이웃 입자에 차례로 열을 전달</span><span class="ex"><span class="chip">주로 고체</span><span>예) 국에 담근 숟가락</span></span></div>
+  <div class="glass gl s03b-card" style="left:700px" data-step="2" data-fx="up"><span>데워진 물질이<br><b>직접 움직이며</b> 순환</span><span class="ex"><span class="chip">액체·기체</span></span><span class="ex"><span>예) 난방기는 아래, 에어컨은 위</span></span></div>
+  <div class="glass gl s03b-card" style="left:1280px" data-step="3" data-fx="up"><span><b>물질이 없어도</b> 열이<br>전달될 수 있을까?</span><span class="ex"><span>→ 난로 앞에서 확인해 보자</span></span></div>
+  <div class="fine">모식 그림 · 입자의 크기와 태양·지구의 크기·거리는 실제와 다름</div>
+</section>
+
+<!-- ═══ s03c ═══ -->
+<section class="slide" id="s03c" data-tile="light" data-title="난로 앞은 왜 따뜻할까?" data-notes="앞 장(전도·대류)에 이어 복사를 확인합니다. 1단계: 난로에서 나온 빨간 물결이 공기를 지나 온도계에 바로 닿습니다. ‘사이의 공기가 데워져서(전도·대류)일까?’를 묻습니다. 2단계: 가림막을 세우면 공기는 그대로인데도 온도계 온도가 내려갑니다. 열이 공기(물질)를 거치지 않고 직접 전달되었다는 뜻입니다. 3단계: 정의 카드(빈칸). 4단계: 빈칸 1 복사 — 이렇게 열이 물질의 도움 없이 직접 전달되는 방법이 복사입니다. 태양 에너지도 물질이 거의 없는 우주 공간을 건너 복사로 지구에 옵니다. 모식 그림입니다.">
+  <style>
+  #s03c .s03c-card{top:250px;width:540px;height:262px;padding:0 32px;display:flex;flex-direction:column;justify-content:center;font-size:36px;font-weight:600;line-height:1.5;letter-spacing:-.015em}
+  #s03c .s03c-card b{font-weight:800}
+  #s03c .s03c-card .h{font-size:30px;font-weight:800;line-height:1.4;margin-bottom:4px}
+  #s03c .s03c-card .bk{margin-left:40px;align-self:flex-start;margin-bottom:6px}
+  #s03c #s03c-say{left:470px;top:908px;width:980px;height:82px;padding:0;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:600;letter-spacing:-.015em;white-space:nowrap}
+  #s03c #s03c-say b{font-weight:800}
+  #s03c .fine{left:108px;padding:2px 12px;border-radius:8px;background:rgba(255,255,255,.82)}
+  </style>
+  <div class="scene"><svg id="s03c-sv" viewBox="0 0 1920 1080"></svg></div>
+  <div class="hd" data-in><div class="eb"><b>1</b>온실 효과</div><h2>난로 앞은 왜 따뜻할까?</h2></div>
+  <div class="glass gl s03c-card" style="left:120px" data-step="1"><span class="h" style="color:#0066cc">질문</span><span>난로와 온도계 사이의 공기가<br>데워져서(전도·대류)<br>따뜻해지는 걸까?</span></div>
+  <div class="glass gl s03c-card" style="left:690px" data-step="2"><span class="h c-warm">관찰</span><span>가림막을 세우면 공기는<br>그대로인데 온도가 내려간다<br>→ 열이 <b>직접</b> 전달된다</span></div>
+  <div class="glass gl s03c-card" style="left:1260px" data-step="3"><span class="bk"><span class="n">1</span><span class="a" data-step="4" data-fx="pop">복사</span></span><span>열이 물질의 도움 없이<br>직접 전달되는 방법</span></div>
+  <div class="glass gl" id="s03c-say" data-step="4"><span>태양 에너지도 텅 빈 우주를 건너 <b class="c-sun">복사</b>로 지구에 온다</span></div>
+  <div class="fine">모식 그림</div>
+</section>
+
+<!-- ═══ s03d ═══ -->
+<section class="slide" id="s03d" data-tile="parchment" data-title="복사 평형 — 컵의 온도는 왜 멈출까?" data-notes="교과서 탐구: 적외선등을 켜고 검은 알루미늄 컵의 온도를 2분 간격으로 측정한 결과(25.4 ℃ → 50.0 ℃)입니다. 컵으로 들어오는 노란 화살표(흡수)는 일정하고, 컵에서 나가는 빨간 화살표(방출)는 컵의 온도가 높을수록 굵어집니다. 1단계(0~10분): 흡수 &gt; 방출이라 온도가 올라갑니다. 2단계(18분 이후): 방출이 흡수와 같아져 온도가 더 오르지 않습니다. 3단계: 복사 평형 정의 줄(빈칸). 4단계: 빈칸 1 같은 — 흡수하는 복사 에너지양과 방출하는 복사 에너지양이 같은 상태가 복사 평형입니다. 학생 질문 대비: ‘복사 평형이면 에너지 출입이 멈춘 것인가?’ → 아닙니다. 계속 흡수하고 계속 방출하지만 양이 같아서 온도가 일정한 것입니다. 방출 화살표의 굵기는 온도 차로 어림한 모식입니다. 왼쪽 위 막대는 흡수(노랑)와 방출(빨강)을 같은 축척으로 비교합니다. 방출 막대가 흡수만큼 길어지면 &gt;가 =로 바뀝니다. 다음 장에서 같은 생각을 지구에 적용합니다(지구의 복사 평형).">
+  <style>
+  #s03d #s03d-bp{left:120px;top:250px;width:560px;height:116px;padding:0}
+  #s03d #s03d-bp svg{display:block;width:560px;height:116px}
+  #s03d #s03d-gc{left:820px;top:250px;width:980px;height:440px;padding:0}
+  #s03d #s03d-gc svg{display:block;width:980px;height:440px}
+  #s03d .ws-card{left:120px;top:728px;width:1680px;padding:14px 36px}
+  #s03d .ws-card .ws-row{grid-template-columns:330px 1fr;padding:10px 0}
+  #s03d .fine{left:108px;padding:2px 12px;border-radius:8px;background:rgba(255,255,255,.82);color:#5c5c61}
+  </style>
+  <div class="scene"><svg id="s03d-sv" viewBox="0 0 1920 1080"></svg></div>
+  <div class="hd" data-in><div class="eb"><b>1</b>온실 효과</div><h2>컵의 온도는 왜 50 ℃에서 멈출까?</h2></div>
+  <div class="glass gl" id="s03d-bp" data-in="500" data-fx="fade"><svg id="s03d-b" viewBox="0 0 560 116"></svg></div>
+  <div class="glass gl" id="s03d-gc" data-in="300" data-fx="fade"><svg id="s03d-g" viewBox="0 0 980 440"></svg></div>
+  <div class="ws-card gl" data-step="1">
+    <div class="ws-row" data-step="1"><span class="tm">① 온도 상승 구간</span><span>흡수하는 복사 에너지양 <b class="c-warm">&gt;</b> 방출하는 복사 에너지양</span></div>
+    <div class="ws-row" data-step="2"><span class="tm">② 온도 일정 구간</span><span>흡수하는 복사 에너지양 <b style="color:#0066cc">=</b> 방출하는 복사 에너지양</span></div>
+    <div class="ws-row" data-step="3"><span class="tm term">복사 평형</span><span>흡수하는 복사 에너지양과 방출하는 복사 에너지양이 <span class="bk"><span class="n">1</span><span class="a" data-step="4" data-fx="pop">같은</span></span> 상태</span></div>
+  </div>
+  <div class="fine">모식 그림 · 방출 화살표의 굵기는 온도 차로 어림함 · 측정값: 교과서 탐구</div>
+</section>
+
 <!-- ═══ s04 ═══ -->
-<section class="slide" id="s04" data-tile="black" data-title="복사 평형" data-notes="중학교 과학 복습. 클릭 1: 지구는 태양 복사 에너지(노란 물결, 파장이 짧음)를 흡수합니다. 클릭 2: 지구도 지구 복사 에너지(빨간 물결, 파장이 김)를 우주 공간으로 방출합니다. 클릭 3: 흡수하는 에너지양과 방출하는 에너지양이 같습니다 — 지도서: 복사 평형 상태에서 100의 태양 복사 에너지를 흡수한 지구는 100의 지구 복사 에너지를 방출한다(지표와 대기의 반사는 고려하지 않음). 클릭 4: 그래서 지구의 연평균 기온이 일정하게 유지됩니다. 덧붙일 말: 흡수량이 방출량보다 많으면 온도가 올라가고, 온도가 올라갈수록 방출량이 늘어 둘이 같아지는 온도에서 멈춥니다. 다음 장에서 대기(온실 기체)가 이 평형에 어떤 일을 하는지 봅니다. 지구는 모든 방향으로 복사 에너지를 방출하지만 그림에는 오른쪽 네 줄만 그렸습니다(모식).">
+<section class="slide" id="s04" data-tile="black" data-title="복사 평형" data-notes="중학교 과학 복습. 클릭 1: 지구는 태양 복사 에너지(노란 물결, 파장이 짧음)를 흡수합니다. 클릭 2: 태양 복사 에너지는 주로 가시광선이고, 파장이 짧은 단파라서 대기를 잘 통과합니다. 클릭 3: 지구도 지구 복사 에너지(빨간 물결, 파장이 김)를 우주 공간으로 방출합니다. 클릭 4: 지구 복사 에너지는 주로 적외선이고, 파장이 긴 장파라서 대기가 잘 흡수합니다(대기 중의 온실 기체 — 다음 장). 클릭 5: 흡수하는 에너지양과 방출하는 에너지양이 같습니다 — 지도서: 복사 평형 상태에서 100의 태양 복사 에너지를 흡수한 지구는 100의 지구 복사 에너지를 방출한다(지표와 대기의 반사는 고려하지 않음). 클릭 6: 그래서 지구의 연평균 기온이 일정하게 유지됩니다. 덧붙일 말: 흡수량이 방출량보다 많으면 온도가 올라가고, 온도가 올라갈수록 방출량이 늘어 둘이 같아지는 온도에서 멈춥니다. 다음 장에서 대기(온실 기체)가 이 평형에 어떤 일을 하는지 봅니다. 지구는 모든 방향으로 복사 에너지를 방출하지만 그림에는 오른쪽 네 줄만 그렸습니다(모식).">
   <style>
   #s04 #s04-globe{left:340px;top:440px;width:360px;height:360px}
   #s04 .st{animation:s04tw 3.4s ease-in-out infinite}
@@ -358,6 +520,10 @@ html.print #s25d-st{background:#3a3a3c}
   #s04 #s04-pan{left:1040px;top:630px;width:760px;height:360px;padding:26px 36px}
   #s04 #s04-pan svg{display:block;width:688px;height:308px}
   html.noans #s04 .s04-ans{visibility:hidden}
+  #s04 .s04-wv{position:absolute;z-index:3;font-size:32px;font-weight:700;letter-spacing:-.01em;white-space:nowrap}   /* 2026-11-25 구판 '지구의 복사 평형'의 '주로 가시광선/적외선' — 그림의 두 이름표 바로 아래 */
+  #s04 #s04-wv1{left:70px;top:334px} #s04 #s04-wv2{left:786px;top:322px}   /* 2026-11-25 단파·장파 두 줄이 들어갈 자리: 태양 쪽은 물결 위, 지구 쪽은 위 두 물결 사이 */
+  #s04 .s04-ex{margin-top:6px;font-size:30px;font-weight:600;line-height:40px}
+  #s04 .s04-ex b{font-weight:800}
   </style>
   <div class="scene">
     <svg id="s04-bg" viewBox="0 0 1920 1080"></svg>
@@ -366,9 +532,11 @@ html.print #s25d-st{background:#3a3a3c}
   </div>
   <div class="hd" data-in><div class="eb"><b>1</b>온실 효과<span class="rv">중학교 과학 복습</span></div><h2>복사 평형</h2></div>
   <div class="ws-card gl st" data-in="300">
-    <div class="ws-row"><span class="tm term">복사 평형</span><span>지구는 에너지를 <span class="bk"><span class="n">1</span><span class="a" data-step="1">흡수</span></span>한 만큼<br>에너지를 <span class="bk"><span class="n">2</span><span class="a" data-step="2">방출</span></span>하는 <b>평형</b> 상태에 있다.</span></div>
-    <div class="ws-row"><span>지구의 <b>연평균 기온</b>이 <span class="bk"><span class="n">3</span><span class="a" data-step="4">일정</span></span>하게 유지된다.</span></div>
+    <div class="ws-row"><span class="tm term">복사 평형</span><span>지구는 에너지를 <span class="bk"><span class="n">1</span><span class="a" data-step="1">흡수</span></span>한 만큼<br>에너지를 <span class="bk"><span class="n">3</span><span class="a" data-step="3">방출</span></span>하는 <b>평형</b> 상태에 있다.</span></div>
+    <div class="ws-row"><span>지구의 <b>연평균 기온</b>이 <span class="bk"><span class="n">5</span><span class="a" data-step="6">일정</span></span>하게 유지된다.</span></div>
   </div>
+  <div class="s04-wv" id="s04-wv1" data-step="1" data-fx="fade">주로 <span class="bk"><span class="n">2</span><span class="a" data-step="2">가시광선</span></span><div class="s04-ex" data-step="2" data-fx="fade">파장이 짧은 <b class="c-sun">단파</b><br>대기를 잘 통과</div></div>
+  <div class="s04-wv" id="s04-wv2" data-step="3" data-fx="fade">주로 <span class="bk"><span class="n">4</span><span class="a" data-step="4">적외선</span></span><div class="s04-ex" data-step="4" data-fx="fade">파장이 긴 <b class="c-ir">장파</b><br>대기가 잘 흡수</div></div>
   <div class="glass gl" id="s04-pan" data-step="1" data-fx="fade"><svg id="s04-ps" viewBox="0 0 688 308"></svg></div>
   <div class="fine">모식 그림 · 지구와 물결의 크기는 실제와 다름 · 에너지양 100: 지도서(반사는 고려하지 않음)</div>
 </section>
@@ -411,7 +579,7 @@ html.print #s25d-st{background:#3a3a3c}
 </section>
 
 <!-- ═══ s06 ═══ -->
-<section class="slide" id="s06" data-tile="black" data-title="온실 효과" data-notes="교과서 82쪽 그림 II-10(지구의 에너지 출입 관계)과 같은 구도입니다. 왼쪽 = 지구에 대기가 없을 때, 오른쪽 = 지구에 대기가 있을 때. 클릭 1: 대기가 없다면 지표에서 방출하는 지구 복사 에너지(빨간 물결)가 그대로 우주 공간으로 빠져나갑니다. 클릭 2: 대기가 있을 때 — 태양 복사 에너지(노란 물결)는 대기를 지나 지표에 닿고, 지표에서 방출하는 에너지는 대기 중의 온실 기체(보라 분자)가 흡수합니다(한 줄은 흡수되지 않고 우주로). 클릭 3: 흡수한 에너지를 지표로 다시 방출합니다. 클릭 4: 그래서 지구의 평균 기온은 대기가 없을 때보다 높게 유지됩니다(평균 지표 온도 약 −18 ℃와 약 15 ℃는 참고서 값, 교과서 밖). 클릭 5: 이를 온실 효과라고 합니다. 지도서 해설: 대기가 없다면 100의 태양 복사 에너지를 흡수한 지구는 100의 지구 복사 에너지를 방출한다. 대기(온실 기체)가 있다면 방출하는 에너지 중 일부를 대기가 흡수했다가 지표로 재방출한다 — 예를 들어 그 양이 50이면 지구가 흡수한 에너지양이 50만큼 많아져 더 따뜻해진다. 지도상의 유의점: 온실 기체는 지구를 따뜻하게 유지해 주는 중요한 역할을 한다. 온실 기체가 과다 배출되는 경우가 문제이고, 온실 기체 자체는 문제가 아니다. 대기 두께와 분자·물결의 크기는 실제와 다릅니다.">
+<section class="slide" id="s06" data-tile="black" data-title="온실 효과" data-notes="교과서 82쪽 그림 II-10(지구의 에너지 출입 관계)과 같은 구도입니다. 왼쪽 = 지구에 대기가 없을 때, 오른쪽 = 지구에 대기가 있을 때. 오른쪽의 파란 층이 대기입니다(위쪽 밝은 선은 대기를 층으로 보이게 그린 것 — 실제 대기는 위로 갈수록 서서히 옅어져 뚜렷한 경계가 없음). 클릭 1: 대기가 없다면 지표에서 방출하는 지구 복사 에너지(빨간 물결)가 그대로 우주 공간으로 빠져나갑니다. 클릭 2: 대기가 있을 때 — 태양 복사 에너지(노란 물결)는 대기를 지나 지표에 닿고, 지표에서 방출하는 에너지는 대기 중의 온실 기체(보라 분자)가 흡수합니다 — 물결이 대기 층 안의 분자에 닿으면 층 안으로 빛이 번집니다(가운데 한 줄은 흡수되지 않고 우주로). 클릭 3: 흡수한 에너지를 지표로 다시 방출합니다. 대기는 지표 쪽뿐 아니라 우주 쪽으로도 다시 방출하므로 위로 나가는 물결도 함께 그렸습니다. 클릭 4: 그래서 지구의 평균 기온은 대기가 없을 때보다 높게 유지됩니다(평균 지표 온도 약 −18 ℃와 약 15 ℃는 참고서 값, 교과서 밖). 클릭 5: 이를 온실 효과라고 합니다. 지도서 해설: 대기가 없다면 100의 태양 복사 에너지를 흡수한 지구는 100의 지구 복사 에너지를 방출한다. 대기(온실 기체)가 있다면 방출하는 에너지 중 일부를 대기가 흡수했다가 지표로 재방출한다 — 예를 들어 그 양이 50이면 지구가 흡수한 에너지양이 50만큼 많아져 더 따뜻해진다. 지도상의 유의점: 온실 기체는 지구를 따뜻하게 유지해 주는 중요한 역할을 한다. 온실 기체가 과다 배출되는 경우가 문제이고, 온실 기체 자체는 문제가 아니다. 대기의 두께·경계와 분자·물결의 크기는 실제와 다릅니다.">
   <style>
   #s06 .ws-card.gl{left:1280px;top:250px;width:520px;background:rgba(255,255,255,.96);border:0}
   #s06 .ws-card .ws-row{grid-template-columns:1fr;font-size:32px;line-height:1.5;letter-spacing:-.015em}
@@ -422,14 +590,14 @@ html.print #s25d-st{background:#3a3a3c}
   </style>
   <div class="scene"><svg id="s06-sv" viewBox="0 0 1920 1080"></svg></div>
   <div class="hd" data-in><div class="eb"><b>1</b>온실 효과</div><h2>온실 효과</h2></div>
-  <div class="lab w s06-cap" style="left:150px" data-in="400">지구에 대기가 없을 때</div>
-  <div class="lab w s06-cap" style="left:765px" data-step="2">지구에 대기가 있을 때</div>
+  <div class="lab w s06-cap" style="left:190px" data-in="400">지구에 대기가 없을 때</div>
+  <div class="lab w s06-cap" style="left:750px" data-step="2">지구에 대기가 있을 때</div>
   <div class="ws-card gl" data-in="300">
     <div class="ws-row"><span>지구에 <b>대기가 없다면</b> 지표에서 방출하는 지구 복사 에너지가 그대로 <span class="bk"><span class="n">1</span><span class="a" data-step="1">우주 공간</span></span>으로 빠져나간다.</span></div>
     <div class="ws-row"><span><b>대기가 있을 때</b>는 지표에서 방출하는 에너지를 대기 중의 <b>온실 기체</b>가 <span class="bk"><span class="n">2</span><span class="a" data-step="2">흡수</span></span>했다가 지표로 <span class="bk"><span class="n">3</span><span class="a" data-step="3">다시 방출</span></span>하기 때문에 지구의 평균 기온은 대기가 없을 때보다 <span class="bk"><span class="n">4</span><span class="a" data-step="4">높게</span></span> 유지된다.</span></div>
     <div class="ws-row"><span>이를 <span class="bk"><span class="n">5</span><span class="a" data-step="5">온실 효과</span></span>라고 한다.</span></div>
   </div>
-  <div class="fine">모식 그림 · 대기 두께와 분자·물결의 크기는 실제와 다름 · 평균 지표 온도 값: 참고서(교과서 밖)</div>
+  <div class="fine">모식 그림 · 대기의 두께·경계와 분자·물결의 크기는 실제와 다름 · 평균 지표 온도 값: 참고서(교과서 밖)</div>
 </section>
 
 <!-- ═══ s07 ═══ -->
@@ -449,45 +617,6 @@ html.print #s25d-st{background:#3a3a3c}
     <div class="ia-stat"><div class="st"><i>지표의 평균 온도</i><b id="s07-v">약 15 ℃</b></div></div>
   </div>
   <div class="fine">모식 그림 · 대기를 한 층으로 본 간단한 모형으로 계산 · 띠의 굵기 = 에너지양 · 대기 두께는 실제보다 두껍게</div>
-</section>
-
-<!-- ═══ s08 ═══ -->
-<section class="slide" id="s08" data-tile="parchment" data-title="해 보기 — 지구 온난화의 메커니즘 알아보기" data-notes="교과서 83쪽 해 보기(활동 목표: 대기 중 이산화 탄소 농도 변화와 지구 평균 기온 변화의 관계를 설명할 수 있다). 그래프는 1950년~2023년의 지구 평균 기온 변화(기온 편차, 주황)와 대기 중 이산화 탄소 농도(보라 — 교과서 그림은 파랑인데 이 수업의 색 약속인 온실 기체 = 보라에 맞춤), 출처는 기상청 종합 기후변화감시정보. 클릭 1 이산화 탄소 농도 선(위 숫자 칸의 연도와 값이 함께 움직임), 2 기온 편차 선, 3 문제 1 예시 답안과 치수선, 4 문제 2 예시 답안과 두 선의 오르는 경향 화살표. 문제 1 예시 답안(지도서): 1950년의 기온 편차가 약 −0.63 ℃, 2023년의 기온 편차가 약 0.54 ℃이므로 약 1.17 ℃ 상승했다. 30년의 평균값을 비교해 보면 1950년부터 1979년까지의 평균 기온 편차는 약 −0.55 ℃, 1994년부터 2023년까지의 평균 기온 편차는 약 +0.06 ℃로 약 0.61 ℃ 상승하였다. ※ 교과서 그림의 선에서 직접 읽으면 1950년은 약 −0.7 ℃로 답안 값(−0.63)과 조금 다릅니다. 그래서 치수선에는 답안 값 ‘약 1.17 ℃’만 적었습니다. 지도 방안: 한 해의 기온은 다양한 요인에 의해 변하므로 한 해와 한 해의 기온을 비교하는 것은 큰 의미가 없고, 10년이나 30년의 평균 기온을 비교하는 것이 의미가 있다.">
-  <style>
-  #s08 .cht{position:absolute;left:120px;top:250px;width:940px;height:740px;border-radius:22px;background:#fff;z-index:2;box-shadow:0 1px 2px rgba(0,0,0,.04),0 12px 32px rgba(0,0,0,.07)}
-  #s08 .cht svg{display:block;width:940px;height:740px}
-  #s08 .ro{position:absolute;left:1100px;top:250px;width:700px;height:150px;border-radius:22px;background:#1d1d1f;color:#f5f5f7;display:grid;grid-template-columns:.8fr 1.2fr 1.1fr;align-items:center;z-index:3;box-shadow:0 12px 32px rgba(0,0,0,.18)}
-  #s08 .ro .c{display:flex;flex-direction:column;align-items:center;gap:6px}
-  #s08 .ro .c+.c{border-left:1px solid #3a3a3c}
-  #s08 .ro i{font-style:normal;font-size:24px;font-weight:600;color:#a1a1a6;white-space:nowrap}
-  #s08 .ro b{font-size:54px;font-weight:800;line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums;white-space:nowrap}
-  #s08 .ro b small{font-size:26px;font-weight:700;letter-spacing:0;margin-left:6px}
-  #s08 .ro .co{color:#D7A6FF} #s08 .ro .tp{color:#FFB340}
-  #s08 .q{position:absolute;left:1100px;width:700px;border-radius:22px;background:#fff;padding:22px 28px;z-index:3;box-shadow:0 1px 2px rgba(0,0,0,.04),0 12px 32px rgba(0,0,0,.07)}
-  #s08 .q .t{display:grid;grid-template-columns:40px 1fr;font-size:30px;font-weight:600;line-height:1.4;letter-spacing:-.015em}
-  #s08 .q .t .no{font-weight:800;color:var(--act)}
-  #s08 .q .a{margin:12px 0 0 40px;border-radius:14px;background:#f5f5f7;border-left:6px solid var(--act);padding:12px 20px;font-size:28px;font-weight:500;line-height:1.45;letter-spacing:-.01em}
-  #s08 .q .a .h{display:inline-block;font-size:24px;font-weight:700;line-height:1.5;color:#fff;background:var(--act);border-radius:9999px;padding:0 14px;margin-right:10px;vertical-align:2px}
-  html.noans #s08 .q .a,html.noans #s08 .ansg{visibility:hidden!important}
-  html.print #s08 .ro{background:#f5f5f7;color:#1d1d1f;box-shadow:none} html.print #s08 .ro .co{color:#7B3FB5} html.print #s08 .ro .tp{color:#B25000} html.print #s08 .ro i{color:#6e6e73}
-  html.print #s08 .cht,html.print #s08 .q{box-shadow:none;outline:2.5px solid #c7c7cc}
-  </style>
-  <div class="hd" data-in><div class="eb"><b>2</b>지구 온난화</div><h2>해 보기 — 지구 온난화의 메커니즘 알아보기</h2></div>
-  <div class="cht" data-in="200"><svg id="s08-ch" viewBox="0 0 940 740"></svg></div>
-  <div class="ro" data-in="350">
-    <div class="c"><i>연도</i><b id="s08-ry">1950</b></div>
-    <div class="c"><i>이산화 탄소 농도</i><b class="co"><span id="s08-rc">–</span><small>ppm</small></b></div>
-    <div class="c"><i>기온 편차</i><b class="tp"><span id="s08-rt">–</span><small>℃</small></b></div>
-  </div>
-  <div class="q" style="top:420px" data-in="500">
-    <div class="t"><span class="no">1.</span><span>최근의 지구 평균 기온은 1950년의 평균 기온에 비해 얼마나 변했는지 써 보자.</span></div>
-    <div class="a" data-step="3"><span class="h">예시 답안</span>2023년의 평균 기온은 1950년의 평균 기온에 비해 <b>약 1.17 ℃ 상승</b>했다.</div>
-  </div>
-  <div class="q" style="top:685px" data-in="650">
-    <div class="t"><span class="no">2.</span><span>지구 평균 기온 변화와 대기 중 이산화 탄소 농도 변화에는 어떤 관계가 있는지 설명해 보자.</span></div>
-    <div class="a" data-step="4"><span class="h">예시 답안</span>대기 중 <b>이산화 탄소 농도</b>가 상승하면서 <b>지구 평균 기온</b>도 상승하고 있다.</div>
-  </div>
-  <div class="fine">교과서 83쪽 해 보기 · 출처: 기상청 종합 기후변화감시정보</div>
 </section>
 
 <!-- ═══ s09 ═══ -->
@@ -520,6 +649,93 @@ html.print #s25d-st{background:#3a3a3c}
   <div class="lg" data-in="700"><span class="chip sun">태양 복사 에너지</span><span class="chip ir">지구 복사 에너지</span><span class="chip ghg">온실 기체</span></div>
   <div class="fine">모식 그림(분자·화살표는 실제보다 크게) · 배출량: 교과서 밖(참고서)</div>
 </section>
+
+<!-- ═══ s09b ═══ -->
+<section class="slide" id="s09b" data-tile="black" data-title="온실 효과는 나쁜 것일까?" data-notes="오개념 짚기(지도서 유의점): 온실 기체는 지구를 따뜻하게 유지해 주는 중요한 역할을 합니다. 온실 기체가 과다하게 배출되는 것이 문제이지, 온실 기체 자체나 온실 효과 자체가 문제가 아닙니다. 1단계: 온실 기체가 없다면 약 −18 ℃(참고서 추정값)로 생명체가 살기 어렵지만, 지금은 온실 효과 덕분에 약 15 ℃로 생명체가 살기 알맞은 온도가 일정하게 유지됩니다. 2단계: 대기 중 온실 기체의 양이 늘면 온실 효과가 강화되어 지구의 평균 기온이 높아집니다(지구 온난화 정의 카드, 빈칸). 3단계 ① 온실 기체, 4단계 ② 강화. 지도서는 지구 온난화를 최근 약 100년 동안 지구의 평균 기온이 1 ℃ 이상 상승한 현상으로 한정해 다룹니다(지구가 따뜻해진 일은 고생대·중생대에도 있었음). 5단계: 문제는 온실 효과가 아니라 온실 효과의 '강화'입니다. 5단계: ‘온실 효과는 나쁘다’를 띄워 학생 생각을 묻고, 6단계: 그 문장에 ✗ 줄을 그은 뒤 바른 문장(문제는 강화)을 보여 줍니다. 그림: 보라 분자 = 온실 기체(수는 모식), 지구 옆 온도계 = 지구의 평균 기온(높이는 모식).">
+  <style>
+  #s09b .ws-card{left:120px;top:716px;width:1680px;padding:14px 36px}
+  #s09b .ws-card .ws-row{grid-template-columns:220px 1fr;gap:24px;align-items:center}
+  #s09b .sy{left:120px;top:900px;width:1680px;height:84px;padding:0;display:flex;align-items:center;justify-content:center;gap:16px;font-size:36px;font-weight:700;letter-spacing:-.02em}
+  #s09b .sy .strk{color:#6e6e73}
+  #s09b .tw{animation:s09btw 3.6s ease-in-out infinite}
+  @keyframes s09btw{0%,100%{opacity:1}50%{opacity:.3}}
+  html.still #s09b .tw,html.print #s09b .tw{animation:none}
+  #s09b .fine{color:#a1a1a6}
+  </style>
+  <div class="scene"><svg id="s09b-sv" viewBox="0 0 1920 1080">
+    <g id="s09b-bg"></g>
+    <g id="s09b-g1" data-step="1" data-fx="fade"></g>
+    <g id="s09b-g2" data-step="1" data-fx="fade" data-delay="300"></g>
+    <g id="s09b-g3" data-step="2" data-fx="fade"></g>
+  </svg></div>
+  <div class="hd" data-in><div class="eb"><b>2</b>지구 온난화</div><h2>그러면, 온실 효과는 나쁜 것일까?</h2></div>
+  <div class="ws-card gl" data-step="2" data-fx="up" data-delay="400">
+    <div class="ws-row"><span class="tm term c-warm">지구 온난화</span><span>대기 중 <span class="bk"><span class="n">1</span><span class="a" data-step="3" data-fx="pop">온실 기체</span></span>의 양이 증가하면서 온실 효과가 <span class="bk"><span class="n">2</span><span class="a" data-step="4" data-fx="pop">강화</span></span>되어<br>지구의 평균 기온이 높아지는 현상</span></div>
+  </div>
+  <div class="glass gl sy" data-step="5"><span class="strk">온실 효과는 나쁘다<i data-step="6" data-fx="wipe"></i></span><span data-step="6" data-fx="fade" data-delay="600">→ 문제는 온실 효과가 아니라, 온실 효과의 <b class="c-warm">강화</b>다</span></div>
+  <div class="fine">모식 그림 · 대기 두께와 분자의 크기·수는 실제와 다름 · 온도 값: 참고서(교과서 밖)</div>
+</section>
+<!-- ═══ s08 ═══ -->
+<section class="slide" id="s08" data-tile="parchment" data-title="지구 온난화의 원인" data-notes="교과서 83쪽 해 보기의 그래프 — 1950년~2023년의 지구 평균 기온 변화(기온 편차, 주황)와 대기 중 이산화 탄소 농도(보라 — 교과서 그림은 파랑인데 이 수업의 색 약속인 온실 기체 = 보라에 맞춤), 출처는 기상청 종합 기후변화감시정보. 클릭 1 이산화 탄소 농도 선(위 숫자 칸의 연도와 값이 함께 움직임), 2 기온 편차 선, 3 1950년과 2023년의 비교(약 1.17 ℃ 상승)와 두 선이 함께 오르는 경향 — 대기 중 이산화 탄소 농도가 증가하면서 지구 평균 기온도 상승합니다. 클릭 4 원인: 인간의 활동으로 대기 중 온실 기체(주로 이산화 탄소)의 농도가 증가했습니다 — 산업 혁명 이후 화석 연료 사용량 증가, 토지 개발과 무분별한 삼림 벌채(광합성량 감소), 과잉 방목(가축의 메테인 배출). 클릭 5: 수증기는 온실 효과를 가장 크게 일으키지만, 자연적으로 존재하고 대기 중의 양이 거의 변하지 않아 지구 온난화의 원인으로 보지 않습니다. 덧붙일 말: 2023년 온실 기체 배출량의 75 %가 이산화 탄소입니다(교과서). 해 보기 예시 답안(지도서): 1950년의 기온 편차가 약 −0.63 ℃, 2023년의 기온 편차가 약 0.54 ℃이므로 약 1.17 ℃ 상승했다. 30년의 평균값을 비교해 보면 1950년부터 1979년까지의 평균 기온 편차는 약 −0.55 ℃, 1994년부터 2023년까지의 평균 기온 편차는 약 +0.06 ℃로 약 0.61 ℃ 상승하였다. ※ 교과서 그림의 선에서 직접 읽으면 1950년은 약 −0.7 ℃로 답안 값(−0.63)과 조금 다릅니다. 그래서 치수선에는 답안 값 ‘약 1.17 ℃’만 적었습니다. 지도 방안: 한 해의 기온은 다양한 요인에 의해 변하므로 한 해와 한 해의 기온을 비교하는 것은 큰 의미가 없고, 10년이나 30년의 평균 기온을 비교하는 것이 의미가 있다.">
+  <style>
+  #s08 .cht{position:absolute;left:120px;top:250px;width:940px;height:740px;border-radius:22px;background:#fff;z-index:2;box-shadow:0 1px 2px rgba(0,0,0,.04),0 12px 32px rgba(0,0,0,.07)}
+  #s08 .cht svg{display:block;width:940px;height:740px}
+  #s08 .ro{position:absolute;left:1100px;top:250px;width:700px;height:150px;border-radius:22px;background:#1d1d1f;color:#f5f5f7;display:grid;grid-template-columns:.8fr 1.2fr 1.1fr;align-items:center;z-index:3;box-shadow:0 12px 32px rgba(0,0,0,.18)}
+  #s08 .ro .c{display:flex;flex-direction:column;align-items:center;gap:6px}
+  #s08 .ro .c+.c{border-left:1px solid #3a3a3c}
+  #s08 .ro i{font-style:normal;font-size:24px;font-weight:600;color:#a1a1a6;white-space:nowrap}
+  #s08 .ro b{font-size:54px;font-weight:800;line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums;white-space:nowrap}
+  #s08 .ro b small{font-size:26px;font-weight:700;letter-spacing:0;margin-left:6px}
+  #s08 .ro .co{color:#D7A6FF} #s08 .ro .tp{color:#FFB340}
+  #s08 .ex{position:absolute;left:1100px;width:700px;border-radius:22px;background:#fff;padding:22px 30px;z-index:3;font-size:34px;line-height:1.45;font-weight:500;letter-spacing:-.015em;box-shadow:0 1px 2px rgba(0,0,0,.04),0 12px 32px rgba(0,0,0,.07)}
+  #s08 .ex b{font-weight:800}
+  #s08 .ex .hd1{padding-bottom:12px;margin-bottom:8px;border-bottom:1px solid #e5e5ea;font-weight:600}
+  #s08 .ex .li{display:grid;grid-template-columns:24px 1fr}   /* 가운뎃점 다음 줄이 글 첫머리에 맞게 */
+  #s08 #s08-wv{bottom:90px;padding:26px 30px}   /* 아래 끝 y 990에 맞춤(위 카드와 40px 띄움) */
+  html.print #s08 .ro{background:#f5f5f7;color:#1d1d1f;box-shadow:none} html.print #s08 .ro .co{color:#7B3FB5} html.print #s08 .ro .tp{color:#B25000} html.print #s08 .ro i{color:#6e6e73}
+  html.print #s08 .cht,html.print #s08 .ex{box-shadow:none;outline:2.5px solid #c7c7cc}
+  </style>
+  <div class="hd" data-in><div class="eb"><b>2</b>지구 온난화</div><h2>지구 온난화의 원인</h2></div>
+  <div class="cht" data-in="200"><svg id="s08-ch" viewBox="0 0 940 740"></svg></div>
+  <div class="ro" data-in="350">
+    <div class="c"><i>연도</i><b id="s08-ry">1950</b></div>
+    <div class="c"><i>이산화 탄소 농도</i><b class="co"><span id="s08-rc">–</span><small>ppm</small></b></div>
+    <div class="c"><i>기온 편차</i><b class="tp"><span id="s08-rt">–</span><small>℃</small></b></div>
+  </div>
+  <div class="ex" style="top:440px" data-step="4" data-fx="up">
+    <div class="hd1"><b>인간의 활동</b>으로 대기 중 <b class="c-ghg" style="white-space:nowrap">온실 기체(주로 이산화 탄소)</b>의 농도가 증가</div>
+    <div class="li"><span>·</span><span>산업 혁명 이후 <b>화석 연료</b> 사용량 증가</span></div>
+    <div class="li"><span>·</span><span>토지 개발, 무분별한 <b>삼림 벌채</b> → 광합성량 감소</span></div>
+    <div class="li"><span>·</span><span><b>과잉 방목</b> → 가축이 내뿜는 메테인 증가</span></div>
+  </div>
+  <div class="ex" id="s08-wv" data-step="5" data-fx="up"><b class="c-cold">수증기</b>는 온실 효과를 가장 크게 일으키지만, 원래 자연적으로 존재하고 양이 거의 변하지 않아 지구 온난화의 원인으로 보지 않는다</div>
+  <div class="fine">교과서 83쪽 해 보기 · 출처: 기상청 종합 기후변화감시정보</div>
+</section>
+
+<!-- ═══ s08b ═══ -->
+<section class="slide" id="s08b" data-tile="light" data-title="지구 온난화의 영향" data-notes="1단계 해수면 상승: 육지의 빙하가 녹아 바다로 흘러들고(빙하의 융해), 수온이 올라 해수의 부피가 팽창(열팽창)하여 해수면이 상승합니다 → 해안 저지대 침수, 빙하 면적 감소. 빙하가 줄면 반사율이 낮아져 지표가 흡수하는 태양 복사 에너지가 늘어 온난화가 더 빨라집니다. 2단계 기상 이변: 해수면에서 증발하는 수증기량이 늘어 폭우·홍수, 대규모 태풍이 잦아지고, 어떤 곳은 가뭄·사막화가 심해집니다. 3단계 생태계와 생활: 동식물의 서식지가 고위도·높은 곳으로 이동하거나 멸종하여 생물다양성이 감소하고, 물 부족, 해양 산성화(대기 중 이산화 탄소가 바다에 녹아 바다가 산성화), 감염병 발생률 증가, 농작물 재배지 변화 등이 나타납니다. 4단계: 지구 온난화에 대한 대처 방안은 사막화와 엘니뇨를 배운 뒤 함께 다룹니다(지도서 유의점). 그림은 모식 그림입니다. 처음 화면은 변하기 전의 풍경이고, 단계마다 그 변화만 일어납니다(1단계: 흰 점선 = 처음 해수면, 빙하가 줄고 해안의 집이 잠김. 2단계: 구름이 커져 비가 쏟아지고 땅이 갈라짐. 3단계: 지구 위 연두색 띠 = 서식지, 점선 = 처음 위치).">
+  <style>
+  #s08b .tc{top:706px;width:540px;height:190px;padding:20px 26px;font-size:32px;font-weight:500;line-height:1.5;letter-spacing:-.02em}
+  #s08b .tc b{font-weight:800}
+  #s08b .tc .mu{font-size:28px;color:#6e6e73}
+  #s08b #s08b-eco{left:1260px;top:250px;width:540px;height:436px;padding:0;overflow:hidden}
+  #s08b #s08b-eco svg{display:block;width:540px;height:436px}
+  #s08b .sy{left:120px;top:912px;width:1680px;height:72px;padding:0;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:700;letter-spacing:-.02em}
+  #s08b .sy b{color:var(--act);font-weight:800}
+  #s08b .fine{bottom:36px;padding:2px 14px;border-radius:9999px;background:rgba(255,255,255,.92);color:#3a3a3c}
+  </style>
+  <div class="scene"><svg id="s08b-sv" viewBox="0 0 1920 1080"></svg></div>
+  <div class="hd" data-in><div class="eb"><b>2</b>지구 온난화</div><h2>지구 온난화의 영향</h2></div>
+  <div class="lab" style="left:120px;top:256px" data-step="1" data-fx="fade">해수면 상승</div>
+  <div class="lab" style="left:690px;top:256px" data-step="2" data-fx="fade">기상 이변</div>
+  <div class="glass gl" id="s08b-eco" data-step="3" data-fx="fade"><svg id="s08b-ev" viewBox="0 0 540 436"></svg></div>
+  <div class="glass gl tc" style="left:120px" data-step="1" data-fx="up"><span>빙하의 융해 + 해수의 열팽창<br>→ <b>해수면 상승</b>, 해안 저지대 침수<br><span class="mu">빙하 감소 → 반사율 감소 → 흡수량 증가</span></span></div>
+  <div class="glass gl tc" style="left:690px" data-step="2" data-fx="up"><span>해수면에서 증발하는 수증기량 증가<br>→ <b>홍수, 가뭄, 대규모 태풍</b> 등</span></div>
+  <div class="glass gl tc" style="left:1260px" data-step="3" data-fx="up"><span>동식물의 서식지가 <b>고위도</b>로 이동<br><span class="mu">해양 산성화: 이산화 탄소가 바다에 녹아 수소 이온 농도 증가</span></span></div>
+  <div class="glass gl sy" data-step="4"><span>대처 방안은? → 사막화와 엘니뇨까지 배운 뒤 <b>함께 정리</b>한다</span></div>
+  <div class="fine">모식 그림 · 해수면이 높아지는 정도와 서식지가 옮겨 가는 거리는 실제보다 크게 그림</div>
+</section>
+
 
 <!-- ═══ s10 ═══ -->
 <section class="slide" id="s10" data-tile="parchment" data-title="스스로 확인하기 — 온실 효과와 지구 온난화" data-notes="교과서 83쪽 스스로 확인하기 ➊➋와 추가 정리 문제 1·2(교과서 교사용). 문제를 모두 먼저 보여 주고 학생 답을 들은 뒤, 클릭할 때마다 답이 하나씩 표시됩니다(1 높게 · 2 지구 온난화 · 3 증가 · 4 ④ 질소). 덧붙일 말: ➊ 대기 중의 온실 기체가 지표에서 방출하는 에너지를 흡수했다가 지표로 다시 방출하기 때문(온실 효과). 추가 2 — 온실 기체에는 수증기, 이산화 탄소, 메테인, 오존 등이 있으며 수증기에 의한 온실 효과가 가장 크다. 질소는 대기 중에 가장 많은 기체이지만 온실 기체가 아니다.">
@@ -745,8 +961,110 @@ html.print #s25d-st{background:#3a3a3c}
   <div class="fine">교과서 밖(지도서 163쪽 탐구 ‘지구의 변화에 따른 열수지 변동’) · 모식 그림</div>
 </section>
 
+<!-- ═══ s15b ═══ -->
+<section class="slide" id="s15b" data-tile="dark" data-title="비추는 각과 단위 면적당 에너지" data-notes="중학교에서 배운 내용을 복습합니다. 같은 양의 빛(노란 점 10개 = 같은 에너지)이 비스듬히 비추면 더 넓은 면적에 퍼집니다. 비추는 넓이 = 빛의 폭 ÷ sin(비추는 각)으로 계산했습니다. 1단계: 수직(90°)으로 비추면 좁은 면적에 모여 단위 면적당 에너지가 큽니다. 2단계: 30°로 비추면 넓이가 2배가 되어 단위 면적당 에너지는 절반입니다. 3단계: 중학교 실험(전등과 모래가 이루는 각)에서도 각이 클 때(여름) 모래의 온도가 더 많이 올라갔습니다(23 ℃ → 58 ℃, 각이 작을 때 23 ℃ → 40 ℃). 태양이 지표를 비추는 각이 수직에 가까울수록 단위 면적당 태양 복사 에너지가 큽니다. 이것이 이어지는 장에서 위도에 따라 에너지 차이가 생기는 까닭입니다. 모래 아래 치수선이 비추는 넓이를 보여 주고, 가운데 숫자는 수직으로 비출 때의 몇 배인지입니다. 화면의 클릭 순서: 처음 화면 = 수직(90°), 클릭 1 = 30°로 기울어짐, 클릭 2 = 70°로 돌아옴, 클릭 3 = 중학교 실험 값과 정리 카드, 클릭 4 = 빈칸 ① 크다. 모래의 주황빛은 단위 면적당 에너지가 클수록 진합니다(모식).">
+  <style>
+  #s15b .ws-card{left:1180px;width:620px;padding:22px 36px}
+  #s15b #s15b-c1{top:250px}
+  #s15b #s15b-c2{top:730px}
+  #s15b .fine{color:#a1a1a6}
+  </style>
+  <div class="scene"><svg id="s15b-sv" viewBox="0 0 1920 1080"><g id="s15b-bg"></g><g id="s15b-beam"></g></svg></div>
+  <div class="hd" data-in><div class="eb"><b>3</b>사막화<span class="rv">중학교 과학 복습</span></div><h2>비스듬히 비추면 왜 덜 따뜻할까?</h2></div>
+  <div class="ws-card st gl" id="s15b-c1" data-step="3" data-fx="up">
+    <div class="ws-row"><span class="tm">중학교 실험</span><span><b>전등과 모래가 이루는 각</b></span></div>
+    <div class="ws-row"><span class="tm">각이 클 때(여름)</span><span>23 ℃ → <b class="c-warm">58 ℃</b> <span class="mu">(35 ℃ ↑)</span></span></div>
+    <div class="ws-row"><span class="tm">각이 작을 때(겨울)</span><span>23 ℃ → <b>40 ℃</b> <span class="mu">(17 ℃ ↑)</span></span></div>
+  </div>
+  <div class="ws-card st gl" id="s15b-c2" data-step="3" data-fx="up" data-delay="300">
+    <div class="ws-row"><span>태양이 지표를 비추는 각이<br><b>수직</b>에 가까울수록 단위 면적당<br>태양 복사 에너지가 <span class="bk"><span class="n">1</span><span class="a" data-step="4" data-fx="pop">크다</span></span></span></div>
+  </div>
+  <div class="fine">모식 그림 · 노란 점 10개 = 같은 양의 빛 · 온도 값: 중학교 과학 실험</div>
+</section>
+
+<!-- ═══ s15d ═══ -->
+<section class="slide" id="s15d" data-tile="black" data-title="비추는 각 — 지구본에서 보기" data-notes="앞 장(전등과 모래 실험)의 비추는 각을 둥근 지구 위에서 봅니다. 숫자와 용어는 앞뒤 장과 같습니다: 비추는 넓이 = 빛의 폭 ÷ sin(비추는 각), 단위 면적당 에너지 = sin(비추는 각) = cos(위도 − 태양이 수직으로 비추는 위도). 처음 화면: 태양은 화면 오른쪽 멀리 있고 햇빛은 평행하게 옵니다. 노란 기둥 = 같은 굵기의 햇빛(같은 에너지), 지구에 닿은 노란 면 = 빛의 발자국(비추는 넓이). 춘분·추분 날 한낮의 적도에서는 수직(90°)으로 비추어 발자국이 기둥의 단면과 같습니다. 클릭 1 기둥이 적도에서 60°N까지 올라가며 발자국이 남북으로 길어집니다: 비추는 각 30° → 넓이 ×2.00 → 50 %. 적도·30°N 자리에는 비교용 기둥이 남습니다(100 %·87 %·50 % — 다음 장의 값). 클릭 2 우리나라(37.5°N): 비추는 각 52.5°, ×1.26, 79 %. 위도 막대를 20°N에 두면 앞 장의 값(70° → ×1.06 → 94 %)이 나옵니다. 클릭 3 하지: 자전축(23.5° 기울어짐)의 북극 쪽이 태양을 향해 태양이 23.5°N을 수직으로 비춥니다. 남중 고도 = 90° − |위도 − 태양이 수직으로 비추는 위도| → 37.5°N에서 76°, 97 %. 클릭 4 동지: 23.5°S를 수직으로 비춤 → 37.5°N에서 29°, 48 %. 오개념: 계절은 태양과의 거리 때문이 아닙니다 — 지구는 1월 초(북반구 겨울)에 태양과 가장 가깝고(근일점 약 1억 4710만 km), 7월 초에 가장 멉니다(원일점 약 1억 5210만 km). 날짜가 바뀔 때 지구본이 도는 것은 지구가 공전해 태양 쪽에서 본 자전축의 방향이 달라지는 것이며(자전축이 우주에서 가리키는 방향은 그대로), 날짜는 항상 앞으로(춘분 → 하지 → 추분 → 동지) 흐릅니다. 다음 장(위도에 따른 에너지 불균형)으로 이어집니다 — 1년 평균으로 저위도는 흡수가 많고 고위도는 적다. 조작: 위도 막대(스크러버)로 기둥을 옮기고, 춘분·추분/하지/동지 단추로 날짜를 바꿉니다. 3D 안을 끌면 돌려 볼 수 있고, 끌지 않고 그냥 누르면 다음 단계입니다. 모식인 점: 지구와 빛 기둥의 크기, 태양까지의 거리는 실제와 다릅니다. 지구가 둥글어 굵은 기둥의 실제 발자국은 식(기둥 가운데 기준)보다 조금 더 넓습니다(60°에서 약 3 %). 대기에 의한 약화와 낮의 길이는 넣지 않았습니다(한낮의 햇빛만). 위도 이름표가 빛 기둥 이름표와 겹치면 저절로 감춥니다.">
+  <div class="v3" id="s15d-v"></div>
+  <div class="hd gl" data-in><div class="eb"><b>3</b>사막화<span class="rv">중학교 과학 복습</span></div><h2>비추는 각 — 지구본에서 보기</h2></div>
+  <div class="gl" id="s15d-cap" data-in="300"></div>
+  <div class="gl" id="s15d-fp" data-in="350">
+    <div class="st">빛의 발자국<em id="s15d-where"></em></div>
+    <svg id="s15d-fps" viewBox="0 0 520 150" width="520" height="150"></svg>
+    <div class="nums"><div><span>비추는 각</span><b id="s15d-n1"></b></div><div><span>비추는 넓이</span><b id="s15d-n2"></b></div><div><span>단위 면적당 에너지</span><b id="s15d-n3"></b></div></div>
+  </div>
+  <div class="gl off" id="s15d-gr">
+    <div class="st">위도별 에너지<em>1년 평균 · 모식 그래프</em></div>
+    <svg id="s15d-grs" viewBox="0 0 520 318" width="520" height="318"></svg>
+  </div>
+  <div class="ia-panel gl" id="s15d-panel" data-in="400">
+    <label><span>위도</span><input id="s15d-lat" type="range" min="-90" max="90" step="0.5" value="0"><span class="val" id="s15d-latv">0°</span></label>
+    <button class="ia-btn sub" id="s15d-kr">우리나라</button>
+    <div class="seg"><button class="ia-btn sub on" data-l="0">춘분·추분</button><button class="ia-btn sub" data-l="90">하지</button><button class="ia-btn sub" data-l="270">동지</button></div>
+    <button class="ia-btn sub" id="s15d-home">처음 모습</button>
+  </div>
+  <div class="fine">모식 그림 · 지구와 빛 기둥의 크기는 실제와 다름 · 햇빛은 평행</div>
+</section>
+
+<!-- ═══ s15c ═══ -->
+<section class="slide" id="s15c" data-tile="light" data-title="위도에 따른 에너지 불균형" data-notes="1단계: 지구는 둥글어서 같은 폭의 햇빛이 고위도에서는 더 넓은 면적에 퍼집니다(단위 면적당 에너지 = cos 위도). 2단계: 그래서 지구가 흡수하는 태양 복사 에너지는 저위도에서 많고 고위도에서 적습니다(노랑, 연평균 일사량의 위도 분포로 계산). 3단계: 지구가 방출하는 지구 복사 에너지(빨강)는 위도에 따른 차이가 작습니다. 4단계: 위도 약 38°보다 저위도는 흡수량 > 방출량(에너지 과잉), 고위도는 흡수량 < 방출량(에너지 부족)입니다. 5단계: 그런데도 저위도는 계속 더워지지 않고 고위도는 계속 추워지지 않습니다. 남는 에너지를 대기와 해양이 고위도로 옮기기 때문입니다. 이 대기의 흐름이 다음 장의 대기 대순환입니다. 그래프는 모식 그래프입니다(두 곡선 모두 지구 전체 평균은 같게 그림). 그림: 햇빛은 왼쪽에서 나란히 들어오고(띠 안의 밝은 줄이 빛이 나아가는 방향), 지구 가장자리의 굵은 선이 같은 폭의 햇빛이 닿는 넓이입니다.">
+  <style>
+  #s15c #s15c-gp{left:840px;top:250px;width:960px;height:590px;padding:0}
+  #s15c #s15c-gp svg{display:block;width:960px;height:590px}
+  #s15c .sy{left:120px;top:884px;width:1680px;height:76px;padding:0;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:600;letter-spacing:-.02em}
+  #s15c .sy b{font-weight:800}
+  </style>
+  <div class="scene"><svg id="s15c-sv" viewBox="0 0 1920 1080">
+    <g id="s15c-bg"></g>
+    <g id="s15c-rays" data-step="1" data-fx="fade"></g>
+    <g id="s15c-globe"></g>
+    <g id="s15c-arcs" data-step="1" data-fx="fade"></g>
+    <g id="s15c-move" data-step="5" data-fx="fade"></g>
+  </svg></div>
+  <span class="chip sun" style="position:absolute;left:120px;top:262px;z-index:3" data-step="1" data-fx="fade">태양 복사 에너지</span>
+  <div class="hd" data-in><div class="eb"><b>3</b>사막화<span class="rv">중학교 과학 복습</span></div><h2>위도에 따라 받는 에너지가 다르다</h2></div>
+  <div class="glass gl" id="s15c-gp" data-in="200"><svg id="s15c-gv" viewBox="0 0 960 590">
+    <g id="s15c-ax"></g>
+    <g data-step="4" data-fx="fade"><path id="s15c-over" fill="#FFC933" fill-opacity=".3"/><path id="s15c-under" fill="#FF5A4F" fill-opacity=".16"/><g id="s15c-l4"></g></g>
+    <path id="s15c-sun" fill="none" stroke="#8A6500" stroke-width="7" stroke-linecap="round" data-step="2" data-fx="draw" data-dur="1600"/>
+    <path id="s15c-ir" fill="none" stroke="#C9251B" stroke-width="7" stroke-linecap="round" data-step="3" data-fx="draw" data-dur="1600"/>
+    <g data-step="2" data-fx="fade" data-delay="1200"><path d="M250 44h44" stroke="#8A6500" stroke-width="7" stroke-linecap="round"/><text x="306" y="54" font-size="28" font-weight="800" fill="#8A6500">흡수하는 태양 복사</text></g>
+    <g data-step="3" data-fx="fade" data-delay="1200"><path d="M600 44h44" stroke="#C9251B" stroke-width="7" stroke-linecap="round"/><text x="656" y="54" font-size="28" font-weight="800" fill="#C9251B">방출하는 지구 복사</text></g>
+  </svg></div>
+  <div class="glass gl sy" data-step="5"><span>에너지 과잉인 저위도 → 부족인 고위도로 <b>대기와 해양</b>이 에너지를 옮긴다</span></div>
+  <div class="fine">모식 그래프(두 곡선 모두 지구 전체 평균은 같게 그림) · 지구와 햇빛의 크기는 실제 비율과 다름</div>
+</section>
+
+<!-- ═══ s17 ═══ -->
+<section class="slide" id="s17" data-tile="black" data-title="대기 대순환" data-notes="교과서 85쪽 그림 II-11. 앞 장(위도에 따른 에너지 불균형)에 이어, 대기 대순환은 위도에 따른 에너지 불균형과 지구 자전에 의해 생기는 지구 전체 규모의 순환입니다. 지구 왼쪽 가장자리에 지표를 따라 이어진 고리 셋 = 대기 대순환의 단면(자오면 순환, 점이 흐르는 방향과 화살촉이 공기가 움직이는 방향). 1단계: 세 순환의 고리(적도~30°, 30°~60°, 60°~극) — 적도와 위도 60°에서는 이웃한 두 고리의 공기가 함께 상승하고(구름·비), 위도 30°와 90°에서는 함께 하강합니다(구름 없음). 고리의 높이는 적도 쪽이 높고 극 쪽이 낮게 그렸습니다(대류권은 적도에서 두껍고 극에서 얇음). 2단계: 상승 기류가 발달하는 적도와 60°는 저압대, 하강 기류가 발달하는 30°와 극은 고압대입니다 — 위도 0°는 적도 저압대, 위도 30°는 아열대 고압대(그림의 이름표: 적도 저압대 · 상승 기류, 아열대 고압대 · 하강 기류, 저압대 · 상승 기류). 3단계: 지표 부근의 바람 — 무역풍(적도~30°), 편서풍(30°~60°), 극동풍(60°~극). 북반구에서 무역풍은 북동쪽에서, 편서풍은 남서쪽에서, 극동풍은 북동쪽에서 불어옵니다. 화살표는 처음에는 남북 방향으로 가다가 지구 자전 때문에 점점 동서 방향으로 휘는 모양입니다(같은 바람의 화살표는 모두 같은 모양으로 그린 모식). 남반구는 적도를 기준으로 대칭입니다(바람 이름표는 북반구에만). 4~5단계: 대기 대순환은 위도에 따른 에너지 불균형과 지구 자전에 의해 생기는 지구 전체 규모의 순환. 6단계 해들리 순환(적도~30°): 적도에서 가열된 공기가 상승해 고위도로 이동하다가 위도 30° 부근에서 하강합니다. 지상에는 무역풍이 붑니다(지구 자전으로 휘어짐). 이 단계에서는 그림의 해들리 순환 고리와 무역풍만 진하게 남고 나머지는 흐려집니다. 7~9단계: 위도 30° 부근은 하강 기류가 형성되어 맑고 건조한 날씨가 지속되므로 사막이 많이 분포합니다(9단계에서 지구에 사막이 모래색으로 나타남) → 다음 장에서 세계 지도로 사막의 위치를 확인합니다. 덧붙일 말: 나머지 두 순환의 이름은 페렐 순환(30°~60°), 극순환(60°~극)입니다(중학교 3학년에서 배움, 화면에는 넣지 않음. 제트류 등 세부 내용은 다루지 않음). 적도와 60°는 강수량이 많고 30°와 90°는 강수량이 적다는 것은 개략적인 경향일 뿐, 실제로는 육지와 해양의 분포, 기온, 해류 등에 따라 30°라고 해서 반드시 강수량이 적은 것은 아닙니다. 지구가 자전하지 않는다면 적도에서 상승한 공기가 극에서 하강하는 큰 순환 하나만 생깁니다. 순환의 높이는 실제보다 훨씬 크게 그렸습니다(실제 대류권 두께는 지구 반지름의 약 1/500).">
+  <style>
+  #s17 #s17-globe{left:260px;top:340px;width:800px;height:800px}
+  #s17 .ws-card{left:1160px;top:250px;width:640px;padding:24px 36px 24px;background:rgba(255,255,255,.96);border:0}
+  #s17 .ws-card .ws-row{padding:0;border-top:0;font-size:34px;line-height:1.5}
+  /* 해들리 순환 = 보조 내용: 연한 바탕의 안쪽 상자 + 한 단계 작은 글자 */
+  #s17 .ws-card .ws-row.s17-sub{display:block;margin:20px 0;padding:14px 22px 16px;border-radius:14px;background:#EDF5F0;font-size:28px;line-height:1.5;color:#3a3a3c}
+  #s17 .s17-ht{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  #s17 .ws-card .ws-row .s17-ht.tm.term{font-size:30px}
+  #s17 .s17-ht .chip{height:38px;padding:0 14px;font-weight:700;letter-spacing:-.01em;background:#fff}
+  #s17 .s17-ht .chip.wind{background:#D5F4E5}
+  #s17 .cl,#s17 .wd,#s17-hh{transition:opacity .7s}
+  #s17-hh{opacity:0}
+  #s17 .fine{left:1160px;bottom:auto;top:958px}   /* 오른쪽 카드 바로 밑(아래 도구 줄보다 위) */
+  </style>
+  <div class="scene">
+    <svg id="s17-bg" viewBox="0 0 1920 1080"></svg>
+    <canvas id="s17-globe" width="560" height="560"></canvas>
+    <svg id="s17-fx" viewBox="0 0 1920 1080"></svg>
+  </div>
+  <div class="hd" data-in><div class="eb"><b>3</b>사막화</div><h2>대기 대순환</h2></div>
+  <div class="ws-card st gl" data-in="500">
+    <div class="ws-row"><span class="tm term" style="color:var(--wind)">대기 대순환</span><span>위도에 따른 <span class="bk"><span class="n">1</span><span class="a" data-step="4">에너지 불균형</span></span>과<br><span class="bk"><span class="n">2</span><span class="a" data-step="5">지구 자전</span></span>에 의해 생기는<br>지구 전체 규모의 순환</span></div>
+    <div class="ws-row s17-sub" data-step="6"><span class="tm term s17-ht"><span style="color:var(--wind)">해들리 순환</span><span class="chip">적도 ~ 30°</span><span class="chip wind">지상: 무역풍</span></span><span><b>적도</b>에서 가열된 공기가 <b>상승</b>해<br>고위도로 이동하다가<br><b>위도 30°</b> 부근에서 <b>하강</b>한다.</span></div>
+    <div class="ws-row" data-step="7"><span class="tm">위도 30° 부근</span><span><b>하강 기류</b>가 형성되어<br><span class="bk"><span class="n">3</span><span class="a" data-step="8">맑고 건조한</span></span> 날씨가 지속된다.<br>→ <span class="bk"><span class="n">4</span><span class="a" data-step="9">사막</span></span>이 많이 분포한다.</span></div>
+  </div>
+  <div class="fine">모식 그림 · 순환의 높이는 실제보다 크게 · 남반구도 대칭</div>
+</section>
 <!-- ═══ s16 ═══ -->
-<section class="slide" id="s16" data-tile="dark" data-title="사막은 어디에 있을까?" data-notes="도입 질문. 세계 지도에 교과서 그림 II-12의 사막 아홉 곳을 서쪽부터 하나씩 보여 줍니다(1단계). 학생에게 ‘사막들이 어떤 위도에 모여 있는지’ 묻고, 2단계에서 위도 30°N·30°S 선을 긋습니다. 3~4단계: 지구에서 사막이 분포하는 지역은 대체로 위도 30° 부근(교과서 85쪽). 5단계 질문 ‘왜 이 위도에 사막이 많을까?’의 답은 다음 장의 대기 대순환(위도 30° 부근의 하강 기류)입니다. 고비 사막·타클라마칸 사막·파타고니아 사막처럼 위도 30°에서 벗어난 사막도 있어 ‘대체로’라고 합니다 — 사막은 대기 대순환뿐 아니라 해류, 지형 등 여러 가지 요인으로 형성됩니다. 지도의 모래색 얼룩은 사막의 대략적인 위치를 보인 모식 표시입니다.">
+<section class="slide" id="s16" data-tile="dark" data-title="사막은 어디에 있을까?" data-notes="도입 질문. 세계 지도에 교과서 그림 II-12의 사막 아홉 곳을 서쪽부터 하나씩 보여 줍니다(1단계). 학생에게 ‘사막들이 어떤 위도에 모여 있는지’ 묻고, 2단계에서 위도 30°N·30°S 선을 긋습니다. 3~4단계: 지구에서 사막이 분포하는 지역은 대체로 위도 30° 부근(교과서 85쪽). 5단계: 사막은 대기 대순환(앞 장 — 위도 30° 부근의 하강 기류)에 의해 자연적으로 현재 위치에 분포되어 있습니다. 고비 사막·타클라마칸 사막·파타고니아 사막처럼 위도 30°에서 벗어난 사막도 있어 ‘대체로’라고 합니다 — 사막은 대기 대순환뿐 아니라 해류, 지형 등 여러 가지 요인으로 형성됩니다. 지도의 모래색 얼룩은 사막의 대략적인 위치를 보인 모식 표시입니다.">
   <style>
   #s16 .pin-r{transform-box:fill-box;transform-origin:center;animation:s16rp 2.8s ease-out infinite}
   @keyframes s16rp{0%{transform:scale(.6);opacity:.95}100%{transform:scale(2.7);opacity:0}}
@@ -760,32 +1078,11 @@ html.print #s25d-st{background:#3a3a3c}
   <div class="hd" data-in><div class="eb"><b>3</b>사막화</div><h2>사막은 어디에 있을까?</h2></div>
   <div class="glass gl" id="s16-card" data-step="3">
     <div>지구에서 <b>사막</b>이 분포하는 지역은 대체로 <b>위도</b> <span class="bk"><span class="n">1</span><span class="a" data-step="4">30°</span></span> 부근이다.</div>
-    <div class="q" data-step="5">왜 이 위도에 사막이 많을까?</div>
+    <div class="q" data-step="5">사막은 대기 대순환에 의해 자연적으로 현재 위치에 분포되어 있다.</div>
   </div>
   <div class="fine">사막 이름: 교과서 그림 II-12 · 모래색 표시는 대략적인 위치(모식)</div>
 </section>
 
-<!-- ═══ s17 ═══ -->
-<section class="slide" id="s17" data-tile="black" data-title="대기 대순환" data-notes="교과서 85쪽 그림 II-11. 지구 왼쪽 가장자리의 고리 = 대기 대순환의 단면(점이 흐르는 방향이 공기가 움직이는 방향). 1단계: 적도와 위도 60°에서는 상승 기류(구름·비), 위도 30°와 90°에서는 하강 기류. 2단계: 지표 부근의 바람 — 무역풍(적도~30°), 편서풍(30°~60°), 극동풍(60°~극). 북반구에서 무역풍은 북동쪽에서, 편서풍은 남서쪽에서, 극동풍은 북동쪽에서 불어옵니다. 남반구는 적도를 기준으로 대칭입니다(이름표는 북반구에만). 3~4단계: 대기 대순환은 위도에 따른 에너지 불균형과 지구 자전에 의해 생기는 지구 전체 규모의 순환. 5~7단계: 위도 30° 부근은 하강 기류가 형성되어 맑고 건조한 날씨가 지속되므로 사막이 많이 분포합니다(7단계에서 지구에 사막이 모래색으로 나타남). 덧붙일 말: 세 순환의 이름은 적도 쪽부터 해들리 순환, 페렐 순환, 극 순환(중학교 3학년에서 배움, 제트류 등 세부 내용은 다루지 않음). 적도와 60°는 강수량이 많고 30°와 90°는 강수량이 적다는 것은 개략적인 경향일 뿐, 실제로는 육지와 해양의 분포, 기온, 해류 등에 따라 30°라고 해서 반드시 강수량이 적은 것은 아닙니다. 지구가 자전하지 않는다면 적도에서 상승한 공기가 극에서 하강하는 큰 순환 하나만 생깁니다. 순환의 높이는 실제보다 훨씬 크게 그렸습니다(실제 대류권 두께는 지구 반지름의 약 1/500).">
-  <style>
-  #s17 #s17-globe{left:280px;top:340px;width:800px;height:800px}
-  #s17 .ws-card{left:1230px;top:250px;width:570px;background:rgba(255,255,255,.96);border:0}
-  #s17 .ws-card .ws-row{padding:14px 0}
-  #s17 .cl{transition:opacity .7s}
-  #s17 .fine{left:1230px;bottom:auto;top:938px}   /* 오른쪽 카드 바로 밑(아래 도구 줄보다 위) */
-  </style>
-  <div class="scene">
-    <svg id="s17-bg" viewBox="0 0 1920 1080"></svg>
-    <canvas id="s17-globe" width="560" height="560"></canvas>
-    <svg id="s17-fx" viewBox="0 0 1920 1080"></svg>
-  </div>
-  <div class="hd" data-in><div class="eb"><b>3</b>사막화</div><h2>대기 대순환</h2></div>
-  <div class="ws-card st gl" data-in="500">
-    <div class="ws-row"><span class="tm term" style="color:var(--wind)">대기 대순환</span><span>위도에 따른<br><span class="bk"><span class="n">1</span><span class="a" data-step="3">에너지 불균형</span></span>과<br><span class="bk"><span class="n">2</span><span class="a" data-step="4">지구 자전</span></span>에 의해 생기는<br>지구 전체 규모의 순환</span></div>
-    <div class="ws-row" data-step="5"><span class="tm">위도 30° 부근</span><span><b>하강 기류</b>가 형성되어<br><span class="bk"><span class="n">3</span><span class="a" data-step="6">맑고 건조한</span></span> 날씨가<br>지속된다.<br>→ <span class="bk"><span class="n">4</span><span class="a" data-step="7">사막</span></span>이 많이 분포한다.</span></div>
-  </div>
-  <div class="fine">모식 그림 · 순환의 높이는 실제보다 크게 · 남반구도 대칭</div>
-</section>
 
 <!-- ═══ s18 ═══ -->
 <section class="slide" id="s18" data-tile="light" data-title="사막화" data-notes="교과서 85쪽. 최근에는 사막 주변의 초원 지대까지 사막이 확장되고 있습니다. 아래 풍경은 멀리 사막(모래 언덕)이 있고 그 주변에 초원 지대가 있는 모습입니다. 1~2단계(사막화의 뜻): 사막 주변 지역의 토지가 황폐해지면서(풀빛이 바램) 점차 사막으로 변하는 현상(모래가 초원 쪽으로 넓어짐). 사막화는 기존의 사막이 넓어진다기보다 사막이 아닌 지역이 황폐해지면서 점차 사막이 되는 것을 뜻합니다(지도서). 3~6단계(원인): 자연적인 원인 = 가뭄(연못이 마르고 땅이 갈라짐, 아지랑이). 인위적인 원인 = 가축의 과잉 방목(가축이 늘어 풀이 사라짐), 과도한 경작(밭이 늘고 땅의 힘이 떨어짐), 무분별한 삼림 벌채(나무가 베어져 그루터기만 남음). 7단계(영향): 사막화가 진행되는 지역은 생물이 서식지를 잃게 되면서 생태계에 큰 변화가 일어나고, 식량 생산이 감소하며, 황사가 심해져 국제적인 환경 문제가 되고 있습니다(모래 먼지가 바람에 날림). 8단계: 유엔(UN, United Nations)은 사막화 방지 협약(UNCCD)을 체결하고 사막화를 막기 위해 노력하고 있습니다. 덧붙일 말: 2018년 유럽 위원회 공동연구센터에 따르면 지구 육지 면적의 75 %에서 사막화가 진행되고 있습니다(지도서). 풍경은 원인을 한 화면에 모아 보인 모식 그림이고, 변화의 빠르기는 실제와 다릅니다.">
@@ -864,6 +1161,23 @@ html.print #s25d-st{background:#3a3a3c}
     <div class="l2">사막: 연평균 강수량이 250 mm 이하인 건조한 지역<br>— 고온인 지역에서만 형성되는 것은 아니다.</div>
   </div>
   <div class="fine">교과서 밖(지도서 참고 자료) · 모식 그림: 산맥·대기의 높이와 폭은 실제 비율과 다름</div>
+</section>
+
+<!-- ═══ s20b ═══ -->
+<section class="slide" id="s20b" data-tile="light" data-title="기본 용어 — 용승과 침강" data-notes="엘니뇨를 이해하기 위한 기본 용어입니다. 화면을 둘로 나눈 두 해안의 바닷속 단면입니다(왼쪽 = 용승이 일어나는 해안, 오른쪽 = 침강이 일어나는 해안). 주황 = 표층의 따뜻한 해수, 파랑 = 찬 해수, 초록 화살표 = 바람, 흐르는 점선의 방향 = 해수가 움직이는 방향. 1단계 용승: 바람이 표층 해수를 바다 쪽으로 밀어내면, 빈자리를 채우려고 심층의 찬 해수(파랑)가 올라옵니다(2단계 빈칸 1 — 그림에 ‘심층의 찬 해수’ 이름표). 3단계 침강(4단계 빈칸 2): 바람이 표층 해수를 해안 쪽으로 모으면, 모여든 표층의 따뜻한 해수(주황)가 아래로 내려갑니다. 5단계: 용승이 일어나는 곳은 심층의 영양염이 올라와 플랑크톤이 많아지고, 이를 먹는 물고기가 모여 좋은 어장이 됩니다. 엘니뇨 때 이 용승이 약해져 어획량이 줄어듭니다(다음 장들). 모식 그림입니다 — 바다의 깊이와 해안의 기울기는 실제와 다르고, 용승이 일어나는 해안에서는 찬 해수가 해수면까지 올라와 있는 모습으로, 침강이 일어나는 해안에서는 따뜻한 해수층이 두꺼운 모습으로 그렸습니다(뒤의 적도 부근 태평양 그림에서 따뜻한 해수층의 두께를 보는 것과 같은 표현).">
+  <style>
+  #s20b-card{left:120px;top:774px;width:1680px;height:216px;box-sizing:border-box;background:#fff}
+  #s20b-card .ws-row{grid-template-columns:130px 1fr;gap:24px}
+  #s20b .fine{left:120px;bottom:38px;padding:3px 16px;border-radius:12px;background:rgba(255,255,255,.9);color:#3a3a3c}
+  html.noans #s20b .s20b-ans{visibility:hidden}   /* 학생용 인쇄: 빈칸의 답인 그림 이름표도 숨김 */
+  </style>
+  <div class="scene"><svg id="s20b-sv" viewBox="0 0 1920 1080"></svg></div>
+  <div class="hd" data-in><div class="eb"><b>4</b>엘니뇨</div><h2>기본 용어 — 용승과 침강</h2></div>
+  <div class="ws-card side gl" id="s20b-card" data-step="1">
+    <div class="ws-row"><span class="tm term" style="color:var(--cold)">용승</span><span><b>표층 해수</b>가 다른 곳으로 이동할 때, 이를 채우기 위해 <span class="bk"><span class="n">1</span><span class="a" data-step="2">심층의 찬 해수</span></span>가 올라오는 현상</span></div>
+    <div class="ws-row" data-step="3"><span class="tm term" style="color:var(--warm)">침강</span><span><b>표층 해수</b>가 모여들 때 표층의 <b>따뜻한 해수</b>가 아래로 <span class="bk"><span class="n">2</span><span class="a" data-step="4">내려가는</span></span> 현상</span></div>
+  </div>
+  <div class="fine">모식 그림 · 바다의 깊이와 해안의 기울기는 실제와 다름</div>
 </section>
 
 <!-- ═══ s21 ═══ -->
@@ -983,6 +1297,29 @@ html.print #s25d-st{background:#3a3a3c}
   <div class="fine">과장된 모형 · 해수면 높이 차이는 실제 약 50 cm(그림은 크게 부풀림) · 깊이와 높이도 과장 · 수온은 평상시와 비교한 말로만 나타냄</div>
 </section>
 
+<!-- ═══ s24b ═══ -->
+<section class="slide" id="s24b" data-tile="dark" data-title="엘니뇨와 라니냐의 정의" data-notes="앞 장(직접 해 보기)에서 무역풍이 약해지면 동태평양의 수온이 높아지는 것을 본 뒤, 엘니뇨의 정의를 정리합니다. 화면: 태평양 지도(왼쪽 = 서태평양, 오른쪽 = 동태평양과 남아메리카). 주황 = 표층 수온이 평년보다 높은 해역, 파랑 = 평년보다 낮은 해역. 1단계 엘니뇨: 적도 부근의 동태평양에서 중앙 태평양까지의 표층 수온이 평년보다 0.5 ℃ 이상 높은 상태로 5개월 이상 지속되는 현상입니다(기상청 기준, 점선 상자 = 엘니뇨 감시 구역). 2단계 빈칸 1 높은. 3단계 빈칸 2 약화 — 원인은 무역풍의 약화입니다(지도에 초록 화살표 ‘무역풍 약화’). 수온 편차 = 관측값 − 평년값이므로 엘니뇨 때는 (+)입니다. 4단계 라니냐(참고): 오른쪽 위 작은 지도. 반대로 수온이 평년보다 0.5 ℃ 이상 낮은 상태로 5개월 이상 지속되며, 무역풍이 강해질 때 나타납니다. 5단계 빈칸 3 낮은, 그리고 지도 위에 수온 편차의 뜻(관측값 − 평년값, 엘니뇨 +, 라니냐 −). 라니냐는 지구과학에서 더 깊이 배웁니다(지도서). 실제 사례: 2015년 12월 강한 엘니뇨, 1999년 12월 라니냐(PPT 25·27쪽 위성 자료). 지도의 수온 편차는 모식입니다. 다음 장에서 평상시와 엘니뇨 발생 시를 표로 비교합니다.">
+  <style>
+  #s24b-card{left:120px;top:697px;width:1680px;height:293px;box-sizing:border-box;padding:22px 36px;background:#fff}
+  #s24b-card .ws-row{grid-template-columns:130px 1fr;gap:24px;align-items:center}
+  #s24b-card .cz{display:inline-block;margin-left:26px;padding-left:26px;border-left:3px solid #d1d1d6;white-space:nowrap}
+  #s24b-card .cz .tm{margin-right:14px}
+  #s24b-card .rf{display:block;font-size:26px;font-weight:600;color:#5c5c61;line-height:1.3;letter-spacing:0}
+  #s24b-lg{left:372px;top:234px;height:56px;padding:0 26px;border-radius:9999px;display:flex;align-items:center;gap:14px;font-size:28px;font-weight:700;letter-spacing:-.015em;white-space:nowrap}
+  #s24b-lg b{font-weight:800}
+  #s24b .fine{color:#c7c7cc}
+  html.noans #s24b .s24b-ans{visibility:hidden}   /* 학생용 인쇄: 빈칸의 답이 드러나는 그림 이름표도 숨김 */
+  </style>
+  <div class="scene"><svg id="s24b-map" viewBox="0 0 1920 1080"></svg></div>
+  <div class="hd" data-in><div class="eb"><b>4</b>엘니뇨</div><h2>엘니뇨와 라니냐의 정의</h2></div>
+  <div class="glass gl" id="s24b-lg" data-step="5"><span><b>수온 편차</b> = 관측값 − 평년값</span><span>(엘니뇨 <b class="c-warm">+</b>, 라니냐 <b class="c-cold">−</b>)</span></div>
+  <div class="ws-card side gl" id="s24b-card" data-step="1">
+    <div class="ws-row"><span class="tm term" style="color:var(--warm)">엘니뇨</span><span>적도 부근 <b>동태평양 ~ 중앙 태평양</b>의 <b>표층 수온</b>이 평년보다 <b>0.5 ℃</b> 이상 <span class="bk"><span class="n">1</span><span class="a" data-step="2">높은</span></span> 상태로<br><b>5개월</b> 이상 지속<span class="cz"><span class="tm">원인</span>무역풍 <span class="bk"><span class="n">2</span><span class="a" data-step="3">약화</span></span></span></span></div>
+    <div class="ws-row" data-step="4"><span class="tm term" style="color:var(--cold)">라니냐<span class="rf">(참고)</span></span><span><b>표층 수온</b>이 평년보다 <b>0.5 ℃</b> 이상 <span class="bk"><span class="n">3</span><span class="a" data-step="5">낮은</span></span> 상태로 <b>5개월</b> 이상 지속<span class="cz"><span class="tm">원인</span>무역풍 강화</span></span></div>
+  </div>
+  <div class="fine">지도: Natural Earth(공개 자료) · 수온 편차는 모식 · 상자: 엘니뇨 감시 구역</div>
+</section>
+
 <!-- ═══ s25 ═══ -->
 <section class="slide" id="s25" data-tile="parchment" data-title="평상시와 엘니뇨 발생 시" data-notes="교과서 86쪽 그림 II-13의 두 그림과 옆의 글을 한 표로 정리합니다. 위의 두 그림은 ‘직접 해 보기’ 장과 같은 단면(왼쪽 = 평상시, 오른쪽 = 엘니뇨 발생 시)이고 계속 움직입니다. 표는 빈 채로 나오고 클릭할 때마다 빈칸이 하나씩 채워지며, 그때 두 그림에서 해당하는 곳에 파란 테가 나타납니다. 클릭 1: 무역풍 — 평상시보다 약해진다(①). 클릭 2: 서태평양 적도 부근 해역 — 평상시 상승 기류·강수량 많음 → 하강 기류(②)·강수량 감소(가뭄 발생). 클릭 3: 동태평양 적도 부근 해역 — 용승 약화(③). 클릭 4: 수온 상승(④) → 상승 기류·강수량 증가(홍수 발생). 표의 낱말은 교과서 그림 옆 글 그대로입니다. 표층 해수 줄: 본문은 ‘서쪽으로 이동하는 해수의 흐름이 약해진다’이고, 교과서 그림의 엘니뇨 발생 시 화살표는 동쪽을 향합니다(따뜻한 해수가 평상시에 비해 동쪽으로 이동). 그림은 깊이와 높이, 해수면 경사(실제 약 50 cm)를 크게 과장한 모형입니다(평상시 서쪽이 높고, 엘니뇨 때 경사가 완만해짐).">
   <style>
@@ -1015,7 +1352,7 @@ html.print #s25d-st{background:#3a3a3c}
   <div class="fine">과장된 모형 · 해수면 높이 차이는 실제 약 50 cm(그림은 크게 부풀림) · 깊이와 높이도 과장 · 표의 낱말: 교과서 86쪽 그림 II-13</div>
 </section>
 
-<section class="slide" id="s26" data-tile="light" data-title="엘니뇨가 세계 기후에 미치는 영향" data-notes="교과서 87쪽 본문과 그림 II-14(겨울철 12월~2월에 발생한 엘니뇨의 영향). 그림을 누르면 크게 볼 수 있습니다. 클릭 1: 적도 부근 서태평양 해역(건조)만 밝게 — 평상시와 반대로 수온이 낮아져 하강 기류가 형성되면서 강수량이 감소해 가뭄이나 산불 피해가 발생하기도 한다(빈칸 ①). 클릭 2: 적도 부근 동태평양 해역(고온 다습) — 상승 기류가 형성되면서 평상시보다 강수량이 증가해 홍수로 인한 피해가 발생하기도 한다(빈칸 ②). 클릭 3: 적도 태평양에서 퍼져 나가는 물결과 함께 세계 곳곳의 영역이 차례로 깜빡입니다 — 엘니뇨는 적도 부근에서 발생하지만 대기와 해양의 상호작용으로 지구 곳곳에 환경 변화를 일으킨다(빈칸 ③). 퍼져 나가는 고리는 영향이 미친다는 뜻의 표시이고 실제로 움직이는 것을 그린 것이 아닙니다. 클릭 4: 생태계와 우리 생활에 미치는 영향. 덧붙일 말(지도서): 엘니뇨가 일어나 용승이 약화되면 영양염이 감소하고 플랑크톤이 감소하여 물고기가 줄어든다(동태평양 연안의 어획량 감소). 여름철(6월~8월)의 엘니뇨는 겨울철과 다른 영향을 미친다. 엘니뇨는 페루, 칠레, 오스트레일리아 등 태평양의 적도 부근에 위치한 나라들의 날씨와 경제에 미치는 영향력이 크다.">
+<section class="slide" id="s26" data-tile="light" data-title="엘니뇨가 세계 기후에 미치는 영향" data-notes="교과서 87쪽 본문과 그림 II-14(겨울철 12월~2월에 발생한 엘니뇨의 영향). 그림을 누르면 크게 볼 수 있습니다. 클릭 1: 적도 부근 서태평양 해역(건조)만 밝게 — 평상시와 반대로 수온이 낮아져 하강 기류가 형성되면서 강수량이 감소해 가뭄이나 산불 피해가 발생하기도 한다(빈칸 ①). 클릭 2: 적도 부근 동태평양 해역(고온 다습) — 상승 기류가 형성되면서 평상시보다 강수량이 증가해 홍수로 인한 피해가 발생하기도 한다(빈칸 ②). 클릭 3: 적도 태평양에서 퍼져 나가는 물결과 함께 세계 곳곳의 영역이 차례로 깜빡입니다 — 엘니뇨는 적도 부근에서 발생하지만 대기와 해양의 상호작용으로 지구 곳곳에 환경 변화를 일으킨다(빈칸 ③). 퍼져 나가는 고리는 영향이 미친다는 뜻의 표시이고 실제로 움직이는 것을 그린 것이 아닙니다. 클릭 4: 우리나라 부근 — 그림에서 우리나라와 일본 부근은 고온 영역으로, 엘니뇨가 발생한 겨울철에는 평년보다 따뜻한 경향이 있습니다(따뜻한 겨울). 클릭 5: 생태계와 우리 생활에 미치는 영향. 덧붙일 말(지도서): 엘니뇨가 일어나 용승이 약화되면 영양염이 감소하고 플랑크톤이 감소하여 물고기가 줄어든다(동태평양 연안의 어획량 감소). 여름철(6월~8월)의 엘니뇨는 겨울철과 다른 영향을 미친다. 엘니뇨는 페루, 칠레, 오스트레일리아 등 태평양의 적도 부근에 위치한 나라들의 날씨와 경제에 미치는 영향력이 크다.">
   <style>
   #s26 .s26-ov{position:absolute;left:120px;top:250px;width:1040px;height:558px;z-index:3;pointer-events:none;border-radius:18px}
   #s26 .ws-card.st{display:flex;flex-direction:column;justify-content:space-evenly}
@@ -1032,7 +1369,7 @@ html.print #s25d-st{background:#3a3a3c}
     <div class="ws-row" data-r="2"><span class="tm">동태평양 적도 부근 해역</span><span><span class="bk"><span class="n">2</span><span class="a" data-step="2">상승 기류</span></span>가 형성되면서 평상시보다 강수량이 증가해 <b>홍수</b>로 인한 피해가 발생하기도 한다.</span></div>
     <div class="ws-row" data-r="3"><span class="tm">지구 곳곳</span><span>엘니뇨는 적도 부근에서 발생하지만 <span class="bk"><span class="n">3</span><span class="a" data-step="3">대기와 해양의 상호작용</span></span>으로 지구 곳곳에 <b>환경 변화</b>를 일으킨다.</span></div>
   </div>
-  <div class="ws-card s26-b" style="left:120px;top:848px;width:1040px;height:142px" data-step="4"><span>생물 개체의 수와 서식지 변화, 농작물 재배지와 수확량 변화 등을 일으켜 <b>생태계</b>와 <b>우리 생활</b>에 큰 영향을 미친다.</span></div>
+  <div class="ws-card s26-b" style="left:120px;top:848px;width:1040px;height:142px" data-step="5"><span>생물 개체의 수와 서식지 변화, 농작물 재배지와 수확량 변화 등을 일으켜 <b>생태계</b>와 <b>우리 생활</b>에 큰 영향을 미친다.</span></div>
   <div class="fine">그림: 교과서 87쪽 · 겨울철(12월~2월)에 발생한 엘니뇨의 영향</div>
 </section>
 
@@ -1313,7 +1650,7 @@ html.print #s25d-st{background:#3a3a3c}
 /* ═══ 장면: 통합과학2 II.1.3 지구 환경의 변화 ═══ */
 const {U}=Deck;
 window.KW={items:['온실 효과','지구 온난화','사막화','엘니뇨','영향과 대처 방안'],
-  at:[-1,-1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4,4,4]};   // 2026-11-25 엘니뇨 2D 장 둘(s22·s23)을 지워 34장
+  at:[-1,-1,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4]};   // 2026-11-25 엘니뇨 2D 장 둘(s22·s23)을 지워 34장
 /* ═══ 자료 ═══ */
 // Natural Earth 1:110m land (public domain), Antarctica removed, DP-simplified 0.50 deg, 1-decimal.
 // WORLD: lon/lat, central meridian 0. WORLD_PAC: lon already re-centred on 180E (x=lon-180 wrapped), rings crossing 0E clipped.
@@ -1764,8 +2101,8 @@ function s04build(c){
     const g=rayMake(o.gS,'url(#s04-g'+i+')',5);g.__h.setAttribute('fill',K.sun);return {g,x2,y,ph:rnd(i*7+3)};});
   o.ir=S.ir.map((th,i)=>{const cs=Math.cos(th*D2R),sn=Math.sin(th*D2R);
     return {g:rayMake(o.gI,K.ir,5),x1:S.cx+(S.R+7)*cs,y1:S.cy-(S.R+7)*sn,x2:S.cx+(S.R+262)*cs,y2:S.cy-(S.R+262)*sn,ph:rnd(i*5+1)};});
-  o.lS=txt(o.gS,70,484,'태양 복사 에너지',{'font-size':32,'font-weight':800,fill:K.sun});
-  o.lI=txt(o.gI,744,632,'지구 복사 에너지',{'font-size':32,'font-weight':800,fill:'#FF7A70'});
+  o.lS=txt(o.gS,70,322,'태양 복사 에너지'   /* 2026-11-25 아래에 '주로 가시광선'·단파 설명이 들어갈 자리를 내려고 484 → 322 */,{'font-size':32,'font-weight':800,fill:K.sun});
+  o.lI=txt(o.gI,786,310,'지구 복사 에너지'   /* 2026-11-25 위 두 물결 사이로(아래에 장파 설명) */,{'font-size':32,'font-weight':800,fill:'#FF7A70'});
   o.ctx=c.$('#s04-globe').getContext('2d');o.tab=globeTable(320,10,S.L);o.fr=0;
   // 오른쪽 아래 칸: 흡수하는 에너지양과 방출하는 에너지양 비교 + 온도계
   const ps=c.$('#s04-ps');
@@ -1795,15 +2132,15 @@ function s04frame(c,t){
   o.gB.setAttribute('opacity',f2(seg(b,0,.12)));o.bB.setAttribute('width',f1(Math.max(.01,S.bw*b)));o.nB.setAttribute('x',f1(S.bw*b+16));o.nB.textContent=String(Math.round(100*b));
   o.eq.setAttribute('opacity',f2(seg(c.s3,0,.3)));o.gT.setAttribute('opacity',f2(c.s4));
 }
-Deck.scene('s04',{steps:4,
+Deck.scene('s04',{steps:6,
   enter(c){c.o=s04build(c);c.s1=c.s2=c.s3=c.s4=0;c.t=STILL()?2.6:0;s04frame(c,c.t);
     if(!STILL())c.loop(t=>{c.t=t;s04frame(c,t);});},
   async go(c,k){
     const tw=(key,dur,ease)=>c.tween(dur,p=>{c[key]=p;if(c.instant||STILL())s04frame(c,c.t);},{ease:ease||'inOut'});
     if(k===1)await tw('s1',1600);
-    if(k===2)await tw('s2',1600);
-    if(k===3)await tw('s3',1500,'linear');
-    if(k===4)await tw('s4',700,'out');
+    if(k===3)await tw('s2',1600);   // 2·4단계는 빈칸(가시광선·적외선)만
+    if(k===5)await tw('s3',1500,'linear');
+    if(k===6)await tw('s4',700,'out');
   }});
 
 /* ─── s05 ─── */
@@ -1881,38 +2218,50 @@ Deck.scene('s05',{steps:4,
   }});
 
 /* ─── s06 ─── */
-/* s06 온실 효과(교과서 그림 II-10 구도): 왼쪽 = 대기가 없을 때(지구 복사가 그대로 우주로), 오른쪽 = 대기가 있을 때(온실 기체가 흡수했다가 지표로 다시 방출)
+/* s06 온실 효과(교과서 그림 II-10 구도): 왼쪽 = 대기가 없을 때(지구 복사가 그대로 우주로), 오른쪽 = 대기가 있을 때
+   2026-11-25 교사 요청 ‘대기가 더 도드라지게’: 대기를 위쪽 경계가 보이는 파란 층으로 그리고, 지표에서 나간 지구 복사가 그 층 안의 온실 기체에 흡수되면
+   층 안으로 빛이 번졌다가(흡수) 대기가 지표 쪽과 우주 쪽으로 다시 방출하는 물결이 나감. 가운데 한 줄은 흡수되지 않고 우주로.
    온도계: 약 -18 ℃ / 약 15 ℃(참고서 값). 눈금은 -40~40 ℃를 온도계 높이에 맞춤 */
-const S06={W:620,gy:878,top:304,T:4.2,sun:[[178,332,250],[198,318,330]],ir:[400,460,520],th:566,
-  mol:[[400,610],[520,690]],idle:[[70,650,0],[150,770,1],[285,560,3],[345,715,2],[245,800,0],[468,520,1]],u:t=>(t+40)/80};
+const S06={W:590,X:[0,494],gy:878,top:304,at:500,T:4.2,sx:230,sun:[[255,335,300],[275,322,350]],ir:[[420,480,540],[513,583,653]],th:185,
+  mol:[[1007,615,0],[1147,705,2.8]],idle:[[622,715,0],[905,690,2],[880,580,3],[925,848,1],[1213,585,1],[1210,805,0]],u:t=>(t+40)/80};   // X = 두 반쪽의 기준 x(오른쪽 반은 왼쪽 여백만큼 당김), mol·idle은 무대 좌표
 function s06mol(par,x,y,kind,s,rot){const g=svgEl('g',{transform:'translate('+x+' '+y+') rotate('+(rot||0)+')'},par),col=['#A565F0','#E9D2FF','#CFA8F7'];
   g.__glow=svgEl('circle',{r:f1(60*s),fill:K.ghg,opacity:0},g);
   [[[-25,16,14,1],[25,16,14,1],[0,0,22,0]],[[-42,0,21,1],[42,0,21,1],[0,0,19,0]],[[0,-36,13,1],[-33,20,13,1],[33,20,13,1],[0,0,22,0],[0,13,12,1]],[[-36,12,20,2],[36,12,20,2],[0,-10,20,2]]][kind]
     .forEach(a=>svgEl('circle',{cx:f1(a[0]*s),cy:f1(a[1]*s),r:f1(a[2]*s),fill:col[a[3]],stroke:'#6B35A8','stroke-width':2},g));return g;}
 function s06build(c){
   const S=S06,sv=c.$('#s06-sv'),d=svgEl('defs',{},sv),o={};
-  stars(sv,150,53,1260,860).forEach((e,i)=>{e.setAttribute('class','st');e.style.animationDelay=f2(-rnd(i*5+1)*3.4)+'s';e.style.animationDuration=f2(2.4+rnd(i*3)*2.6)+'s';});
-  // 오른쪽: 대기(지표에서 위로 갈수록 옅어짐)
-  grad(d,'s06-air',[[0,'#3F8AD0',0],[.22,'#3F8AD0',.5],[1,'#9AD0F7',.92]]);
-  o.air=svgEl('rect',{x:S.W,y:400,width:S.W,height:S.gy-400,fill:'url(#s06-air)'},sv);
+  stars(sv,190,53,1920,860).forEach((e,i)=>{e.setAttribute('class','st');e.style.animationDelay=f2(-rnd(i*5+1)*3.4)+'s';e.style.animationDuration=f2(2.4+rnd(i*3)*2.6)+'s';});
+  // 오른쪽: 대기 = 위쪽 경계가 보이는 층(지표 ~ S.at). 카드 뒤(오른쪽 끝)까지 이어짐
+  grad(d,'s06-air',[[0,'#1F5FAA',.95],[1,'#4A97DB',.97]]);
+  grad(d,'s06-rim',[[0,'#BFE6FF',0],[1,'#BFE6FF',.5]]);
+  grad(d,'s06-heat',[[0,'#FFD2CC',.75],[.45,'#FF8A80',.4],[1,'#FF8A80',0]],{r:.5});
+  svgEl('rect',{x:S.W,y:S.at,width:1920-S.W,height:S.gy-S.at},svgEl('clipPath',{id:'s06-clip'},d));
+  svgEl('rect',{x:S.W,y:S.at-28,width:1920-S.W,height:28,fill:'url(#s06-rim)'},sv);
+  o.air=svgEl('rect',{x:S.W,y:S.at,width:1920-S.W,height:S.gy-S.at,fill:'url(#s06-air)'},sv);
+  svgEl('line',{x1:S.W,y1:S.at,x2:1920,y2:S.at,stroke:'#E3F5FF','stroke-width':4},sv);
   // 땅(풀 + 흙)
   grad(d,'s06-soil',[[0,'#4A3A2A'],[1,'#17130f']]);
   svgEl('rect',{x:0,y:S.gy,width:1920,height:1080-S.gy,fill:'url(#s06-soil)'},sv);svgEl('rect',{x:0,y:S.gy,width:1920,height:14,fill:'#4F9457'},sv);
-  svgEl('line',{x1:S.W,y1:215,x2:S.W,y2:S.gy,stroke:'#fff','stroke-opacity':.22,'stroke-width':2,'stroke-dasharray':'4 10'},sv);
-  o.h=[0,1].map(i=>{const x0=i*S.W,g=svgEl('g',{},sv),h={g,x0};
-    grad(d,'s06-sg'+i,[[0,'#FFE7A8',.5],[.35,'#FFC933',.14],[1,'#FFC933',0]],{cx:x0+150,cy:300,r:230,user:1});
-    svgEl('circle',{cx:x0+150,cy:300,r:230,fill:'url(#s06-sg'+i+')'},g);svgEl('circle',{cx:x0+150,cy:300,r:32,fill:K.sun},g);
-    txt(g,x0+196,262,'태양 복사 에너지',{'font-size':26,'font-weight':800,fill:K.sun});
+  svgEl('line',{x1:S.W,y1:215,x2:S.W,y2:S.at-30,stroke:'#fff','stroke-opacity':.22,'stroke-width':2,'stroke-dasharray':'4 10'},sv);
+  o.h=[0,1].map(i=>{const x0=S.X[i],g=svgEl('g',{},sv),h={g,x0};
+    grad(d,'s06-sg'+i,[[0,'#FFE7A8',.5],[.35,'#FFC933',.14],[1,'#FFC933',0]],{cx:x0+S.sx,cy:300,r:190,user:1});
+    svgEl('circle',{cx:x0+S.sx,cy:300,r:190,fill:'url(#s06-sg'+i+')'},g);svgEl('circle',{cx:x0+S.sx,cy:300,r:32,fill:K.sun},g);
+    txt(g,x0+S.sx,250,'태양 복사 에너지',{'font-size':26,'font-weight':800,fill:K.sun,'text-anchor':'middle'});
     h.sun=S.sun.map((r,j)=>({g:rayMake(g,K.sun,5),x1:x0+r[0],y1:r[1],x2:x0+r[2],ph:rnd(i*9+j*4)}));
-    h.gI=svgEl('g',{},g);h.lI=txt(h.gI,x0+460,290,'지구 복사 에너지',{'font-size':26,'font-weight':800,fill:'#FF7A70','text-anchor':'middle'});
-    h.ir=S.ir.map((x,j)=>({g:rayMake(h.gI,K.ir,5),x:x0+x,ph:rnd(i*7+j*3+1)}));
-    h.gT=svgEl('g',{},g);h.th=thermo(h.gT,x0+S.th,846,290,{col:K.warm,v:S.u(-18),w:24});
-    h.tv=txt(h.gT,x0+S.th,534,'',Object.assign({'font-size':30,'font-weight':800,fill:'#fff','text-anchor':'middle'},halo('#0b2a55',6)));
+    h.gI=svgEl('g',{},g);h.lI=txt(h.gI,x0+S.ir[i][1],290,'지구 복사 에너지',{'font-size':26,'font-weight':800,fill:'#FF7A70','text-anchor':'middle'});
+    h.gX=svgEl('g',{'clip-path':'url(#s06-clip)'},h.gI);   // 층 안에 번지는 빛(흡수)
+    h.ir=S.ir[i].map((x,j)=>({g:rayMake(h.gI,K.ir,5),x:x0+x,ph:rnd(i*7+j*3+1)}));
+    h.gT=svgEl('g',{},g);h.th=thermo(h.gT,x0+S.th,846,270,{col:K.warm,v:S.u(-18),w:24});
+    h.tv=txt(h.gT,x0+S.th,556,'',Object.assign({'font-size':30,'font-weight':800,fill:'#fff','text-anchor':'middle'},halo(i?'#1B549A':'#05070c',6)));
     return h;});
-  const R=o.h[1];txt(R.g,S.W+22,452,'대기',{'font-size':28,'font-weight':800,fill:'#fff'});
-  o.idle=S.idle.map((m,i)=>s06mol(R.g,S.W+m[0],m[1],m[2],.42,rnd(i*5)*360));
-  o.mol=S.mol.map((m,i)=>({g:s06mol(R.g,S.W+m[0],m[1],i?0:1,.5,i?20:-15),x:S.W+m[0],y:m[1],back:rayMake(R.g,K.ir,5),off:i*1.5}));
-  o.dim=svgEl('rect',{x:S.W+1,y:200,width:S.W+20,height:880,fill:'#000'},sv);
+  const R=o.h[1];
+  pill(R.g,905,S.at,'대기',{fs:32,bg:'#E3F5FF',col:'#0B3C78',anchor:'middle',w:124});
+  o.idle=S.idle.map((m,i)=>s06mol(R.g,m[0],m[1],m[2],.42,rnd(i*5)*360));
+  o.mol=S.mol.map((m,i)=>{const x=m[0],y=m[1];
+    return {ring:svgEl('circle',{cx:x,cy:y,r:10,fill:'url(#s06-heat)',opacity:0},R.gX),g:s06mol(R.g,x,y,i?0:1,.5,i?20:-15),x,y,off:m[2],back:rayMake(R.g,K.ir,5),up:rayMake(R.g,K.ir,5)};});
+  const lab=(x,y,s)=>txt(R.g,x,y,s,Object.assign({'font-size':26,'font-weight':800,fill:'#fff','text-anchor':'end'},halo('#1B549A',7)));
+  o.lAb=lab(968,612,'흡수');o.lRe=lab(962,786,'다시 방출');
+  o.dim=svgEl('rect',{x:S.W+1,y:0,width:1920-S.W,height:1080,fill:'#000'},sv);
   return o;
 }
 function s06frame(c,t){
@@ -1921,18 +2270,23 @@ function s06frame(c,t){
   // 왼쪽: 지구 복사가 그대로 우주 공간으로
   L.gI.setAttribute('opacity',f2(seg(c.a1,0,.15)));L.ir.forEach(r=>raySet(r.g,r.x,S.gy-4,r.x,S.top,44,8.5,r.ph+t*.9,0,c.a1));
   L.gT.setAttribute('opacity',f2(seg(c.a1,.6,1)));L.tv.textContent='약 −18 ℃';
-  // 오른쪽: 온실 기체가 흡수 → 지표로 다시 방출(가운데 한 줄은 흡수되지 않고 우주로)
+  // 오른쪽: 대기 층 안의 온실 기체가 흡수 → 대기가 지표 쪽·우주 쪽으로 다시 방출(가운데 한 줄은 흡수되지 않고 우주로)
   o.dim.setAttribute('opacity',f2(.72*(1-c.a2)));R.gI.setAttribute('opacity',f2(seg(c.a2,.3,.6)));
+  const on=seg(c.a2,.5,1);
   R.ir.forEach((r,j)=>{const m=j===0?o.mol[0]:j===2?o.mol[1]:null;
-    if(!m){const u=((t+2.1)%S.T)/S.T,b=u/.62;raySet(r.g,r.x,S.gy-4,r.x,S.top,44,8.5,t*.9,b-.42,b);return;}
-    const tt=(t+m.off)%S.T,b1=tt/1.2,b2=(tt-1.75)/1.2,gl=seg(tt,1.1,1.25)*(1-seg(tt,1.7,2));
+    if(!m){const u=((t+3.45)%S.T)/S.T,b=u/.62;raySet(r.g,r.x,S.gy-4,r.x,S.top,44,8.5,t*.9,b-.42,b);return;}
+    const tt=(t+m.off)%S.T,b1=tt/1.2,b2=(tt-1.75)/1.2,b3=(tt-1.75)/1.7,gl=seg(tt,1.1,1.25)*(1-seg(tt,1.7,2)),rp=seg(tt,1.1,2.4);
     raySet(r.g,r.x,S.gy-4,r.x,m.y+22,44,8.5,t*.9,b1-.75,b1);
-    raySet(m.back,m.x+(j?26:-26),m.y+22,m.x+(j?26:-26),S.gy-2,44,8.5,t*.9,b2-.75,b2);
-    m.back.setAttribute('opacity',f2(c.a3));m.g.__glow.setAttribute('opacity',f2(.8*gl*seg(c.a2,.5,1)));});
+    raySet(m.back,m.x-26,m.y+22,m.x-26,S.gy-2,44,8.5,t*.9,b2-.75,b2);
+    raySet(m.up,m.x+26,m.y-22,m.x+26,S.top,44,8.5,t*.9,b3-.55,b3);
+    m.back.setAttribute('opacity',f2(c.a3));m.up.setAttribute('opacity',f2(c.a3));
+    m.g.__glow.setAttribute('opacity',f2(.8*gl*on));
+    m.ring.setAttribute('r',f1(lerp(30,150,eOut(rp))));m.ring.setAttribute('opacity',f2(rp>0?on*(1-rp)*(1-rp):0));});
+  o.lAb.setAttribute('opacity',f2(seg(c.a2,.6,1)));o.lRe.setAttribute('opacity',f2(c.a3));
   const T=lerp(-18,15,c.a4);R.gT.setAttribute('opacity',f2(seg(c.a4,0,.12)));R.th.set(S.u(T));R.tv.textContent='약 '+(T<0?'−':'')+Math.abs(Math.round(T))+' ℃';
 }
 Deck.scene('s06',{steps:5,
-  enter(c){c.o=s06build(c);c.a1=c.a2=c.a3=c.a4=0;c.t=STILL()?3.05:0;s06frame(c,c.t);
+  enter(c){c.o=s06build(c);c.a1=c.a2=c.a3=c.a4=0;c.t=STILL()?2.7:0;s06frame(c,c.t);
     if(!STILL())c.loop(t=>{c.t=t;s06frame(c,t);});},
   async go(c,k){
     const tw=(key,dur)=>c.tween(dur,p=>{c[key]=p;if(c.instant||STILL())s06frame(c,c.t);},{ease:'inOut'});
@@ -2022,7 +2376,7 @@ function B_at(D,x){   // D=[[x,y],…](x 오름차순)에서 x의 값을 직선 
 const B_sgn=(v,d=2)=>(v<0?'−':'+')+Math.abs(v).toFixed(d);
 const B_q=R=>s=>R.$?R.$(s):R.querySelector(s);
 
-/* s08 해 보기: 교과서 83쪽 그래프(기온 편차 −1~0.6 ℃, 이산화 탄소 농도 295~445 ppm, 1950~2023년).
+/* s08 지구 온난화의 원인(2026-11-25 '해 보기' 문제 1·2를 빼고 구판 '지구 온난화의 원인'의 설명 카드를 넣음): 교과서 83쪽 그래프(기온 편차 −1~0.6 ℃, 이산화 탄소 농도 295~445 ppm, 1950~2023년).
    축 눈금 배치는 교과서 그림과 같게: 두 축의 아래 끝(−1 ↔ 295)이 같고, 위 끝은 0.6이 445보다 조금 위 */
 const S08={x0:118,x1:822,py:704/72.6,yb:620,st:343.75,sc:550*.9835/150,dx:292};
 const s08X=y=>S08.x0+(y-1950)*S08.py, s08Yt=v=>S08.yb-(v+1)*S08.st, s08Yc=v=>S08.yb-(v-295)*S08.sc;
@@ -2045,7 +2399,7 @@ function s08build(R){
   txt(s,918,38,'대기 중 이산화 탄소 농도(ppm)',{'font-size':26,'font-weight':800,fill:KT.ghg,'text-anchor':'end'});
   txt(s,S.x1,704,'연도(년)',{'font-size':24,'font-weight':600,fill:'#6e6e73','text-anchor':'end'});
   txt(s,22,704,'기온 편차: 관측값에서 1991년~2020년의 지구 평균 기온을 뺀 값',{'font-size':24,'font-weight':500,fill:'#6e6e73'});
-  // 문제 2: 두 선이 함께 오르는 경향(답과 함께)
+  // 두 선이 함께 오르는 경향(3단계)
   const TP=G83.temp.map(p=>[s08X(p[0]),s08Yt(p[1])]),CP=G83.co2.map(p=>[s08X(p[0]),s08Yc(p[1])]);
   o.tr=svgEl('g',{class:'ansg',opacity:0},s);
   // 이산화 탄소 농도
@@ -2060,7 +2414,7 @@ function s08build(R){
   // 따라가는 표시(연도 선 + 두 점)
   o.cur=svgEl('g',{opacity:0},s);o.cl=svgEl('line',{y1:58,y2:S.yb,stroke:'#1d1d1f','stroke-width':2.5,'stroke-dasharray':'4 8','stroke-linecap':'round'},o.cur);
   o.dc=svgEl('circle',{r:10,fill:'#9B51E0',stroke:'#fff','stroke-width':4,opacity:0},o.cur);o.dt=svgEl('circle',{r:10,fill:K.warm,stroke:'#fff','stroke-width':4,opacity:0},o.cur);
-  // 문제 1: 1950년과 2023년의 점, 치수선
+  // 1950년과 2023년의 점, 치수선(3단계)
   const y50=s08Yt(B_at(G83.temp,1950)),y23=s08Yt(B_at(G83.temp,2023)),xa=s08X(1950),xb=s08X(2023),dx=S.dx;
   o.an=svgEl('g',{opacity:0},s);
   svgEl('line',{x1:f1(xa),y1:f1(y50),x2:dx+16,y2:f1(y50),stroke:KT.warm,'stroke-width':3,'stroke-dasharray':'2 9','stroke-linecap':'round'},o.an);
@@ -2092,13 +2446,12 @@ function s08draw(o,st){
   o.tr.setAttribute('opacity',f2(st.a4));
 }
 s08draw(s08build(document),{c:1,t:1,cur:2023,run:0,a3:1,a4:1});   // 목차 썸네일용 완성 모습
-Deck.scene('s08',{steps:4,
+Deck.scene('s08',{steps:5,
   enter(c){c.o=s08build(c);c.st={c:0,t:0,cur:null,run:0,a3:0,a4:0};s08draw(c.o,c.st);},
   async go(c,k){const st=c.st,o=c.o;
     if(k===1){st.run=1;await c.tween(3800,p=>{st.c=p;st.cur=1950+73*p;s08draw(o,st);},{ease:'linear'});st.run=0;s08draw(o,st);}
     if(k===2){st.run=1;await c.tween(3800,p=>{st.t=p;st.cur=1950+73*p;s08draw(o,st);},{ease:'linear'});st.run=0;s08draw(o,st);}
-    if(k===3)await c.tween(1500,p=>{st.a3=p;s08draw(o,st);},{ease:'linear'});
-    if(k===4)await c.tween(900,p=>{st.a4=p;s08draw(o,st);});
+    if(k===3){await c.tween(1500,p=>{st.a3=p;s08draw(o,st);},{ease:'linear'});await c.tween(900,p=>{st.a4=p;s08draw(o,st);});}   // 1950년과 2023년 비교 → 두 선이 함께 오르는 경향
   }});
 
 /* ─── s09 ─── */
@@ -2694,16 +3047,52 @@ Deck.scene('s16',{enter(c){
 }});
 
 /* ─── s17 ─── */
-/* s17 대기 대순환(교과서 그림 II-11): 자전하는 지구 + 왼쪽 가장자리의 순환 단면 고리(0°·60° 상승, 30°·90° 하강) + 지표 부근의 바람
-   순환 고리는 왼쪽 가장자리(자오선)에 위도 그대로 놓음: 위도 φ인 곳 = (cx − r·cosφ, cy − r·sinφ). 높이(r1~r2)는 실제보다 훨씬 크게 */
-const S17={cx:680,cy:740,R:400,r1:414,r2:498,
-  cells:[[2.5,27.5,1,'h'],[32.5,57.5,0,'f'],[62.5,87.5,1,'p'],[-27.5,-2.5,0,'h'],[-57.5,-32.5,1,'f']]};   // [위도 a, b, a 쪽에서 상승?, 종류]
+/* s17 대기 대순환(교과서 그림 II-11): 자전하는 지구 + 왼쪽 가장자리의 자오면 순환(0°·60° 상승, 30°·90° 하강) + 지표 부근의 바람
+   2026-11-25 구판과 조합: 위도별 기압대 이름표(2단계), 해들리 순환 설명(6단계 — 해들리 순환 고리와 무역풍만 진하게)
+   2026-11-25 교사 지시로 다시 그림: ① 자오면 순환 = 지표에 붙어 위도 범위(0~30°, 30~60°, 60~90°)를 채우는 둥근 모서리의 닫힌 고리 셋.
+     위도 φ, 높이 r인 곳 = (cx − r·cosφ, cy − r·sinφ). 윗면(s17top)은 적도 쪽이 높고 극 쪽이 낮음(높이 자체는 실제보다 훨씬 크게)
+   ② 지표 부근의 바람 = 위도대 가운데(15°·45°·75°)에 같은 모양·같은 간격으로 놓은 휜 화살표(처음에는 남북 방향, 갈수록 동서 방향으로 휨)
+   ③ 이름표 알약(s17pill)의 폭 = 실제 글자 폭 + 양쪽 20px(장면에 들어올 때 s17fit이 글자 폭을 재서 맞춤) */
+const S17={cx:660,cy:740,R:400,r1:409,gap:1.4,
+  cells:[[0,30,'a','h'],[30,60,'b','f'],[60,90,'a','p'],[-30,0,'b','h'],[-60,-30,'a','f']]};   // [위도 a, b, 상승하는 쪽(a|b), 종류]
 const s17A=(r,ph)=>[S17.cx-r*Math.cos(ph*D2R),S17.cy-r*Math.sin(ph*D2R)];
 const s17P=(lat,lam)=>[S17.cx+S17.R*Math.cos(lat*D2R)*Math.sin(lam*D2R),S17.cy-S17.R*Math.sin(lat*D2R)];   // 지구 앞면의 점(가운데 경도에서 lam만큼 동쪽)
+const s17Y=lat=>S17.cy-S17.R*Math.sin(lat*D2R);
+const s17top=ph=>S17.R+70+46*Math.pow(Math.cos(ph*D2R),2);   // 순환의 윗면: 적도 116 → 30° 104 → 60° 82 → 극 70 (px)
 function s17head(g,p,q,col,s=13){   // p → q의 가운데에 q 쪽을 향한 화살촉
   const mx=(p[0]+q[0])/2,my=(p[1]+q[1])/2,L=Math.hypot(q[0]-p[0],q[1]-p[1])||1,ux=(q[0]-p[0])/L,uy=(q[1]-p[1])/L;
   return svgEl('polygon',{points:f1(mx+ux*s)+','+f1(my+uy*s)+' '+f1(mx-ux*s*.7-uy*s*.8)+','+f1(my-uy*s*.7+ux*s*.8)+' '+f1(mx-ux*s*.7+uy*s*.8)+','+f1(my-uy*s*.7-ux*s*.8),fill:col},g);
 }
+/* 순환 고리 하나: (위도 방향 x, 높이 y)의 둥근 모서리 사각형을 지구 가장자리를 따라 휘어 놓음. 점의 순서 = 공기가 흐르는 방향
+   sf 지표 부근(상승하는 쪽으로) → up 상승 → al 상공(하강하는 쪽으로) → dn 하강 */
+function s17cell(a,b,up){
+  const S=S17,la=a+S.gap,lb=b-S.gap,h=s17top((la+lb)/2)-S.r1,w=(lb-la)*D2R*(S.r1+h/2),rc=22,o={};
+  const M=(x,y)=>{if(up==='b')x=w-x;const ph=la+x/w*(lb-la);return s17A(S.r1+y/h*(s17top(ph)-S.r1),ph);};
+  const ln=(x0,y0,x1,y1)=>{const n=Math.max(2,Math.ceil(Math.hypot(x1-x0,y1-y0)/8)),P=[];for(let i=0;i<=n;i++)P.push(M(lerp(x0,x1,i/n),lerp(y0,y1,i/n)));return P;};
+  const cr=(cx,cy,t0)=>{const P=[];for(let i=1;i<6;i++){const t=(t0-i*15)*D2R;P.push(M(cx+rc*Math.cos(t),cy+rc*Math.sin(t)));}return P;};
+  o.sf=ln(w-rc,0,rc,0);o.up=ln(0,rc,0,h-rc);o.al=ln(rc,h,w-rc,h);o.dn=ln(w,h-rc,w,rc);
+  o.P=[...o.sf,...cr(rc,rc,270),...o.up,...cr(rc,h-rc,180),...o.al,...cr(w-rc,h-rc,90),...o.dn,...cr(w-rc,rc,360)];
+  return o;
+}
+/* 지표 부근의 바람 화살표: 위도 la0 → la1로 가면서 화면에서 dx만큼 옆으로 휨(같은 위도대의 화살표는 모두 같은 모양) */
+function s17wind(g,x0,la0,la1,dx,w=8){
+  const y0=s17Y(la0),y1=s17Y(la1),hl=w*3.4,hw=hl*.55,X=s=>x0+dx*(.35*s+.65*s*s),Y=s=>lerp(y0,y1,s);
+  const sE=1-hl/Math.hypot(1.65*dx,y1-y0),P=[];for(let i=0;i<=20;i++){const s=sE*i/20;P.push([X(s),Y(s)]);}
+  const bx=X(sE),by=Y(sE),tx=X(1),ty=Y(1),L=Math.hypot(tx-bx,ty-by),ux=(tx-bx)/L,uy=(ty-by)/L;P.push([bx+ux,by+uy]);
+  const d=lineD(P);
+  svgEl('path',{d,fill:'none',stroke:K.wind,'stroke-width':w,'stroke-linecap':'round','stroke-linejoin':'round'},g);
+  svgEl('polygon',{points:f1(tx)+','+f1(ty)+' '+f1(bx-uy*hw)+','+f1(by+ux*hw)+' '+f1(bx+uy*hw)+','+f1(by-ux*hw),fill:K.wind},g);
+  svgEl('path',{d,fill:'none',stroke:'#fff','stroke-opacity':.8,'stroke-width':3,'stroke-linecap':'round','stroke-dasharray':'16 240',class:'sk'},g);
+}
+/* 이름표 알약: 폭 = 글자 폭 + 양쪽 20px. 만들 때는 어림한 폭, 장면에 들어오면 s17fit이 실제 글자 폭으로 맞춤. anchor = start|middle|end */
+function s17pill(par,x,y,s,o={}){
+  const fs=o.fs||26,an=o.anchor||'start',tw=[...s].reduce((w,ch)=>w+(/[가-힣]/.test(ch)?.9:ch===' '?.25:.5),0)*fs,h=fs*1.5+8,g=svgEl('g',{class:'s17-pl'},par);
+  const tx=an==='start'?x+20:an==='end'?x-20:x,x0=an==='start'?x:an==='end'?x-tw-40:x-tw/2-20;
+  svgEl('rect',{x:f1(x0),y:f1(y-h/2),width:f1(tw+40),height:f1(h),rx:f1(h/2),ry:f1(h/2),fill:o.bg||'rgba(12,14,20,.82)'},g);
+  txt(g,f1(tx),f1(y+fs*.36),s,{'font-size':fs,'font-weight':800,fill:o.col||'#fff','text-anchor':an});return g;
+}
+function s17fit(L){L.forEach(g=>{const t=g.querySelector('text'),r=g.querySelector('rect');let b=null;try{b=t.getBBox();}catch(e){}
+  if(b&&b.width>0){r.setAttribute('x',f1(b.x-20));r.setAttribute('width',f1(b.width+40));}});}
 function s17build(){
   const S=S17,bg=$id('s17-bg'),fx=$id('s17-fx'),d=svgEl('defs',{},bg);
   // 배경: 별, 대기의 빛, 지구 자리(캔버스가 그려지기 전에도 보이는 어두운 공)
@@ -2717,39 +3106,40 @@ function s17build(){
   [[0,'0°'],[30,'30°N'],[60,'60°N'],[-30,'30°S']].forEach(q=>{const a=s17P(q[0],-90),b=s17P(q[0],90);
     svgEl('line',{x1:f1(a[0]),y1:f1(a[1]),x2:f1(b[0]),y2:f1(b[1]),stroke:'#fff','stroke-opacity':q[0]?.42:.6,'stroke-width':2,'stroke-dasharray':'7 8'},lg);
     txt(lg,f1(b[0]+14),f1(b[1]+9),q[1],{'font-size':26,'font-weight':700,fill:'#d1d1d6'});});
-  /* 1단계: 순환 고리 */
-  const cg=svgEl('g',{'data-step':1,'data-fx':'fade','data-dur':900},fx),hi=svgEl('g',{'data-step':5,'data-fx':'fade'},fx);
-  const arc=(r,p0,p1)=>{const n=Math.ceil(Math.abs(p1-p0)/2.5),o=[];for(let i=0;i<=n;i++)o.push(s17A(r,lerp(p0,p1,i/n)));return o;};
-  S.cells.forEach(q=>{const [a,b,low,kind]=q,surf=low?arc(S.r1,b,a):arc(S.r1,a,b),alo=low?arc(S.r2,a,b):arc(S.r2,b,a),dd=lineD([...surf,...alo])+'Z',m=surf.length>>1;
-    const g=svgEl('g',{class:'cl','data-c':kind},cg);
-    svgEl('path',{d:dd,fill:K.wind,'fill-opacity':.07,stroke:K.wind,'stroke-opacity':.5,'stroke-width':5,'stroke-linejoin':'round'},g);
+  /* 1단계: 자오면 순환의 고리(해들리 0~30°, 30~60°, 60~90° — 이웃한 고리는 경계에서 함께 상승하거나 함께 하강) */
+  const cg=svgEl('g',{'data-step':1,'data-fx':'fade','data-dur':900},fx),hi=svgEl('g',{'data-step':7,'data-fx':'fade'},fx);
+  const hh=svgEl('g',{id:'s17-hh'},fx);fx.insertBefore(hh,cg);   // 6단계: 해들리 순환 고리 뒤의 밝은 테(장면 코드가 켜고 끔)
+  S.cells.forEach(q=>{const kind=q[3],o=s17cell(q[0],q[1],q[2]),dd=lineD(o.P)+'Z',g=svgEl('g',{class:'cl','data-c':kind},cg),mid=A=>A.length>>1;
+    svgEl('path',{d:dd,fill:K.wind,'fill-opacity':.1,stroke:K.wind,'stroke-opacity':.7,'stroke-width':4.5,'stroke-linejoin':'round'},g);
     svgEl('path',{d:dd,fill:'none',stroke:'#D9FFF0','stroke-width':6,'stroke-linecap':'round','stroke-linejoin':'round','stroke-dasharray':'2 22',class:'fl'},g);
-    s17head(g,surf[m-1],surf[m+1],K.wind);s17head(g,alo[m-1],alo[m+1],K.wind);
-    s17head(g,surf[surf.length-1],alo[0],K.wind,15);s17head(g,alo[alo.length-1],surf[0],K.wind,15);
-    if(kind!=='p'){const p=alo[alo.length-1],e=surf[0];   // 5단계: 위도 30° 쪽의 하강 기류를 굵게
+    [o.sf,o.al,o.dn].forEach(A=>{const m=mid(A);s17head(g,A[m-1],A[m+1],K.wind);});
+    {const m=Math.max(1,Math.round(o.up.length*.3));s17head(g,o.up[m-1],o.up[m+1],K.wind);}   // 상승하는 쪽 화살촉은 구름 아래에
+    if(kind==='h')svgEl('path',{d:dd,fill:K.wind,'fill-opacity':.16,stroke:'#B8FBE0','stroke-opacity':.5,'stroke-width':15,'stroke-linejoin':'round'},hh);
+    if(kind!=='p'){const p=o.dn[0],e=o.dn[o.dn.length-1];   // 7단계: 위도 30° 쪽의 하강 기류를 굵게
       svgEl('line',{x1:f1(p[0]),y1:f1(p[1]),x2:f1(e[0]),y2:f1(e[1]),stroke:'#B8FBE0','stroke-width':10,'stroke-linecap':'round'},hi);s17head(hi,p,e,'#fff',17);}
   });
-  // 상승하는 위도(0°, 60°)의 구름과 비: 구름 밑이 지표(지구 중심) 쪽을 향함. 비는 두 고리 사이로 지표에 내림
-  [0,60].forEach(ph=>{const p=s17A(552,ph),g=svgEl('g',{transform:'translate('+f1(p[0])+' '+f1(p[1])+') rotate('+(ph-90)+')'},cg);
-    for(let i=0;i<6;i++)svgEl('line',{x1:(i%3-1)*10,x2:(i%3-1)*10,stroke:K.cold,'stroke-width':3.5,'stroke-linecap':'round',class:'rn'},g);
-    cloud(g,0,0,.56,{fill:'#EEF3F8'});});
-  // 상승·하강 이름표
-  const pl=(x,y,s,o={})=>pill(cg,x,y,s,Object.assign({fs:26,bg:'rgba(12,14,20,.8)'},o));
-  pl(S.cx-S.R+16,S.cy,'상승 기류');pl(s17P(30,-90)[0]+16,s17P(30,0)[1],'하강 기류');pl(s17P(-30,-90)[0]+16,s17P(-30,0)[1],'하강 기류');
-  pl(s17A(552,60)[0]-46-160,s17A(552,60)[1]-4,'상승 기류',{w:160,bg:'rgba(255,255,255,.14)'});
-  pl(S.cx,S.cy-S.r2-36,'하강 기류',{anchor:'middle',bg:'rgba(255,255,255,.14)'});
-  /* 2단계: 지표 부근의 바람(북반구: 무역풍·편서풍·극동풍, 남반구는 대칭) */
-  const wg=svgEl('g',{'data-step':2,'data-fx':'fade'},fx);
-  const W=(la1,lo1,la2,lo2,w=8)=>{const a=s17P(la1,lo1),b=s17P(la2,lo2);arrow(wg,a[0],a[1],b[0],b[1],K.wind,w);
-    svgEl('line',{x1:f1(a[0]),y1:f1(a[1]),x2:f1(lerp(a[0],b[0],.8)),y2:f1(lerp(a[1],b[1],.8)),stroke:'#fff','stroke-opacity':.8,'stroke-width':3,'stroke-linecap':'round','stroke-dasharray':'16 240',class:'sk'},wg);};
-  [-30,2,34].forEach(l=>{W(24,l+10,7,l-10);W(-24,l+10,-7,l-10);});       // 무역풍: 적도 쪽·서쪽으로
-  [-18,16,50].forEach(l=>{W(34,l-10,54,l+10);W(-34,l-10,-50,l+10);});    // 편서풍: 극 쪽·동쪽으로
-  W(84,30,63,-40,7);                                                      // 극동풍: 적도 쪽·서쪽으로
-  const nm=(x,y,s)=>pill(wg,x,y,s,{fs:28,bg:'rgba(255,255,255,.96)',col:'#1d1d1f'});
-  nm(s17P(15,90)[0]+18,s17P(15,0)[1],'무역풍');nm(s17P(45,90)[0]+18,s17P(45,0)[1],'편서풍');
-  svgEl('line',{x1:742,y1:350,x2:824,y2:306,stroke:'#fff','stroke-opacity':.8,'stroke-width':2.5},wg);nm(826,296,'극동풍');
-  /* 5단계: 위도 30° 부근의 띠 */
-  const bd=svgEl('g',{'data-step':5,'data-fx':'fade'},fx);fx.insertBefore(bd,cg);
+  // 상승하는 위도(0°, 60°)의 구름과 비: 구름은 상승 기류의 위쪽(순환 고리 안), 구름 밑이 지표 쪽을 향함. 비는 두 고리 사이로 지표에 내림. 하강하는 위도(30°, 극)에는 구름이 없음
+  [0,60].forEach(ph=>{const rb=s17top(ph)-44,p=s17A(rb,ph),g=svgEl('g',{transform:'translate('+f1(p[0])+' '+f1(p[1])+') rotate('+(ph-90)+')'},cg);
+    for(let i=0;i<4;i++)svgEl('line',{x1:i%2?5:-5,x2:i%2?5:-5,stroke:K.cold,'stroke-width':3,'stroke-linecap':'round',class:'rn','data-l':f1(rb-S.R)},g);
+    cloud(g,0,0,.5,{fill:'#EEF3F8'});});
+  /* 3단계: 지표 부근의 바람(북반구: 무역풍 북동 → 남서, 편서풍 남서 → 북동, 극동풍 북동 → 남서. 남반구는 적도에 대칭) */
+  const wg=svgEl('g',{'data-step':3,'data-fx':'fade'},fx),wd={};['t','w','p'].forEach(q=>wd[q]=svgEl('g',{class:'wd','data-w':q},wg));
+  [1,-1].forEach(sg=>{
+    [500,650,800].forEach(x=>s17wind(wd.t,x,sg*23,sg*7,-110));      // 무역풍: 적도 쪽으로 가며 서쪽으로 휨
+    [380,530,680].forEach(x=>s17wind(wd.w,x,sg*37,sg*54,125));      // 편서풍: 고위도 쪽으로 가며 동쪽으로 휨
+  });
+  s17wind(wd.p,690,83,66,-140);                                      // 극동풍: 저위도 쪽으로 가며 서쪽으로 휨
+  const nm=(q,x,y,s)=>s17pill(wd[q],x,y,s,{fs:28,bg:'rgba(255,255,255,.96)',col:'#1d1d1f'});
+  nm('t',840,s17Y(15),'무역풍');nm('w',819,s17Y(45),'편서풍');
+  svgEl('line',{x1:708,y1:340,x2:778,y2:328,stroke:'#fff','stroke-opacity':.8,'stroke-width':2.5},wd.p);nm('p',778,326,'극동풍');
+  /* 2단계: 위도별 상승·하강과 기압대 이름 — 0° 적도 저압대, 30° 아열대 고압대, 60° 저압대(순환 고리가 상승·하강하는 위도 그대로). 위도 선 위에 놓여 바람 화살표(위도대 가운데)와 겹치지 않음 */
+  const pg=svgEl('g',{'data-step':2,'data-fx':'fade'},fx);fx.insertBefore(pg,wg);
+  s17pill(pg,S.cx-S.R+14,S.cy,'적도 저압대 · 상승 기류');
+  [30,-30].forEach(la=>s17pill(pg,s17P(la,-90)[0]+14,s17Y(la),'아열대 고압대 · 하강 기류'));
+  s17pill(pg,392,292,'저압대 · 상승 기류',{anchor:'end',bg:'rgba(255,255,255,.14)'});
+  s17pill(pg,S.cx-8,S.cy-s17top(90)-36,'하강 기류',{anchor:'middle',bg:'rgba(255,255,255,.14)'});
+  /* 7단계: 위도 30° 부근의 띠 */
+  const bd=svgEl('g',{'data-step':7,'data-fx':'fade'},fx);fx.insertBefore(bd,hh);
   [1,-1].forEach(sg=>{const P=[];for(let p=22;p<=38;p+=2)P.push(s17P(sg*p,-90));for(let p=38;p>=22;p-=2)P.push(s17P(sg*p,90));
     svgEl('path',{d:lineD(P)+'Z',fill:K.sand,'fill-opacity':.3,stroke:K.sand,'stroke-width':2.5},bd);});
 }
@@ -2759,16 +3149,19 @@ function s17draw(c,t){
   if(c.fr++%2===0)s17paint(c,t);
   const off=f1(-(t*38)%24);c.fl.forEach(e=>e.setAttribute('stroke-dashoffset',off));
   const o2=f1(-(t*150)%256);c.sk.forEach(e=>e.setAttribute('stroke-dashoffset',o2));
-  c.rn.forEach((e,i)=>{const y=22+((t*95+i*41)%112);e.setAttribute('y1',f1(y));e.setAttribute('y2',f1(y+13));e.setAttribute('opacity',f2(sm((134-y)/20)));});
+  c.rn.forEach((e,i)=>{const L=+e.dataset.l,y=12+((t*70+i*17)%(L-14));e.setAttribute('y1',f1(y));e.setAttribute('y2',f1(Math.min(y+10,L)));e.setAttribute('opacity',f2(sm((L-y)/10)));});
 }
-Deck.scene('s17',{steps:7,enter(c){
+Deck.scene('s17',{steps:9,enter(c){
   c.ctx=c.$('#s17-globe').getContext('2d');c.tab=globeTable(560,0);c.fr=0;c.des=0;c.k=0;
   c.fl=c.$$('.fl');c.sk=c.$$('.sk');c.rn=c.$$('.rn');
+  const pl=c.$$('.s17-pl');s17fit(pl);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>s17fit(pl));   // 알약 폭을 실제 글자 폭에 맞춤(글꼴이 늦게 와도 다시)
   s17draw(c,STILL()?4:0);
   if(!STILL())c.loop(t=>s17draw(c,t));
 },go(c,k){
-  c.k=k;c.$$('.cl[data-c="p"]').forEach(e=>e.style.opacity=k>=5?.3:1);
-  if(k===7)return c.tween(2200,p=>{c.des=p;if(STILL()||c.instant)s17paint(c,4);},{ease:'inOut'});
+  c.k=k;const hd=k===6;   // 6단계(해들리 순환): 해들리 순환 고리와 무역풍만 진하게
+  c.$$('.cl[data-c="p"]').forEach(e=>e.style.opacity=k>=6?.3:1);c.$$('.cl[data-c="f"]').forEach(e=>e.style.opacity=hd?.3:1);
+  c.$$('.wd').forEach(e=>e.style.opacity=hd&&e.dataset.w!=='t'?.25:1);c.$('#s17-hh').style.opacity=hd?1:0;
+  if(k===9)return c.tween(2200,p=>{c.des=p;if(STILL()||c.instant)s17paint(c,4);},{ease:'inOut'});
 }});
 
 /* ─── s18 ─── */
@@ -3251,16 +3644,17 @@ Deck.scene('s25',{steps:4,
 
 /* ─── s26 ─── */
 /* s26 엘니뇨가 세계 기후에 미치는 영향: 교과서 그림 II-14 위에 겹친 표시(좌표는 그림 반 크기 760×408 기준)
-   1 서태평양(건조)만 밝게 + 하강 기류 · 2 동태평양(고온 다습)만 밝게 + 상승 기류와 비 · 3 적도 태평양에서 퍼지는 고리 + 세계 곳곳의 영역이 차례로 깜빡임 */
-const S26={W:[392,218,146,62,-6],E:[528,226,152,30,0],C:[455,224],
+   1 서태평양(건조)만 밝게 + 하강 기류 · 2 동태평양(고온 다습)만 밝게 + 상승 기류와 비 · 3 적도 태평양에서 퍼지는 고리 + 세계 곳곳의 영역이 차례로 깜빡임
+   4 우리나라 부근(그림의 고온 영역)만 밝게 + '우리나라 부근: 따뜻한 겨울'(2026-11-25 구판 '엘니뇨가 세계 기후에 미치는 영향'에서 가져옴) · 5 생태계와 우리 생활 */
+const S26={W:[392,218,146,62,-6],E:[528,226,152,30,0],KR:[348,128,36,27,0],C:[455,224],
   R:[[553,90],[348,128],[240,185],[310,157],[122,222],[600,143],[640,150],[298,217],[124,283],[722,223],[742,275],[716,308],[392,218],[528,226]]};
 const s26el=q=>{const n=40,a=q[4]*D2R,p=[];for(let i=0;i<n;i++){const t=i/n*TAU,x=q[2]*Math.cos(t),y=q[3]*Math.sin(t);p.push([q[0]+x*Math.cos(a)-y*Math.sin(a),q[1]+x*Math.sin(a)+y*Math.cos(a)]);}return lineD(p)+'Z';};
 function s26build(c){
   const sv=c.$('#s26-ov'),o={};
   svgEl('clipPath',{id:'s26-cp'},svgEl('defs',{},sv)).appendChild(svgEl('rect',{width:760,height:408,rx:13}));
   const g=svgEl('g',{'clip-path':'url(#s26-cp)'},sv);
-  o.dim=[S26.W,S26.E].map(q=>svgEl('path',{d:'M0 0H760V408H0Z'+s26el(q),'fill-rule':'evenodd',fill:'#fff','fill-opacity':.72,opacity:0},g));
-  o.ring=[S26.W,S26.E].map(q=>svgEl('path',{d:s26el(q),fill:'none',stroke:'#1d1d1f','stroke-width':3,'stroke-dasharray':'3 7','stroke-linecap':'round',opacity:0},g));
+  o.dim=[S26.W,S26.E,S26.KR].map(q=>svgEl('path',{d:'M0 0H760V408H0Z'+s26el(q),'fill-rule':'evenodd',fill:'#fff','fill-opacity':.72,opacity:0},g));
+  o.ring=[S26.W,S26.E,S26.KR].map(q=>svgEl('path',{d:s26el(q),fill:'none',stroke:'#1d1d1f','stroke-width':3,'stroke-dasharray':'3 7','stroke-linecap':'round',opacity:0},g));
   // 하강 기류(서태평양) · 상승 기류와 비(동태평양)
   o.dn=svgEl('g',{opacity:0},g);o.up=svgEl('g',{opacity:0},g);
   [-44,0,44].forEach(dx=>arrow(o.dn,S26.W[0]+dx,150,S26.W[0]+dx,200,KT.wind,6));
@@ -3268,6 +3662,7 @@ function s26build(c){
   [-70,0,70].forEach(dx=>arrow(o.up,S26.E[0]+dx,214,S26.E[0]+dx,168,KT.wind,6));
   s22pill(o.up,S26.E[0],146,'상승 기류',19,KT.wind,'middle');
   o.rain=[...Array(12)].map(()=>svgEl('line',{stroke:KT.cold,'stroke-width':2.6,'stroke-linecap':'round'},o.up));
+  o.kr=svgEl('g',{opacity:0},g);s22pill(o.kr,330,74,'우리나라 부근: 따뜻한 겨울',19,KT.warm,'middle');   // 4단계(5단계에도 남김) — 북아메리카 고온 영역과 3·5단계의 깜빡이는 고리에 닿지 않는 자리
   // 퍼지는 고리 + 영역 깜빡임
   o.wv=[0,1,2].map(()=>svgEl('circle',{cx:S26.C[0],cy:S26.C[1],fill:'none',stroke:'#1d1d1f','stroke-width':3,'stroke-dasharray':'2 9','stroke-linecap':'round',opacity:0},g));
   o.pt=S26.R.map(p=>{const q=svgEl('g',{},g);return {p,d:Math.hypot(p[0]-S26.C[0],p[1]-S26.C[1]),a:svgEl('circle',{cx:p[0],cy:p[1],fill:'none',stroke:'#fff','stroke-width':5,opacity:0},q),b:svgEl('circle',{cx:p[0],cy:p[1],fill:'none',stroke:'#1d1d1f','stroke-width':2.2,opacity:0},q)};});
@@ -3277,16 +3672,17 @@ function s26draw(c,t){
   const o=c.o,k=c.k,f=c.f;   // f = 지금 단계가 나타난 정도(0→1)
   o.dim[0].setAttribute('opacity',f2(k===1?f:k===2?1-f:0));o.dim[1].setAttribute('opacity',f2(k===2?f:k===3?1-f:0));
   o.ring[0].setAttribute('opacity',f2(k===1?f:k===2?1-f:0));o.ring[1].setAttribute('opacity',f2(k===2?f:k===3?1-f:0));
+  o.dim[2].setAttribute('opacity',f2(k===4?f:k===5?1-f:0));o.ring[2].setAttribute('opacity',f2(k===4?f:k===5?1-f:0));o.kr.setAttribute('opacity',f2(k===4?f:k>=5?1:0));
   o.ring.forEach(r=>r.setAttribute('stroke-dashoffset',f1(-t*9)));
   o.dn.setAttribute('opacity',f2(k===1?f:k===2?1-f:0));o.up.setAttribute('opacity',f2(k===2?f:k===3?1-f:0));
   o.rain.forEach((d,i)=>{const ph=(rnd(i*5+1)+t*1.3)%1,x=S26.E[0]+(rnd(i*5+2)-.5)*250,y=lerp(196,244,ph);
     d.setAttribute('x1',f1(x));d.setAttribute('y1',f1(y));d.setAttribute('x2',f1(x-2));d.setAttribute('y2',f1(y+8));d.setAttribute('stroke-opacity',f2(.85*Math.sin(Math.PI*ph)));});
-  const on=k>=3?(k===3?f:1):0,T=5.2,still=STILL();
+  const on=k===3?f:k===4?1-f:k>=5?f:0,T=5.2,still=STILL();   // 4단계(우리나라 부근)에서는 퍼지는 고리를 잠시 끔
   o.wv.forEach((w,i)=>{const u=still?[.3,.62,.94][i]:((t/T+i/3)%1);w.setAttribute('r',f1(8+u*440));w.setAttribute('opacity',f2(on*.55*(1-u)));});
   o.pt.forEach(q=>{const u=still?.35:(((t/T)-q.d/440)%1+1)%1,v=seg(u,0,.5),op=on*(u<.5?Math.sin(Math.PI*v):0),r=10+26*v;
     q.a.setAttribute('r',f1(r));q.b.setAttribute('r',f1(r));q.a.setAttribute('opacity',f2(op));q.b.setAttribute('opacity',f2(op));});
 }
-Deck.scene('s26',{steps:4,
+Deck.scene('s26',{steps:5,
   enter(c){c.o=s26build(c);c.k=0;c.f=1;s26draw(c,0);if(!STILL())c.loop(t=>s26draw(c,t));},
   go(c,k){c.k=k;c.$$('.ws-row[data-r]').forEach(r=>r.classList.toggle('cur',+r.dataset.r===k));
     return c.tween(700,p=>{c.f=p;if(STILL())s26draw(c,0);},{ease:'inOut'});}
@@ -3840,6 +4236,585 @@ Deck.scene('s34',{steps:3,
   }});
 
 
+/* ═══ 묶음 B 시작 ═══ */
+/* ─── s09b ─── */
+/* s09b 온실 효과는 나쁜 것일까?: 세 지구(온실 기체가 없다면 · 지금 · 늘어나면). 분자 수 0·16·46(구판 그대로), 온도계 높이는 모식 */
+const S09B={R:105,cy:470,X:[400,960,1520],N:[0,16,46],LV0:[.05,.05,.62],LV1:[.17,.62,.8],
+  T:[['온실 기체가 없다면','약 −18 ℃','생명체가 살기 어렵다','cold'],['지금','약 15 ℃','생명체가 살기 알맞다 ✓','warm'],['온실 기체가 늘어나면','15 ℃보다 높아진다 ↑','온실 효과의 강화','warm']]};
+function s09bMol(par){const g=svgEl('g',{},par);svgEl('circle',{cx:-8,r:4,fill:'#E4CCFF'},g);svgEl('circle',{cx:8,r:4,fill:'#E4CCFF'},g);svgEl('circle',{r:5.5,fill:'#B56BFF'},g);return g;}
+function s09bBuild(R){
+  const q=s=>R.$?R.$(s):R.querySelector(s),bg=q('#s09b-bg'),o={mol:[],th:[]};clearEl(bg);
+  const d=svgEl('defs',{},bg);
+  grad(d,'s09b-sp',[[0,'#0B1026'],[1,'#000000']],{r:.75,cx:.5,cy:.4});
+  grad(d,'s09b-air',[[0,'#64D2FF',0],[.6,'#64D2FF',.06],[.74,'#64D2FF',.26],[1,'#64D2FF',0]],{r:.5});
+  grad(d,'s09b-hot',[[0,'#FF9F0A',0],[.7,'#FF9F0A',0],[.86,'#FF9F0A',.26],[1,'#FF9F0A',0]],{r:.5});
+  svgEl('rect',{width:1920,height:1080,fill:'url(#s09b-sp)'},bg);
+  stars(bg,150,91,1920,700,{rmin:.8,rmax:2.2}).forEach((e,i)=>{if(i%4===0){e.setAttribute('class','tw');e.style.animationDelay=f1(-rnd(i)*3.6)+'s';}});
+  S09B.X.forEach((cx,j)=>{
+    const g=q('#s09b-g'+(j+1)),gx=cx-30,cy=S09B.cy,r=S09B.R,T=S09B.T[j],n=S09B.N[j];clearEl(g);
+    if(j>0)svgEl('circle',{cx:gx,cy,r:r+52,fill:'url(#s09b-air)'},g);
+    if(j===2)svgEl('circle',{cx:gx,cy,r:r+62,fill:'url(#s09b-hot)'},g);
+    globeImage(g,gx,cy,r,125,22,{});
+    for(let i=0;i<n;i++){const lane=i%3;o.mol.push({g:s09bMol(g),cx:gx,a0:(i+.55*rnd(i*5+j))/n*TAU,r:r+12+lane*13+3*rnd(i+n),w:(.05-.012*lane)*(lane===1?-1:1),ph:rnd(i*7+j)*TAU});}
+    o.th.push(thermo(g,cx+176,cy+78,180,{col:K[T[3]],w:20,v:S09B.LV1[j]}));
+    txt(g,cx,286,T[0],{'font-size':32,'font-weight':800,'text-anchor':'middle',fill:'#f5f5f7'});
+    txt(g,cx,cy+r+80,T[1],{'font-size':36,'font-weight':800,'text-anchor':'middle',fill:K[T[3]]});
+    txt(g,cx,cy+r+120,T[2],{'font-size':28,'font-weight':600,'text-anchor':'middle',fill:'#c7c7cc'});
+  });
+  return o;
+}
+function s09bDraw(o,t,lv){
+  o.mol.forEach(m=>{const a=m.a0+t*m.w,r=m.r+2.5*Math.sin(t*.7+m.ph);m.g.setAttribute('transform','translate('+f1(m.cx+r*Math.cos(a))+' '+f1(S09B.cy+r*Math.sin(a))+') rotate('+f1(m.ph*57+t*9)+')');});
+  o.th.forEach((th,j)=>th.set(lerp(S09B.LV0[j],S09B.LV1[j],lv[j])));
+}
+s09bDraw(s09bBuild(document),3,[1,1,1]);
+Deck.scene('s09b',{steps:6,
+  enter(c){c.o=s09bBuild(c);c.lv=[0,0,0];s09bDraw(c.o,STILL()?3:0,c.lv);if(!STILL())c.loop(t=>s09bDraw(c.o,t,c.lv));},
+  async go(c,k){const dr=()=>{if(STILL())s09bDraw(c.o,3,c.lv);};
+    if(k===1){c.tween(1400,p=>{c.lv[0]=p;dr();},{ease:'inOut',delay:300});await c.tween(1400,p=>{c.lv[1]=p;dr();},{ease:'inOut',delay:600});}
+    if(k===2)await c.tween(1600,p=>{c.lv[2]=p;dr();},{ease:'inOut',delay:400});
+  }});
+
+/* ─── s08b ─── */
+/* s08b 지구 온난화의 영향: 한 풍경(빙하가 있는 산 · 해안의 집 · 바다 · 고원)에서 단계마다 그 변화만 일어남.
+   상태 st = {s 해수면 상승·빙하 감소, w 폭우와 가뭄, b 서식지 띠가 고위도로} (각 0~1). 해수면이 오르는 높이·띠가 옮겨 가는 거리는 모식(과장) */
+const S08B={SL0:600,SL1:548,CAP0:442,CAP1:392,
+  L:[[-20,455],[90,400],[190,345],[262,420],[322,500],[380,560],[425,578],[520,580],[560,596],[620,640],[700,720],[780,800],[900,860],[1010,900]],
+  P:[[985,960],[1002,700],[1014,600],[1030,548],[1058,527],[1300,520],[1940,514]],
+  G:{cx:20,cy:256,R:165,la0:31,la1:51,hw:6},
+  LIST:['서식지 이동·멸종','생물다양성 감소','물 부족','해양 산성화','감염병 증가','농작물 재배지 변화']};
+function s08bBuild(R){
+  const q=s=>R.$?R.$(s):R.querySelector(s),s=q('#s08b-sv'),o={};clearEl(s);const d=svgEl('defs',{},s);
+  grad(d,'s08b-sky',[[0,'#8EC3EE'],[.38,'#CFE6F6'],[.56,'#F6ECD8'],[1,'#F6ECD8']]);
+  grad(d,'s08b-sea',[[0,'#5DB3E8'],[.22,'#2F86CF'],[1,'#184E96']],{user:true,x1:0,y1:540,x2:0,y2:1080});
+  grad(d,'s08b-land',[[0,'#A39C92'],[.42,'#8FA57D'],[.72,'#6DAA66'],[1,'#4E8C55']],{user:true,x1:0,y1:345,x2:0,y2:640});
+  svgEl('rect',{width:1920,height:1080,fill:'url(#s08b-sky)'},s);
+  // 먼 산(흐리게)
+  const fh=[];for(let x=-20;x<=1940;x+=70)fh.push([x,560-34*Math.sin(x/230+.4)-16*Math.sin(x/97+1)]);
+  svgEl('path',{d:smoothD(fh)+'V1080H-20Z',fill:'#BFD3DC',opacity:.7},s);
+  // 왼쪽 땅: 빙하가 있는 산 → 해안의 낮은 땅(집) → 바다 밑으로
+  const land=smoothD(S08B.L)+'V1080H-20Z';
+  svgEl('path',{d:land,fill:'url(#s08b-land)'},s);
+  const cp=svgEl('clipPath',{id:'s08b-capc'},d);o.cap=svgEl('polygon',{},cp);
+  svgEl('path',{d:land,fill:'#F4FAFF','clip-path':'url(#s08b-capc)'},s);
+  svgEl('path',{d:'M150 378L190 345L226 384',fill:'none',stroke:'#C9DCEB','stroke-width':4,'stroke-linejoin':'round',opacity:.8},s);
+  // 나무·집(해안 저지대)
+  [[398,572,.8],[536,586,.7]].forEach(p=>{svgEl('rect',{x:p[0]-4*p[2],y:p[1]-34*p[2],width:8*p[2],height:36*p[2],fill:'#6B4A2B'},s);svgEl('circle',{cx:p[0],cy:p[1]-50*p[2],r:24*p[2],fill:'#2E8B45'},s);});
+  svgEl('rect',{x:446,y:540,width:52,height:40,fill:'#F4EFE6'},s);svgEl('path',{d:'M436 543L472 514L508 543Z',fill:'#E0533D'},s);svgEl('rect',{x:465,y:556,width:14,height:24,fill:'#8A6A4A'},s);
+  // 바다(반투명 — 잠긴 땅이 비쳐 보임)
+  o.sea=svgEl('path',{fill:'url(#s08b-sea)',opacity:.9},s);o.surf=svgEl('path',{fill:'none',stroke:'#fff','stroke-width':2.5,'stroke-opacity':.7},s);
+  o.ref=svgEl('g',{opacity:0},s);
+  svgEl('path',{d:'M300 '+S08B.SL0+'H700',stroke:'#fff','stroke-width':3,'stroke-dasharray':'10 9'},o.ref);
+  o.up=svgEl('g',{},o.ref);
+  // 오른쪽 땅: 바닷가 절벽 위의 고원(가뭄)
+  const pl=smoothD(S08B.P)+'V1080H985Z';
+  grad(d,'s08b-pl',[[0,'#86B46A'],[.04,'#86B46A'],[.07,'#8C8A5C'],[1,'#6B6845']],{user:true,x1:0,y1:514,x2:0,y2:1080});grad(d,'s08b-dr',[[0,'#E2C084'],[1,'#B08A55']],{user:true,x1:0,y1:514,x2:0,y2:1080});
+  svgEl('path',{d:pl,fill:'url(#s08b-pl)'},s);
+  o.dry=svgEl('path',{d:pl,fill:'url(#s08b-dr)',opacity:0},s);
+  o.grass=svgEl('g',{},s);for(let i=0;i<9;i++){const x=1070+i*20+8*rnd(i);svgEl('path',{d:'M'+f1(x)+' 524l-4 -14M'+f1(x+3)+' 524l1 -17M'+f1(x+6)+' 524l5 -13',stroke:'#3F8F4A','stroke-width':3,'stroke-linecap':'round',fill:'none'},o.grass);}
+  o.crack=svgEl('g',{opacity:0,fill:'none',stroke:'#7A5630','stroke-width':3.5,'stroke-linecap':'round','stroke-linejoin':'round'},s);
+  ['M1078 526l10 26l-14 22l8 24','M1088 552l22 10','M1140 524l-8 30l14 20l-6 30','M1146 574l20 -8','M1196 523l8 22l-12 26l10 26','M1204 545l16 12','M1112 610l14 16l-8 22','M1176 628l-12 18l8 20'].forEach(p=>svgEl('path',{d:p},o.crack));
+  // 고원의 나무(잎이 지고 가지만 남음)
+  svgEl('path',{d:'M1168 522V470M1168 494l-16 -18M1168 484l15 -17M1168 470l-8 -14M1168 470l9 -13',fill:'none',stroke:'#6B4A2B','stroke-width':5,'stroke-linecap':'round'},s);
+  o.leaf=svgEl('g',{},s);[[1168,452,24],[1150,472,16],[1186,468,17]].forEach(p=>svgEl('circle',{cx:p[0],cy:p[1],r:p[2],fill:'#3C9A50'},o.leaf));
+  // 증발(물결 화살표) · 구름 · 비
+  o.ev=[];for(let i=0;i<4;i++)o.ev.push(rayMake(s,'#1F7AE0',4.5,{opacity:0}));
+  o.rain=svgEl('g',{opacity:0,stroke:'#1F7AE0','stroke-width':4,'stroke-linecap':'round'},s);for(let i=0;i<16;i++)svgEl('line',{},o.rain);
+  o.cl=svgEl('g',{},s);cloud(o.cl,0,0,1,{fill:'#fff'});o.clg=cloud(o.cl,0,0,1,{fill:'#7E8A9A'});
+  // 이름표(SVG 알약)
+  o.l1=pill(s,296,392,'빙하',{fs:26,bg:'rgba(18,40,60,.8)'});o.l1.setAttribute('opacity',0);
+  o.l2=svgEl('g',{opacity:0},s);pill(o.l2,905,652,'폭우·홍수',{fs:26,anchor:'middle',bg:'rgba(12,44,92,.86)'});pill(o.l2,1130,652,'가뭄',{fs:26,anchor:'middle',bg:'rgba(74,50,22,.86)'});
+  // 생태계와 생활(유리 판 안): 지구 위 서식지 띠 + 영향 목록
+  const e=q('#s08b-ev'),G=S08B.G;clearEl(e);const d2=svgEl('defs',{},e);
+  svgEl('circle',{cx:G.cx,cy:G.cy,r:G.R},svgEl('clipPath',{id:'s08b-gc'},d2));
+  txt(e,28,54,'생태계와 생활',{'font-size':32,'font-weight':800,fill:'#1d1d1f'});
+  globeImage(e,G.cx,G.cy,G.R,12,0,{night:0});
+  const gg=svgEl('g',{'clip-path':'url(#s08b-gc)'},e);
+  [0,30,60].forEach(la=>{const y=G.cy-G.R*Math.sin(la*D2R);svgEl('path',{d:'M0 '+f1(y)+'H260',stroke:'#fff','stroke-width':la?1.5:2.5,'stroke-opacity':.6,'stroke-dasharray':la?'5 7':'none'},gg);});
+  o.band=svgEl('rect',{x:-150,width:420,fill:'#C8F26B','fill-opacity':.88,stroke:'#2F6B12','stroke-width':3},gg);
+  const y0a=G.cy-G.R*Math.sin((G.la0+G.hw)*D2R),y0b=G.cy-G.R*Math.sin((G.la0-G.hw)*D2R);
+  svgEl('rect',{x:-150,y:f1(y0a),width:420,height:f1(y0b-y0a),fill:'none',stroke:'#fff','stroke-width':3,'stroke-dasharray':'8 7'},gg);
+  txt(e,128,92,'고위도',{'font-size':24,'font-weight':800,fill:'#3a3a3c'});
+  txt(e,62,G.cy-10,'저위도',Object.assign({'font-size':24,'font-weight':800,fill:'#fff'},halo('rgba(10,40,80,.75)',6)));
+  o.arw=svgEl('g',{},e);
+  S08B.LIST.forEach((t,i)=>{const y=146+i*47;svgEl('circle',{cx:266,cy:y-9,r:5,fill:'#6e6e73'},e);txt(e,282,y,t,{'font-size':26,'font-weight':700,fill:'#1d1d1f'});});
+  return o;
+}
+function s08bDraw(o,st,t){
+  const sl=lerp(S08B.SL0,S08B.SL1,st.s),P=[];
+  for(let x=-20;x<=1040;x+=10)P.push([x,sl+2.6*Math.sin(x/46+t*1.3)+1.4*Math.sin(x/19-t*1.9)]);
+  const top=lineD(P);o.sea.setAttribute('d',top+'V1080H-20Z');o.surf.setAttribute('d',top);
+  // 빙하: 산꼭대기에서 capY보다 높은 곳만 흰색(아래 가장자리는 들쭉날쭉)
+  const cy=lerp(S08B.CAP0,S08B.CAP1,st.s),cp=['-20,0','420,0'];for(let i=0;i<=11;i++)cp.push(f1(420-i*40)+','+f1(cy+(i%2?-9:7)+6*rnd(i)));
+  o.cap.setAttribute('points',cp.join(' '));
+  o.ref.setAttribute('opacity',f2(seg(st.s,0,.12)));
+  clearEl(o.up);if(S08B.SL0-sl>14)arrow(o.up,660,S08B.SL0-4,660,sl+6,'#fff',6);
+  o.l1.setAttribute('opacity',f2(seg(st.s,0,.12)));
+  // 기상 이변: 증발 · 폭우 · 가뭄
+  const w=st.w;
+  o.ev.forEach((g,i)=>{const u=(t*.32+i*.27)%1,x=716+i*36,y1=sl-10-u*96;g.setAttribute('opacity',f2(w*Math.min(1,u*5,(1-u)*2.4)));raySet(g,x,y1,x,y1-74,30,6,t*.6+i*.3);});
+  o.cl.setAttribute('transform','translate(905 470) scale('+f2(lerp(.72,1.45,w))+')');o.clg.setAttribute('opacity',f2(w));
+  o.rain.setAttribute('opacity',f2(w));
+  Array.from(o.rain.children).forEach((l,i)=>{const u=(t*1.25+i*.293)%1,x=815+i*12.5+6*rnd(i),y=488+u*(sl-488-20);l.setAttribute('x1',f1(x));l.setAttribute('x2',f1(x-7));l.setAttribute('y1',f1(y));l.setAttribute('y2',f1(y+24));});
+  o.dry.setAttribute('opacity',f2(w*.9));o.crack.setAttribute('opacity',f2(seg(w,.3,1)));o.leaf.setAttribute('opacity',f2(1-seg(w,0,.8)));o.grass.setAttribute('opacity',f2(1-.75*w));
+  o.l2.setAttribute('opacity',f2(seg(w,.1,.5)));
+  // 서식지 띠
+  const G=S08B.G,la=lerp(G.la0,G.la1,st.b),ya=G.cy-G.R*Math.sin((la+G.hw)*D2R),yb=G.cy-G.R*Math.sin((la-G.hw)*D2R);
+  o.band.setAttribute('y',f1(ya));o.band.setAttribute('height',f1(yb-ya));
+  clearEl(o.arw);if(st.b>.15){const A=a=>[G.cx+(G.R+22)*Math.cos(a*D2R),G.cy-(G.R+22)*Math.sin(a*D2R)],p0=A(G.la0-2),p1=A(lerp(G.la0-2,G.la1+1,st.b));arrow(o.arw,p0[0],p0[1],p1[0],p1[1],'#2F6B12',6);}
+}
+s08bDraw(s08bBuild(document),{s:1,w:1,b:1},2);
+Deck.scene('s08b',{steps:4,
+  enter(c){c.o=s08bBuild(c);c.st={s:0,w:0,b:0};s08bDraw(c.o,c.st,STILL()?2:0);if(!STILL())c.loop(t=>s08bDraw(c.o,c.st,t));},
+  async go(c,k){const st=c.st,dr=()=>{if(STILL())s08bDraw(c.o,st,2);};
+    if(k===1)await c.tween(2400,p=>{st.s=p;dr();},{ease:'inOut',delay:400});
+    if(k===2)await c.tween(1800,p=>{st.w=p;dr();},{ease:'inOut',delay:200});
+    if(k===3)await c.tween(2000,p=>{st.b=p;dr();},{ease:'inOut',delay:400});
+  }});
+
+/* ─── s15b ─── */
+/* s15b 같은 폭의 빛이 비스듬히 비추면 넓게 퍼진다: 넓이 = 폭 ÷ sin(각) (구판 계산 그대로).
+   빛은 전등 면(빛의 방향에 수직)에서 나란히 나와 모래에 닿는다 */
+const S15B={x0:640,gy:760,L:430,W:180};
+function s15bBuild(R){
+  const q=s=>R.$?R.$(s):R.querySelector(s),bg=q('#s15b-bg'),o={g:q('#s15b-beam')};clearEl(bg);const d=svgEl('defs',{},bg);
+  grad(d,'s15b-wall',[[0,'#0C111D'],[1,'#1A2234']]);grad(d,'s15b-sand',[[0,'#E9C985'],[1,'#C59A52']]);
+  grad(d,'s15b-bm',[[0,'#FFC933',.34],[1,'#FFC933',.1]]);
+  grad(d,'s15b-gl',[[0,'#FFD866',.5],[1,'#FFD866',0]],{r:.5});
+  svgEl('rect',{width:1920,height:1080,fill:'url(#s15b-wall)'},bg);
+  svgEl('rect',{y:852,width:1920,height:228,fill:'#141A28'},bg);svgEl('rect',{y:852,width:1920,height:3,fill:'#2B3448'},bg);
+  svgEl('rect',{x:168,y:748,width:944,height:104,rx:10,fill:'#39414F'},bg);
+  svgEl('rect',{x:180,y:S15B.gy,width:920,height:82,fill:'url(#s15b-sand)'},bg);
+  for(let i=0;i<110;i++)svgEl('circle',{cx:f1(184+rnd(i*3)*912),cy:f1(S15B.gy+6+rnd(i*3+1)*72),r:f1(1.2+rnd(i*3+2)*1.6),fill:i%3?'#A67C3B':'#F6E2B0',opacity:.7},bg);
+  return o;
+}
+function s15bDraw(o,deg){
+  const g=o.g;clearEl(g);
+  const th=deg*D2R,W=S15B.W,x0=S15B.x0,gy=S15B.gy,L=S15B.L,dx=Math.cos(th),dy=Math.sin(th),nx=-dy,ny=dx;   // d: 빛의 방향, n: 빛의 폭 방향
+  const fx=x0-dx*L,fy=gy-dy*L;                                                                              // 전등 면의 가운데
+  const ray=s=>{const sx=fx+nx*s,sy=fy+ny*s,t=(gy-sy)/dy;return [sx,sy,sx+dx*t,gy];};
+  const r0=ray(-W/2),r1=ray(W/2),a=Math.min(r0[2],r1[2]),b=Math.max(r0[2],r1[2]),Lf=b-a,e=Math.sin(th);
+  // 모래가 받는 빛: 단위 면적당 에너지가 클수록 진하게
+  svgEl('rect',{x:f1(a),y:gy,width:f1(Lf),height:82,fill:'#FF7A1A',opacity:f2(.12+.5*e*e)},g);
+  svgEl('polygon',{points:[[r0[0],r0[1]],[r1[0],r1[1]],[r1[2],gy],[r0[2],gy]].map(p=>f1(p[0])+','+f1(p[1])).join(' '),fill:K.sun,'fill-opacity':.17},g);
+  for(let i=0;i<5;i++){const r=ray(-W/2+i*W/4);arrow(g,r[0],r[1],r[2]-dx*4,gy-dy*4,K.sun,4);}
+  const fl=svgEl('g',{transform:'translate('+f1(fx)+' '+f1(fy)+') rotate('+f1(deg-90)+')'},g);   // 전등: 빛이 나오는 면이 빛의 방향을 향한다
+  svgEl('ellipse',{cx:0,cy:6,rx:150,ry:44,fill:'url(#s15b-gl)'},fl);
+  svgEl('path',{d:'M-110 -6V-40Q-110 -64 -86 -64H86Q110 -64 110 -40V-6Z',fill:'#7C8594'},fl);
+  svgEl('rect',{x:-110,y:-22,width:220,height:16,fill:'#5B6474'},fl);
+  svgEl('rect',{x:-100,y:-8,width:200,height:12,rx:6,fill:'#FFE27A'},fl);
+  svgEl('line',{x1:f1(a),y1:gy,x2:f1(b),y2:gy,stroke:K.sun,'stroke-width':10,'stroke-linecap':'round'},g);
+  for(let i=0;i<10;i++)svgEl('circle',{cx:f1(a+(i+.5)*Lf/10),cy:gy+36,r:9,fill:'#FFE27A',stroke:'#7A5200','stroke-width':2.5},g);
+  // 비추는 각(모래와 빛이 이루는 각)
+  const ar=62,lx=a-106*Math.cos(th/2),ly=gy-106*Math.sin(th/2);
+  svgEl('path',{d:'M'+f1(a-ar)+' '+gy+'A'+ar+' '+ar+' 0 0 1 '+f1(a-ar*dx)+' '+f1(gy-ar*dy),fill:'none',stroke:'#f5f5f7','stroke-width':3.5},g);
+  txt(g,f1(lx),f1(ly+10),Math.round(deg)+'°',{'font-size':30,'font-weight':800,'text-anchor':'middle',fill:'#f5f5f7'});
+  // 치수선(Dimension line): 모래 아래에 비추는 넓이, 가운데에 '수직일 때의 몇 배'
+  svgEl('path',{d:'M'+f1(a)+' 886H'+f1(b)+'M'+f1(a)+' 873V899M'+f1(b)+' 873V899',fill:'none',stroke:K.sun,'stroke-width':4},g);
+  txt(g,f1((a+b)/2),938,'비추는 넓이 ×'+(1/e).toFixed(2),{'font-size':32,'font-weight':800,'text-anchor':'middle',fill:K.sun});
+  txt(g,x0,982,'비추는 각 '+Math.round(deg)+'° · 단위 면적당 에너지 '+Math.round(100*e)+' %',{'font-size':30,'font-weight':700,'text-anchor':'middle',fill:'#f5f5f7'});
+}
+s15bDraw(s15bBuild(document),70);
+Deck.scene('s15b',{steps:4,
+  enter(c){c.o=s15bBuild(c);s15bDraw(c.o,90);},
+  async go(c,k){
+    if(k===1)await c.tween(2600,p=>s15bDraw(c.o,90-60*p),{ease:'inOut'});
+    if(k===2)await c.tween(2000,p=>s15bDraw(c.o,30+40*p),{ease:'inOut'});
+  }});
+
+/* ─── s15c ─── */
+/* s15c 위도별 에너지: 흡수(연평균 일사량의 위도 분포, 2차 르장드르 근사)와 방출(차이가 작음), 위도 약 38°에서 만난다(구판 식 그대로) */
+const s15cP2=x=>(3*x*x-1)/2,s15cP4=x=>(35*x**4-30*x*x+3)/8;
+const S15C={cx:470,cy:590,R:230,X:p=>500+p*4.5,Y:e=>490-(e-.3)*560,
+  sun:p=>.7*(1-.482*s15cP2(Math.sin(p*D2R))),ir:p=>.7*(1-.17*s15cP2(Math.sin(p*D2R))+.0515*s15cP4(Math.sin(p*D2R)))};
+function s15cBuild(R){
+  const q=s=>R.$?R.$(s):R.querySelector(s),o={fl:[]},cx=S15C.cx,cy=S15C.cy,Rr=S15C.R;
+  const bg=q('#s15c-bg');clearEl(bg);const d=svgEl('defs',{},bg);
+  grad(d,'s15c-sunbg',[[0,'#FFF1C4'],[.22,'#FFF9E6'],[.42,'#FFFFFF'],[1,'#FFFFFF']],{x1:0,y1:0,x2:1,y2:0});
+  grad(d,'s15c-ray',[[0,'#FFC933',.6],[1,'#FFB000',.98]],{x1:0,y1:0,x2:1,y2:0});
+  svgEl('rect',{width:1920,height:1080,fill:'url(#s15c-sunbg)'},bg);
+  // 지구(햇빛은 왼쪽에서)
+  const gg=q('#s15c-globe');clearEl(gg);
+  svgEl('circle',{cx,cy,r:Rr+10,fill:'#9CCBF5',opacity:.35},gg);
+  globeImage(gg,cx,cy,Rr,20,0,{L:[-1,.1,.5],night:.5});
+  [0,30,60].forEach(la=>{const y=cy-Rr*Math.sin(la*D2R),w=Rr*Math.cos(la*D2R);svgEl('path',{d:'M'+f1(cx-w)+' '+f1(y)+'H'+f1(cx+w),stroke:'#fff','stroke-width':la?1.5:2.5,'stroke-opacity':.55,'stroke-dasharray':'6 6'},gg);});
+  // 같은 폭의 햇빛 묶음이 위도 0°·30°·60°에 닿는 넓이
+  const rg=q('#s15c-rays'),ag=q('#s15c-arcs');clearEl(rg);clearEl(ag);
+  [0,30,60].forEach(la=>{
+    const yc=cy-Rr*Math.sin(la*D2R),hw=24,y1=yc-hw,y2=yc+hw,sx=y=>cx-Math.sqrt(Rr*Rr-(y-cy)**2);
+    svgEl('polygon',{points:[[-10,y1],[sx(y1),y1],[sx(y2),y2],[-10,y2]].map(p=>f1(p[0])+','+f1(p[1])).join(' '),fill:'url(#s15c-ray)'},rg);
+    [y1+9,yc,y2-9].forEach((y,i)=>o.fl.push(svgEl('line',{x1:-10,y1:f1(y),x2:f1(sx(y)-4),y2:f1(y),stroke:'#fff','stroke-width':3,'stroke-opacity':.8,'stroke-linecap':'round','stroke-dasharray':'46 150','stroke-dashoffset':f1(-(i*67+la*2))},rg)));
+    const a1=Math.asin((cy-y1)/Rr),a2=Math.asin((cy-y2)/Rr);
+    svgEl('path',{d:'M'+f1(cx-Rr*Math.cos(a1))+' '+f1(y1)+'A'+Rr+' '+Rr+' 0 0 0 '+f1(cx-Rr*Math.cos(a2))+' '+f1(y2),fill:'none',stroke:'#8A6500','stroke-width':12,'stroke-linecap':'round'},ag);
+    txt(ag,60,f1(y1-10),(la?la+'°':'적도')+' · '+Math.round(100*Math.cos(la*D2R))+' %',{'font-size':26,'font-weight':800,fill:'#8A6500'});
+  });
+  // 5단계: 저위도 → 고위도로 에너지 이동
+  const mv=q('#s15c-move'),r=Rr+32;clearEl(mv);
+  [1,-1].forEach(s=>{
+    const pts=[];for(let a=8;a<=66;a+=2)pts.push([cx+r*Math.cos(a*D2R),cy-r*Math.sin(a*s*D2R)]);
+    svgEl('path',{d:lineD(pts),fill:'none',stroke:'#B25000','stroke-width':10,'stroke-linecap':'round'},mv);
+    arrow(mv,cx+r*Math.cos(66*D2R),cy-r*Math.sin(66*s*D2R),cx+r*Math.cos(73*D2R),cy-r*Math.sin(73*s*D2R),'#B25000',10);
+  });
+  txt(mv,cx+r*Math.cos(73*D2R)+26,cy-r*Math.sin(73*D2R)+6,'에너지 이동',{'font-size':26,'font-weight':800,fill:'#B25000'});
+  // 그래프
+  const X=S15C.X,Y=S15C.Y,ax=q('#s15c-ax'),l4=q('#s15c-l4');clearEl(ax);clearEl(l4);
+  let gd='';[.4,.6,.8,1].forEach(e=>{gd+='M95 '+f1(Y(e))+'H905';});
+  svgEl('path',{d:gd,stroke:'#e8e8ed','stroke-width':2,fill:'none'},ax);
+  svgEl('path',{d:'M95 490H905M95 490V84',stroke:'#1d1d1f','stroke-width':3,fill:'none'},ax);
+  [-90,-60,-30,0,30,60,90].forEach(p=>txt(ax,X(p),528,p===0?'0°':Math.abs(p)+'°'+(p<0?'S':'N'),{'font-size':26,fill:'#6e6e73','text-anchor':'middle'}));
+  txt(ax,107,76,'에너지양',{'font-size':28,'font-weight':600,fill:'#1d1d1f'});
+  txt(ax,905,568,'위도',{'font-size':28,'font-weight':600,fill:'#1d1d1f','text-anchor':'end'});
+  const curve=f=>{const P=[];for(let p=-90;p<=90;p+=1)P.push([X(p),Y(f(p))]);return lineD(P);};
+  q('#s15c-sun').setAttribute('d',curve(S15C.sun));q('#s15c-ir').setAttribute('d',curve(S15C.ir));
+  const area=(p0,p1)=>{const a=[],b=[];for(let p=p0;p<=p1+1e-9;p+=1){a.push([X(p),Y(S15C.sun(p))]);b.unshift([X(p),Y(S15C.ir(p))]);}return lineD(a.concat(b))+'Z';};
+  q('#s15c-over').setAttribute('d',area(-38,38));q('#s15c-under').setAttribute('d',area(-90,-38)+area(38,90));
+  txt(l4,X(0),Y(.82)+10,'에너지 과잉',{'font-size':28,'font-weight':800,'text-anchor':'middle',fill:'#8A6500'});
+  [-74,74].forEach(p=>txt(l4,X(p),Y((S15C.sun(p)+S15C.ir(p))/2)+10,'에너지 부족',{'font-size':26,'font-weight':800,'text-anchor':'middle',fill:'#C9251B'}));
+  [-38,38].forEach(p=>{svgEl('line',{x1:X(p),x2:X(p),y1:128,y2:490,stroke:'#6e6e73','stroke-width':2,'stroke-dasharray':'6 6'},l4);txt(l4,X(p),120,'약 38°',{'font-size':24,'font-weight':700,'text-anchor':'middle',fill:'#6e6e73'});});
+  return o;
+}
+function s15cFlow(o,t){o.fl.forEach((l,i)=>l.setAttribute('stroke-dashoffset',f1(-(t*130+i*67))));}   // 띠 안의 밝은 줄이 빛이 나아가는 방향(오른쪽)으로 흐름
+s15cBuild(document);
+Deck.scene('s15c',{steps:5,
+  enter(c){c.o=s15cBuild(c);},
+  go(c,k){if(!c.lp&&!STILL())c.lp=c.loop(t=>s15cFlow(c.o,t));}});
+/* ═══ 묶음 B 끝 ═══ */
+/* ═══ 묶음 A 시작 ═══ */
+/* ─── s03b ─── */
+/* s03b 열은 어떻게 이동할까?(중학교 과학 복습) — 화면을 세 폭으로 나눔: 전도(금속 막대의 입자가 제자리에서 떨며 이웃에 전달) |
+   대류(데워진 물이 가운데로 올라가고 벽 쪽으로 내려옴) | 복사(물질이 거의 없는 우주 — 물음표). 식은 2026-10-23 판 그대로:
+   전도 — 가열한 쪽에서 i번째 입자의 데워진 정도 = clamp(0.75·시간 − 0.6·i, 0, 1), 1단계부터 16초마다 처음부터 */
+const S03B={N:10,x0:176,dx:46,ry:[494,530],cx:[880,1040],cy:522,rx:62,ryy:86,M:11};
+function s03bFlame(par,x,y,s){const g=svgEl('g',{transform:'translate('+x+' '+y+') scale('+s+')'},par);
+  svgEl('path',{d:'M-15 0C-36 -34 -5 -54 0 -86C14 -60 36 -40 15 0Z',fill:'#FF7A1A'},g);
+  svgEl('path',{d:'M-7 0C-17 -18 -2 -29 0 -46C8 -31 17 -20 7 0Z',fill:'#FFD60A'},g);g.__x=x;g.__y=y;g.__s=s;return g;}
+function s03bBuild(R){
+  const S=S03B,q=s=>R.$?R.$(s):R.querySelector(s),sv=q('#s03b-sv'),o={};clearEl(sv);
+  const d=svgEl('defs',{},sv);
+  grad(d,'s03b-bA',[[0,'#09090b'],[.25,'#0e0c0b'],[1,'#261a13']]);grad(d,'s03b-bB',[[0,'#09090b'],[.25,'#0a1321'],[1,'#0f2c4d']]);
+  svgEl('rect',{x:0,y:0,width:670,height:1080,fill:'url(#s03b-bA)'},sv);svgEl('rect',{x:670,y:0,width:580,height:1080,fill:'url(#s03b-bB)'},sv);
+  svgEl('rect',{x:1250,y:0,width:670,height:1080,fill:'#05060a'},sv);
+  const gs=svgEl('g',{transform:'translate(1250 0)'},sv);
+  stars(gs,90,17,670,720).forEach((e,i)=>{e.setAttribute('class','st');e.style.animationDelay=f2(-rnd(i*5+1)*3.4)+'s';e.style.animationDuration=f2(2.4+rnd(i*3)*2.6)+'s';});
+  [670,1250].forEach(x=>svgEl('line',{x1:x,y1:236,x2:x,y2:1080,stroke:'#fff','stroke-opacity':.16,'stroke-width':2},sv));
+  // 전도: 금속 막대
+  const A=o.gA=svgEl('g',{opacity:0},sv);
+  grad(d,'s03b-fg',[[0,'#FF9F0A',.36],[1,'#FF9F0A',0]],{cx:196,cy:620,r:300,user:1});svgEl('circle',{cx:196,cy:620,r:300,fill:'url(#s03b-fg)'},A);
+  grad(d,'s03b-rod',[[0,'#5c5c62'],[.5,'#3a3a3f'],[1,'#29292d']]);
+  svgEl('rect',{x:150,y:470,width:466,height:84,rx:14,fill:'url(#s03b-rod)',stroke:'#8e8e93','stroke-width':3},A);
+  o.heat=grad(d,'s03b-heat',[[0,'#FF9F0A',.5],[0,'#FF9F0A',.5],[0,'#FF9F0A',0]],{x1:0,y1:0,x2:1,y2:0});
+  svgEl('rect',{x:152,y:472,width:462,height:80,rx:12,fill:'url(#s03b-heat)'},A);
+  const xe=S.x0+(S.N-1)*S.dx;
+  S.ry.forEach(y=>svgEl('line',{x1:S.x0,y1:y,x2:xe,y2:y,stroke:'#fff','stroke-opacity':.2,'stroke-width':2},A));
+  for(let i=0;i<S.N;i++)svgEl('line',{x1:S.x0+i*S.dx,y1:S.ry[0],x2:S.x0+i*S.dx,y2:S.ry[1],stroke:'#fff','stroke-opacity':.2,'stroke-width':2},A);
+  o.p=[];for(let j=0;j<2;j++)for(let i=0;i<S.N;i++)o.p.push(svgEl('circle',{r:11,stroke:'#1d1d1f','stroke-opacity':.35,'stroke-width':1.5},A));
+  svgEl('rect',{x:160,y:672,width:72,height:22,rx:7,fill:'#6e6e73'},A);o.fl=[s03bFlame(A,196,672,1.28)];
+  txt(A,256,664,'가열',{'font-size':28,'font-weight':700,fill:'#d1d1d6'});
+  arrow(A,250,430,596,430,K.warm,6);txt(A,423,406,'열의 이동',{'font-size':30,'font-weight':800,fill:K.warm,'text-anchor':'middle'});
+  // 대류: 냄비 속의 물
+  const B=o.gB=svgEl('g',{opacity:0},sv);
+  grad(d,'s03b-wat',[[0,'#3B8FE0',.5],[1,'#1E5FA8',.8]]);grad(d,'s03b-wg',[[0,'#FF9F0A',.6],[1,'#FF9F0A',0]],{cx:960,cy:650,r:190,user:1});
+  svgEl('rect',{x:795,y:410,width:330,height:227,rx:10},svgEl('clipPath',{id:'s03b-wc'},d));
+  svgEl('rect',{x:795,y:410,width:330,height:227,rx:10,fill:'url(#s03b-wat)'},B);
+  svgEl('circle',{cx:960,cy:650,r:190,fill:'url(#s03b-wg)','clip-path':'url(#s03b-wc)'},B);
+  svgEl('line',{x1:797,y1:410,x2:1123,y2:410,stroke:'#BFE0FF','stroke-opacity':.8,'stroke-width':3},B);
+  S.cx.forEach(x=>svgEl('ellipse',{cx:x,cy:S.cy,rx:S.rx,ry:S.ryy,fill:'none',stroke:'#fff','stroke-opacity':.2,'stroke-width':3},B));
+  [[S.cx[0]+S.rx,-1],[S.cx[1]-S.rx,-1],[S.cx[0]-S.rx,1],[S.cx[1]+S.rx,1]].forEach(a=>svgEl('polygon',{points:f1(a[0])+','+f1(S.cy+a[1]*13)+' '+f1(a[0]-10)+','+f1(S.cy-a[1]*9)+' '+f1(a[0]+10)+','+f1(S.cy-a[1]*9),fill:'#fff','fill-opacity':.75},B));   // 흐르는 방향: 가운데는 위로, 벽 쪽은 아래로
+  o.w=[];for(let i=0;i<2*S.M;i++)o.w.push(svgEl('circle',{r:10,stroke:'#0b2a55','stroke-opacity':.4,'stroke-width':1.5},B));
+  svgEl('path',{d:'M790 372V610Q790 642 822 642H1098Q1130 642 1130 610V372',fill:'none',stroke:'#a1a1a6','stroke-width':10,'stroke-linejoin':'round','stroke-linecap':'round'},B);
+  o.fl.push(s03bFlame(B,925,706,.72),s03bFlame(B,995,706,.72));
+  txt(B,1036,700,'가열',{'font-size':28,'font-weight':700,fill:'#d1d1d6'});
+  // 복사: 물질이 거의 없는 우주
+  const C=o.gC=svgEl('g',{opacity:0},sv);
+  grad(d,'s03b-sg',[[0,'#FFE7A8',.6],[.35,'#FFC933',.16],[1,'#FFC933',0]],{cx:1352,cy:500,r:170,user:1});
+  svgEl('circle',{cx:1352,cy:500,r:170,fill:'url(#s03b-sg)'},C);svgEl('circle',{cx:1352,cy:500,r:50,fill:K.sun},C);
+  globeImage(C,1736,500,36,128,10,{night:.75,L:[-.9,.1,.42]});
+  pill(C,1544,372,'우주: 물질이 거의 없다',{fs:28,bg:'rgba(255,255,255,.14)',anchor:'middle'});
+  txt(C,1544,532,'?',{'font-size':96,'font-weight':800,fill:K.sun,'text-anchor':'middle'});
+  txt(C,1352,606,'태양',{'font-size':28,'font-weight':700,fill:'#f5f5f7','text-anchor':'middle'});
+  txt(C,1736,586,'지구',{'font-size':28,'font-weight':700,fill:'#f5f5f7','text-anchor':'middle'});
+  return o;
+}
+function s03bDraw(o,t,tt,r){
+  const S=S03B;
+  o.gA.setAttribute('opacity',f2(r[0]));o.gB.setAttribute('opacity',f2(r[1]));o.gC.setAttribute('opacity',f2(r[2]));
+  o.p.forEach((e,n)=>{const i=n%S.N,j=(n/S.N)|0,T=clamp(tt*.75-i*.6,0,1),amp=1.5+5*T;
+    e.setAttribute('cx',f1(S.x0+i*S.dx+amp*Math.sin(t*23+i*1.7+j*2.1)));e.setAttribute('cy',f1(S.ry[j]+amp*Math.cos(t*19+i+j*1.3)));
+    e.setAttribute('fill',mixHex('#A9A9B0','#FFA31A',T));});
+  const s1=clamp((tt*.75-1)/.6/(S.N-1),0,1),s2=clamp(tt*.75/.6/(S.N-1),0,1);
+  o.heat.children[1].setAttribute('offset',f4(s1));o.heat.children[2].setAttribute('offset',f4(Math.max(s1,s2)));
+  o.w.forEach((e,n)=>{const right=n%2,th=t*.9+n*.55,x=S.cx[0]+S.rx*Math.cos(th),y=S.cy-S.ryy*Math.sin(th);   // 오른쪽 고리는 왼쪽 고리의 거울상(가운데에서 올라감)
+    e.setAttribute('cx',f1(right?1920-x:x));e.setAttribute('cy',f1(y));
+    e.setAttribute('fill',mixHex('#3B9DFF','#FF9F0A',(Math.cos(th)+1)/2));});   // 가운데(올라가는 쪽)는 따뜻, 벽 쪽(내려가는 쪽)은 차가움
+  o.fl.forEach((g,i)=>g.setAttribute('transform','translate('+g.__x+' '+g.__y+') scale('+f2(g.__s*(1+.04*Math.sin(t*9+i*2)))+' '+f2(g.__s*(1+.08*Math.sin(t*13+i*1.3)))+')'));
+}
+s03bDraw(s03bBuild(document),5,5,[1,1,1]);
+Deck.scene('s03b',{steps:3,
+  enter(c){c.o=s03bBuild(c);c.t=0;c.t1=null;c.r=[0,0,0];s03bDraw(c.o,STILL()?5:0,STILL()?5:0,c.r);
+    if(!STILL())c.loop(t=>{c.t=t;s03bDraw(c.o,t,c.t1==null?0:((t-c.t1)%16+16)%16,c.r);});},
+  go(c,k){if(k===1)c.t1=c.instant?c.t-5:c.t;
+    return c.tween(700,p=>{c.r[k-1]=p;if(c.instant||STILL())s03bDraw(c.o,STILL()?5:c.t,STILL()?5:((c.t-c.t1)%16+16)%16,c.r);},{ease:'out'});}});
+
+/* ─── s03c ─── */
+/* s03c 난로 앞은 왜 따뜻할까? — 방 안 장면: 난로(왼쪽)에서 나온 물결이 공기를 지나 온도계(오른쪽)에 닿아 온도가 오르고,
+   가림막을 세우면 물결이 막혀(공기는 그대로) 온도가 내려간다. 온도계 높이는 2026-10-23 판처럼 목표값을 천천히 따라감(1초에 약 0.9배씩) */
+const S03C={ys:[640,715,790],x1:418,xt:1612,xb:984,N:46};
+function s03cBuild(R){
+  const S=S03C,q=s=>R.$?R.$(s):R.querySelector(s),sv=q('#s03c-sv'),o={};clearEl(sv);
+  const d=svgEl('defs',{},sv);
+  grad(d,'s03c-wall',[[0,'#F8F0E4'],[1,'#EFDDC6']]);svgEl('rect',{width:1920,height:884,fill:'url(#s03c-wall)'},sv);
+  grad(d,'s03c-fl',[[0,'#BC8E62'],[1,'#8E6541']]);svgEl('rect',{y:884,width:1920,height:196,fill:'url(#s03c-fl)'},sv);
+  [930,985,1045].forEach(y=>svgEl('line',{x1:0,y1:y,x2:1920,y2:y,stroke:'#6d4a2c','stroke-opacity':.28,'stroke-width':2},sv));
+  svgEl('rect',{y:866,width:1920,height:18,fill:'#fffaf2'},sv);svgEl('line',{x1:0,y1:884,x2:1920,y2:884,stroke:'#6d4a2c','stroke-opacity':.4,'stroke-width':2},sv);
+  grad(d,'s03c-glow',[[0,'#FF7A1A',.34],[.5,'#FF9F0A',.12],[1,'#FF9F0A',0]],{cx:330,cy:720,r:620,user:1});svgEl('rect',{width:1920,height:1080,fill:'url(#s03c-glow)'},sv);
+  // 공기(가림막 양쪽에 그대로 있음)
+  o.air=[];for(let i=0;i<S.N;i++){const x=450+rnd(i*3+1)*1130,y=560+rnd(i*7+2)*290;o.air.push({e:svgEl('circle',{r:3.5,fill:'#8e8e93','fill-opacity':.5},sv),x,y});}
+  txt(sv,700,600,'공기',{'font-size':26,'font-weight':700,fill:'#5c5c61','text-anchor':'middle'});
+  // 난로
+  grad(d,'s03c-coil',[[0,'#FFB340'],[1,'#FF3B30']]);grad(d,'s03c-body',[[0,'#4a4a4e'],[1,'#242426']]);
+  svgEl('rect',{x:216,y:866,width:28,height:18,fill:'#1d1d1f'},sv);svgEl('rect',{x:356,y:866,width:28,height:18,fill:'#1d1d1f'},sv);
+  svgEl('rect',{x:200,y:560,width:200,height:310,rx:28,fill:'url(#s03c-body)'},sv);
+  svgEl('rect',{x:226,y:606,width:148,height:192,rx:16,fill:'url(#s03c-coil)'},sv);
+  [648,694,740].forEach(y=>svgEl('line',{x1:226,y1:y,x2:374,y2:y,stroke:'#1d1d1f','stroke-opacity':.55,'stroke-width':6},sv));
+  svgEl('circle',{cx:300,cy:834,r:12,fill:'#8e8e93'},sv);
+  pill(sv,300,932,'난로',{fs:28,anchor:'middle'});
+  // 물결(복사), 가림막, 온도계
+  o.rA=S.ys.map(()=>rayMake(sv,K.ir,5));o.rB=S.ys.map(()=>rayMake(sv,K.ir,5));
+  o.bar=svgEl('g',{opacity:0},sv);const bi=svgEl('g',{},o.bar);
+  svgEl('rect',{x:962,y:872,width:78,height:12,rx:4,fill:'#6e6e73'},bi);svgEl('rect',{x:S.xb,y:584,width:34,height:292,rx:6,fill:'#8e8e93',stroke:'#6e6e73','stroke-width':2},bi);
+  txt(bi,S.xb+17,566,'가림막',{'font-size':28,'font-weight':800,fill:'#3a3a3c','text-anchor':'middle'});o.bi=bi;
+  svgEl('rect',{x:1598,y:864,width:84,height:20,rx:6,fill:'#8e8e93'},sv);
+  o.th=thermo(sv,1640,828,262,{col:K.warm,w:30,line:'#8e8e93'});
+  pill(sv,1640,932,'온도계',{fs:28,anchor:'middle'});
+  return o;
+}
+function s03cDraw(o,t,s){
+  const S=S03C,fb=(S.xb-S.x1)/(S.xt-S.x1);
+  o.air.forEach((a,i)=>{a.e.setAttribute('cx',f1(a.x+7*Math.sin(t*.7+i)));a.e.setAttribute('cy',f1(a.y+6*Math.cos(t*.9+i*2.3)));});
+  S.ys.forEach((y,i)=>{const ph=t*1.6+i*.3;
+    raySet(o.rA[i],S.x1,y,S.xt,y,58,13,ph,s.q>0?lerp(fb,1,s.q):0,1);o.rB[i].setAttribute('opacity',s.q>0?1:0);
+    raySet(o.rB[i],S.x1,y,S.xb-3,y,58,13,ph);});
+  o.bar.setAttribute('opacity',f2(s.b));o.bi.setAttribute('transform','translate(0 '+f1((1-s.b)*36)+')');
+  o.th.set(.16+.7*s.lv);
+}
+s03cDraw(s03cBuild(document),1,{lv:1,b:0,q:0});
+Deck.scene('s03c',{steps:4,
+  enter(c){c.o=s03cBuild(c);c.t=STILL()?1:0;c.b=0;c.q=0;c.lv=STILL()?1:.12;s03cDraw(c.o,c.t,c);
+    if(!STILL())c.loop((t,dt)=>{c.t=t;c.lv+=((c.q>0?.12:1)-c.lv)*Math.min(1,dt*.9);s03cDraw(c.o,t,c);});},
+  async go(c,k){
+    if(k===2){await c.tween(500,p=>{c.b=p;},{ease:'out'});await c.tween(900,p=>{c.q=p;},{ease:'linear'});}
+    if(c.instant||STILL()){c.lv=k>=2?.12:1;s03cDraw(c.o,c.t,c);}
+  }});
+
+/* ─── s03d ─── */
+/* s03d 복사 평형 — 컵의 온도는 왜 멈출까?: 교과서 탐구 측정값(2분 간격, 25.4 → 50.0 ℃, 2026-10-23 판의 값 그대로).
+   흡수 띠(노랑)는 늘 같은 굵기, 방출 띠(빨강)의 굵기와 방출 막대는 f = (온도 − 25.4) ÷ 24.6(온도 차로 어림한 모식). f가 1에 이르면 > 가 = 로 */
+const S03D={T:[25.4,29.8,36.1,40.9,44.0,46.8,48.1,48.9,49.3,49.6,49.7,50.0,50.0],X:t=>96+t*35,Y:T=>350-(T-20)*9.2,i:[386,463,548,556],o:[684,596,772,548]};
+const s03dT=t=>{const i=Math.min(11,Math.floor(t/2)),u=t/2-i;return lerp(S03D.T[i],S03D.T[i+1],clamp(u,0,1));};
+function s03dBuild(R){
+  const S=S03D,q=s=>R.$?R.$(s):R.querySelector(s),sv=q('#s03d-sv'),gs=q('#s03d-g'),bs=q('#s03d-b'),o={};clearEl(sv);clearEl(gs);clearEl(bs);
+  const d=svgEl('defs',{},sv);
+  // 실험대와 장치
+  grad(d,'s03d-desk',[[0,'#DDE1E7'],[1,'#C6CBD4']]);svgEl('rect',{y:664,width:1920,height:416,fill:'url(#s03d-desk)'},sv);
+  svgEl('line',{x1:0,y1:664,x2:1920,y2:664,stroke:'#fff','stroke-width':4},sv);
+  grad(d,'s03d-cone',[[0,'#FF6A3D',.34],[1,'#FF6A3D',.05]],{x1:360,y1:449,x2:620,y2:600,user:1});
+  svgEl('polygon',{points:'390,395 331,503 548,664 690,664 690,536',fill:'url(#s03d-cone)'},sv);
+  svgEl('rect',{x:150,y:646,width:150,height:18,rx:8,fill:'#8e8e93'},sv);
+  svgEl('path',{d:'M225 646V450L290 412',stroke:'#8e8e93','stroke-width':12,fill:'none','stroke-linecap':'round','stroke-linejoin':'round'},sv);
+  const hd=svgEl('g',{transform:'translate(322 428) rotate(28.9)'},sv);
+  svgEl('rect',{x:-62,y:-14,width:22,height:28,rx:5,fill:'#8e8e93'},hd);
+  svgEl('polygon',{points:'-44,-24 40,-62 40,62 -44,24',fill:'#c7c7cc',stroke:'#a1a1a6','stroke-width':2,'stroke-linejoin':'round'},hd);
+  svgEl('ellipse',{cx:40,cy:0,rx:10,ry:62,fill:'#FF6A3D'},hd);svgEl('ellipse',{cx:41,cy:0,rx:5,ry:48,fill:'#FFB199'},hd);
+  txt(sv,120,424,'적외선등',{'font-size':28,'font-weight':700,fill:'#3a3a3c'});
+  grad(d,'s03d-cup',[[0,'#3a3a3c'],[.3,'#1d1d1f'],[1,'#0c0c0d']],{x1:0,y1:0,x2:1,y2:0});
+  svgEl('rect',{x:609,y:468,width:12,height:120,rx:6,fill:'#8e8e93'},sv);
+  svgEl('rect',{x:560,y:548,width:110,height:116,rx:10,fill:'url(#s03d-cup)'},sv);svgEl('ellipse',{cx:615,cy:550,rx:55,ry:11,fill:'#2c2c2e',stroke:'#48484a','stroke-width':2},sv);
+  svgEl('rect',{x:609,y:468,width:12,height:84,rx:6,fill:'#8e8e93'},sv);
+  svgEl('rect',{x:568,y:420,width:94,height:50,rx:9,fill:'#fff',stroke:'#1d1d1f','stroke-width':3},sv);
+  o.temp=txt(sv,615,455,'25.4',{'font-size':28,'font-weight':700,fill:'#1d1d1f','text-anchor':'middle',class:'num'});
+  txt(sv,545,650,'검은 알루미늄 컵',{'font-size':26,'font-weight':700,fill:'#3a3a3c','text-anchor':'end'});
+  o.in=svgEl('polygon',{points:bandPts(S.i[0],S.i[1],S.i[2],S.i[3],40),fill:K.sun},sv);o.out=svgEl('polygon',{fill:K.ir},sv);
+  const fl=()=>svgEl('line',{stroke:'#fff','stroke-opacity':.8,'stroke-width':4,'stroke-linecap':'round','stroke-dasharray':'2 22'},sv);
+  o.fi=fl();o.fo=fl();
+  const end=(a,cut)=>{const L=Math.hypot(a[2]-a[0],a[3]-a[1]);return {x1:f1(a[0]),y1:f1(a[1]),x2:f1(a[2]-(a[2]-a[0])/L*cut),y2:f1(a[3]-(a[3]-a[1])/L*cut)};};
+  Object.entries(end(S.i,30)).forEach(a=>o.fi.setAttribute(a[0],a[1]));Object.entries(end(S.o,30)).forEach(a=>o.fo.setAttribute(a[0],a[1]));
+  txt(sv,440,566,'흡수',{'font-size':28,'font-weight':800,fill:KT.sun,'text-anchor':'end'});
+  o.outl=txt(sv,692,652,'방출',{'font-size':28,'font-weight':800,fill:KT.ir});
+  // 흡수·방출 비교 막대
+  txt(bs,28,45,'흡수',{'font-size':28,'font-weight':800,fill:KT.sun});svgEl('rect',{x:104,y:22,width:300,height:28,rx:8,fill:K.sun},bs);
+  txt(bs,28,89,'방출',{'font-size':28,'font-weight':800,fill:KT.ir});o.ob=svgEl('rect',{x:104,y:66,width:0,height:28,rx:8,fill:K.ir},bs);
+  o.cmp=txt(bs,478,78,'>',{'font-size':60,'font-weight':800,fill:'#1d1d1f','text-anchor':'middle'});
+  // 그래프
+  [30,40,50].forEach(T=>svgEl('line',{x1:96,y1:f1(S.Y(T)),x2:940,y2:f1(S.Y(T)),stroke:'#e8e8ed','stroke-width':2},gs));
+  o.z1=svgEl('g',{opacity:0},gs);svgEl('rect',{x:98,y:52,width:S.X(10)-98,height:296,fill:KT.warm,'fill-opacity':.09},o.z1);
+  txt(o.z1,(98+S.X(10))/2,326,'① 온도 상승',{'font-size':28,'font-weight':800,fill:KT.warm,'text-anchor':'middle'});
+  o.z2=svgEl('g',{opacity:0},gs);svgEl('rect',{x:S.X(18),y:52,width:S.X(24)-S.X(18),height:296,fill:'#0066cc','fill-opacity':.09},o.z2);
+  txt(o.z2,(S.X(18)+S.X(24))/2,326,'② 온도 일정',{'font-size':28,'font-weight':800,fill:'#0066cc','text-anchor':'middle'});
+  svgEl('path',{d:'M96 350H950M96 350V50',stroke:'#1d1d1f','stroke-width':3,fill:'none'},gs);
+  for(let t=0;t<=24;t+=4)txt(gs,S.X(t),384,String(t),{'font-size':26,fill:'#6e6e73','text-anchor':'middle'});
+  [20,30,40,50].forEach(T=>txt(gs,82,f1(S.Y(T)+9),String(T),{'font-size':26,fill:'#6e6e73','text-anchor':'end'}));
+  txt(gs,110,42,'온도(℃)',{'font-size':28,'font-weight':600,fill:'#1d1d1f'});txt(gs,950,424,'시간(분)',{'font-size':28,'font-weight':600,fill:'#1d1d1f','text-anchor':'end'});
+  o.curve=svgEl('path',{fill:'none',stroke:KT.warm,'stroke-width':5,'stroke-linejoin':'round','stroke-linecap':'round'},gs);
+  o.pts=S.T.map((T,i)=>svgEl('circle',{cx:S.X(2*i),cy:f1(S.Y(T)),r:9,fill:KT.warm,stroke:'#fff','stroke-width':3,visibility:'hidden'},gs));
+  return o;
+}
+function s03dDraw(o,t,z){
+  const S=S03D,p=[];for(let s=0;s<=t+1e-9;s+=.2)p.push(f1(S.X(s))+' '+f1(S.Y(s03dT(s))));
+  o.curve.setAttribute('d',p.length>1?'M'+p.join(' L'):'');
+  o.pts.forEach((e,i)=>e.setAttribute('visibility',i<=Math.floor(t/2+1e-9)?'visible':'hidden'));
+  const T=s03dT(t),f=clamp((T-25.4)/24.6,0,1);o.f=f;
+  o.temp.textContent=T.toFixed(1);
+  o.out.setAttribute('points',f>.03?bandPts(S.o[0],S.o[1],S.o[2],S.o[3],40*f):'');o.outl.setAttribute('opacity',f>.03?1:0);
+  o.fo.setAttribute('opacity',f>.3?1:0);
+  o.ob.setAttribute('width',f1(300*f));o.cmp.textContent=f>.97?'=':'>';   // 흡수 vs 방출 막대
+  o.z1.setAttribute('opacity',f2(z[0]));o.z2.setAttribute('opacity',f2(z[1]));
+}
+function s03dFlow(o,t){o.fi.setAttribute('stroke-dashoffset',f1(-t*44));o.fo.setAttribute('stroke-dashoffset',f1(-t*44));}
+s03dDraw(s03dBuild(document),24,[1,1]);
+Deck.scene('s03d',{steps:4,
+  enter(c){c.o=s03dBuild(c);c.tm=0;c.z=[0,0];s03dDraw(c.o,0,c.z);if(!STILL())c.loop(t=>s03dFlow(c.o,t));},
+  async go(c,k){
+    if(k===1){await c.tween(3000,p=>{c.tm=10*p;s03dDraw(c.o,c.tm,c.z);},{ease:'linear'});await c.tween(400,p=>{c.z[0]=p;s03dDraw(c.o,c.tm,c.z);},{ease:'out'});}
+    if(k===2){await c.tween(3500,p=>{c.tm=10+14*p;s03dDraw(c.o,c.tm,c.z);},{ease:'linear'});await c.tween(400,p=>{c.z[1]=p;s03dDraw(c.o,c.tm,c.z);},{ease:'out'});}
+  }});
+/* ═══ 묶음 A 끝 ═══ */
+/* ═══ 묶음 C 시작 ═══ */
+/* ─── s20b ─── */
+/* s20b 기본 용어 — 용승과 침강: 화면을 둘로 나눈 두 해안의 바닷속 단면(왼쪽 = 용승이 일어나는 해안, 오른쪽 = 침강이 일어나는 해안).
+   주황 = 표층의 따뜻한 해수층, 파랑 = 찬 해수(뒤의 엘니뇨 장들과 같은 색). 흐르는 점선의 방향 = 해수·바람이 움직이는 방향.
+   좌표는 왼쪽 반(x 0~948) 기준이고 오른쪽 반은 좌우를 뒤집어 그림(x → 1920 − x). 그림·이름표는 모두 원본에 넣고 등장은 data-step으로 */
+const S20B={sea:420,slope:[[290,420],[330,470],[380,560],[430,660],[480,774],[560,1080]],   // 해안의 바닷속 비탈
+  thU:[[480,420],[540,446],[640,486],[760,520],[860,536],[948,540]],   // 용승 해안: 따뜻한 해수층의 아랫면(해안 가까이에서는 찬 해수가 해수면까지 올라와 있음)
+  thD:[[948,540],[820,548],[700,572],[600,618],[520,676],[454,715]]};  // 침강 해안: 해안 쪽으로 갈수록 따뜻한 해수층이 두꺼움
+function s20bWave(m,t){const a=[],x0=m?972:290,x1=m?1630:948;for(let i=0;i<=22;i++){const x=lerp(x0,x1,i/22);a.push([x,S20B.sea+2.6*Math.sin(x*.028-t*1.5)]);}return smoothD(a);}
+function s20bHead(g,p,q,col,s){   // q에서 p → q 방향으로 내민 화살촉
+  const L=Math.hypot(q[0]-p[0],q[1]-p[1])||1,ux=(q[0]-p[0])/L,uy=(q[1]-p[1])/L;
+  return svgEl('polygon',{points:f1(q[0]+ux*s)+','+f1(q[1]+uy*s)+' '+f1(q[0]-ux*s*.5-uy*s*.9)+','+f1(q[1]-uy*s*.5+ux*s*.9)+' '+f1(q[0]-ux*s*.5+uy*s*.9)+','+f1(q[1]-uy*s*.5-ux*s*.9),fill:col},g);
+}
+function s20bFlow(g,P,col,w,dash){   // 해수의 흐름: 굵은 곡선 + 끝의 화살촉 + 그 위를 흐르는 점선
+  const d=smoothD(P);
+  svgEl('path',{d,fill:'none',stroke:col,'stroke-width':w,'stroke-linecap':'round','stroke-linejoin':'round'},g);
+  svgEl('path',{d,fill:'none',stroke:dash,'stroke-width':f1(w*.34),'stroke-linecap':'round','stroke-dasharray':'3 25',class:'fl'},g);
+  s20bHead(g,P[P.length-2],P[P.length-1],col,w*1.3);
+}
+function s20bWind(g,xs,y){xs.forEach(x=>{arrow(g,x,y,x+150,y,KT.wind,9);
+  svgEl('line',{x1:x,y1:y,x2:x+116,y2:y,stroke:'#fff','stroke-opacity':.9,'stroke-width':3,'stroke-linecap':'round','stroke-dasharray':'18 200',class:'sk'},g);});}
+function s20bFish(par,x,y,s){const g=svgEl('g',{class:'fs'},par),q=svgEl('g',{transform:'translate('+x+' '+y+') scale('+f2(s)+')'},g),f='#F2F7FF';   // 왼쪽(해안 쪽)을 보는 물고기
+  svgEl('path',{d:'M16 0L30 -9L30 9Z',fill:f},q);svgEl('path',{d:'M18 0C9 -10 -9 -10 -19 0C-9 10 9 10 18 0Z',fill:f},q);svgEl('circle',{cx:-11,cy:-2,r:1.9,fill:'#0A2A5C'},q);return g;}
+function s20bBuild(){
+  const S=S20B,sv=$id('s20b-sv'),d=svgEl('defs',{},sv);
+  grad(d,'s20b-sky',[[0,'#9CCBF7'],[1,'#EAF5FF']],{x1:0,y1:0,x2:0,y2:S.sea,user:1});
+  grad(d,'s20b-cold',[[0,'#3A8FE0'],[.45,'#1459AE'],[1,'#062A5E']],{x1:0,y1:S.sea,x2:0,y2:1080,user:1});
+  grad(d,'s20b-warm',[[0,'#FFC15A'],[1,'#FF961A']],{x1:0,y1:S.sea,x2:0,y2:740,user:1});
+  grad(d,'s20b-land',[[0,'#B39468'],[.12,'#8F7350'],[1,'#4B3927']],{x1:0,y1:340,x2:0,y2:1080,user:1});
+  [0,1].forEach(m=>{
+    const X=x=>m?1920-x:x,P=a=>a.map(p=>[X(p[0]),p[1]]),x0=m?972:0;
+    svgEl('rect',{x:x0,y:0,width:948,height:1080},svgEl('clipPath',{id:'s20b-cp'+m},d));
+    const g=svgEl('g',{'clip-path':'url(#s20b-cp'+m+')'},sv);
+    svgEl('rect',{x:x0,y:0,width:948,height:S.sea+2,fill:'url(#s20b-sky)'},g);
+    cloud(g,m?1790:860,m?250:236,m?.5:.4,{fill:'#fff',op:.85});
+    svgEl('rect',{x:x0,y:S.sea,width:948,height:1080-S.sea,fill:'url(#s20b-cold)'},g);
+    // 따뜻한 해수층
+    const wd=m?smoothD(P(S.thD))+lineD(P([[430,660],[380,560],[330,470],[290,420],[948,420]])).replace('M','L')+'Z':smoothD(P(S.thU))+'L'+X(948)+' '+S.sea+'Z';
+    svgEl('path',{d:wd,fill:'url(#s20b-warm)'},g);
+    svgEl('path',{d:smoothD(P(m?S.thD:S.thU)),fill:'none',stroke:'#fff','stroke-opacity':.5,'stroke-width':2.5},g);
+    // 육지와 바닷속 비탈
+    svgEl('path',{d:'M'+X(0)+' 350Q'+X(120)+' 338 '+X(210)+' 366L'+X(262)+' 398'+S.slope.map(p=>'L'+X(p[0])+' '+p[1]).join('')+'L'+X(0)+' 1080Z',fill:'url(#s20b-land)'},g);
+    svgEl('path',{d:'M'+X(0)+' 350Q'+X(120)+' 338 '+X(210)+' 366L'+X(262)+' 398L'+X(290)+' 420L'+X(256)+' 414Q'+X(190)+' 386 '+X(110)+' 380L'+X(0)+' 386Z',fill:'#6DB36A'},g);
+    svgEl('path',{d:s20bWave(m,0),fill:'none',stroke:'#fff','stroke-opacity':.85,'stroke-width':3,'stroke-linecap':'round',class:'wv'},g);
+  });
+  svgEl('rect',{x:948,y:0,width:24,height:1080,fill:'#fff'},sv);   // 두 해안은 서로 다른 곳 — 가운데를 띄움
+  const lab={fs:26,bg:'rgba(255,255,255,.93)',col:'#5B3200'};
+  /* 1단계: 용승 — 바람이 표층 해수를 바다 쪽으로 밀어내고, 그 자리로 찬 해수가 비탈을 따라 올라옴 */
+  const g1=svgEl('g',{'data-step':1,'data-fx':'fade','data-dur':800},sv);
+  pill(g1,120,262,'용승',{fs:38,bg:'#005BB8'});
+  s20bWind(g1,[350,560,770],352);pill(g1,350,300,'바람',{fs:28,bg:KT.wind});
+  s20bFlow(g1,[[680,716],[590,704],[508,640],[445,535],[400,462]],'#D6EAFF',14,'#1459AE');
+  s20bFlow(g1,[[560,448],[730,448],[900,448]],'#FFF8EA',12,'#D97300');
+  pill(g1,740,492,'표층 해수',lab);
+  /* 2단계(빈칸 1): 올라오는 해수의 이름 */
+  pill(svgEl('g',{'data-step':2,'data-fx':'fade',class:'s20b-ans'},sv),696,716,'심층의 찬 해수',{fs:26,bg:'#0B4E9E'});
+  /* 3단계: 침강 — 바람이 표층 해수를 해안 쪽으로 모으고, 모인 따뜻한 해수가 아래로 내려감 */
+  const g3=svgEl('g',{'data-step':3,'data-fx':'fade','data-dur':800},sv);
+  pill(g3,1012,262,'침강',{fs:38,bg:'#B25000'});
+  s20bWind(g3,[1000,1210,1420],352);pill(g3,1210,300,'바람',{fs:28,bg:KT.wind});
+  s20bFlow(g3,[[1020,448],[1220,448],[1360,456],[1430,500],[1452,570],[1454,640]],'#FFF8EA',12,'#D97300');
+  pill(g3,1040,492,'표층의 따뜻한 해수',lab);
+  /* 5단계: 용승이 일어나는 곳은 좋은 어장 */
+  const g5=svgEl('g',{'data-step':5,'data-fx':'fade'},sv);
+  pill(g5,528,590,'영양염 → 플랑크톤 → 좋은 어장',{fs:24,bg:'rgba(255,255,255,.95)',col:'#1d1d1f'});
+  [[600,652,1],[672,640,.85],[744,656,1.05],[816,641,.9],[884,654,.95]].forEach(q=>s20bFish(g5,q[0],q[1],q[2]));
+}
+s20bBuild();
+function s20bDraw(c,t){
+  const a=f1(-(t*36)%28),b=f1(-(t*150)%218);
+  c.fl.forEach(e=>e.setAttribute('stroke-dashoffset',a));c.sk.forEach(e=>e.setAttribute('stroke-dashoffset',b));
+  c.wv.forEach((e,m)=>e.setAttribute('d',s20bWave(m,t)));
+  c.fs.forEach((e,i)=>e.setAttribute('transform','translate('+f1(5*Math.sin(t*.8+i*1.9))+' '+f1(3*Math.sin(t*1.3+i*1.3))+')'));
+}
+Deck.scene('s20b',{enter(c){c.fl=c.$$('.fl');c.sk=c.$$('.sk');c.wv=c.$$('.wv');c.fs=c.$$('.fs');if(!STILL())c.loop(t=>s20bDraw(c,t));}});
+
+/* ─── s24b ─── */
+/* s24b 엘니뇨와 라니냐의 정의: 태평양 지도(180° 가운데, 왼쪽 끝 100°E ~ 오른쪽 끝 60°W) 위의 수온 편차(모식 — 구판과 같은 식).
+   큰 지도 = 엘니뇨 시기(주황 = 평년보다 높음), 오른쪽 위 작은 지도 = 라니냐 시기(참고, 파랑 = 평년보다 낮음). 점선 상자 = 엘니뇨 감시 구역(5°S~5°N, 170°W~120°W) */
+const S24B={k:9.6,l0:100,eq:545,in:{x:1180,y:216,w:620,h:234,k:3.1}};
+const s24bX=L=>(L-S24B.l0)*S24B.k,s24bY=la=>S24B.eq-la*S24B.k;   // L = 동경(0~360)
+const s24bV=(L,la,sg)=>sg*Math.exp(-Math.pow((la+1)/7,2))*Math.exp(-Math.pow((L-235)/38,2))-sg*.35*Math.exp(-Math.pow((la-2)/9,2))*Math.exp(-Math.pow((L-150)/16,2));
+function s24bField(sg){   // 수온 편차를 4px 칸마다 계산한 그림(늘려 넣으면 부드럽게 이어짐)
+  const W=480,H=270,cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d'),im=x.createImageData(W,H),d=im.data;
+  for(let j=0;j<H;j++)for(let i=0;i<W;i++){const v=s24bV(S24B.l0+(i+.5)*4/S24B.k,(S24B.eq-(j+.5)*4)/S24B.k,sg),a=Math.abs(v),q=(j*W+i)*4,w=v>0;
+    d[q]=w?255:59;d[q+1]=w?lerp(150,178,a):157;d[q+2]=w?lerp(10,48,a):255;d[q+3]=255*Math.min(.9,a*1.05)*sm((a-.03)/.09);}
+  x.putImageData(im,0,0);return cv.toDataURL();
+}
+function s24bBuild(){
+  const S=S24B,s=$id('s24b-map'),d=svgEl('defs',{},s),XP=lp=>s24bX(lp+180),I=S.in;
+  grad(d,'s24b-sea',[[0,'#16395C'],[.6,'#0D2440'],[1,'#07162A']],{cx:960,cy:560,r:1150,user:1});
+  grad(d,'s24b-top',[[0,'#07162A',.92],[1,'#07162A',0]],{x1:0,y1:110,x2:0,y2:330,user:1});
+  const land=landPath(WORLD_PAC,XP,s24bY),lake=landPath(LAKES_PAC,XP,s24bY),bx=[s24bX(190),s24bY(5),50*S.k,10*S.k];
+  svgEl('rect',{width:1920,height:1080,fill:'url(#s24b-sea)'},s);
+  for(let L=120;L<=270;L+=30)svgEl('line',{x1:f1(s24bX(L)),y1:0,x2:f1(s24bX(L)),y2:1080,stroke:'#fff','stroke-opacity':.05,'stroke-width':2},s);
+  [30,-30].forEach(la=>svgEl('line',{x1:0,y1:f1(s24bY(la)),x2:1920,y2:f1(s24bY(la)),stroke:'#fff','stroke-opacity':.05,'stroke-width':2},s));
+  /* 1단계: 엘니뇨 시기의 수온 편차(주황 = 평년보다 높은 해역) */
+  svgEl('image',{href:s24bField(1),x:0,y:0,width:1920,height:1080,preserveAspectRatio:'none','data-step':1,'data-fx':'fade','data-dur':1600},s);
+  svgEl('path',{d:land,fill:'#6E8479',stroke:'#9DB0A5','stroke-width':1.2,'stroke-linejoin':'round'},s);svgEl('path',{d:lake,fill:'#0F2A48'},s);
+  svgEl('line',{x1:0,y1:S.eq,x2:1920,y2:S.eq,stroke:'#fff','stroke-opacity':.45,'stroke-width':2,'stroke-dasharray':'7 8'},s);
+  svgEl('rect',{width:1920,height:340,fill:'url(#s24b-top)'},s);
+  const nm=(x,y,t,o={})=>txt(s,x,y,t,Object.assign({'font-size':28,'font-weight':700,fill:'#d1d1d6','text-anchor':'middle'},halo('#0D2440',8),o));
+  nm(s24bX(163),S.eq+110,'서태평양');nm(s24bX(200),S.eq+110,'중앙 태평양');nm(s24bX(250),S.eq+110,'동태평양');
+  nm(196,S.eq-12,'적도',{'font-size':24});
+  const g1=svgEl('g',{'data-step':1,'data-fx':'fade','data-delay':500},s);
+  pill(g1,120,262,'엘니뇨 시기',{fs:34,bg:'#B25000'});
+  svgEl('rect',{x:f1(bx[0]),y:f1(bx[1]),width:f1(bx[2]),height:f1(bx[3]),fill:'none',stroke:'#fff','stroke-width':3,'stroke-dasharray':'10 7'},g1);
+  txt(g1,f1(bx[0]+bx[2]/2),f1(bx[1]-10),'엘니뇨 감시 구역',Object.assign({'font-size':24,'font-weight':700,fill:'#fff','text-anchor':'middle'},halo('#5A3206',7)));
+  /* 2단계(빈칸 1) */
+  pill(svgEl('g',{'data-step':2,'data-fx':'fade',class:'s24b-ans'},s),870,S.eq-120,'평년보다 높음(+)',{fs:28,bg:'rgba(255,255,255,.96)',col:'#B25000'});
+  /* 3단계(빈칸 2): 원인 — 무역풍 약화(짧은 화살표, 느린 바람 줄). 무역풍은 동 → 서 */
+  const g3=svgEl('g',{'data-step':3,'data-fx':'fade'},s);
+  [[830,716],[676,562]].forEach(q=>{arrow(g3,q[0],S.eq,q[1],S.eq,K.wind,8);
+    svgEl('line',{x1:q[0],y1:S.eq,x2:q[1]+26,y2:S.eq,stroke:'#fff','stroke-opacity':.9,'stroke-width':3,'stroke-linecap':'round','stroke-dasharray':'14 176',class:'sk1'},g3);});
+  pill(g3,565,S.eq-55,'무역풍 약화',{fs:26,bg:KT.wind}).setAttribute('class','s24b-ans');
+  /* 4단계: 라니냐 시기(참고) — 작은 지도. 큰 지도와 같은 그림을 줄여 넣음 */
+  const g4=svgEl('g',{'data-step':4,'data-fx':'fade'},s),ey=I.y+I.h/2;
+  svgEl('rect',{x:I.x,y:I.y,width:I.w,height:I.h,rx:16},svgEl('clipPath',{id:'s24b-ic'},d));
+  svgEl('rect',{x:I.x-3,y:I.y+5,width:I.w+6,height:I.h+6,rx:19,fill:'#000','fill-opacity':.4},g4);
+  const ig=svgEl('g',{'clip-path':'url(#s24b-ic)'},g4);svgEl('rect',{x:I.x,y:I.y,width:I.w,height:I.h,fill:'#102C4C'},ig);
+  const it=svgEl('g',{transform:'translate('+I.x+' '+ey+') scale('+f4(I.k/S.k)+') translate(0 '+(-S.eq)+')'},ig);
+  svgEl('image',{href:s24bField(-1),x:0,y:0,width:1920,height:1080,preserveAspectRatio:'none'},it);
+  svgEl('path',{d:land,fill:'#6E8479',stroke:'#9DB0A5','stroke-width':3,'stroke-linejoin':'round'},it);
+  svgEl('line',{x1:0,y1:S.eq,x2:1920,y2:S.eq,stroke:'#fff','stroke-opacity':.45,'stroke-width':5,'stroke-dasharray':'20 22'},it);
+  svgEl('rect',{x:f1(bx[0]),y:f1(bx[1]),width:f1(bx[2]),height:f1(bx[3]),fill:'none',stroke:'#fff','stroke-width':7,'stroke-dasharray':'26 18'},it);
+  svgEl('rect',{x:I.x,y:I.y,width:I.w,height:I.h,rx:16,fill:'none',stroke:'#fff','stroke-opacity':.92,'stroke-width':3},g4);
+  pill(g4,I.x+16,I.y+38,'라니냐 시기 (참고)',{fs:26,bg:'#005BB8'});
+  arrow(g4,I.x+262,ey,I.x+40,ey,K.wind,7);   // 무역풍 강화(긴 화살표, 빠른 바람 줄)
+  svgEl('line',{x1:I.x+262,y1:ey,x2:I.x+66,y2:ey,stroke:'#fff','stroke-opacity':.9,'stroke-width':3,'stroke-linecap':'round','stroke-dasharray':'22 278',class:'sk2'},g4);
+  pill(g4,I.x+16,I.y+I.h-34,'무역풍 강화',{fs:24,bg:KT.wind});
+  /* 5단계(빈칸 3) */
+  pill(svgEl('g',{'data-step':5,'data-fx':'fade',class:'s24b-ans'},s),I.x+I.w-16-242,I.y+I.h-34,'평년보다 낮음(−)',{fs:24,bg:'rgba(255,255,255,.96)',col:'#005BB8'});
+}
+s24bBuild();
+Deck.scene('s24b',{enter(c){c.s1=c.$$('.sk1');c.s2=c.$$('.sk2');
+  if(!STILL())c.loop(t=>{const a=f1(-(t*70)%190),b=f1(-(t*220)%300);c.s1.forEach(e=>e.setAttribute('stroke-dashoffset',a));c.s2.forEach(e=>e.setAttribute('stroke-dashoffset',b));});}});
+/* ═══ 묶음 C 끝 ═══ */
 </script>
 <!-- ═══ 3D 장면(three.js) — s25d 적도 부근 태평양. 3D 도구를 못 불러와도 수업은 시작됨 ═══ -->
 <script type="module">
@@ -4106,6 +5081,278 @@ Deck.scene('s25d',{steps:11,
     if(c.instant||STILL)c.frame(3.3,0);
   }
 });
+{ /* ═══ s15d 비추는 각 — 지구본에서 보기: 구판(II.1.3climate.html)의 s13d 3D 코드를 그대로 옮김(2026-11-25). 이름이 신판 3D 코드와 겹치지 않게 블록 안에 둠 ═══ */
+const {THREE,makeView,line,segs,dot,label,fade,clear,arrow,clamp,lerp,D2R,PRINT,STILL}=K;
+
+/* ── 지구본(두 시험 장이 같은 코드) ── 육지 윤곽: Natural Earth(공개 자료)를 단순화한 것 — 통합과학2 II.1.3 수업의 WORLD·LAKES와 같음
+   위도 φ·경도 λ인 곳의 방향 = (cosφ·cosλ, sinφ, −cosφ·sinλ) → 바깥에서 보면 북쪽이 위, 동쪽이 오른쪽 */
+const WORLD=[[[-67.8,-53.9],[-65,-54.7],[-69.2,-55.5],[-74.7,-52.8],[-71.1,-54.1],[-69.3,-52.5]],[[-58.5,-51.1],[-58,-51.9],[-61.2,-51.9]],[[145.4,-40.8],[148.3,-40.9],[147.9,-43.2],[146,-43.5],[144.7,-41.2]],[[173,-40.9],[174.2,-41.3],[172.7,-43.4],[173.1,-43.9],[171.5,-44.2],[169.3,-46.6],[166.7,-46.2],[167,-45.1]],[[174.6,-36.2],[176.8,-37.9],[178.5,-37.7],[178,-39.2],[177.2,-39.1],[175.2,-41.7],[174.7,-41.3],[174.9,-39.9],[173.8,-39.5],[174.7,-37.4],[172.6,-34.5],[174.3,-35.3]],[[167.1,-22.2],[165.5,-21.7],[164,-20.1]],[[50.1,-13.6],[50.4,-15.7],[49.7,-15.7],[47.1,-24.9],[45.4,-25.6],[44,-25],[43.3,-22.1],[44.4,-20.1],[44.4,-16.2],[47.7,-14.6],[49.2,-12]],[[143.6,-13.8],[145.4,-15],[146.4,-19],[148.8,-20.4],[149.7,-22.3],[150.7,-22.4],[153.1,-26.1],[153.6,-28.1],[152.9,-31.6],[150,-37.4],[146.3,-39],[145,-37.9],[143.6,-38.8],[140.6,-38],[139.6,-36.1],[138.1,-35.6],[138.2,-34.4],[136.8,-35.3],[137.8,-32.9],[136,-34.9],[134.3,-32.6],[131.3,-31.5],[126.1,-32.2],[123.7,-33.9],[119.9,-34],[118,-35.1],[115,-34.2],[115.7,-31.6],[113.3,-26.1],[113.8,-26.5],[113.4,-25.6],[114.2,-26.3],[113.4,-24.4],[114.1,-21.8],[114.2,-22.5],[116.7,-20.7],[120.9,-19.7],[123,-16.4],[123.9,-17.1],[123.5,-16.6],[125.7,-14.2],[127.1,-13.8],[129.6,-15],[130.6,-12.5],[132.6,-12.1],[131.8,-11.3],[132.4,-11.1],[135.3,-12.2],[136.5,-11.9],[137,-12.4],[135.5,-15],[140.2,-17.7],[141.3,-16.4],[142.5,-10.7]],[[120.7,-10.2],[119,-9.6],[119.9,-9.4]],[[124.4,-10.1],[123.5,-10.2],[125.1,-8.7],[127.3,-8.4]],[[117.9,-8.1],[118.9,-8.3],[119.1,-8.7],[116.7,-9]],[[122.9,-8.1],[122.8,-8.6],[119.9,-8.8],[119.9,-8.4],[120.7,-8.2],[121.3,-8.5]],[[108.6,-6.8],[110.8,-6.5],[115.7,-8.4],[114.6,-8.8],[105.4,-6.9],[106.1,-5.9]],[[134.7,-6.2],[134.2,-6.9],[134.5,-5.4]],[[152,-5.5],[150.2,-6.3],[148.3,-5.7],[150.1,-5],[150.8,-5.5],[151.5,-4.2],[152.3,-4.3]],[[127.2,-3.5],[126.9,-3.8],[126,-3.2],[127,-3.1]],[[130.5,-3.1],[130.8,-3.9],[130,-3.4],[127.9,-3.4],[128.1,-2.8]],[[134.1,-1.2],[134.4,-2.8],[135.5,-3.4],[138.3,-1.7],[144.6,-3.9],[147.6,-6.1],[147.2,-7.4],[150.7,-10.6],[147.9,-10.1],[144.7,-7.6],[142.6,-9.3],[139.1,-8.1],[137.6,-8.4],[138.7,-7.3],[137.9,-5.4],[133.7,-3.5],[133,-4.1],[132,-2.8],[133.7,-2.2],[132.2,-2.2],[130.5,-0.9],[132.4,-0.4]],[[125.2,1.4],[123.7,0.2],[120.2,0.2],[120.9,-1.4],[123.3,-0.6],[121.5,-1.9],[123.2,-5.3],[122.2,-5.3],[122.7,-4.5],[121.5,-4.6],[121,-2.6],[120.3,-2.9],[120.4,-5.5],[119.4,-5.4],[119.5,-3.5],[118.8,-2.8],[120,0.6],[120.9,1.3]],[[128.7,1.1],[128.1,-0.9],[127.4,1],[127.9,2.2]],[[105.8,-5.9],[104.7,-5.9],[102.6,-4.2],[95.3,5.5],[97.5,5.2],[103.8,0.1],[103.4,-0.7],[106.1,-3.1]],[[117.9,1.8],[119,0.9],[117.8,0.8],[116.1,-4],[110.2,-2.9],[109.1,-0.5],[109.7,2],[111.2,1.9],[111.4,2.7],[113,3.1],[116.7,6.9],[119.2,5.4],[117.3,3.2]],[[126.4,8.4],[126.5,7.2],[126.2,6.3],[125.8,7.3],[125.4,6.8],[125.4,5.6],[124.2,6.2],[123.6,7.8],[121.9,7.2],[123.5,8.7],[125.5,9],[125.4,9.8]],[[81.2,6.2],[80.3,6],[79.9,6.8],[80.1,9.8],[81.8,7.5]],[[124,10.3],[123,9],[122.4,9.7],[122.9,10.9],[123.5,10.9],[123.3,10.3],[124.1,11.2]],[[118.5,9.3],[117.2,8.4],[119.5,11.4],[119.7,10.6]],[[121.9,11.9],[123.1,11.6],[123.1,11.2],[122,10.4]],[[125.5,12.2],[125.8,11],[125,11.3],[125.3,10.4],[124.8,10.1],[124.3,11.5],[124.9,11.4],[124.9,11.8],[124.3,12.6],[125.2,12.5]],[[121.5,13.1],[121.3,12.2],[120.3,13.5]],[[121.3,18.5],[122.2,18.5],[122.5,17.1],[121.7,15.9],[121.7,14.3],[124,13.8],[124.1,12.5],[122.9,13.6],[120.6,13.9],[121,14.5],[120.1,15],[119.9,16.4],[120.3,16],[120.7,18.5]],[[-72.6,19.9],[-70,19.6],[-68.3,18.6],[-70.7,18.4],[-71.4,17.6],[-74.5,18.3],[-72.3,18.7],[-73.4,19.6]],[[110.3,18.7],[108.7,18.5],[108.6,19.4],[110.8,20.1]],[[-155.5,19.1],[-155.9,19.1],[-155.9,20.3],[-154.8,19.5]],[[-79.7,22.8],[-74.2,20.3],[-77.8,19.9],[-77.1,20.4],[-78.7,21.6],[-81.8,22.6],[-85,21.9],[-82.3,23.2]],[[121.2,22.8],[120.7,22],[120.1,23.6],[121.5,25.3]],[[134.6,34.1],[134.8,33.8],[134.2,33.2],[133.8,33.5],[133,32.7],[132.4,33],[132.9,34.1],[133.5,33.9],[133.9,34.4]],[[15.5,38.2],[15.1,36.6],[12.4,37.6]],[[9.2,41.2],[9.7,39.2],[8.8,38.9],[8.2,41]],[[141,37.1],[140.3,35.1],[137.2,34.6],[135.8,33.5],[135.1,34.6],[131,33.9],[132,33.1],[131.3,31.5],[130.2,31.4],[130.4,32.3],[129.4,33.3],[132.6,35.4],[135.7,35.5],[136.7,37.3],[137.4,36.8],[139.4,38.2],[139.9,40.6],[141.4,41.4],[141.9,39.2]],[[143.9,44.2],[145.3,44.4],[145.5,43.3],[143.2,42],[141.6,42.7],[141.1,41.6],[140,41.6],[139.8,42.6],[141.4,43.4],[142,45.6]],[[-123.5,48.5],[-125.7,48.8],[-128.4,50.8],[-125.8,50.3]],[[-56.1,50.7],[-56.8,49.8],[-53.5,49.2],[-53.8,48.5],[-53.1,48.7],[-52.6,47.5],[-53.1,46.7],[-54.2,46.8],[-54.2,47.8],[-55.4,46.9],[-56.3,47.6],[-59.3,47.6],[-57.4,50.7],[-55.4,51.6]],[[143.6,50.7],[144.7,49],[143.2,49.3],[142.6,47.9],[143.5,46.1],[142.7,46.7],[142.1,46],[142.2,51],[141.6,51.9],[141.7,53.3],[142.6,53.8],[142.2,54.2]],[[-6.8,52.3],[-10,51.8],[-9.2,52.9],[-9.7,53.9],[-6.7,55.2],[-5.7,54.6]],[[12.7,55.6],[12.1,54.8],[10.9,55.8],[12.4,56.1]],[[-3,58.6],[-4.1,57.6],[-2,57.7],[-3.1,56],[-2.1,55.9],[0.5,52.9],[1.7,52.7],[1.4,51.3],[-5.2,50],[-5.8,50.2],[-3.4,51.4],[-5.3,52],[-4.2,52.3],[-4.6,53.5],[-3.1,53.4],[-2.9,54],[-4.8,54.8],[-5,55.8],[-5.6,55.3],[-6.1,56.8],[-5,58.6]],[[-85.2,65.7],[-80.1,63.7],[-83.1,64.1],[-85.5,63.1],[-87.2,63.5],[-85.9,65.7]],[[-14.5,66.5],[-14.7,65.8],[-13.6,65.1],[-18.7,63.5],[-22.8,64],[-21.8,64.4],[-24,64.9],[-22.2,65.4],[-24.3,65.6],[-22.1,66.4],[-20.6,65.7]],[[-175,66.6],[-171.9,66.9],[-169.9,66],[-172.5,65.4],[-173,64.3],[-178.4,65.4],[-178.7,66.1],[-179.9,65.9],[-179.4,65.4],[-180,65],[-180,69],[-174.9,67.2]],[[-95.6,69.1],[-99.8,69.4],[-98.2,70.1]],[[-90.5,69.5],[-90.6,68.5],[-89.2,69.3],[-87.4,67.2],[-85.6,68.8],[-85.5,69.9],[-82.6,69.7],[-81.3,69.2],[-82,68.1],[-81.3,67.6],[-83.3,66.4],[-85.8,66.6],[-87.3,64.8],[-93.2,62],[-94.7,58.9],[-93.2,58.8],[-92.3,57.1],[-82.3,55.1],[-82.1,53.3],[-79.9,51.2],[-78.6,52.6],[-79.8,54.7],[-76.5,56.5],[-78.5,58.8],[-77.3,59.9],[-78.1,62.3],[-73.8,62.4],[-69.6,61.1],[-69.3,59],[-67.6,58.2],[-64.6,60.3],[-61.4,57],[-61.8,56.3],[-57.3,54.6],[-55.8,53.3],[-55.7,52.1],[-60,50.2],[-66.4,50.2],[-71.1,46.8],[-65.1,49.2],[-64.2,48.7],[-65.1,48.1],[-64.5,46.2],[-61.5,45.9],[-60.5,47],[-59.8,45.9],[-65.4,43.5],[-66.1,43.6],[-66.2,44.5],[-64.4,45.3],[-67.1,45.1],[-70.7,43],[-70,41.6],[-73.7,40.9],[-71.9,40.9],[-74,40.8],[-74.9,38.9],[-75.5,39.5],[-75.1,38.4],[-75.9,37.2],[-76.3,39.2],[-76.3,38.1],[-77,38.2],[-75.7,35.6],[-81.3,31.4],[-80.1,26.9],[-80.4,25.2],[-81.7,25.9],[-82.9,29.1],[-84.1,30.1],[-89.2,30.3],[-89.2,29.3],[-90.2,29.1],[-93.8,29.7],[-96.6,28.3],[-97.4,27.4],[-97.9,22.4],[-96.3,19.3],[-94.4,18.1],[-92,18.7],[-90.8,19.3],[-90.3,21],[-87.1,21.5],[-88.9,15.9],[-85,16],[-83.4,15.3],[-83.8,11.1],[-81.4,8.8],[-79.6,9.6],[-76.8,8.6],[-74.9,11.1],[-71.8,12.4],[-71.1,12.1],[-71.9,11.4],[-71.7,9.1],[-71,9.9],[-71.4,11],[-69.9,12.2],[-68.2,10.6],[-64.9,10.1],[-61.9,10.7],[-62.7,10.4],[-62.4,9.9],[-57.1,6],[-54,5.8],[-51.3,4.2],[-50,1.7],[-50.4,-0.1],[-48.6,-0.2],[-48.6,-1.2],[-47.8,-0.6],[-44.9,-1.6],[-44.6,-2.7],[-40,-2.9],[-35.6,-5.1],[-34.7,-7.3],[-35.1,-9],[-38.7,-13.1],[-39.3,-17.9],[-40.9,-21.9],[-42,-23],[-47.6,-24.9],[-48.9,-28.7],[-53.8,-34.4],[-56.2,-34.9],[-58.4,-33.9],[-56.8,-36.9],[-59.2,-38.7],[-62.3,-38.8],[-62.1,-40.7],[-62.7,-41],[-65.1,-41.1],[-65,-42.1],[-63.5,-42.6],[-65.2,-43.5],[-65.6,-45],[-67.3,-45.6],[-67.6,-46.3],[-65.6,-47.2],[-66,-48.1],[-69.1,-50.7],[-68.2,-52.3],[-70.8,-52.9],[-71,-53.8],[-74.9,-52.3],[-75.6,-48.7],[-74.1,-46.9],[-75.6,-46.6],[-74.4,-44.1],[-73.2,-44.5],[-72.7,-42.4],[-73.4,-42.1],[-73.7,-43.4],[-74.3,-43.2],[-73.2,-39.3],[-73.6,-37.2],[-71.4,-32.4],[-70.2,-19.8],[-71.5,-17.4],[-76,-14.6],[-79.8,-7.2],[-81.2,-6.1],[-81.4,-4.7],[-79.8,-2.7],[-81,-2.2],[-80.9,-1.1],[-77.1,3.8],[-78.2,8.3],[-79.6,8.9],[-80.9,7.2],[-85.7,9.9],[-85.7,11.1],[-87.5,13.3],[-91.2,13.9],[-94.7,16.2],[-96.6,15.7],[-103.5,18.3],[-105.5,19.9],[-106,22.8],[-112.2,29],[-113.1,31.2],[-114.8,31.8],[-114.7,30.2],[-109.4,23.2],[-110,22.8],[-112.2,24.7],[-112.3,26],[-115.1,27.7],[-114.2,28.6],[-115.5,29.6],[-117.3,33],[-120.6,34.6],[-124.4,40.3],[-123.9,45.5],[-124.7,48.2],[-123.1,48],[-122.6,47.1],[-122.8,49],[-127.4,50.8],[-127.9,52.3],[-129.1,52.8],[-134.1,58.1],[-147.1,60.9],[-148.2,60.7],[-148,60],[-151.7,59.2],[-150.6,61.3],[-154,59.4],[-153.3,58.9],[-154.2,58.1],[-158.4,56],[-164.8,54.4],[-157.7,57.6],[-157,58.9],[-162,58.7],[-161.9,59.6],[-163.8,59.8],[-166.1,61.5],[-164.6,63.1],[-160.8,63.8],[-161.5,64.4],[-160.8,64.8],[-165,64.4],[-168.1,65.7],[-164.5,66.6],[-161.7,66.1],[-166.8,68.4],[-161.9,70.3],[-156.6,71.4],[-136.5,68.9],[-129.1,69.8],[-128.1,70.5],[-125.8,69.5],[-124.4,70.2],[-124.3,69.4],[-121.5,69.8],[-113.9,68.4],[-115.3,67.9],[-109.9,68],[-108.9,67.4],[-107.8,67.9],[-108.8,68.3],[-108.2,68.7],[-106.2,68.8],[-101.5,67.6],[-98.4,67.8],[-98.6,68.4],[-97.7,68.6],[-96.1,68.2],[-96.1,67.3],[-94.2,69.1],[-96.5,70.1],[-96.4,71.2],[-95.2,71.9],[-91.5,70.2],[-92.4,69.7]],[[-114.2,73.1],[-114.7,72.7],[-109.9,73],[-108.2,71.7],[-107.7,72.1],[-108.4,73.1],[-106.5,73.1],[-105.4,72.7],[-104.5,71],[-101.1,69.6],[-102.7,69.5],[-102.4,68.8],[-113.3,68.5],[-117.3,70],[-112.4,70.4],[-117.9,70.5],[-118.4,70.9],[-116.1,71.3],[-119.4,71.6],[-117.9,72.7]],[[-76.3,73.1],[-79.5,72.7],[-80.9,73.3]],[[-86.6,73.2],[-85.8,72.5],[-82.3,73.8],[-80.6,72.7],[-80.7,72.1],[-77.8,72.7],[-74.1,71.3],[-72.2,71.6],[-67,69.2],[-68.8,68.7],[-61.9,66.9],[-63.9,65],[-66.7,66.4],[-68,66.3],[-68.1,65.7],[-64.7,63.4],[-65,62.7],[-68.8,63.7],[-66.2,61.9],[-71,62.9],[-74.8,64.7],[-77.7,64.2],[-78.6,64.6],[-77.9,65.3],[-74,65.5],[-72.9,67.7],[-79,70.2],[-84.9,70],[-89.9,71.2],[-90.2,72.2],[-89.4,73.1],[-85.8,73.8]],[[-100.4,73.8],[-97.4,73.8],[-98.1,73],[-96.5,72.6],[-96.7,71.7],[-99.3,71.4],[-102.5,72.5],[-100.4,72.7],[-101.5,73.4]],[[-93.2,72.8],[-95.4,72.1],[-96,73.4],[-94.5,74.1],[-90.5,73.9]],[[-120.5,71.4],[-123.1,70.9],[-125.9,71.9],[-123.9,73.7],[-124.9,74.3],[-117.6,74.2],[-115.5,73.5],[-119.2,72.5]],[[-93.6,75],[-96.8,74.9],[-94.9,75.6]],[[145.1,75.6],[144.3,74.8],[139,74.6],[137,75.3],[138.8,76.1]],[[-98.5,76.7],[-97.7,76.3],[-98.2,75],[-102.5,75.6],[-102.6,76.3]],[[-108.2,76.2],[-105.7,75.5],[-112.2,74.4],[-113.9,74.7],[-111.8,75.2],[-117.7,75.2],[-115.4,76.5],[-109.1,75.5],[-110.5,76.4]],[[57.5,70.7],[53.7,70.8],[51.5,72],[55.9,74.6],[55.6,75.1],[61.2,76.3],[68.9,76.5],[58.5,74.3],[55.4,72.4],[55.6,71.5]],[[-94.7,77.1],[-89.2,75.6],[-81.1,75.7],[-79.8,74.9],[-89.8,74.5],[-92.4,74.8],[-93.9,76.3],[-97.1,76.8]],[[-116.2,77.6],[-117.1,76.5],[-122.9,76.1],[-119.1,77.5]],[[107,77],[114.1,75.8],[109.4,74.2],[123.2,73],[123.3,73.7],[127,73.6],[128.6,73],[129.1,72.4],[128.5,72],[131.3,70.8],[132.3,71.8],[139.9,71.5],[139.1,72.4],[140.5,72.8],[149.5,72.2],[153,70.8],[159,70.9],[159.7,69.7],[160.9,69.4],[167.8,69.6],[169.6,68.7],[170.8,69],[170,69.7],[170.5,70.1],[175.7,69.9],[180,69],[180,65],[177.4,64.6],[179.4,63],[179.2,62.3],[173.7,61.7],[170.3,59.9],[168.9,60.6],[163.5,59.9],[162,58.2],[163.2,57.6],[163.1,56.2],[161.7,55.3],[162.1,54.9],[160.4,54.3],[160,53.2],[158.5,53],[156.8,51],[155.4,55.4],[155.9,56.8],[163.7,61.1],[164.5,62.6],[160.1,60.5],[159.3,61.8],[156.7,61.4],[154.2,59.8],[155,59.1],[151.3,58.8],[151.3,59.5],[149.8,59.7],[142.2,59],[135.1,54.7],[138.2,53.8],[139.9,54.2],[141.4,52.2],[140.1,48.4],[138.2,46.3],[134.9,43.4],[133.5,42.8],[132.3,43.3],[127.5,39.8],[129.5,36.8],[129.1,35.1],[126.5,34.4],[126.1,36.7],[126.9,36.9],[124.7,38.1],[125.3,39.6],[124.3,39.9],[121.1,38.9],[122.2,40.4],[121.6,40.9],[118,39.2],[117.5,38.7],[118.9,37.4],[122.4,37.5],[122.5,36.9],[119.2,34.9],[121.9,31.7],[121.3,30.7],[122.1,29.8],[121.7,28.2],[118.7,24.5],[115.9,22.8],[110.8,21.4],[110.4,20.3],[109.9,20.3],[109.9,21.4],[108.5,21.7],[105.9,19.8],[105.7,19.1],[108.9,15.3],[109.3,13.4],[109.2,11.7],[105.2,8.6],[105.1,9.9],[103.5,10.6],[102.6,12.2],[100.8,12.6],[101,13.4],[100.1,13.4],[99.2,9.2],[103,5.5],[104.2,1.3],[101.4,2.8],[100.1,6.5],[98.5,8.4],[98.3,7.8],[98.8,11.4],[97.2,16.9],[95.4,15.7],[94.2,16],[94.3,18.2],[91.4,22.8],[90.5,22.8],[90.3,21.8],[87,21.5],[86.5,20.2],[82.2,16.6],[80.3,15.9],[79.9,10.4],[77.5,8],[73.5,16],[72.6,21.4],[70.5,20.9],[66.4,25.4],[61.5,25.1],[57.4,25.7],[56.5,27.1],[54.7,26.5],[51.5,27.9],[50.1,30.1],[48,30],[50.8,24.8],[51,26],[51.6,25.8],[51.8,24],[54,24.1],[56.4,26.4],[56.8,24.2],[59.8,22.3],[57.8,20.2],[57.7,18.9],[55.3,17.2],[52.4,16.4],[52.2,15.6],[48.7,14],[43.5,12.6],[42.6,16.8],[39.1,21.3],[38.5,23.7],[34.6,28.1],[34.9,29.5],[33.9,27.6],[32.4,29.9],[35.5,23.1],[36.9,22],[37.5,18.6],[39.3,15.9],[43.3,12.4],[42.7,11.7],[44.6,10.4],[51.1,12],[51,10.6],[47.7,4.2],[40.3,-2.6],[39.2,-4.7],[38.8,-6.5],[40.5,-10.8],[40.8,-14.7],[39.5,-16.7],[34.8,-19.8],[35.6,-23.7],[32.6,-25.7],[32.2,-28.8],[28.2,-32.8],[25.8,-33.9],[22.6,-33.9],[19.6,-34.8],[18.4,-34.1],[18.2,-31.7],[15.2,-27.1],[14.3,-22.1],[11.8,-18.1],[11.8,-15.8],[13.7,-10.7],[11.9,-5],[8.8,-1.1],[9.4,3.7],[8.5,4.8],[5.9,4.3],[4.3,6.3],[-2,4.7],[-9,4.8],[-12.4,7.3],[-14.8,10.9],[-16.6,12.2],[-17.6,14.7],[-16.5,16.1],[-16.1,18.1],[-17,21.9],[-14.4,26.3],[-9.6,29.9],[-9.3,32.6],[-6.9,34.1],[-5.9,35.8],[-2.2,35.2],[1.5,36.6],[9.5,37.4],[11.1,36.9],[10.3,33.8],[19.1,30.3],[20.1,31],[20.1,32.2],[21.5,32.8],[28.9,30.9],[31,31.6],[33.8,31],[36,34.6],[36.2,36.7],[32.5,36.1],[27.6,36.7],[26.2,39.5],[29.2,41.2],[33.5,42],[38.3,40.9],[40.4,41],[41.7,42],[36.7,45.2],[39.1,47.3],[35,46.3],[36.3,45.1],[33.9,44.4],[32.5,45.3],[33.3,46.1],[30.7,46.6],[27.7,42.6],[28.8,41.1],[26.4,40.2],[24.9,40.9],[23.7,40.7],[24.4,40.1],[23.9,40],[22.6,40.3],[24,37.7],[23.1,37.9],[23.2,36.4],[22.5,36.4],[19.4,40.3],[19.5,41.7],[13.1,45.7],[12.3,45.4],[12.6,44.1],[18.5,40.2],[16.9,40.4],[17.1,38.9],[16.1,38],[15.4,40],[8.9,44.4],[6.5,43.1],[3.1,43.1],[3,41.9],[0.8,41],[-0.3,39.3],[0.1,38.7],[-2.1,36.7],[-5.4,35.9],[-6.5,36.9],[-8.9,36.9],[-9.4,43],[-8,43.7],[-1.9,43.4],[-1.4,44],[-1.2,46],[-4.5,48],[-4.6,48.7],[-1.6,48.6],[-1.9,49.8],[-1,49.3],[1.3,50.1],[1.6,50.9],[3.8,51.6],[4.7,53.1],[8.1,53.5],[8.8,54],[8.1,55.5],[8.5,57.1],[10.6,57.7],[10.3,56.9],[10.9,56.5],[9.7,55.5],[10.9,54],[12.5,54.5],[14.1,53.8],[17.6,54.9],[19.7,54.4],[21.3,55.2],[21.6,57.4],[24.1,57],[24.4,58.4],[23.3,59.2],[29.1,60],[28.1,60.5],[22.9,59.8],[21.3,60.7],[21.5,63.2],[25.4,65.1],[23.9,66],[22.2,65.7],[21.4,64.4],[17.8,62.7],[17.1,61.3],[18.8,60.1],[16.8,58.7],[15.9,56.1],[12.9,55.4],[10.4,59.5],[8.4,58.3],[5.7,58.6],[5,62],[10.5,64.5],[14.8,67.8],[19.2,69.8],[24.5,71],[28.2,71.2],[31.3,70.5],[30,70.2],[31.1,69.6],[36.5,69.1],[41.1,67.5],[41.1,66.8],[38.4,66],[33.2,66.6],[34.8,65.9],[34.9,64.4],[37,63.8],[36.5,64.8],[37.2,65.1],[39.6,64.5],[40.4,64.8],[39.8,65.5],[42.1,66.5],[43.9,66.1],[44.5,66.8],[43.5,68.6],[46.3,68.3],[46.8,67.7],[45.6,67],[46.3,66.7],[53.7,68.9],[54.5,68.8],[53.5,68.2],[58.8,68.9],[59.9,68.3],[61.1,68.9],[60,69.5],[60.6,69.9],[68.5,68.1],[69.2,68.6],[66.9,69.5],[66.7,71],[69.2,72.8],[72.6,72.8],[71.8,71.4],[72.8,70.4],[72.6,69],[73.7,68.4],[71.3,66.3],[72.4,66.2],[75.1,67.8],[74.5,68.3],[74.9,69],[73.6,69.6],[74.4,70.6],[73.1,71.4],[74.9,72.1],[74.7,72.8],[75.7,72.3],[75.3,71.3],[76.4,71.2],[75.9,71.9],[77.6,72.3],[81.5,71.8],[80.5,73.6],[86.8,73.9],[86,74.5],[87.2,75.1],[100.8,76.4],[104.4,77.7]],[[24.7,77.9],[20.7,77.7],[21.4,77.9],[20.8,78.3],[22.9,78.5]],[[-95.8,78.1],[-98.1,78.1],[-98.6,78.9]],[[-100.1,78.3],[-99.7,77.9],[-105.2,78.4],[-104.2,78.7],[-105.5,79.3]],[[105.1,78.3],[99.4,77.9],[102.1,79.3],[105.4,78.7]],[[18.3,79.7],[21.5,79],[19,78.6],[17.1,76.8],[15.9,76.8],[10.4,79.7]],[[25.4,80.4],[27.4,80.1],[23,79.4],[17.4,80.3]],[[51.1,80.5],[47.6,80],[44.8,80.6]],[[99.9,78.9],[95,79],[91.2,80.3],[95.9,81.3],[100.2,79.8]],[[-87,79.7],[-85.8,79.3],[-90.8,78.2],[-92.9,78.3],[-94,78.8],[-93.1,79.4],[-96.7,80.2],[-94.7,81.2],[-92.4,81.3]],[[-68.5,83.1],[-61.9,82.6],[-67.7,81.5],[-65.5,81.5],[-71.2,79.8],[-76.9,79.3],[-75.5,79.2],[-76.2,79],[-75.4,78.5],[-79.8,77.2],[-77.9,76.8],[-80.6,76.2],[-89.5,76.5],[-87.8,77.2],[-88.3,77.9],[-85,77.5],[-88,78.4],[-85.1,79.3],[-86.9,80.3],[-81.8,80.5],[-87.6,80.5],[-91.6,81.9],[-79.3,83.1]],[[-27.1,83.5],[-20.8,82.7],[-31.9,82.2],[-22.1,81.7],[-23.2,81.2],[-15.8,81.9],[-12.2,81.3],[-20,80.2],[-17.7,80.1],[-19.7,78.8],[-19.7,77.6],[-18.5,77],[-21.7,76.6],[-19.8,76.1],[-19.6,75.2],[-20.7,75.2],[-19.4,74.3],[-23.6,73.3],[-22.3,72.2],[-24.8,72.3],[-22.1,71.5],[-21.8,70.7],[-23.5,70.5],[-25.5,71.4],[-25.2,70.8],[-26.4,70.2],[-22.3,70.1],[-39.8,65.5],[-41.2,63.5],[-42.8,62.7],[-42.4,61.9],[-43.4,60.1],[-48.3,60.9],[-51.6,63.6],[-54,67.2],[-50.9,69.9],[-54.7,69.6],[-54.4,70.8],[-51.4,70.6],[-55.8,71.7],[-54.7,72.6],[-58.6,75.5],[-68.5,76.1],[-71.4,77],[-66.8,77.4],[-73.3,78],[-65.7,79.4],[-65.3,79.8],[-68,80.1],[-62.2,81.3],[-62.7,81.8],[-50.4,82.4],[-44.5,81.7],[-46.8,82.6],[-38.6,83.5]]];
+const LAKES=[[[49.1,41.3],[50.4,40.3],[49.6,40.2],[48.9,38.8],[49.2,37.6],[50.8,36.9],[53.8,37],[53.9,39],[53.1,39.3],[53.4,40],[52.7,40],[52.9,40.9],[54.7,41],[53.7,42.1],[52.9,41.9],[52.8,41.1],[52.5,42.8],[51.3,43.1],[50.3,44.6],[51.3,44.5],[51.3,45.2],[53,45.3],[53,46.9],[51.2,47],[49.1,46.4],[46.7,44.6],[47.6,43.7],[47.5,43]]];
+const PAL={sea:[9,40,98],seaEq:[24,92,168],land:[78,140,86],sand:[218,184,116],ice:[236,241,246]};
+const sm=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
+const P=(lat,lon,r=1)=>{const a=lat*D2R,b=lon*D2R;return [r*Math.cos(a)*Math.cos(b),r*Math.sin(a),-r*Math.cos(a)*Math.sin(b)];};
+const latRing=(lat,r=1,n=120)=>{const o=[];for(let i=0;i<=n;i++)o.push(P(lat,i*360/n,r));return o;};
+/* 지도 그림(등장방형 2048×1024) → 공에 입힘. deserts를 주면 사막을 칠한 그림도 함께 만듦(셰이더에서 uDes로 섞음) */
+function earthTex(deserts){
+  const W=2048,H=1024,cv=document.createElement('canvas');cv.width=W;cv.height=H;const g=cv.getContext('2d',{willReadFrequently:true});
+  const X=lo=>(lo+180)/360*W,Y=la=>(90-la)/180*H,poly=r=>{g.beginPath();r.forEach((p,i)=>i?g.lineTo(X(p[0]),Y(p[1])):g.moveTo(X(p[0]),Y(p[1])));g.closePath();g.fill();};
+  g.fillStyle='#000';g.fillRect(0,0,W,H);g.fillStyle='#f00';WORLD.forEach(poly);g.fillStyle='#000';LAKES.forEach(poly);   // 빨강 = 육지
+  if(deserts){g.globalCompositeOperation='lighter';deserts.forEach(q=>{const gr=g.createRadialGradient(0,0,0,0,0,1);gr.addColorStop(0,'rgba(0,255,0,1)');gr.addColorStop(.62,'rgba(0,255,0,.95)');gr.addColorStop(1,'rgba(0,255,0,0)');
+    g.save();g.translate(X(q[1]),Y(q[2]));g.scale(q[3]*1.25*W/360,q[4]*1.25*H/180);g.fillStyle=gr;g.beginPath();g.arc(0,0,1,0,7);g.fill();g.restore();});g.globalCompositeOperation='source-over';}   // 초록 = 사막(대략적인 자리)
+  const im=g.getImageData(0,0,W,H),d=im.data,im2=deserts?g.createImageData(W,H):null,d2=im2&&im2.data;
+  for(let j=0;j<H;j++){const lat=90-(j+.5)/H*180,al=Math.abs(lat),c=Math.cos(lat*D2R),iceL=sm((al-62)/12),iceS=sm((al-76)/8)*.8;
+    for(let i=0;i<W;i++){const k=(j*W+i)*4,lon=(i+.5)/W*360-180;
+      let m=d[k]/255;const ds=d[k+1]/255;
+      if(lat<-60)m=Math.max(m,sm((-69-2*Math.sin(lon*3*D2R)-lat)/1.5));   // 남극 대륙(윤곽 자료에 없어 간단히 — 모식)
+      for(let q=0;q<3;q++){let s=lerp(PAL.sea[q],PAL.seaEq[q],c);s+=(PAL.ice[q]-s)*iceS;let l=PAL.land[q];l+=(PAL.ice[q]-l)*iceL;
+        d[k+q]=lerp(s,l,m);if(d2){let l2=lerp(PAL.land[q],PAL.sand[q],ds);l2+=(PAL.ice[q]-l2)*iceL;d2[k+q]=lerp(s,l2,m);}}
+      d[k+3]=255;if(d2)d2[k+3]=255;}}
+  const mk=img=>{const c2=document.createElement('canvas');c2.width=W;c2.height=H;c2.getContext('2d').putImageData(img,0,0);const t=new THREE.CanvasTexture(c2);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;return t;};
+  return [mk(im),im2?mk(im2):null];
+}
+/* 공: 낮·밤(uNight = 1이면 태양 반대쪽이 어두움, 0이면 고르게 밝음) + 가장자리의 대기 빛 */
+function makeGlobe(tA,tB){
+  return new THREE.Mesh(new THREE.SphereGeometry(1,96,64),new THREE.ShaderMaterial({uniforms:{tA:{value:tA},tB:{value:tB||tA},uDes:{value:0},uNight:{value:1},uSun:{value:new THREE.Vector3(1,0,0)}},
+    vertexShader:'varying vec2 vUv;varying vec3 vN;varying vec3 vW;void main(){vUv=uv;vN=normalize(mat3(modelMatrix)*normal);vec4 w=modelMatrix*vec4(position,1.);vW=w.xyz;gl_Position=projectionMatrix*viewMatrix*w;}',
+    fragmentShader:`uniform sampler2D tA;uniform sampler2D tB;uniform float uDes;uniform float uNight;uniform vec3 uSun;varying vec2 vUv;varying vec3 vN;varying vec3 vW;
+      void main(){vec3 n=normalize(vN);vec3 c=mix(texture2D(tA,vUv).rgb,texture2D(tB,vUv).rgb,uDes);float d=dot(n,uSun);float day=smoothstep(-.05,.18,d);
+        float s=mix(1.,.06+.94*day*(.72+.28*clamp(d,0.,1.)),uNight);float rim=pow(1.-max(dot(n,normalize(cameraPosition-vW)),0.),2.8);
+        c=c*s+vec3(.22,.48,.9)*rim*(.2+.5*day*uNight+(1.-uNight)*.4);gl_FragColor=vec4(c,1.);
+        #include <colorspace_fragment>
+      }`}));
+}
+function stars(n=420){const p=[];for(let i=0;i<n;i++){const u=Math.random()*2-1,a=Math.random()*6.2832,r=Math.sqrt(1-u*u);p.push(70*r*Math.cos(a),70*u,70*r*Math.sin(a));}
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));
+  return new THREE.Points(g,new THREE.PointsMaterial({color:0xffffff,size:2.2,sizeAttenuation:false,transparent:true,opacity:.6,depthWrite:false}));}
+/* 뒤쪽(지구에 가린 쪽)에 있는 이름표 감추기: 이름표가 지구 바깥을 향한 쪽이 카메라를 등지면 감춤 */
+const _wp=new THREE.Vector3();
+function hideBack(V,list,k=.08){list.forEach(o=>{o.getWorldPosition(_wp);const l2=_wp.lengthSq();o.visible=_wp.dot(V.camera.position)>l2*(1+k);});}
+
+
+/* ── 모형 ──
+   태양 쪽 방향 S = +X(화면 오른쪽). 햇빛은 −X 방향으로 평행하게 옴.
+   날짜 = 태양의 황경 L(춘분 0°, 하지 90°, 추분 180°, 동지 270°). 태양 쪽에서 본 자전축 a = (sinε·sinL, cosε, −sinε·cosL), ε = 23.5°
+     → 태양이 수직으로 비추는 위도(태양 적위) δ = asin(a·S) = asin(sinε·sinL)   (하지 +23.5°, 동지 −23.5°)
+     (L이 커지면 a는 북쪽에서 보아 시계 방향으로 돎 = 지구가 반시계 방향으로 공전)
+   한낮의 자오선 위, 위도 φ인 곳 p = sinφ·a + cosφ·e   (e = 적도면에서 태양을 향한 방향)
+     → 비추는 각(남중 고도) h: sin h = p·S = cos(φ − δ),  h = 90° − |φ − δ|
+     → 비추는 넓이 = 1 ÷ sin h(배), 단위 면적당 에너지 = sin h
+   빛 기둥: 한 변 2·AH(지구 반지름 = 1)인 정사각형 단면, p를 지나는 햇빛이 가운데. 발자국은 단면의 점마다 햇빛을 따라가 공과 만나는 곳(계산) */
+const EPS=23.5,AH=.07,FAR=6,LON0=127,KOR=37.5;
+const S=new THREE.Vector3(1,0,0);
+const v3=(...a)=>new THREE.Vector3(...a);
+const decOf=L=>Math.asin(Math.sin(EPS*D2R)*Math.sin(L*D2R))/D2R;
+const altOf=(lat,L)=>90-Math.abs(lat-decOf(L));
+function frameOf(L){
+  const l=L*D2R,se=Math.sin(EPS*D2R),a=v3(se*Math.sin(l),Math.cos(EPS*D2R),-se*Math.cos(l)),ad=a.dot(S);
+  const e=S.clone().addScaledVector(a,-ad).normalize(),n1=a.clone().addScaledVector(S,-ad).normalize(),n2=v3().crossVectors(S,n1);
+  return {a,e,n1,n2,dec:Math.asin(ad)/D2R};
+}
+function beamOf(f,lat){
+  const la=lat*D2R,p=f.a.clone().multiplyScalar(Math.sin(la)).addScaledVector(f.e,Math.cos(la)),sinh=p.dot(S),c0=p.clone().addScaledVector(S,-sinh);
+  const ray=(al,be)=>{const q=c0.clone().addScaledVector(f.n1,al).addScaledVector(f.n2,be),r2=q.lengthSq();return {q,hit:r2<1?Math.sqrt(1-r2):null};};
+  return {p,sinh,c0,ray};
+}
+/* 실제 발자국 넓이(공 위) ÷ 기둥 단면 넓이 — 검산용: 단면을 잘게 나눠 넓이/(법선·S)를 더함 */
+function areaRatio(lat,L,n=120){const B=beamOf(frameOf(L),lat);if(B.sinh<=0)return {ratio:0,hit:0};let s=0,h=0;
+  for(let i=0;i<n;i++)for(let j=0;j<n;j++){const r=B.ray(-AH+2*AH*(i+.5)/n,-AH+2*AH*(j+.5)/n);if(r.hit!=null&&r.hit>1e-6){s+=1/r.hit;h++;}}
+  return {ratio:s/(n*n),hit:h/(n*n)};}
+const fmtA=h=>(Math.abs(h-Math.round(h))<.05?String(Math.round(h)):h.toFixed(1))+'°';
+const latTxt=l=>l===0?'적도':(Math.abs(l)%1?Math.abs(l).toFixed(1):Math.abs(l))+'°'+(l>0?'N':'S');
+const dateTxt=L=>{const m=((L%360)+360)%360,near=(a)=>Math.abs(((m-a+540)%360)-180)<1;return near(0)||near(180)?'춘분·추분':near(90)?'하지':near(270)?'동지':'';};
+const read=(lat,L)=>{const h=altOf(lat,L),s=Math.sin(h*D2R);return {h,ratio:h>0?1/s:Infinity,pct:h>0?100*s:0};};
+
+/* 위도별 에너지(기존 15번 장과 같은 식): 흡수 = 연평균 일사량의 위도 분포(2차 르장드르 근사), 방출 = 차이가 작음. 위도 약 38°에서 만남 */
+const P2=x=>(3*x*x-1)/2,P4=x=>(35*x**4-30*x*x+3)/8;
+const Esun=p=>.7*(1-.482*P2(Math.sin(p*D2R))),Eir=p=>.7*(1-.17*P2(Math.sin(p*D2R))+.0515*P4(Math.sin(p*D2R)));
+const CROSS=(()=>{let a=20,b=60;for(let i=0;i<50;i++){const m=(a+b)/2;if(Esun(m)>Eir(m))a=m;else b=m;}return (a+b)/2;})();
+const GX=p=>62+(p+90)/180*420,GY=e=>262-(e-.3)/.62*212,f1=v=>(+v).toFixed(1);
+
+const HOME={pos:[7.05*Math.sin(38*D2R)*Math.cos(17*D2R),7.05*Math.sin(17*D2R),7.05*Math.cos(38*D2R)*Math.cos(17*D2R)],target:[0,0,0]};
+let V=null,G={},cur=null;
+const YEL=0xFFD60A;
+function cone(at,dir,col,s=.07){const m=new THREE.Mesh(new THREE.ConeGeometry(s*.55,s*1.5,20),new THREE.MeshBasicMaterial({color:col,transparent:true}));
+  m.position.copy(at);m.quaternion.setFromUnitVectors(v3(0,1,0),dir.clone().normalize());m.renderOrder=4;return m;}
+/* 빛 기둥 하나(몸통·모서리·발자국·테두리·이름표) */
+function buildBeam(Gp,f,lat,o={}){
+  const B=beamOf(f,lat);Gp.userData.B=B;Gp.userData.fr=null;
+  if(B.sinh<=.002){if(o.text){const t=label(o.text,B.p.clone().multiplyScalar(1.1).toArray(),{cls:'beam'});Gp.add(t);}return B;}
+  const N=12,H=[],tri=[];
+  for(let i=0;i<=N;i++)for(let j=0;j<=N;j++){const r=B.ray(-AH+2*AH*i/N,-AH+2*AH*j/N);H.push(r.hit==null?null:r.q.clone().addScaledVector(S,r.hit).multiplyScalar(1.004));}
+  for(let i=0;i<N;i++)for(let j=0;j<N;j++){const a=H[i*(N+1)+j],b=H[(i+1)*(N+1)+j],c=H[(i+1)*(N+1)+j+1],d=H[i*(N+1)+j+1];if(a&&b&&c&&d)[a,b,c,a,c,d].forEach(p=>tri.push(p.x,p.y,p.z));}
+  const mk=(arr,op,order)=>{const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(arr,3));
+    const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({color:o.col??YEL,transparent:true,opacity:op,side:THREE.DoubleSide,depthWrite:false}));m.userData.base=op;m.renderOrder=order;return m;};
+  if(tri.length)Gp.add(mk(tri,o.ghost?.62:.95,2));
+  const M=10,per=[];
+  for(let s=0;s<4;s++)for(let k=0;k<M;k++){const t=-AH+2*AH*k/M,[al,be]=s===0?[t,-AH]:s===1?[AH,t]:s===2?[-t,AH]:[-AH,-t],r=B.ray(al,be);
+    per.push({far:r.q.clone().addScaledVector(S,FAR),near:r.q.clone().addScaledVector(S,r.hit==null?-3:r.hit),hit:r.hit});}
+  const body=[];per.forEach((p,k)=>{const q=per[(k+1)%per.length];[p.far,p.near,q.near,p.far,q.near,q.far].forEach(u=>body.push(u.x,u.y,u.z));});
+  Gp.add(mk(body,o.ghost?.07:.17,3));
+  [0,M,2*M,3*M].forEach(k=>Gp.add(line(V,[per[k].far.toArray(),per[k].near.toArray()],{col:o.col??YEL,w:o.ghost?1.6:2.4,op:o.ghost?.4:.85,order:3})));
+  const out=per.filter(p=>p.hit!=null).map(p=>p.near.clone().multiplyScalar(1.006).toArray());
+  if(out.length>2){if(out.length===per.length)out.push(out[0]);Gp.add(line(V,out,{col:0xB25000,w:o.ghost?2.2:3.2,op:o.ghost?.8:1,order:4}));}
+  if(o.text){const up=B.p.y>=-.05;Gp.add(label(o.text,B.p.clone().multiplyScalar(1.02).toArray(),o.ghost?{cls:'gho',cx:0,dx:30,dy:up?34:-34}:{cls:'beam',cx:1,dx:-34}));}
+  if(!o.ghost){   // 기둥 안을 지구 쪽으로 흘러가는 단면 테두리(빛이 가는 방향·굵기가 그대로임을 보임)
+    const c=[[-AH,-AH],[AH,-AH],[AH,AH],[-AH,AH],[-AH,-AH]].map(([al,be])=>B.c0.clone().addScaledVector(f.n1,al).addScaledVector(f.n2,be).toArray());
+    const stop=Math.max(...[0,M,2*M,3*M].map(k=>per[k].hit==null?0:per[k].hit))+.12,fr=[];
+    for(let i=0;i<3;i++){const l=line(V,c,{col:0xFFF3B0,w:2.6,op:.9,order:4});Gp.add(l);fr.push(l);}
+    Gp.userData.fr={fr,stop};
+  }
+  return B;
+}
+/* 겹침 막기: 위도 이름표가 빛 기둥의 큰 이름표·태양이 수직으로 비추는 곳 이름표와 겹치면 감춤 */
+function declutter(){const big=[...G.beam.children.filter(o=>o.isCSS2DObject),G.subLab].map(o=>o.element).filter(e=>e&&e.offsetParent!==null&&getComputedStyle(e).opacity>.05).map(e=>e.getBoundingClientRect());
+  G.latLabs.forEach(l=>{const r=l.element.getBoundingClientRect(),hit=big.some(b=>!(r.right<b.left-10||r.left>b.right+10||r.bottom<b.top-10||r.top>b.bottom+10));l.element.style.visibility=hit?'hidden':'';});}
+function setup(){
+  V=makeView({w:1920,h:1080,fov:30,pos:HOME.pos,target:HOME.target,minD:3.2,maxD:13,key:'s15d'});
+  V.camera.setViewOffset(1920,1080,-200,50,1920,1080);   // 지구를 화면 오른쪽·위로(왼쪽 카드와 아래 막대 자리)
+  if(!PRINT)V.scene.add(stars());
+  const [tA]=earthTex(null);
+  G.earth=new THREE.Group();V.scene.add(G.earth);
+  G.globe=makeGlobe(tA);if(PRINT)G.globe.material.uniforms.uNight.value=.6;G.earth.add(G.globe);
+  /* 지구에 붙은 것(지구 좌표: 축 = Y): 위도선·자전축·이름표·에너지 띠·이동 화살표 */
+  [-60,-30,0,30,60].forEach(la=>G.earth.add(line(V,latRing(la,1.002),{col:0xffffff,w:la?1.6:2.2,op:la?.38:.6})));
+  G.earth.add(line(V,[[0,-1.27,0],[0,1.27,0]],{col:0xffffff,w:2.4,op:.75}));
+  G.backs=[];
+  const lab=(t,lat,lon,o={})=>{const l=label(t,P(lat,lon,o.r??1.02),o);G.backs.push(l);return l;};
+  G.axisLab=label('자전축',[0,1.36,0],{cls:'lat'});G.earth.add(G.axisLab);
+  G.latLabs=[];[[60,'60°N'],[30,'30°N'],[0,'적도'],[-30,'30°S'],[-60,'60°S']].forEach(([la,t])=>{const l=lab(t,la,LON0-96,{cls:'lat'});G.latLabs.push(l);G.earth.add(l);});
+  G.zone=new THREE.Group();G.earth.add(G.zone);
+  const zone=(t0,t1,col)=>{const m=new THREE.Mesh(new THREE.SphereGeometry(1.006,72,16,0,Math.PI*2,t0*D2R,(t1-t0)*D2R),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.34,depthWrite:false}));m.userData.base=.34;m.renderOrder=1;return m;};
+  G.zone.add(zone(0,90-CROSS,0x4DA3FF),zone(90-CROSS,90+CROSS,0xFFC83D),zone(90+CROSS,180,0x4DA3FF));
+  [CROSS,-CROSS].forEach(la=>{G.zone.add(line(V,latRing(la,1.008),{col:0xffffff,w:3,op:.95,dash:[.05,.035]}));G.zone.add(lab('약 38°',la,LON0-14,{cls:'lat',dy:la>0?-24:24}));});
+  G.zone.add(lab('에너지 과잉',6,LON0-52,{cls:'hot'}),lab('에너지 부족',64,LON0-52,{cls:'cool'}),lab('에너지 부족',-62,LON0-52,{cls:'cool'}));
+  G.flow=new THREE.Group();G.earth.add(G.flow);
+  [LON0-30,LON0-74].forEach(lo=>[1,-1].forEach(sg=>{const pts=[];for(let la=12;la<=58;la+=2)pts.push(P(sg*la,lo,1.07));
+    G.flow.add(line(V,pts,{col:0xFF8A1F,w:7,order:4}));G.flow.add(cone(v3(...P(sg*60,lo,1.07)),v3(...P(sg*62,lo,1.07)).sub(v3(...P(sg*58,lo,1.07))),0xFF8A1F,.085));}));
+  G.flow.add(lab('에너지 이동 · 대기와 해양',27,LON0-52,{cls:'mv',r:1.09}));
+  /* 태양 쪽 틀에 고정된 것 */
+  G.tilt=new THREE.Group();V.scene.add(G.tilt);   // 공전 궤도면에 수직인 선(자전축이 기울어진 것을 보이려고)
+  G.tilt.add(line(V,[[0,-1.3,0],[0,1.5,0]],{col:0xffffff,w:2,op:.7,dash:[.06,.05]}));G.tilt.add(label('공전 궤도면에 수직',[0,1.58,0],{cls:'lat',dx:-60}));
+  G.sub=new THREE.Group();V.scene.add(G.sub);
+  G.sub.add(dot([1.012,0,0],{r:.028,col:0xFFD60A}));G.subLab=label('',[1.03,0,0],{cls:'sunp',dy:46});G.sub.add(G.subLab);
+  G.sun=label('☀ 햇빛(평행)',[2.25,0,0],{cls:'sunp',dy:-64});V.scene.add(G.sun);
+  G.beam=new THREE.Group();V.scene.add(G.beam);
+  G.gh=[0,30,60].map(la=>{const g=new THREE.Group();V.scene.add(g);const r=read(la,0);
+    buildBeam(g,frameOf(0),la,{ghost:true,text:(la?la+'°N':'적도')+' · '+Math.round(r.pct)+' %'});g.userData.lat=la;return g;});
+  /* 그래프(왼쪽 아래 카드) */
+  G.gr={};
+}
+const DEF=k=>({lat:k<2?0:k===2?60:KOR,L:k<5?0:k===5?90:k===6?270:0,gh:k>=2&&k<=4?1:0,gmax:k>=2?60:0,sub:k===5||k===6?1:0,beam:k>=9?.35:1,zone:k>=9?1:0,flow:k>=10?1:0,g1:k>=7?1:0,g2:k>=8?1:0,g3:k>=9?1:0});
+function orbit(w){   // 지구의 공전 궤도(비스듬히 본 그림): 자전축이 가리키는 방향은 그대로
+  const E=(x,y,on,t)=>`<circle cx="${x}" cy="${y}" r="${on?12:8}" fill="${on?'#1a5aa6':'#9db3cc'}"/><line x1="${x-5}" y1="${y+17}" x2="${x+5}" y2="${y-17}" stroke="${on?'#1d1d1f':'#8e8e93'}" stroke-width="${on?3:2}"/>`+(on?`<circle cx="${x}" cy="${y}" r="19" fill="none" stroke="#0066cc" stroke-width="3"/>`:'')+(t?`<text x="${x}" y="${y+48}" text-anchor="middle" style="fill:${on?'#0066cc':'#6e6e73'}">${t}</text>`:'');
+  return `<svg viewBox="0 0 500 150" width="500" height="150"><ellipse cx="250" cy="62" rx="200" ry="40" fill="none" stroke="#8e8e93" stroke-width="2" stroke-dasharray="6 6"/>
+    <line x1="${w==='s'?72:250}" y1="62" x2="${w==='s'?250:428}" y2="62" stroke="#B25000" stroke-width="2.5"/><circle cx="250" cy="62" r="15" fill="#FFB800"/>
+    ${E(250,22,false)}${E(250,102,false)}${E(50,62,w==='s','하지')}${E(450,62,w==='w','동지')}
+    <text x="${w==='s'?152:348}" y="99" text-anchor="middle" style="fill:#B25000">${w==='s'?'약 1.52억 km':'약 1.47억 km'}</text>
+    <text x="250" y="144" text-anchor="middle" style="fill:#6e6e73;font-weight:600">${w==='s'?'7월 초에 태양에서 가장 멀다':'1월 초에 태양과 가장 가깝다'}</text></svg>`;
+}
+function capHTML(){
+  const a=read(KOR,90),b=read(KOR,270),e=read(KOR,0),r20=read(20,0);
+  return `<div class="cp" data-k="0"><span class="tm">같은 굵기의 햇빛 기둥 = 같은 에너지</span>적도에는 햇빛이 <b>수직(90°)</b>으로 비춘다<br>→ 땅에 닿는 넓이(<b class="c-warmC">빛의 발자국</b>)가 기둥의 단면과 같다<span class="sub">춘분·추분 날 한낮 · 햇빛은 평행하게 온다</span></div>
+  <div class="cp" data-k="2"><span class="tm">같은 햇빛 기둥을 위도 60°로 옮기면</span>비추는 각이 <b>30°</b>로 비스듬해져<br>→ 빛의 발자국 넓이 <b class="num c-warmC">×2.00</b><span class="sub">같은 에너지가 2배 넓이에 퍼진다<br>→ 단위 면적당 에너지 <b class="num">50 %</b></span></div>
+  <div class="cp" data-k="3 4"><span class="tm">비추는 각과 단위 면적당 에너지</span>태양이 지표를 비추는 각이 <b>수직</b>에 가까울수록 단위 면적당 태양 복사 에너지가 <b>크다</b>
+    <span class="sub">우리나라(37.5°N): 비추는 각 <b class="num">${fmtA(e.h)}</b> → <b class="num">×${e.ratio.toFixed(2)}</b> → <b class="num">${Math.round(e.pct)} %</b><br>위도 20°: 비추는 각 <b class="num">${fmtA(r20.h)}</b> → <b class="num">×${r20.ratio.toFixed(2)}</b> → <b class="num">${Math.round(r20.pct)} %</b> — 위도 막대로 확인</span></div>
+  <div class="cp" data-k="5"><span class="tm">하지 — 북극 쪽이 태양을 향한다</span>태양이 <b>23.5°N</b>을 수직으로 비춘다<br>우리나라: 비추는 각 <b class="num">${fmtA(a.h)}</b> → <b class="num c-warmC">${Math.round(a.pct)} %</b>
+    <span class="sub">비추는 각(남중 고도) = <span class="nw">90° − |위도 − 태양이 수직으로 비추는 위도|</span></span>${orbit('s')}</div>
+  <div class="cp" data-k="6"><span class="tm">동지 — 북극 쪽이 태양 반대쪽을 향한다</span>태양이 <b>23.5°S</b>를 수직으로 비춘다<br>우리나라: 비추는 각 <b class="num">${fmtA(b.h)}</b> → <b class="num c-coldC">${Math.round(b.pct)} %</b>
+    <span class="sub"><b>계절은 태양과의 거리 때문이 아니다</b> — 비추는 각(과 낮의 길이)이 달라지기 때문</span>${orbit('w')}</div>`;
+}
+function grBuild(el){
+  const cv=f=>{const q=[];for(let p=-90;p<=90;p+=2)q.push(f1(GX(p))+' '+f1(GY(f(p))));return 'M'+q.join(' L');};
+  const area=(p0,p1)=>{const a=[],b=[];for(let i=0;i<=30;i++){const p=lerp(p0,p1,i/30);a.push(f1(GX(p))+' '+f1(GY(Esun(p))));b.unshift(f1(GX(p))+' '+f1(GY(Eir(p))));}return 'M'+a.concat(b).join(' L')+'Z';};
+  let s='';[.4,.6,.8].forEach(e=>s+=`<line x1="62" x2="486" y1="${f1(GY(e))}" y2="${f1(GY(e))}" stroke="#e5e5ea" stroke-width="2"/>`);
+  s+=`<g id="s15d-g3"><path d="${area(-CROSS,CROSS)}" fill="#FFC83D" opacity=".45"/><path d="${area(-90,-CROSS)}${area(CROSS,90)}" fill="#4DA3FF" opacity=".4"/>`;
+  [-CROSS,CROSS].forEach(p=>s+=`<line x1="${f1(GX(p))}" x2="${f1(GX(p))}" y1="64" y2="262" stroke="#6e6e73" stroke-width="2" stroke-dasharray="6 5"/><text class="halo" x="${f1(GX(p))}" y="60" text-anchor="middle" style="fill:#6e6e73">약 38°</text>`);
+  s+=`<text class="halo" x="${GX(0)}" y="${f1(GY(.821)+9)}" text-anchor="middle" style="fill:#8A6500;font-weight:800">과잉</text><text class="halo" x="${GX(-66)}" y="${f1(GY(.535)+8)}" text-anchor="middle" style="fill:#005BB8;font-weight:800">부족</text><text class="halo" x="${GX(66)}" y="${f1(GY(.535)+8)}" text-anchor="middle" style="fill:#005BB8;font-weight:800">부족</text></g>`;
+  s+=`<path d="M62 44V262H486" fill="none" stroke="#1d1d1f" stroke-width="2.5"/>`;
+  [[-90,'90°S'],[-60,'60°'],[-30,'30°'],[0,'0°'],[30,'30°'],[60,'60°'],[90,'90°N']].forEach(([p,t])=>s+=`<line x1="${GX(p)}" x2="${GX(p)}" y1="262" y2="270" stroke="#1d1d1f" stroke-width="2"/><text x="${GX(p)}" y="296" text-anchor="middle" style="fill:#6e6e73;font-weight:600">${t}</text>`);
+  s+=`<text x="20" y="160" text-anchor="middle" transform="rotate(-90 20 160)" style="fill:#3a3a3c">에너지양</text>`;
+  s+=`<path id="s15d-c1" d="${cv(Esun)}" fill="none" stroke="#D9A300" stroke-width="6" stroke-linecap="round" pathLength="1" stroke-dasharray="1 1"/><path id="s15d-c2" d="${cv(Eir)}" fill="none" stroke="#C9251B" stroke-width="6" stroke-linecap="round" pathLength="1" stroke-dasharray="1 1"/>`;
+  s+=`<g id="s15d-l1"><line x1="66" x2="96" y1="20" y2="20" stroke="#D9A300" stroke-width="6"/><text x="102" y="29" style="fill:#8A6500">흡수(태양 복사)</text></g><g id="s15d-l2"><line x1="296" x2="326" y1="20" y2="20" stroke="#C9251B" stroke-width="6"/><text x="332" y="29" style="fill:#C9251B">방출(지구 복사)</text></g>`;
+  s+=`<g id="s15d-mk"><line id="s15d-mkl" y1="44" y2="262" stroke="#1d1d1f" stroke-width="2.5"/><circle id="s15d-mk1" r="7" fill="#D9A300" stroke="#fff" stroke-width="2"/><circle id="s15d-mk2" r="7" fill="#C9251B" stroke="#fff" stroke-width="2"/></g>`;
+  el.innerHTML=s;
+}
+function fpDraw(c,st){
+  const r=read(st.lat,st.L),el=c.$('#s15d-fps'),sd=78,x0=14,y0=10,x1=160,night=r.h<=0,w=night?0:Math.min(sd*r.ratio,346),clip=!night&&sd*r.ratio>346;
+  const dots=(x,ww)=>{let o='';for(let i=0;i<10;i++)o+=`<circle cx="${f1(x+(i%5+.5)*ww/5)}" cy="${y0+(i<5?23:55)}" r="6.5" fill="#B25000"/>`;return o;};
+  let s=`<rect x="${x0}" y="${y0}" width="${sd}" height="${sd}" rx="3" fill="#FFE27A" stroke="#B25000" stroke-width="3"/>${dots(x0,sd)}<text x="${x0+sd/2}" y="${y0+sd+32}" text-anchor="middle">단면</text>`;
+  s+=`<text x="${x0+sd+34}" y="${y0+sd/2+9}" text-anchor="middle" style="fill:#6e6e73">→</text>`;
+  if(night)s+=`<text x="${x1}" y="${y0+sd/2+9}">해가 뜨지 않는다(한낮에도 밤)</text>`;
+  else s+=`<rect x="${x1}" y="${y0}" width="${f1(w)}" height="${sd}" rx="3" fill="#FFE27A" stroke="#B25000" stroke-width="3" ${clip?'stroke-dasharray="8 6"':''}/>${dots(x1,w)}<text x="${x1}" y="${y0+sd+32}">땅에 닿는 넓이${clip?'(더 길다)':''}</text><text x="508" y="${y0+sd+32}" text-anchor="end" style="fill:#6e6e73;font-weight:600">점 = 같은 에너지</text>`;
+  el.innerHTML=s;
+  c.$('#s15d-where').textContent=latTxt(st.lat)+(dateTxt(st.L)?' · '+dateTxt(st.L):'');
+  c.$('#s15d-n1').textContent=night?'—':fmtA(r.h);c.$('#s15d-n2').textContent=night?'—':'×'+(r.ratio>99?'99+':r.ratio.toFixed(2));c.$('#s15d-n3').textContent=Math.round(r.pct)+' %';
+}
+const mainText=st=>{const r=read(st.lat,st.L);return r.h<=0?'<b>'+latTxt(st.lat)+'</b> 해가 뜨지 않는다':'<b>'+latTxt(st.lat)+'</b> 넓이 ×'+(r.ratio>99?'99+':r.ratio.toFixed(2))+' · '+Math.round(r.pct)+' %';};
+const fwd=(cur,t)=>t+360*Math.ceil((cur-t)/360-1e-9);
+
+const OK=[0,2,4,5,6];   // 새 단계 → 장면 상태(적도 · 60° · 우리나라 · 하지 · 동지). 예측하기(옛 1)·흡수·방출·불균형·에너지 이동(옛 7~10)은 뺌 — 다음 장이 다룸
+Deck.scene('s15d',{steps:4,
+  enter(c){
+    if(!V)setup();
+    c.$('#s15d-cap').innerHTML=capHTML();grBuild(c.$('#s15d-grs'));
+    V.mount(c.$('#s15d-v'));cur=c;
+    const st=c.st={...DEF(0),dirty:true,key:''};c.k=0;
+    const iL=c.$('#s15d-lat'),lv=c.$('#s15d-latv'),btn=c.$$('#s15d-panel .seg .ia-btn');
+    c.sync=()=>{iL.value=Math.round(st.lat*2)/2;lv.textContent=st.lat===0?'0°':latTxt(Math.round(st.lat*2)/2);const d=dateTxt(st.L);btn.forEach(b=>b.classList.toggle('on',d===b.textContent));};
+    c.cap=k=>{c.$$('#s15d-cap .cp').forEach(e=>e.classList.toggle('on',e.dataset.k.split(' ').includes(String(k))));c.$('#s15d-fp').classList.toggle('off',k>=7);c.$('#s15d-gr').classList.toggle('off',k<7);};
+    c.T=(ms,fn,o)=>c.tween(ms,e=>{fn(e);st.dirty=true;},o);
+    c.camTok=0;c.cam=(to,ms)=>{const tok=++c.camTok,f=V.camTo(to.pos,to.target);return c.tween(ms,e=>{if(tok===c.camTok)f(e);},{ease:'inOut'});};
+    c.date=(L,ms)=>{const L0=st.L,L1=fwd(L0,L);if(L1===L0)return Promise.resolve();return c.T(ms??(1400+(L1-L0)*14),e=>{st.L=lerp(L0,L1,e);if(e>=1)st.L=((L1%360)+360)%360;c.sync();},{ease:'inOut'});};
+    iL.addEventListener('input',()=>{st.lat=+iL.value;lv.textContent=st.lat===0?'0°':latTxt(st.lat);st.dirty=true;});
+    c.$('#s15d-kr').addEventListener('click',()=>{const l0=st.lat;c.T(800,e=>{st.lat=lerp(l0,KOR,e);c.sync();},{ease:'inOut'});});
+    btn.forEach(b=>b.addEventListener('click',()=>c.date(+b.dataset.l)));
+    c.$('#s15d-home').addEventListener('click',()=>{const d=DEF(OK[c.k]),s0={...st};c.cam(HOME,900);c.date(d.L,900);c.T(900,e=>{['lat','gh','sub','beam','zone','flow'].forEach(n=>st[n]=lerp(s0[n],d[n],e));st.gmax=d.gmax;c.sync();},{ease:'inOut'});});
+    c.$('#s15d-panel').addEventListener('click',e=>e.stopPropagation());
+    c.d=()=>{
+      const f=frameOf(st.L),u=G.globe.material.uniforms;
+      /* 지구의 자세: 자전축 = a, 한낮의 자오선 = 동경 127°(우리나라가 한낮) */
+      G.earth.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(f.e,f.a,v3().crossVectors(f.e,f.a))).multiply(new THREE.Quaternion().setFromAxisAngle(v3(0,1,0),-LON0*D2R));
+      u.uSun.value.copy(S);
+      const lb=st.beam>.6,key=st.lat.toFixed(3)+'_'+st.L.toFixed(3)+lb;
+      if(key!==st.key){st.key=key;clear(G.beam);buildBeam(G.beam,f,st.lat,{text:lb?mainText(st):null});}
+      fade(G.beam,st.beam);
+      const eq=1-clamp(Math.abs(f.dec)/3,0,1);
+      G.gh.forEach(g=>{const la=g.userData.lat,o=st.gh*eq*(la<=st.gmax+.01?1:0)*clamp((Math.abs(st.lat-la)-3)/6,0,1);fade(g,o);});
+      fade(G.sub,st.sub);fade(G.tilt,st.sub);
+      G.sub.children[0].position.set(1.012,0,0);G.subLab.element.textContent='태양이 수직으로 비추는 곳 '+(Math.abs(f.dec)<.05?'적도':Math.abs(f.dec).toFixed(1)+'°'+(f.dec>0?'N':'S'));
+      G.axisLab.element.textContent=st.sub>.5?'자전축 · 23.5° 기울어짐':'자전축';
+      fade(G.zone,st.zone);fade(G.flow,st.flow);
+      fpDraw(c,st);
+      const q=id=>c.$(id);
+      q('#s15d-c1').setAttribute('stroke-dashoffset',f1(1-st.g1)===f1(0)?'0':(1-st.g1).toFixed(3));q('#s15d-c2').setAttribute('stroke-dashoffset',(1-st.g2).toFixed(3));
+      q('#s15d-c1').style.opacity=st.g1>0?1:0;q('#s15d-c2').style.opacity=st.g2>0?1:0;
+      q('#s15d-l1').style.opacity=st.g1;q('#s15d-l2').style.opacity=st.g2;q('#s15d-g3').style.opacity=st.g3;
+      const x=f1(GX(st.lat));q('#s15d-mkl').setAttribute('x1',x);q('#s15d-mkl').setAttribute('x2',x);
+      q('#s15d-mk1').setAttribute('cx',x);q('#s15d-mk1').setAttribute('cy',f1(GY(Esun(st.lat))));q('#s15d-mk1').style.opacity=st.g1;
+      q('#s15d-mk2').setAttribute('cx',x);q('#s15d-mk2').setAttribute('cy',f1(GY(Eir(st.lat))));q('#s15d-mk2').style.opacity=st.g2;
+      st.dirty=false;
+    };
+    c.cap(0);c.sync();
+    V.camera.position.set(HOME.pos[0]*1.16,HOME.pos[1]*1.16,HOME.pos[2]*1.16);V.ctl.target.set(0,0,0);V.ctl.update();
+    c.d();V.render();c.cam(HOME,1600);
+    c.loop(t=>{
+      if(st.dirty)c.d();
+      const F=G.beam.userData.fr;   // 단면 테두리가 기둥을 따라 지구 쪽으로
+      if(F)F.fr.forEach((l,i)=>{const u=STILL?(i+.5)/3:((t*.16+i/3)%1),x=lerp(FAR-2.2,F.stop,u);l.position.set(x,0,0);l.material.opacity=st.beam*.9*sm(u/.12)*sm((1-u)/.12);});
+      hideBack(V,G.backs);V.render();declutter();});
+  },
+  async go(c,k){
+    c.k=k;k=OK[k];const st=c.st,T=c.T,d=DEF(k),s0={...st};c.cap(k);
+    if(k===2){st.gh=1;await T(4200,e=>{st.lat=60*e;st.gmax=st.lat;c.sync();},{ease:'inOut'});st.lat=60;st.gmax=60;}
+    else{
+      const mv=c.date(d.L);
+      await T(k===3?1800:1100,e=>{['lat','gh','sub','beam','zone','flow'].forEach(n=>st[n]=lerp(s0[n],d[n],e));st.gmax=d.gmax;c.sync();},{ease:'inOut'});
+      await mv;
+      if(k===7)await T(1500,e=>{st.g1=e;});
+      if(k===8)await T(1500,e=>{st.g2=e;});
+      if(k===9)await T(700,e=>{st.g3=e;});
+    }
+    ['g1','g2','g3'].forEach(n=>st[n]=d[n]);st.dirty=true;c.sync();
+    if(c.instant){c.d();V.render();}
+  }});
+}
 }
 Deck.start();
 </script>
