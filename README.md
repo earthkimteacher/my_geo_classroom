@@ -9,28 +9,28 @@
 ### 통합과학2 (고1)
 | 단원 | 자료 | 바로 열기 |
 |---|---|---|
-| II.1.3. 지구 환경의 변화 | 슬라이드 — 복사 평형부터 엘니뇨까지 | [열기](https://earth.esbest.net/통합과학2/II.1.3climate.html) |
-| II.1.3. 지구 환경의 변화 | 슬라이드 **(개발중)** — 새로 만든 판 · 복사 평형부터 대처 방안까지 | [열기](https://earth.esbest.net/통합과학2/II.1.3change.html) |
+| II.1.3. 지구 환경의 변화 | 슬라이드 — 복사 평형 · 온실 효과 · 지구 온난화 · 지구 열수지 · 대기 대순환 · 사막화 · 엘니뇨 · 기후 변화 완화와 적응 | [열기](https://earth.esbest.net/통합과학2/II.1.3change.html) |
+| II.1.3. 지구 환경의 변화 | 슬라이드 **(구판)** — 복사 평형부터 엘니뇨까지 | [열기](https://earth.esbest.net/통합과학2/II.1.3climate.html) |
 
 ### 과학탐구실험2 (고1)
 | 단원 | 자료 | 바로 열기 |
 |---|---|---|
-| I.06. 생활 속 문제를 과학으로 해결해 볼까? | 슬라이드 — 학교 주변 환경 탐구 | [열기](https://earth.esbest.net/과학탐구실험2/I.06environment.html) |
+| I.06. 생활 속 문제를 과학으로 해결해 볼까? | 슬라이드 — 대기 오염 물질 · 수질 오염 물질 · 미세 먼지 · 환경 기준 · 측정 계획 | [열기](https://earth.esbest.net/과학탐구실험2/I.06environment.html) |
 
 ### 지구과학 (고2)
 | 시뮬레이터 | 바로 열기 |
 |---|---|
-| 행성의 역행과 순행 시뮬레이터 | [열기](https://earth.esbest.net/지구과학/행성의%20역행과%20순행%20시뮬레이터.html) |
-| 지구 외적 요인(밀란코비치 주기)에 의한 기후 변화 시뮬레이터 | [열기](https://earth.esbest.net/지구과학/밀란코비치%20시뮬레이터.html) |
+| 행성의 역행과 순행 시뮬레이터 — 겉보기 운동 · 순행과 역행 · 유 · 내행성과 외행성 · 내합과 외합 · 충 | [열기](https://earth.esbest.net/지구과학/행성의%20역행과%20순행%20시뮬레이터.html) |
+| 지구 외적 요인(밀란코비치 주기)에 의한 기후 변화 시뮬레이터 — 이심률 · 자전축 기울기 · 세차 운동 · 근일점과 원일점 · 기후 변화 | [열기](https://earth.esbest.net/지구과학/밀란코비치%20시뮬레이터.html) |
 
 ### 지구시스템과학 (고2)
 | 단원 | 자료 | 바로 열기 |
 |---|---|---|
-| II.04. 해일 | 슬라이드 | [열기](https://earth.esbest.net/지구시스템과학/II.04surge.html) |
-| II.05. 조석 | 슬라이드 | [열기](https://earth.esbest.net/지구시스템과학/II.05tide.html) |
-| III.01~02. 지구의 대기와 생명체 · 지구 열수지 | 슬라이드 | [열기](https://earth.esbest.net/지구시스템과학/III.01-02atmosphere.html) |
-| III.03. 대기 안정도와 강수 | 슬라이드 | [열기](https://earth.esbest.net/지구시스템과학/III.03stability.html) · [학생용 PDF](https://earth.esbest.net/지구시스템과학/PDF/III.03stability_학생용.pdf) |
-| III.04~05. 기압의 연직 분포와 대기를 움직이는 힘 · 여러 가지 바람 | 슬라이드 | [열기](https://earth.esbest.net/지구시스템과학/III.04-05wind.html) · [학생용 PDF](https://earth.esbest.net/지구시스템과학/PDF/III.04-05wind_학생용.pdf) |
+| II.04. 해일 | 슬라이드 — 천해파 · 해일 · 폭풍 해일 · 지진 해일 · 피해와 대처 | [열기](https://earth.esbest.net/지구시스템과학/II.04surge.html) |
+| II.05. 조석 | 슬라이드 — 조석 · 기조력 · 조석 주기와 양상 · 사리와 조금 | [열기](https://earth.esbest.net/지구시스템과학/II.05tide.html) |
+| III.01~02. 지구의 대기와 생명체 · 지구 열수지 | 슬라이드 — 선택적 흡수 · 생명체의 존재 조건 · 생명 가능 지대 · 열 출입 · 지구 열수지 | [열기](https://earth.esbest.net/지구시스템과학/III.01-02atmosphere.html) |
+| III.03. 대기 안정도와 강수 | 슬라이드 — 단열 변화 · 상승 응결 고도 · 대기 안정도 · 구름과 안개 · 강수 과정 | [열기](https://earth.esbest.net/지구시스템과학/III.03stability.html) · [학생용 PDF](https://earth.esbest.net/지구시스템과학/PDF/III.03stability_학생용.pdf) |
+| III.04~05. 기압의 연직 분포와 대기를 움직이는 힘 · 여러 가지 바람 | 슬라이드 — 정역학 평형 · 대기를 움직이는 힘 · 상층의 바람 · 지상의 바람 · 일기도 | [열기](https://earth.esbest.net/지구시스템과학/III.04-05wind.html) · [학생용 PDF](https://earth.esbest.net/지구시스템과학/PDF/III.04-05wind_학생용.pdf) |
 | 학생용 수업 자료 PDF | 노션 — 단원별 수업 자료를 내려받는 페이지 | [열기](https://esbest.notion.site/2-32d4a95fb28280e198bfd571eef92fec) |
 
 ## 슬라이드 사용법
@@ -93,9 +93,9 @@ my_geo_classroom/
 ├─ 과학탐구실험2/
 │  └─ I.06environment.html            학교 주변 환경 탐구 슬라이드
 ├─ 통합과학2/
-│  ├─ II.1.3climate.html              지구 환경의 변화 슬라이드
-│  ├─ II.1.3change.html               지구 환경의 변화 슬라이드(새로 만든 판, 개발중)
-│  └─ img/II.1.3/                     새로 만든 판에 쓰는 교과서 그림
+│  ├─ II.1.3climate.html              지구 환경의 변화 슬라이드(구판)
+│  ├─ II.1.3change.html               지구 환경의 변화 슬라이드
+│  └─ img/II.1.3/                     지구 환경의 변화 슬라이드에 쓰는 교과서 그림
 ├─ 지구과학/
 │  ├─ 행성의 역행과 순행 시뮬레이터.html
 │  └─ 밀란코비치 시뮬레이터.html
