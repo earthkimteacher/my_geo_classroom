@@ -122,7 +122,7 @@ html.print .tbl tr.cur td,html.print .tbl tr.cur th,html.print .ws-card .ws-row.
 .strk i{position:absolute;left:-6px;right:-6px;top:50%;height:5px;margin-top:-2px;border-radius:3px;background:var(--ir);transform-origin:left center}
 /* 글자 둘레 흰 띠는 학생용 인쇄에서 뺀다(pdf.js에서 덩어리로 그려짐) */
 html.print text[paint-order="stroke"]{stroke:none}
-/* ═══ s25d 적도 부근 태평양 — 입체로 다시 보기(three.js 3D, 2026-11-18 덧붙임) ═══ */
+/* ═══ s25d 적도 부근 태평양 — 입체로 보기(three.js 3D, 2026-11-18 덧붙임, 2026-11-25 s21 뒤로 옮김) ═══ */
 .slide{--wind:#157F4A;--warm:#B25000;--cold:#005BB8}
 #s25d-v{left:0;top:0;width:1920px;height:1080px;border-radius:0;z-index:1;background:linear-gradient(180deg,#A6D2FA 0%,#DCEEFF 52%,#F4F9FF 74%,#FFFFFF 100%)}
 #s25d .gl{background:rgba(255,255,255,.96);box-shadow:0 2px 6px rgba(0,0,0,.08),0 14px 40px rgba(20,40,70,.18);border-radius:20px;color:#1d1d1f;--t2:#5c5c61;--hl:#e0e0e0}
@@ -896,124 +896,10 @@ html.print #s25d-st{background:#3a3a3c}
   <div class="fine">모식 그림 · 수온과 어획량은 변화의 방향만 나타냄</div>
 </section>
 
-<!-- ═══ s22 ═══ -->
-<section class="slide" id="s22" data-tile="light" data-title="평상시 적도 부근 태평양" data-notes="교과서 86쪽 본문과 그림 II-13(평상시). 따뜻한 해수층은 처음부터 서쪽이 두껍고 동쪽이 얇은 모양입니다. 클릭 1: 무역풍(동쪽에서 서쪽으로 부는 바람, 초록 바람 줄)이 불고, 그 영향으로 표층 해수가 동쪽에서 서쪽으로 흐릅니다(빈칸 ①). 클릭 2: 서쪽으로 흐르면서 태양 복사 에너지를 받아 따뜻해진 해수가 서태평양 적도 부근 해역에 두껍게 쌓입니다(빈칸 ②, 주황 = 따뜻한 해수층 — 서쪽과 동쪽의 두께를 흰 표시로 비교). 클릭 3: 따뜻한 해수에 의해 가열된 공기가 해수에서 증발한 많은 양의 수증기와 함께 상승 → 서태평양 해역은 비가 자주 내립니다(빈칸 ③). 클릭 4: 동태평양 적도 부근 해역은 깊은 곳에서 차가운 해수가 올라와(용승) 해수면 온도가 낮습니다(빈칸 ④, 윗면의 동쪽이 파랗게 변함). 클릭 5: 해수면 온도가 낮으면 하강 기류가 발생 → 동태평양은 같은 위도의 서태평양에 비해 기온이 낮고 건조한 날씨(빈칸 ⑤). 학생 질문 대비: ‘왜 서쪽 바닷물이 더 따뜻한가?’ → 서쪽으로 흐르는 동안 계속 태양 복사 에너지를 받기 때문. ‘용승은 왜 생기나?’ → 표층 해수가 서쪽으로 이동해 빈 자리를 깊은 곳의 찬 해수가 채우기 때문(참고서). 그림은 깊이와 높이를 크게 과장했고, 해수면 경사도 크게 과장한 모형입니다. 실제로는 평상시 무역풍이 따뜻한 해수를 서쪽으로 밀어 쌓아 서태평양(인도네시아 부근) 해수면이 동태평양(페루 부근)보다 약 50 cm 높고(NOAA 약 46 cm), 엘니뇨 때는 무역풍이 약해져 쌓였던 해수가 동쪽으로 되돌아가므로 서쪽은 낮아지고 동쪽은 높아져 경사가 완만해집니다. 그림의 경사는 보이도록 부풀린 것으로, 태평양 폭 약 15000 km에 높이 차이는 0.5 m 정도이고 수온 약층의 깊이 차이(서쪽 약 150 m 이상, 동쪽 약 30 m)와 비교해도 수백분의 1입니다(수온 약층은 해수면과 반대로 서쪽이 깊음).">
-  <style>
-  #s22 .ws-card{top:662px;height:328px;display:flex;flex-direction:column;justify-content:center}
-  #s22 .ws-card .ws-row{font-size:32px;line-height:1.4;grid-template-columns:1fr;padding:12px 16px}
-  #s22 .s22-t{font-size:28px;font-weight:800;color:var(--t2);padding:0 16px 8px;letter-spacing:-.01em}
-  #s22 .s22-lg{display:flex;gap:12px;flex-wrap:wrap;padding:14px 16px 0}
-  </style>
-  <div class="scene"><svg id="s22-sv" viewBox="0 0 1920 1080"></svg></div>
-  <div class="hd" data-in><div class="eb"><b>4</b>엘니뇨</div><h2>평상시 적도 부근 태평양</h2></div>
-
-  <div class="ws-card" style="left:120px;width:500px">
-    <div class="s22-t">서태평양 적도 부근 해역</div>
-    <div class="ws-row" data-r="2"><span>따뜻해진 해수가<br><span class="bk"><span class="n">2</span><span class="a" data-step="2">두껍게</span></span> 쌓인다.</span></div>
-    <div class="ws-row" data-r="3"><span><span class="bk"><span class="n">3</span><span class="a" data-step="3">상승 기류</span></span> → <b>강수량</b> 많음</span></div>
-  </div>
-  <div class="ws-card" style="left:660px;width:600px">
-    <div class="s22-t">무역풍과 표층 해수</div>
-    <div class="ws-row" data-r="1"><span><b>무역풍</b>의 영향으로 <b>표층 해수</b>가<br><span class="bk"><span class="n">1</span><span class="a" data-step="1">동쪽에서 서쪽</span></span>으로 흐른다.</span></div>
-    <div class="s22-lg"><span class="chip wind">무역풍</span><span class="chip warm">따뜻한 해수</span><span class="chip cold">찬 해수</span></div>
-  </div>
-  <div class="ws-card" style="left:1300px;width:500px">
-    <div class="s22-t">동태평양 적도 부근 해역</div>
-    <div class="ws-row" data-r="4"><span>깊은 곳에서<br><span class="bk"><span class="n">4</span><span class="a" data-step="4">차가운 해수</span></span>가 올라와<br><b>해수면 온도</b>가 낮다.</span></div>
-    <div class="ws-row" data-r="5"><span><span class="bk"><span class="n">5</span><span class="a" data-step="5">하강 기류</span></span> → 날씨 맑음</span></div>
-  </div>
-  <div class="fine">과장된 모형 · 해수면 높이 차이는 실제 약 50 cm(그림은 크게 부풀림) · 깊이와 높이도 과장</div>
-</section>
-
-<!-- ═══ s23 ═══ -->
-<section class="slide" id="s23" data-tile="light" data-title="엘니뇨 발생 시" data-notes="교과서 86쪽 본문과 그림 II-13(엘니뇨 발생 시). 앞 장의 평상시 모습에서 시작해 한 가지씩 변합니다. 먼저 물어보기(교과서 86쪽): ‘엘니뇨 발생 시 서태평양 적도 부근 해역에서 따뜻한 해수층의 두께는 어떻게 변화할지 써 보자.’ — 예시 답안: 평상시보다 따뜻한 해수층의 두께가 얇아진다. 클릭 1: 수년에 한 번씩 무역풍이 약해집니다(바람 줄이 성기고 느려짐, 화살표가 짧아짐) → 서쪽으로 이동하는 해수의 흐름이 약해짐(빈칸 ①). 클릭 2: 서태평양에 쌓여 있던 따뜻한 해수가 동쪽으로 이동 → 서태평양 적도 부근 해역은 따뜻한 해수층의 두께가 얇아짐(빈칸 ②). 교과서 그림 II-13의 엘니뇨 발생 시 그림처럼 표층 해수의 이동 방향 화살표가 동쪽을 향합니다. 클릭 3: 동태평양 적도 부근 해역은 심층에서 올라오는 차가운 해수의 흐름이 약해짐(용승 약화, 빈칸 ③) → 윗면의 동쪽이 주황(따뜻한 해수)으로 바뀜. 클릭 4: 구름이 동쪽으로 옮겨 갑니다. 서태평양은 수온이 낮아져 하강 기류 → 강수량 감소(가뭄 발생, 땅이 메마른 색으로), 동태평양은 상승 기류 → 강수량 증가(홍수 발생). 클릭 5: 정의 — 동태평양 적도 부근 해역의 수온이 평상시보다 높아지는 현상을 엘니뇨라고 한다(빈칸 ④). 덧붙일 말: 엘니뇨는 2년에서 7년에 한 번씩 불규칙한 주기로 발생하며, 한 번 발생하는 경우 보통 9개월에서 2년 정도 지속된다. 라니냐(엘니뇨와 반대로 무역풍이 평상시보다 강해져 수온이 낮아지는 현상)는 지구과학에서 다시 배운다고 알려 줍니다. 그림은 깊이와 높이를 크게 과장했고, 해수면 경사도 크게 과장한 모형입니다. 실제로는 평상시 무역풍이 따뜻한 해수를 서쪽으로 밀어 쌓아 서태평양(인도네시아 부근) 해수면이 동태평양(페루 부근)보다 약 50 cm 높고(NOAA 약 46 cm), 엘니뇨 때는 무역풍이 약해져 쌓였던 해수가 동쪽으로 되돌아가므로 서쪽은 낮아지고 동쪽은 높아져 경사가 완만해집니다. 그림의 경사는 보이도록 부풀린 것으로, 태평양 폭 약 15000 km에 높이 차이는 0.5 m 정도이고 수온 약층의 깊이 차이(서쪽 약 150 m 이상, 동쪽 약 30 m)와 비교해도 수백분의 1입니다(수온 약층은 해수면과 반대로 서쪽이 깊음). 표층 해수의 이동 방향 화살표는 교과서 그림 II-13대로 엘니뇨 발생 시 동쪽을 향하게 그렸습니다. 본문은 ‘서쪽으로 이동하는 해수의 흐름이 약해진다’고 쓰고, 지도서와 참고서는 ‘서태평양의 따뜻한 해수가 (평년에 비해) 동쪽으로 이동’한다고 씁니다 — 서쪽으로 미는 힘이 약해져 서쪽에 쌓여 있던 따뜻한 해수가 동쪽으로 되돌아오며 따뜻한 해수의 범위가 동쪽으로 넓어지는 것입니다.">
-  <style>
-  #s23 .ws-card{top:662px;height:328px;display:flex;flex-direction:column;justify-content:center}
-  #s23 .ws-card .ws-row{font-size:32px;line-height:1.4;grid-template-columns:1fr;padding:12px 16px}
-  #s23 .s23-t{font-size:28px;font-weight:800;color:var(--t2);padding:0 16px 8px;letter-spacing:-.01em}
-  #s23 .s23-def{left:520px;top:78px;width:1000px;padding:16px 30px;font-size:32px;font-weight:600;line-height:1.45;letter-spacing:-.015em}
-  #s23 .s23-def .nm{display:inline-block;margin-right:14px;padding:0 18px;border-radius:9999px;background:#FFE7C2;color:#B25000;font-weight:800}
-  #s23 .s23-def .nt{display:block;margin-top:4px;font-size:24px;font-weight:500;color:#5c5c61}   /* 오른쪽 아래(도구 줄에 가림)에 있던 발생 주기를 정의 카드 안으로 — 입체로 다시 보기 장과 같은 모양 */
-  </style>
-  <div class="scene"><svg id="s23-sv" viewBox="0 0 1920 1080"></svg></div>
-  <div class="hd" data-in><div class="eb"><b>4</b>엘니뇨</div><h2>엘니뇨 발생 시</h2></div>
-  <div class="glass gl s23-def" data-step="5" data-fx="rise"><span class="nm">엘니뇨</span><b>동태평양</b> 적도 부근 해역의 <b>수온</b>이 평상시보다 <span class="bk"><span class="n">4</span><span class="a" data-step="5" data-delay="500">높아지는</span></span> 현상<span class="nt">2년~7년에 한 번씩 불규칙하게 발생 · 보통 9개월~2년 지속</span></div>
-
-  <div class="ws-card" style="left:120px;width:480px">
-    <div class="s23-t">서태평양 적도 부근 해역</div>
-    <div class="ws-row" data-r="2"><span><b>따뜻한 해수층</b>의 두께가<br><span class="bk"><span class="n">2</span><span class="a" data-step="2">얇아진다</span></span>.</span></div>
-    <div class="ws-row" data-r="4" data-step="4"><span><b>하강 기류</b> → 강수량 감소<br>(가뭄 발생)</span></div>
-  </div>
-  <div class="ws-card" style="left:640px;width:560px">
-    <div class="s23-t">무역풍과 표층 해수</div>
-    <div class="ws-row" data-r="1"><span><b>무역풍</b>이 <span class="bk"><span class="n">1</span><span class="a" data-step="1">약해지면서</span></span><br>서쪽으로 이동하는 <b>해수의<br>흐름</b>이 약해진다.</span></div>
-  </div>
-  <div class="ws-card" style="left:1240px;width:560px">
-    <div class="s23-t">동태평양 적도 부근 해역</div>
-    <div class="ws-row" data-r="3"><span>심층에서 올라오는 <b>차가운 해수</b>의<br>흐름이 <span class="bk"><span class="n">3</span><span class="a" data-step="3">약해진다</span></span>.</span></div>
-    <div class="ws-row" data-r="4" data-step="4"><span><b>상승 기류</b> → 강수량 증가<br>(홍수 발생)</span></div>
-  </div>
-  <div class="fine">과장된 모형 · 해수면 높이 차이는 실제 약 50 cm(그림은 크게 부풀림) · 깊이와 높이도 과장</div>
-</section>
-
-<!-- ═══ s24 ═══ -->
-<section class="slide" id="s24" data-tile="light" data-title="직접 해 보기 — 무역풍의 세기" data-notes="조작 방법: 아래 막대 ‘무역풍의 세기’를 오른쪽(평상시)에서 왼쪽(약함)으로 옮기면 무역풍(초록 바람 줄과 화살표)이 약해지고, 그에 따라 표층 해수의 이동, 따뜻한 해수층의 두께(서쪽이 얇아지고 동쪽이 두꺼워짐), 용승(약화), 동태평양의 해수면 색(파랑 = 찬 해수 → 주황 = 따뜻한 해수), 구름과 비의 자리(서태평양 → 동태평양), 상승 기류와 하강 기류의 자리가 함께 변합니다. [평상시] [엘니뇨 발생 시] 단추를 누르면 막대가 그 상태로 천천히 움직입니다. 조작해도 장은 넘어가지 않습니다. 물어볼 것: ‘무역풍이 약해지면 서태평양의 따뜻한 해수층은?’(얇아진다) ‘동태평양의 용승은?’(약해진다) ‘비가 많이 내리는 곳은 어디로 옮겨 가나?’(동태평양 쪽). 수온은 숫자 없이 평상시와 비교한 말로만 나타냈습니다. 막대의 중간 상태는 변화를 이어 보이기 위한 모식이고, 깊이와 높이는 과장했으며, 해수면 경사도 크게 과장한 모형입니다. 실제로는 평상시 무역풍이 따뜻한 해수를 서쪽으로 밀어 쌓아 서태평양(인도네시아 부근) 해수면이 동태평양(페루 부근)보다 약 50 cm 높고(NOAA 약 46 cm), 엘니뇨 때는 무역풍이 약해져 쌓였던 해수가 동쪽으로 되돌아가므로 서쪽은 낮아지고 동쪽은 높아져 경사가 완만해집니다. 그림의 경사는 보이도록 부풀린 것으로, 태평양 폭 약 15000 km에 높이 차이는 0.5 m 정도이고 수온 약층의 깊이 차이(서쪽 약 150 m 이상, 동쪽 약 30 m)와 비교해도 수백분의 1입니다(수온 약층은 해수면과 반대로 서쪽이 깊음). 라니냐(무역풍이 평상시보다 강해질 때)는 다루지 않습니다(지구과학에서 다시 배움).">
-  <style>
-  #s24 .s24-st{left:24px;top:22px;height:60px;padding:0 28px;font-size:32px;background:#1d1d1f;transition:background .5s}
-  #s24 .s24-st.on{background:#B25000}
-  #s24 .ia-panel{gap:22px}
-  #s24 .ia-panel input[type=range]{width:300px}
-  #s24 .s24-e{font-size:28px;font-weight:700;color:var(--t2)}
-  html.scrub #s24 .ia-panel label.scrub input+.s24-e{margin-left:auto}   /* 13장과 같은 까닭 */
-  html.print #s24 .s24-st{background:#3a3a3c}
-  </style>
-  <div class="hd" data-in><div class="eb"><b>4</b>엘니뇨</div><h2>직접 해 보기 — 무역풍의 세기</h2></div>
-  <div class="ia-box"><svg id="s24-sv" viewBox="0 0 1680 600"></svg><span class="lab s24-st" id="s24-st">평상시</span></div>
-  <div class="ia-panel">
-    <label><span>무역풍의 세기</span><span class="s24-e">약함</span><input type="range" id="s24-w" min="0" max="100" step="1" value="100"><span class="s24-e">평상시</span></label>
-    <button type="button" class="ia-btn sub" id="s24-b0">평상시</button>
-    <button type="button" class="ia-btn sub" id="s24-b1">엘니뇨 발생 시</button>
-    <div class="ia-stat"><div class="st"><i>동태평양 수온</i><b id="s24-t">평상시</b></div></div>
-  </div>
-  <div class="fine">과장된 모형 · 해수면 높이 차이는 실제 약 50 cm(그림은 크게 부풀림) · 깊이와 높이도 과장 · 수온은 평상시와 비교한 말로만 나타냄</div>
-</section>
-
-<!-- ═══ s25 ═══ -->
-<section class="slide" id="s25" data-tile="parchment" data-title="평상시와 엘니뇨 발생 시" data-notes="교과서 86쪽 그림 II-13의 두 그림과 옆의 글을 한 표로 정리합니다. 위의 두 그림은 앞 장들과 같은 단면(왼쪽 = 평상시, 오른쪽 = 엘니뇨 발생 시)이고 계속 움직입니다. 표는 빈 채로 나오고 클릭할 때마다 빈칸이 하나씩 채워지며, 그때 두 그림에서 해당하는 곳에 파란 테가 나타납니다. 클릭 1: 무역풍 — 평상시보다 약해진다(①). 클릭 2: 서태평양 적도 부근 해역 — 평상시 상승 기류·강수량 많음 → 하강 기류(②)·강수량 감소(가뭄 발생). 클릭 3: 동태평양 적도 부근 해역 — 용승 약화(③). 클릭 4: 수온 상승(④) → 상승 기류·강수량 증가(홍수 발생). 표의 낱말은 교과서 그림 옆 글 그대로입니다. 표층 해수 줄: 본문은 ‘서쪽으로 이동하는 해수의 흐름이 약해진다’이고, 교과서 그림의 엘니뇨 발생 시 화살표는 동쪽을 향합니다(따뜻한 해수가 평상시에 비해 동쪽으로 이동). 그림은 깊이와 높이, 해수면 경사(실제 약 50 cm)를 크게 과장한 모형입니다(평상시 서쪽이 높고, 엘니뇨 때 경사가 완만해짐).">
-  <style>
-  #s25 .s25-pan{position:absolute;top:250px;width:820px;height:274px;border-radius:18px;overflow:hidden;background:#DCEEFF;z-index:2}
-  #s25 .s25-pan svg{display:block;width:820px;height:274px}
-  #s25 .s25-tag{position:absolute;left:16px;top:14px;display:inline-flex;align-items:center;height:50px;padding:0 22px;border-radius:9999px;background:rgba(29,29,31,.84);color:#fff;font-size:28px;font-weight:800;letter-spacing:-.01em}
-  #s25 .s25-tag.el{background:#B25000}
-  #s25 .tbl{left:120px;top:548px;width:1680px;background:#fff;border-radius:18px;overflow:hidden;font-size:32px;table-layout:fixed}
-  #s25 .tbl th,#s25 .tbl td{padding:12px 22px;text-align:left}
-  #s25 .tbl thead th{font-size:28px;height:56px}
-  #s25 .tbl tbody th{font-size:30px;font-weight:800}
-  #s25 .tbl td{transition:background .4s}
-  #s25 .tbl thead th:nth-child(3){color:#B25000}
-  #s25 .tbl .bk{margin-left:40px}
-  html.print #s25 .tbl{background:#f5f5f7}
-  </style>
-  <div class="hd" data-in><div class="eb"><b>4</b>엘니뇨</div><h2>평상시와 엘니뇨 발생 시</h2></div>
-  <div class="s25-pan" style="left:120px"><svg id="s25-a" viewBox="0 0 1680 561"></svg><span class="s25-tag">평상시</span></div>
-  <div class="s25-pan" style="left:980px"><svg id="s25-b" viewBox="0 0 1680 561"></svg><span class="s25-tag el">엘니뇨 발생 시</span></div>
-  <table class="tbl">
-    <colgroup><col style="width:370px"><col style="width:560px"><col></colgroup>
-    <thead><tr><th>구분</th><th>평상시</th><th>엘니뇨 발생 시</th></tr></thead>
-    <tbody>
-      <tr data-r="1"><th>무역풍</th><td>동쪽에서 서쪽으로 분다</td><td>평상시보다 <span class="bk"><span class="n">1</span><span class="a" data-step="1">약해진다</span></span></td></tr>
-      <tr data-r="0"><th>표층 해수</th><td>동쪽에서 서쪽으로 흐른다</td><td>서쪽으로 이동하는 흐름이 약해진다</td></tr>
-      <tr data-r="2"><th>서태평양 적도 부근 해역</th><td><b>상승 기류</b> → 강수량 많음</td><td><span class="bk"><span class="n">2</span><span class="a" data-step="2">하강 기류</span></span> → 강수량 감소(가뭄 발생)</td></tr>
-      <tr data-r="3 4"><th>동태평양 적도 부근 해역</th><td><b>용승</b> · <b>하강 기류</b> → 날씨 맑음</td><td>용승 <span class="bk"><span class="n">3</span><span class="a" data-step="3">약화</span></span> · 수온 <span class="bk"><span class="n">4</span><span class="a" data-step="4">상승</span></span><br><b>상승 기류</b> → 강수량 증가(홍수 발생)</td></tr>
-    </tbody>
-  </table>
-  <div class="fine">과장된 모형 · 해수면 높이 차이는 실제 약 50 cm(그림은 크게 부풀림) · 깊이와 높이도 과장 · 표의 낱말: 교과서 86쪽 그림 II-13</div>
-</section>
-
-<!-- ═══ s26 ═══ -->
-<section class="slide" id="s25d" data-tile="light" data-title="적도 부근 태평양 — 입체로 다시 보기" data-notes="앞의 네 장(평상시 적도 부근 태평양 · 엘니뇨 발생 시 · 직접 해 보기 — 무역풍의 세기 · 평상시와 엘니뇨 발생 시)을 한 입체 블록으로 이었습니다(교과서 86쪽 본문과 그림 II-13). 블록: 적도 부근 태평양을 서(동남아시아) ↔ 동(남아메리카)으로 놓고 남북으로 조금 넓힌 것. 윗면 = 해수면(주황 = 따뜻한 해수, 파랑 = 찬 해수), 남쪽으로 자른 앞면 = 바닷속 단면(따뜻한 해수층 / 찬 해수), 하늘 = 무역풍(초록 바람 줄과 화살표)·상승 기류·하강 기류·구름과 비. 끌면 돌려 보고 휠·두 손가락으로 확대합니다. 장면을 끌지 않고 그냥 누르면 다음 단계로 넘어갑니다(왼쪽 가장자리는 이전). 오른쪽 위 단추 [입체] [단면] [위에서]는 언제든 시점을 바꿉니다(위에서 = 해수면 수온 지도처럼, 북쪽이 위). 처음 화면: 실제 평상시 모습 — 따뜻한 해수층은 서쪽이 두껍고 동쪽이 얇으며, 동태평양 해수면은 찬 해수의 색입니다(무역풍이 불기 전 같은 가정의 모습은 그리지 않습니다). 단계에서는 화살표·두께 표시·강조만 하나씩 나옵니다. [평상시] 클릭 1: 무역풍(동쪽에서 서쪽으로)과 표층 해수의 이동 방향 화살표(빈칸 ① 동쪽에서 서쪽). 클릭 2: 카메라가 단면 쪽으로 내려가고 서쪽·동쪽의 따뜻한 해수층 두께 표시(흰 치수선)가 나타남 — 따뜻해진 해수가 서태평양에 두껍게 쌓인다(빈칸 ②). 클릭 3: 서태평양의 상승 기류와 구름·비(빈칸 ③ 상승 기류 → 강수량 많음). 클릭 4: 카메라가 동쪽으로 돌고 용승 화살표가 앞면의 남아메리카 연안에서 올라오며 찬 해수면에 파란 점선 테 — 깊은 곳에서 차가운 해수가 올라와 해수면 온도가 낮다(빈칸 ④). 클릭 5: 동태평양의 하강 기류 → 날씨 맑음(빈칸 ⑤). [엘니뇨 발생 시] 먼저 물어보기(교과서 86쪽): 엘니뇨 발생 시 서태평양 적도 부근 해역에서 따뜻한 해수층의 두께는 어떻게 변화할지 써 보자 — 예시 답안: 평상시보다 얇아진다. 클릭 6: 무역풍이 약해짐(바람 줄이 성기고 느려지고 화살표가 짧아짐, 빈칸 ① 약해지면서) → 서쪽으로 이동하는 해수의 흐름이 약해짐. 클릭 7: 단면 시점 — 서태평양에 쌓여 있던 따뜻한 해수가 동쪽으로 이동해 서쪽 해수층이 얇아지고 동쪽이 두꺼워짐(빈칸 ② 얇아진다, 치수선이 함께 변함). 표층 해수의 이동 방향 화살표는 교과서 그림 II-13대로 동쪽을 향합니다(평균 흐름이 약해져 서쪽에 쌓여 있던 따뜻한 해수가 동쪽으로 되돌아오는 것). 클릭 8: 용승 약화(빈칸 ③ 약해진다) → 윗면의 동쪽이 주황으로 바뀜. 클릭 9: 구름이 동쪽으로 옮겨 감 — 서태평양 하강 기류·강수량 감소(가뭄 발생, 땅이 메마른 색), 동태평양 상승 기류·강수량 증가(홍수 발생). 클릭 10: 정의 — 동태평양 적도 부근 해역의 수온이 평상시보다 높아지는 현상(빈칸 ④ 높아지는), 수온이 높아진 해수면에 주황 점선 테. 클릭 11: 직접 해 보기 — 가운데 카드의 무역풍의 세기 막대(오른쪽 = 평상시, 왼쪽 = 약함)를 움직이면 무역풍 → 해수층 두께 → 용승 → 해수면 수온 → 구름과 비의 자리가 차례로 따라 변하고 세 카드의 글이 그 상태를 알려 줍니다. [평상시] [엘니뇨 발생 시] 단추는 막대를 그 상태로 천천히 옮깁니다. 물어볼 것: 무역풍이 약해지면 서태평양의 따뜻한 해수층은?(얇아진다) 동태평양의 용승은?(약해진다) 비가 많이 내리는 곳은?(동태평양 쪽). 오개념 주의: 엘니뇨는 무역풍이 약해져서 생기는 현상입니다(원인 = 무역풍 약화, 결과 = 동태평양 수온 상승 — 막대도 무역풍의 세기 하나뿐). 그린 값(원래 장과 같음): 따뜻한 해수층 두께는 블록 깊이 174에 대해 평상시 서 118·동 22 → 엘니뇨 발생 시 서 82·동 70, 무역풍의 세기 1 → 0.34, 용승 1 → 0.3, 구름(상승 기류)의 자리는 서쪽 끝에서 23 % → 75 %. 모식 그림이라 깊이와 높이는 매우 크게 과장했고(실제 태평양은 너비 약 15000 km에 따뜻한 해수층은 100 m~200 m, 대기 순환 높이는 십수 km), 해수면 경사도 크게 과장한 모형입니다. 실제로는 평상시 무역풍이 따뜻한 해수를 서쪽으로 밀어 쌓아 서태평양(인도네시아 부근) 해수면이 동태평양(페루 부근)보다 약 50 cm 높고(NOAA 약 46 cm), 엘니뇨 때는 무역풍이 약해져 쌓였던 해수가 동쪽으로 되돌아가므로 서쪽은 낮아지고 동쪽은 높아져 경사가 완만해집니다. 그림의 경사는 보이도록 부풀린 것으로, 태평양 폭 약 15000 km에 높이 차이는 0.5 m 정도이고 수온 약층의 깊이 차이(서쪽 약 150 m 이상, 동쪽 약 30 m)와 비교해도 수백분의 1입니다(수온 약층은 해수면과 반대로 서쪽이 깊음). 수온은 숫자 없이 색과 말로만 나타냈습니다. 윗면의 찬 해수가 적도에서 서쪽으로 더 길게 뻗은 모양은 입체로 넓히면서 더한 것입니다(실제 수온 분포의 모양, 원래 장에는 없음). 라니냐(무역풍이 평상시보다 강해질 때)는 다루지 않습니다(지구과학에서 다시 배움).">
+<!-- ═══ s25d 3D(2026-11-25 s21 바로 뒤로 옮김 — 2D 장 s22·s23 대신) ═══ -->
+<section class="slide" id="s25d" data-tile="light" data-title="적도 부근 태평양 — 입체로 보기" data-notes="교과서 86쪽 본문과 그림 II-13(평상시 · 엘니뇨 발생 시)을 한 입체 블록으로 보여 줍니다(뒤의 ‘직접 해 보기’·‘평상시와 엘니뇨 발생 시’ 장은 같은 내용의 평면 단면). 블록: 적도 부근 태평양을 서(동남아시아) ↔ 동(남아메리카)으로 놓고 남북으로 조금 넓힌 것. 윗면 = 해수면(주황 = 따뜻한 해수, 파랑 = 찬 해수), 남쪽으로 자른 앞면 = 바닷속 단면(따뜻한 해수층 / 찬 해수), 하늘 = 무역풍(초록 바람 줄과 화살표)·상승 기류·하강 기류·구름과 비. 끌면 돌려 보고 휠·두 손가락으로 확대합니다. 장면을 끌지 않고 그냥 누르면 다음 단계로 넘어갑니다(왼쪽 가장자리는 이전). 오른쪽 위 단추 [입체] [단면] [위에서]는 언제든 시점을 바꿉니다(위에서 = 해수면 수온 지도처럼, 북쪽이 위). 처음 화면: 실제 평상시 모습 — 따뜻한 해수층은 서쪽이 두껍고 동쪽이 얇으며, 동태평양 해수면은 찬 해수의 색입니다(무역풍이 불기 전 같은 가정의 모습은 그리지 않습니다). 단계에서는 화살표·두께 표시·강조만 하나씩 나옵니다. [평상시] 클릭 1: 무역풍(동쪽에서 서쪽으로)과 표층 해수의 이동 방향 화살표(빈칸 ① 동쪽에서 서쪽). 클릭 2: 카메라가 단면 쪽으로 내려가고 서쪽·동쪽의 따뜻한 해수층 두께 표시(흰 치수선)가 나타남 — 따뜻해진 해수가 서태평양에 두껍게 쌓인다(빈칸 ②). 클릭 3: 서태평양의 상승 기류와 구름·비(빈칸 ③ 상승 기류 → 강수량 많음). 클릭 4: 카메라가 동쪽으로 돌고 용승 화살표가 앞면의 남아메리카 연안에서 올라오며 찬 해수면에 파란 점선 테 — 깊은 곳에서 차가운 해수가 올라와 해수면 온도가 낮다(빈칸 ④). 클릭 5: 동태평양의 하강 기류 → 날씨 맑음(빈칸 ⑤). [엘니뇨 발생 시] 먼저 물어보기(교과서 86쪽): 엘니뇨 발생 시 서태평양 적도 부근 해역에서 따뜻한 해수층의 두께는 어떻게 변화할지 써 보자 — 예시 답안: 평상시보다 얇아진다. 클릭 6: 무역풍이 약해짐(바람 줄이 성기고 느려지고 화살표가 짧아짐, 빈칸 ① 약해지면서) → 서쪽으로 이동하는 해수의 흐름이 약해짐. 클릭 7: 단면 시점 — 서태평양에 쌓여 있던 따뜻한 해수가 동쪽으로 이동해 서쪽 해수층이 얇아지고 동쪽이 두꺼워짐(빈칸 ② 얇아진다, 치수선이 함께 변함). 표층 해수의 이동 방향 화살표는 교과서 그림 II-13대로 동쪽을 향합니다(평균 흐름이 약해져 서쪽에 쌓여 있던 따뜻한 해수가 동쪽으로 되돌아오는 것). 클릭 8: 용승 약화(빈칸 ③ 약해진다) → 윗면의 동쪽이 주황으로 바뀜. 클릭 9: 구름이 동쪽으로 옮겨 감 — 서태평양 하강 기류·강수량 감소(가뭄 발생, 땅이 메마른 색), 동태평양 상승 기류·강수량 증가(홍수 발생). 클릭 10: 정의 — 동태평양 적도 부근 해역의 수온이 평상시보다 높아지는 현상(빈칸 ④ 높아지는), 수온이 높아진 해수면에 주황 점선 테. 클릭 11: 직접 해 보기 — 가운데 카드의 무역풍의 세기 막대(오른쪽 = 평상시, 왼쪽 = 약함)를 움직이면 무역풍 → 해수층 두께 → 용승 → 해수면 수온 → 구름과 비의 자리가 차례로 따라 변하고 세 카드의 글이 그 상태를 알려 줍니다. [평상시] [엘니뇨 발생 시] 단추는 막대를 그 상태로 천천히 옮깁니다. 물어볼 것: 무역풍이 약해지면 서태평양의 따뜻한 해수층은?(얇아진다) 동태평양의 용승은?(약해진다) 비가 많이 내리는 곳은?(동태평양 쪽). 오개념 주의: 엘니뇨는 무역풍이 약해져서 생기는 현상입니다(원인 = 무역풍 약화, 결과 = 동태평양 수온 상승 — 막대도 무역풍의 세기 하나뿐). 그린 값(평면 단면 장과 같음): 따뜻한 해수층 두께는 블록 깊이 174에 대해 평상시 서 118·동 22 → 엘니뇨 발생 시 서 82·동 70, 무역풍의 세기 1 → 0.34, 용승 1 → 0.3, 구름(상승 기류)의 자리는 서쪽 끝에서 23 % → 75 %. 모식 그림이라 깊이와 높이는 매우 크게 과장했고(실제 태평양은 너비 약 15000 km에 따뜻한 해수층은 100 m~200 m, 대기 순환 높이는 십수 km), 해수면 경사도 크게 과장한 모형입니다. 실제로는 평상시 무역풍이 따뜻한 해수를 서쪽으로 밀어 쌓아 서태평양(인도네시아 부근) 해수면이 동태평양(페루 부근)보다 약 50 cm 높고(NOAA 약 46 cm), 엘니뇨 때는 무역풍이 약해져 쌓였던 해수가 동쪽으로 되돌아가므로 서쪽은 낮아지고 동쪽은 높아져 경사가 완만해집니다. 그림의 경사는 보이도록 부풀린 것으로, 태평양 폭 약 15000 km에 높이 차이는 0.5 m 정도이고 수온 약층의 깊이 차이(서쪽 약 150 m 이상, 동쪽 약 30 m)와 비교해도 수백분의 1입니다(수온 약층은 해수면과 반대로 서쪽이 깊음). 수온은 숫자 없이 색과 말로만 나타냈습니다. 윗면의 찬 해수가 적도에서 서쪽으로 더 길게 뻗은 모양은 입체로 넓히면서 더한 것입니다(실제 수온 분포의 모양, 평면 단면에는 없음). 라니냐(무역풍이 평상시보다 강해질 때)는 다루지 않습니다(지구과학에서 다시 배움). 학생 질문 대비: ‘왜 서쪽 바닷물이 더 따뜻한가?’ → 서쪽으로 흐르는 동안 계속 태양 복사 에너지를 받기 때문. ‘용승은 왜 생기나?’ → 표층 해수가 서쪽으로 이동해 빈 자리를 깊은 곳의 찬 해수가 채우기 때문(참고서).">
   <div class="v3" id="s25d-v"></div>
-  <div class="hd gl" data-in><div class="eb"><b>4</b>엘니뇨 · 입체로 다시 보기</div><h2>적도 부근 태평양</h2></div>
+  <div class="hd gl" data-in><div class="eb"><b>4</b>엘니뇨 · 입체로 보기</div><h2>적도 부근 태평양</h2></div>
   <span id="s25d-st" data-in="150">평상시</span>
   <div class="gl" id="s25d-def"><span class="nm">엘니뇨</span><b>동태평양</b> 적도 부근 해역의 <b>수온</b>이 평상시보다 <span class="bk"><span class="n">4</span><span class="a" data-step="10" data-delay="500">높아지는</span></span> 현상<span class="nt">2년~7년에 한 번씩 불규칙하게 발생 · 보통 9개월~2년 지속</span></div>
   <div class="gl" id="s25d-seg" data-in="300"><button type="button" class="ia-btn sub on" data-v="home">입체</button><button type="button" class="ia-btn sub" data-v="sec">단면</button><button type="button" class="ia-btn sub" data-v="top">위에서</button></div>
@@ -1073,6 +959,60 @@ html.print #s25d-st{background:#3a3a3c}
     </div>
   </div>
   <div class="fine">과장된 모형 · 해수면 높이 차이는 실제 약 50 cm(그림은 크게 부풀림) · 깊이와 높이는 매우 과장 · 수온은 색과 말로만 나타냄</div>
+</section>
+
+<!-- ═══ s24 ═══ -->
+<section class="slide" id="s24" data-tile="light" data-title="직접 해 보기 — 무역풍의 세기" data-notes="조작 방법: 아래 막대 ‘무역풍의 세기’를 오른쪽(평상시)에서 왼쪽(약함)으로 옮기면 무역풍(초록 바람 줄과 화살표)이 약해지고, 그에 따라 표층 해수의 이동, 따뜻한 해수층의 두께(서쪽이 얇아지고 동쪽이 두꺼워짐), 용승(약화), 동태평양의 해수면 색(파랑 = 찬 해수 → 주황 = 따뜻한 해수), 구름과 비의 자리(서태평양 → 동태평양), 상승 기류와 하강 기류의 자리가 함께 변합니다. [평상시] [엘니뇨 발생 시] 단추를 누르면 막대가 그 상태로 천천히 움직입니다. 조작해도 장은 넘어가지 않습니다. 물어볼 것: ‘무역풍이 약해지면 서태평양의 따뜻한 해수층은?’(얇아진다) ‘동태평양의 용승은?’(약해진다) ‘비가 많이 내리는 곳은 어디로 옮겨 가나?’(동태평양 쪽). 수온은 숫자 없이 평상시와 비교한 말로만 나타냈습니다. 막대의 중간 상태는 변화를 이어 보이기 위한 모식이고, 깊이와 높이는 과장했으며, 해수면 경사도 크게 과장한 모형입니다. 실제로는 평상시 무역풍이 따뜻한 해수를 서쪽으로 밀어 쌓아 서태평양(인도네시아 부근) 해수면이 동태평양(페루 부근)보다 약 50 cm 높고(NOAA 약 46 cm), 엘니뇨 때는 무역풍이 약해져 쌓였던 해수가 동쪽으로 되돌아가므로 서쪽은 낮아지고 동쪽은 높아져 경사가 완만해집니다. 그림의 경사는 보이도록 부풀린 것으로, 태평양 폭 약 15000 km에 높이 차이는 0.5 m 정도이고 수온 약층의 깊이 차이(서쪽 약 150 m 이상, 동쪽 약 30 m)와 비교해도 수백분의 1입니다(수온 약층은 해수면과 반대로 서쪽이 깊음). 라니냐(무역풍이 평상시보다 강해질 때)는 다루지 않습니다(지구과학에서 다시 배움).">
+  <style>
+  #s24 .s24-st{left:24px;top:22px;height:60px;padding:0 28px;font-size:32px;background:#1d1d1f;transition:background .5s}
+  #s24 .s24-st.on{background:#B25000}
+  #s24 .ia-panel{gap:22px}
+  #s24 .ia-panel input[type=range]{width:300px}
+  #s24 .s24-e{font-size:28px;font-weight:700;color:var(--t2)}
+  html.scrub #s24 .ia-panel label.scrub input+.s24-e{margin-left:auto}   /* 13장과 같은 까닭 */
+  html.print #s24 .s24-st{background:#3a3a3c}
+  </style>
+  <div class="hd" data-in><div class="eb"><b>4</b>엘니뇨</div><h2>직접 해 보기 — 무역풍의 세기</h2></div>
+  <div class="ia-box"><svg id="s24-sv" viewBox="0 0 1680 600"></svg><span class="lab s24-st" id="s24-st">평상시</span></div>
+  <div class="ia-panel">
+    <label><span>무역풍의 세기</span><span class="s24-e">약함</span><input type="range" id="s24-w" min="0" max="100" step="1" value="100"><span class="s24-e">평상시</span></label>
+    <button type="button" class="ia-btn sub" id="s24-b0">평상시</button>
+    <button type="button" class="ia-btn sub" id="s24-b1">엘니뇨 발생 시</button>
+    <div class="ia-stat"><div class="st"><i>동태평양 수온</i><b id="s24-t">평상시</b></div></div>
+  </div>
+  <div class="fine">과장된 모형 · 해수면 높이 차이는 실제 약 50 cm(그림은 크게 부풀림) · 깊이와 높이도 과장 · 수온은 평상시와 비교한 말로만 나타냄</div>
+</section>
+
+<!-- ═══ s25 ═══ -->
+<section class="slide" id="s25" data-tile="parchment" data-title="평상시와 엘니뇨 발생 시" data-notes="교과서 86쪽 그림 II-13의 두 그림과 옆의 글을 한 표로 정리합니다. 위의 두 그림은 ‘직접 해 보기’ 장과 같은 단면(왼쪽 = 평상시, 오른쪽 = 엘니뇨 발생 시)이고 계속 움직입니다. 표는 빈 채로 나오고 클릭할 때마다 빈칸이 하나씩 채워지며, 그때 두 그림에서 해당하는 곳에 파란 테가 나타납니다. 클릭 1: 무역풍 — 평상시보다 약해진다(①). 클릭 2: 서태평양 적도 부근 해역 — 평상시 상승 기류·강수량 많음 → 하강 기류(②)·강수량 감소(가뭄 발생). 클릭 3: 동태평양 적도 부근 해역 — 용승 약화(③). 클릭 4: 수온 상승(④) → 상승 기류·강수량 증가(홍수 발생). 표의 낱말은 교과서 그림 옆 글 그대로입니다. 표층 해수 줄: 본문은 ‘서쪽으로 이동하는 해수의 흐름이 약해진다’이고, 교과서 그림의 엘니뇨 발생 시 화살표는 동쪽을 향합니다(따뜻한 해수가 평상시에 비해 동쪽으로 이동). 그림은 깊이와 높이, 해수면 경사(실제 약 50 cm)를 크게 과장한 모형입니다(평상시 서쪽이 높고, 엘니뇨 때 경사가 완만해짐).">
+  <style>
+  #s25 .s25-pan{position:absolute;top:250px;width:820px;height:274px;border-radius:18px;overflow:hidden;background:#DCEEFF;z-index:2}
+  #s25 .s25-pan svg{display:block;width:820px;height:274px}
+  #s25 .s25-tag{position:absolute;left:16px;top:14px;display:inline-flex;align-items:center;height:50px;padding:0 22px;border-radius:9999px;background:rgba(29,29,31,.84);color:#fff;font-size:28px;font-weight:800;letter-spacing:-.01em}
+  #s25 .s25-tag.el{background:#B25000}
+  #s25 .tbl{left:120px;top:548px;width:1680px;background:#fff;border-radius:18px;overflow:hidden;font-size:32px;table-layout:fixed}
+  #s25 .tbl th,#s25 .tbl td{padding:12px 22px;text-align:left}
+  #s25 .tbl thead th{font-size:28px;height:56px}
+  #s25 .tbl tbody th{font-size:30px;font-weight:800}
+  #s25 .tbl td{transition:background .4s}
+  #s25 .tbl thead th:nth-child(3){color:#B25000}
+  #s25 .tbl .bk{margin-left:40px}
+  html.print #s25 .tbl{background:#f5f5f7}
+  </style>
+  <div class="hd" data-in><div class="eb"><b>4</b>엘니뇨</div><h2>평상시와 엘니뇨 발생 시</h2></div>
+  <div class="s25-pan" style="left:120px"><svg id="s25-a" viewBox="0 0 1680 561"></svg><span class="s25-tag">평상시</span></div>
+  <div class="s25-pan" style="left:980px"><svg id="s25-b" viewBox="0 0 1680 561"></svg><span class="s25-tag el">엘니뇨 발생 시</span></div>
+  <table class="tbl">
+    <colgroup><col style="width:370px"><col style="width:560px"><col></colgroup>
+    <thead><tr><th>구분</th><th>평상시</th><th>엘니뇨 발생 시</th></tr></thead>
+    <tbody>
+      <tr data-r="1"><th>무역풍</th><td>동쪽에서 서쪽으로 분다</td><td>평상시보다 <span class="bk"><span class="n">1</span><span class="a" data-step="1">약해진다</span></span></td></tr>
+      <tr data-r="0"><th>표층 해수</th><td>동쪽에서 서쪽으로 흐른다</td><td>서쪽으로 이동하는 흐름이 약해진다</td></tr>
+      <tr data-r="2"><th>서태평양 적도 부근 해역</th><td><b>상승 기류</b> → 강수량 많음</td><td><span class="bk"><span class="n">2</span><span class="a" data-step="2">하강 기류</span></span> → 강수량 감소(가뭄 발생)</td></tr>
+      <tr data-r="3 4"><th>동태평양 적도 부근 해역</th><td><b>용승</b> · <b>하강 기류</b> → 날씨 맑음</td><td>용승 <span class="bk"><span class="n">3</span><span class="a" data-step="3">약화</span></span> · 수온 <span class="bk"><span class="n">4</span><span class="a" data-step="4">상승</span></span><br><b>상승 기류</b> → 강수량 증가(홍수 발생)</td></tr>
+    </tbody>
+  </table>
+  <div class="fine">과장된 모형 · 해수면 높이 차이는 실제 약 50 cm(그림은 크게 부풀림) · 깊이와 높이도 과장 · 표의 낱말: 교과서 86쪽 그림 II-13</div>
 </section>
 
 <section class="slide" id="s26" data-tile="light" data-title="엘니뇨가 세계 기후에 미치는 영향" data-notes="교과서 87쪽 본문과 그림 II-14(겨울철 12월~2월에 발생한 엘니뇨의 영향). 그림을 누르면 크게 볼 수 있습니다. 클릭 1: 적도 부근 서태평양 해역(건조)만 밝게 — 평상시와 반대로 수온이 낮아져 하강 기류가 형성되면서 강수량이 감소해 가뭄이나 산불 피해가 발생하기도 한다(빈칸 ①). 클릭 2: 적도 부근 동태평양 해역(고온 다습) — 상승 기류가 형성되면서 평상시보다 강수량이 증가해 홍수로 인한 피해가 발생하기도 한다(빈칸 ②). 클릭 3: 적도 태평양에서 퍼져 나가는 물결과 함께 세계 곳곳의 영역이 차례로 깜빡입니다 — 엘니뇨는 적도 부근에서 발생하지만 대기와 해양의 상호작용으로 지구 곳곳에 환경 변화를 일으킨다(빈칸 ③). 퍼져 나가는 고리는 영향이 미친다는 뜻의 표시이고 실제로 움직이는 것을 그린 것이 아닙니다. 클릭 4: 생태계와 우리 생활에 미치는 영향. 덧붙일 말(지도서): 엘니뇨가 일어나 용승이 약화되면 영양염이 감소하고 플랑크톤이 감소하여 물고기가 줄어든다(동태평양 연안의 어획량 감소). 여름철(6월~8월)의 엘니뇨는 겨울철과 다른 영향을 미친다. 엘니뇨는 페루, 칠레, 오스트레일리아 등 태평양의 적도 부근에 위치한 나라들의 날씨와 경제에 미치는 영향력이 크다.">
@@ -1373,7 +1313,7 @@ html.print #s25d-st{background:#3a3a3c}
 /* ═══ 장면: 통합과학2 II.1.3 지구 환경의 변화 ═══ */
 const {U}=Deck;
 window.KW={items:['온실 효과','지구 온난화','사막화','엘니뇨','영향과 대처 방안'],
-  at:[-1,-1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4]};
+  at:[-1,-1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4,4,4]};   // 2026-11-25 엘니뇨 2D 장 둘(s22·s23)을 지워 34장
 /* ═══ 자료 ═══ */
 // Natural Earth 1:110m land (public domain), Antarctica removed, DP-simplified 0.50 deg, 1-decimal.
 // WORLD: lon/lat, central meridian 0. WORLD_PAC: lon already re-centred on 180E (x=lon-180 wrapped), rings crossing 0E clipped.
@@ -3127,8 +3067,8 @@ Deck.scene('s21',{steps:2,
   }
 });
 
-/* ─── s22 ─── */
-/* ═══ 적도 태평양 단면(교과서 그림 II-13 모양) — s22·s23·s24·s25 공용 ═══
+/* ─── 단면 그림(s24·s25) ─── */
+/* ═══ 적도 태평양 단면(교과서 그림 II-13 모양) — s24·s25 공용(s22·s23은 2026-11-25에 지움) ═══
    로컬 좌표 1680×520: 서(동남아시아) ↔ 동(남아메리카)의 입체 단면. 윗면 = 해수면(주황 = 따뜻한 해수, 파랑 = 찬 해수),
    앞면 = 바닷속 단면(따뜻한 해수층 / 찬 해수), 하늘 = 무역풍(초록 바람 줄)·상승 기류·하강 기류·구름과 비.
    P=S22make(부모 g,{id:'고유 접두사',mini:작은 그림})  →  프레임마다 S22draw(P,{e:{w,o,u,a},v:{wind,cur,pile,conv,up,sink}},t)
@@ -3265,41 +3205,7 @@ function S22draw(P,st,t){
   P.upp.forEach((d,i)=>{const ph=(R[i+30][0]+P.aU*.34)%1,p=s22bz(S22UP,ph*Math.max(uf,.2));d.setAttribute('cx',f1(p[0]-16+R[i+30][1]*10));d.setAttribute('cy',f1(p[1]+8));d.setAttribute('fill-opacity',f2(clamp(us*1.6,0,1)*.9*Math.sin(Math.PI*ph)));});
   P.upL2[0].setAttribute('opacity',f2(vu*(1-seg(eU,.4,.6))));P.upL2[1].setAttribute('opacity',f2(vu*seg(eU,.4,.6)));
 }
-/* 하늘 바탕(화면 가득 장면용): 위쪽 하늘색에서 아래로 흰색(밝은 면)까지 */
-function s22sky(sv,id,h=700){const d=svgEl('defs',{},sv);grad(d,id+'-sky',[[0,'#AFD7FB'],[.7,'#E6F3FF'],[1,'#FFFFFF']]);svgEl('rect',{width:1920,height:h,fill:'url(#'+id+'-sky)'},sv);}
-/* 단계 진행 틀(s22·s23 공용): 상태 객체 S의 값들을 차례로 움직이고, 정지 화면이면 바로 그린다 */
-async function s22seq(c,S,list,drawNow){
-  for(const q of list){const fr=S[q[0]],to=q[2]==null?1:q[2];await c.tween(q[1],p=>{S[q[0]]=lerp(fr,to,p);},{ease:'inOut'});}
-  if(STILL())drawNow();
-}
-const s22rows=(c,k)=>c.$$('.ws-row[data-r]').forEach(r=>r.classList.toggle('cur',r.dataset.r.split(' ').includes(String(k))));
-
-/* ─── s22 평상시 적도 부근 태평양: 무역풍 → 표층 해수의 이동 → 서쪽에 두껍게 쌓임(두께 표시) → 상승 기류와 비 → 용승 → 하강 기류 ─── */
-const S22SEQ={1:[['wind',1100],['cur',900]],2:[['dim',900]],3:[['conv',1800]],4:[['up',2000]],5:[['sink',1600]]};
-Deck.scene('s22',{steps:5,
-  enter(c){const sv=c.$('#s22-sv');s22sky(sv,'s22');
-    c.P=S22make(svgEl('g',{transform:'translate(120 138)'},sv),{id:'s22p'});
-    // 따뜻한 해수층은 처음부터 서쪽이 두꺼운 모양(2026-11-11 교사 결정: ‘무역풍이 불기 전’ 같은 가정의 모습은 오해를 줄 수 있음). 2단계는 서쪽·동쪽의 두께 표시(치수선)만 나타남
-    c.dim=svgEl('g',{opacity:0},c.P.root);
-    [420,1210].forEach(x=>{const y0=S22G.ys-s22h(x,1)+5,y1=y0+s22dep(x,118,22)-10;[['rgba(10,40,90,.5)',10],['#fff',5]].forEach(q=>svgEl('path',{d:'M'+x+' '+y0+'V'+f1(y1)+'M'+(x-15)+' '+y0+'H'+(x+15)+'M'+(x-15)+' '+f1(y1)+'H'+(x+15),fill:'none',stroke:q[0],'stroke-width':q[1],'stroke-linecap':'round'},c.dim));});
-    c.v={wind:0,cur:0,pile:1,conv:0,up:0,sink:0,dim:0};c.dr=t=>{S22draw(c.P,{v:c.v},t);c.dim.setAttribute('opacity',f2(c.v.dim));};c.dr(STILL()?3.3:0);
-    if(!STILL())c.loop(c.dr);},
-  go(c,k){s22rows(c,k);return s22seq(c,c.v,S22SEQ[k],()=>c.dr(3.3));}
-});
-
-/* ─── s23 ─── */
-/* s23 엘니뇨 발생 시: 평상시 모습에서 한 가지씩 변함 — 무역풍 약화 → 따뜻한 해수가 동쪽으로(서쪽 해수층이 얇아짐) → 용승 약화(동태평양 수온 상승) → 구름·기류의 자리 바뀜 → 정의 */
-const S23SEQ={1:[['w',2000]],2:[['o',3000]],3:[['u',2200]],4:[['a',3200]],5:[['hl',900]]};
-Deck.scene('s23',{steps:5,
-  enter(c){const sv=c.$('#s23-sv');s22sky(sv,'s23');
-    c.P=S22make(svgEl('g',{transform:'translate(120 138)'},sv),{id:'s23p'});
-    // 5단계: 수온이 높아진 동태평양 해수면을 짚는 테
-    c.hl=svgEl('ellipse',{cx:1310,cy:426,rx:270,ry:62,fill:'none',stroke:KT.warm,'stroke-width':6,'stroke-dasharray':'2 14','stroke-linecap':'round',opacity:0},sv);
-    c.e={w:0,o:0,u:0,a:0,hl:0};
-    c.dr=t=>{S22draw(c.P,{e:c.e},t);c.hl.setAttribute('opacity',f2(c.e.hl));c.hl.setAttribute('stroke-dashoffset',f1(-t*18));};
-    c.dr(STILL()?3.3:0);if(!STILL())c.loop(c.dr);},
-  go(c,k){s22rows(c,k);return s22seq(c,c.e,S23SEQ[k],()=>c.dr(3.3));}
-});
+/* s22·s23 장면(평상시·엘니뇨 발생 시 단면)과 그 두 장만 쓰던 하늘 바탕·단계 진행 도구는 2026-11-25 교사 요청으로 지움(3D 장 s25d가 그 자리) */
 
 /* ─── s24 ─── */
 /* s24 직접 해 보기 — 무역풍의 세기: 막대(100 = 평상시 … 0 = 약함)로 무역풍을 약하게 하면 단면 전체가 함께 변한다 */
