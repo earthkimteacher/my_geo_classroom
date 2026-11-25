@@ -3,129 +3,146 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>과학 수업 자료 - 진광고등학교 교사 김덕영</title>
-<meta name="description" content="진광고등학교 교사 김덕영의 과학 수업 슬라이드와 시뮬레이터를 모았습니다.">
-<meta property="og:title" content="과학 수업 자료 - 진광고등학교 교사 김덕영">
-<meta property="og:description" content="진광고등학교 교사 김덕영의 과학 수업 슬라이드와 시뮬레이터를 모았습니다.">
+<title>지구과학 수업 자료 - 진광고등학교 교사 김덕영</title>
+<meta name="description" content="진광고등학교 교사 김덕영의 지구과학 수업 슬라이드와 시뮬레이터를 모았습니다.">
+<meta property="og:title" content="지구과학 수업 자료 - 진광고등학교 교사 김덕영">
+<meta property="og:description" content="진광고등학교 교사 김덕영의 지구과학 수업 슬라이드와 시뮬레이터를 모았습니다.">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <!--
   earth.esbest.net 첫 화면(수업 자료 목록).
   자료를 추가할 때는 아래 <script>의 SUBJECTS 배열만 고칩니다.
-  - 과목 순서: 학년 순, 같은 학년은 가나다순
+  - 과목 순서: 통합과학2 → 과학탐구실험2 → 지구과학 → 지구시스템과학(2026-11-25 교사 결정. 새 과목이 생기면 교사가 자리를 정함)
   - 과목 안 items: 단원 번호 순(I.01 → I.06 → II.01 …). 단원 번호가 없는 시뮬레이터는 unit을 비웁니다.
-  - 학생용 PDF가 있으면 pdf에 경로를 적습니다(과목폴더/PDF/파일.pdf). 카드에 '학생용 PDF ↓' 단추가 생깁니다.
-  - 아직 다듬는 중인 자료는 dev:true를 적습니다. 카드 제목 줄에 '개발중' 표시가 붙습니다.
-  - 과목의 바깥 자료실(노션 등)은 links에 적습니다: {type,title,href,embed}. 그 과목 카드 아래에 구분선을 긋고
-    embed(노션은 https://워크스페이스.notion.site/ebd/페이지ID)를 늘 펼친 상자로 보여 줍니다(제목 줄 오른쪽에 '새 탭으로 열기').
-  README.md의 '수업 자료' 목록도 같은 내용으로 함께 고칩니다.
+  - 학생용 PDF가 있으면 pdf에 경로를 적습니다(과목폴더/PDF/파일.pdf). 단추에 '학생용 PDF' 내려받기가 생깁니다.
+  - 아직 다듬는 중인 자료는 dev:true를 적습니다. 단추 오른쪽에 '개발중' 표시가 붙습니다.
+  - 과목의 바깥 자료실(노션 등)은 links에 적습니다: {type,title,href,embed}. 그 과목 상자 아래에 따로 놓는 넓은 상자로
+    embed(노션은 https://워크스페이스.notion.site/ebd/페이지ID)를 늘 펼쳐 보여 줍니다(제목 줄 오른쪽에 '새 탭으로 열기').
+  - 단추 앞의 작은 그림은 ICO에 자료 파일 이름(href의 일부)으로 적습니다. 그림이 없는 자료는 지구 모양 기본 그림이 나옵니다.
+  - 배경은 화면에 고정된 캔버스 하나(#scene)에 그리는 지구 단면입니다: 우주·하늘 → 구름 → 바다 → 해저. 스크롤에 맞춰 내려갑니다.
+    맨 위는 원주 기준으로 낮이면 해와 낮 하늘, 밤이면 그날 위상의 달과 별입니다(아래 '배경 장면' 스크립트).
+  README.md의 '수업 자료' 목록도 같은 내용·같은 순서로 함께 고칩니다.
 -->
 <style>
+/* 페이지 배경 전체가 하나의 장면: 우주에서 해저까지 내려가는 지구 단면 */
 :root{
-  --bg:#f5f5f7; --card:#fff; --ink:#1d1d1f; --t2:#6e6e73; --line:#e5e5ea;
-  --act:#0066cc; --sim:#1E8B3E; --dev:#C93400; --shadow:rgba(0,0,0,.08);
+  --ground:#eef3f6; --surface:#ffffff; --panel:rgba(255,255,255,.96); --rowbg:#eef3f7; --ink:#0f2233; --muted:#51616f; --line:#d2dbe2; --shadow:rgba(4,16,32,.28);
+  --accent:#0a66a8; --sim:#1f7a49; --dev:#b24a1c; --warm:#d08a00; --hot:#cf3f2c; --violet:#6d4bb0; --sea:#1487a8; --on-scene:#ffffff;
+  /* 장면 색 */
+  --s-sp0:#040816; --s-sp1:#0a1a40; --s-d0:#17468f; --s-d1:#1f5aa8; --s-d2:#2f74c4; --s-sk0:#1c4f9c; --s-sk1:#58a5df; --s-sk2:#c4e6f3;
+  --s-se0:#2a9ab6; --s-se1:#136488; --s-se2:#0a3558; --s-se3:#061c33;
+  --s-star:#fdf6dc; --s-moon:#f3ecd3; --s-sun:#ffc93c; --s-cloud:#ffffff; --s-wave1:#55b7cf; --s-wave2:#1f84a4; --s-ray:#bfeaf2;
+  --s-bed1:#d9bc85; --s-bed2:#b58c58; --s-bed3:#86654a; --s-bed4:#5b4438; --s-magma:#ff7a2f; --s-isle:#2d6a4a; --s-rock:#56636e; --s-coral:#e8613f; --s-paper:#fff6df;
   --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+  --r-card:14px;
 }
 @media (prefers-color-scheme:dark){
-  :root{--bg:#000;--card:#1c1c1e;--ink:#f5f5f7;--t2:#a1a1a6;--line:#2c2c2e;--act:#2997ff;--sim:#30D158;--dev:#FF9F0A}
+  :root{--ground:#08111a;--surface:#131d28;--panel:rgba(14,22,32,.94);--rowbg:#1c2936;--ink:#e8eef3;--muted:#9eaebb;--line:#2b3a48;--shadow:rgba(0,0,0,.55);--accent:#63b8f2;--sim:#62cd91;--dev:#f29a6a;--warm:#f2bb3d;--hot:#ff8472;--violet:#b9a0f2;--sea:#5cc6e0;
+    --s-d0:#0e2c5c;--s-d1:#143a74;--s-d2:#1c4a8c;--s-sk0:#0f2c5e;--s-sk1:#274f8a;--s-sk2:#6f8fb5;--s-se0:#1b6f8a;--s-se1:#0d4767;--s-se2:#072a47;--s-se3:#04142a;--s-cloud:#c9d6e6;--s-sun:#f2c24a;--s-wave1:#3b8fab;--s-wave2:#176682}
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{overflow-x:clip}   /* 좁은 화면에서 옆으로 밀리지 않게 */
-body{background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.5;-webkit-font-smoothing:antialiased;word-break:keep-all}
+html,body{overflow-x:clip}
+body{background:var(--s-sp1);color:var(--ink);font-family:var(--font);line-height:1.5;-webkit-font-smoothing:antialiased;word-break:keep-all}
 a{color:inherit;text-decoration:none}
-.wrap{max-width:1040px;margin:0 auto;padding:56px 24px 64px}
-header{margin-bottom:44px}
-header .eb{font-size:17px;font-weight:600;color:var(--t2)}
-header h1{font-size:clamp(32px,5vw,48px);font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-top:6px;text-wrap:balance}
-header p{font-size:18px;color:var(--t2);margin-top:12px}
-section{margin-top:40px}
-section h2{display:flex;align-items:baseline;gap:10px;font-size:26px;font-weight:700;letter-spacing:-.01em;padding-bottom:12px;border-bottom:1px solid var(--line);margin-bottom:16px}
-section h2 span{font-size:16px;font-weight:600;color:var(--t2)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:14px}   /* 300px보다 좁은 화면에서는 카드가 화면 폭에 맞춤 */
-.card{position:relative;display:flex;flex-direction:column;gap:6px;background:var(--card);border-radius:16px;padding:20px 22px;border:1px solid var(--line);transition:transform .2s,box-shadow .2s,border-color .2s}
-.card:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--shadow);border-color:var(--act)}
-.card .top{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700}
-.card .unit{color:var(--act)}
-.card .tag{padding:2px 10px;border-radius:9999px;font-size:13px;background:color-mix(in srgb,var(--act) 12%,transparent);color:var(--act)}
-.card .tag.sim{background:color-mix(in srgb,var(--sim) 14%,transparent);color:var(--sim)}
-.card .tag.dev{background:color-mix(in srgb,var(--dev) 14%,transparent);color:var(--dev)}   /* 개발중 표시 */
-.card .tt{font-size:20px;font-weight:700;line-height:1.35;text-wrap:balance}   /* 두 줄 제목의 줄 길이를 고르게 */
-.card .note{font-size:15px;color:var(--t2)}
-.card .go{margin-top:auto;padding-top:8px;font-size:15px;font-weight:600;color:var(--act)}
-.card .main::after{content:'';position:absolute;inset:0;border-radius:16px}   /* 카드 어디를 눌러도 열기 */
-.card .acts{display:flex;align-items:center;gap:14px;margin-top:auto;padding-top:8px}
-.card .acts .go{margin:0;padding:0}
-.card .pdf{position:relative;z-index:1;font-size:14px;font-weight:600;padding:4px 12px;border-radius:9999px;border:1px solid var(--line);color:var(--ink)}
-.card .pdf:hover{border-color:var(--act);color:var(--act)}
-.ext{margin-top:28px;padding-top:22px;border-top:1px solid var(--line)}   /* 구분선 */
-.ext .hd{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:17px;font-weight:700}
-.ext .hd .tag{padding:2px 10px;border-radius:9999px;font-size:13px;background:color-mix(in srgb,var(--ink) 8%,transparent)}
-.ext .hd a{margin-left:auto;font-size:14px;font-weight:600;color:var(--act);white-space:nowrap}
-.ext .box{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card)}
-.ext iframe{display:block;width:100%;height:min(75vh,760px);border:0;background:var(--card)}
-.tips{margin-top:56px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 26px}
-.tips h2{font-size:18px;font-weight:700;margin-bottom:10px}
-.tips ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px 20px;font-size:15px;color:var(--t2)}
-.tips kbd{display:inline-block;min-width:26px;padding:1px 7px;margin-right:6px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:600 13px var(--font);text-align:center}
-footer{margin-top:40px;font-size:14px;color:var(--t2)}
+#scene{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:22px 28px 72px}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:16px;font-weight:600;color:var(--on-scene)}
+.hero{min-height:min(72svh,640px);display:flex;flex-direction:column;justify-content:center;color:var(--on-scene);padding:40px 0 60px}
+.hero h1{font-size:clamp(40px,7vw,92px);font-weight:800;letter-spacing:-.035em;line-height:1.05;overflow-wrap:break-word;min-width:0}
+.hero p{font-size:clamp(17px,1.8vw,22px);font-weight:500;margin-top:16px;opacity:.92}
+section{width:min(100%,760px);margin-top:min(22vh,200px);padding:26px 26px 22px;border-radius:22px;background:var(--panel);box-shadow:0 18px 50px var(--shadow)}
+section:first-child{margin-top:0}
+section:nth-of-type(even){margin-left:auto}
+section.ext{margin-left:0}
+section.wide{width:100%}
+section h2{display:flex;align-items:baseline;gap:12px;font-size:30px;font-weight:800;letter-spacing:-.02em;margin-bottom:16px}
+section h2 span{font-size:17px;font-weight:600;color:var(--muted)}
+.rows{list-style:none;display:grid;gap:10px}
+.row{position:relative;display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:4px 16px;align-items:center;padding:14px 18px;border-radius:var(--r-card);background:var(--rowbg);border:1.5px solid transparent;transition:border-color .15s,transform .15s}
+.row:hover{border-color:var(--accent);transform:translateY(-1px)}
+.ico{width:56px;height:56px;border-radius:14px;background:var(--surface);color:var(--ink)}
+.ico svg{display:block;width:100%;height:100%}
+.row .unit{font-size:15px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+.row .unit.simu{color:var(--sim)}
+.row .tt{font-size:21px;font-weight:700;line-height:1.35}
+.row .main::after{content:'';position:absolute;inset:0;border-radius:var(--r-card)}
+.row .note{font-size:15px;color:var(--muted)}
+.row .side{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;white-space:nowrap}
+.dev{color:var(--dev);border:1.5px solid currentColor;border-radius:6px;padding:1px 8px;font-size:13px;font-weight:700}
+.pdf{position:relative;z-index:1;display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:9999px;background:var(--surface);border:1px solid var(--line);color:var(--ink)}
+.pdf:hover{border-color:var(--accent);color:var(--accent)}
+.pdf svg,.out svg{width:14px;height:14px}
+.ext .hd{display:flex;align-items:center;gap:12px;margin-bottom:12px;font-size:18px;font-weight:700}
+.ext .kind{font-size:14px;font-weight:600;color:var(--muted)}
+.out{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--accent);white-space:nowrap}
+.ext .box{border:1px solid var(--line);border-radius:var(--r-card);overflow:hidden;background:var(--surface)}
+.ext iframe{display:block;width:100%;height:min(75vh,760px);border:0;background:var(--surface)}
+.tips{margin-top:min(22vh,200px);padding:22px 26px;border-radius:22px;background:var(--panel);box-shadow:0 18px 50px var(--shadow)}
+.tips h2{font-size:19px;font-weight:800;margin-bottom:12px}
+.tips ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px 20px;font-size:15px;color:var(--muted)}
+.tips kbd{display:inline-block;min-width:28px;padding:1px 7px;margin-right:8px;border-radius:6px;border:1px solid var(--line);background:var(--rowbg);color:var(--ink);font:600 13px var(--font);text-align:center}
+footer{margin-top:28px;font-size:14px;color:var(--on-scene)}
 footer a{text-decoration:underline}
-/* 키보드(Tab)로 고를 때 지금 위치를 또렷하게 */
-a:focus-visible{outline:3px solid var(--act);outline-offset:3px;border-radius:6px}
-@supports selector(:has(*)){
-  .card .main:focus-visible{outline:none}
-  .card:has(.main:focus-visible){outline:3px solid var(--act);outline-offset:3px}   /* 제목 대신 카드 전체에 테두리 */
+a:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
+footer a:focus-visible{outline-color:var(--on-scene)}
+@supports selector(:has(*)){.row .main:focus-visible{outline:none}.row:has(.main:focus-visible){outline:3px solid var(--accent);outline-offset:2px}}
+@media (prefers-reduced-motion:reduce){.row{transition:none}.row:hover{transform:none}}
+@media (max-width:760px){
+  .wrap{padding:16px 16px 56px}
+  .hero{min-height:58svh;padding:24px 4px 40px}
+  section{padding:20px 14px 16px;border-radius:18px;margin-top:16vh}
+  section h2{font-size:24px;padding:0 4px}
+  .row{padding:12px 12px;grid-template-columns:48px minmax(0,1fr);gap:4px 12px}
+  .ico{width:48px;height:48px;border-radius:12px}
+  .row .side{grid-column:2}
+  .row .side:empty{display:none}
+  .row .tt{font-size:19px}
+  .tips{margin-top:16vh}
 }
-/* 기기에서 '움직임 줄이기'를 켜면 카드가 들썩이지 않게 */
-@media (prefers-reduced-motion:reduce){
-  .card{transition:border-color .2s}
-  .card:hover{transform:none}
-}
-/* 오늘 방문자 수(Firebase) — 머리 오른쪽 위, 좁은 화면에서는 제목 위. 누르면 최근 7일 막대그래프 */
-header{position:relative}
-.visitBox{position:absolute;top:0;right:0;z-index:5}
+/* 오늘 방문자 수(Firebase) — 머리 오른쪽 위. 누르면 최근 7일 막대그래프 */
+.visitBox{position:relative;z-index:5}
 .visitBox[hidden]{display:none}
-.visit{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:15px;font-weight:600;color:var(--t2);padding:5px 14px;border-radius:9999px;border:1px solid var(--line);background:var(--card);cursor:pointer}
-.visit:hover{border-color:var(--act)}
-.visit:focus-visible,.vbar:focus-visible,.vx:focus-visible{outline:3px solid var(--act);outline-offset:3px}
+.visit{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:15px;font-weight:600;color:var(--muted);padding:6px 14px;border-radius:var(--r-pill,9999px);border:1px solid var(--line);background:var(--surface);cursor:pointer}
+.visit:hover{border-color:var(--accent)}
+.visit:focus-visible,.vbar:focus-visible,.vx:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 .visit b{color:var(--ink);font-variant-numeric:tabular-nums}
-.visit i{width:8px;height:8px;border-radius:50%;background:var(--sim);display:inline-block}
-.visit em{font-style:normal;font-size:11px;transition:transform .2s}
-.visit[aria-expanded="true"] em{transform:rotate(180deg)}
-.vpanel{position:absolute;top:calc(100% + 8px);right:0;width:320px;padding:14px 16px 12px;border-radius:16px;border:1px solid var(--line);background:var(--card);box-shadow:0 8px 28px var(--shadow)}
+.visit svg{width:12px;height:12px;transition:transform .2s}
+.visit[aria-expanded="true"] svg{transform:rotate(180deg)}
+.vpanel{position:absolute;top:calc(100% + 8px);right:0;width:320px;padding:14px 16px 12px;border-radius:var(--r-card,14px);border:1px solid var(--line);background:var(--surface);color:var(--ink);box-shadow:0 8px 28px var(--shadow)}
 .vpanel[hidden]{display:none}
-.vh{display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:700;color:var(--ink)}
-.vx{font:inherit;font-size:20px;line-height:1;color:var(--t2);background:none;border:0;padding:2px 6px;border-radius:8px;cursor:pointer}
-.vread{margin:6px 0 10px;font-size:14px;color:var(--t2);min-height:21px}
+.vh{display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:700}
+.vx{font:inherit;font-size:20px;line-height:1;color:var(--muted);background:none;border:0;padding:2px 6px;border-radius:8px;cursor:pointer}
+.vread{margin:6px 0 10px;font-size:14px;color:var(--muted);min-height:21px}
 .vread b{color:var(--ink);font-size:18px;font-variant-numeric:tabular-nums;margin-left:2px}
-.vbars{display:flex;align-items:stretch;gap:2px;border-top:0}
-.vbar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:150px;padding:0;font:inherit;background:none;border:0;border-radius:8px;cursor:pointer;color:var(--t2)}
-.vbar:hover{background:var(--bg)}
+.vbars{display:flex;align-items:stretch;gap:2px}
+.vbar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:150px;padding:0;font:inherit;background:none;border:0;border-radius:8px;cursor:pointer;color:var(--muted)}
+.vbar:hover{background:var(--ground)}
 .vnum{font-size:12px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;visibility:hidden}
 .vbar[aria-pressed="true"] .vnum{visibility:visible}
-.vfill{width:60%;max-width:26px;background:var(--act);opacity:.35;border-radius:4px 4px 0 0}
+.vfill{width:60%;max-width:26px;background:var(--accent);opacity:.35;border-radius:4px 4px 0 0}
 .vbar[aria-pressed="true"] .vfill{opacity:1}
 .vlab{width:100%;padding-top:5px;border-top:1px solid var(--line);font-size:12px;text-align:center}
 .vbar[aria-pressed="true"] .vlab{color:var(--ink);font-weight:700}
-@media (max-width:640px){
-  .visitBox{position:relative;display:inline-block;margin-bottom:14px}
-  .vpanel{left:0;right:auto;width:min(320px,calc(100vw - 48px))}
-}
+@media (max-width:640px){.vpanel{right:auto;left:0;width:min(320px,calc(100vw - 40px))}.visitBox.end .vpanel{left:auto;right:0}}
+@media (prefers-reduced-motion:reduce){.visit svg{transition:none}}
 </style>
 </head>
 <body>
+<canvas id="scene" aria-hidden="true"></canvas>
 <div class="wrap">
-  <header>
-    <div class="visitBox" id="visit" hidden>
-      <button class="visit" id="visitBtn" type="button" aria-expanded="false" aria-controls="vpanel" title="최근 7일 방문자 보기"><i></i><span>오늘 방문자 <b id="visitN"></b>명</span><em aria-hidden="true">▾</em></button>
+  <div class="bar">
+    <span>진광고등학교 교사 김덕영</span>
+    <div class="visitBox end" id="visit" hidden>
+      <button class="visit" id="visitBtn" type="button" aria-expanded="false" aria-controls="vpanel" title="최근 7일 방문자 보기"><span>오늘 방문자 <b id="visitN"></b>명</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="vpanel" id="vpanel" hidden role="dialog" aria-label="최근 7일 방문자">
         <div class="vh"><span>최근 7일 방문자</span><button class="vx" id="vx" type="button" aria-label="닫기">×</button></div>
         <div class="vread" id="vread" aria-live="polite"></div>
         <div class="vbars" id="vbars"></div>
       </div>
     </div>
-    <div class="eb">진광고등학교 · 교사 김덕영</div>
-    <h1>과학 수업 자료</h1>
-    <p>수업 슬라이드와 시뮬레이터를 모았습니다. 카드를 누르면 바로 열립니다.</p>
+  </div>
+  <header class="hero">
+    <h1>지구과학 수업 자료</h1>
   </header>
   <main id="list"></main>
   <div class="tips">
@@ -146,12 +163,12 @@ header{position:relative}
 <script>
 /* 수업 자료 목록 — 자료를 추가·삭제할 때는 여기만 고칩니다 */
 const SUBJECTS=[
-  {name:'과학탐구실험2',grade:'고1',items:[
-    {unit:'I.06',type:'슬라이드',title:'생활 속 문제를 과학으로 해결해 볼까?',note:'학교 주변 환경 탐구',href:'과학탐구실험2/I.06environment.html'},
-  ]},
   {name:'통합과학2',grade:'고1',items:[
     {unit:'II.1.3',type:'슬라이드',title:'지구 환경의 변화',note:'복사 평형부터 엘니뇨까지',href:'통합과학2/II.1.3climate.html'},
     {unit:'II.1.3',type:'슬라이드',title:'지구 환경의 변화',note:'새로 만든 판 · 복사 평형부터 대처 방안까지',href:'통합과학2/II.1.3change.html',dev:true},
+  ]},
+  {name:'과학탐구실험2',grade:'고1',items:[
+    {unit:'I.06',type:'슬라이드',title:'생활 속 문제를 과학으로 해결해 볼까?',note:'학교 주변 환경 탐구',href:'과학탐구실험2/I.06environment.html'},
   ]},
   {name:'지구과학',grade:'고2',items:[
     {unit:'',type:'시뮬레이터',title:'행성의 역행과 순행 시뮬레이터',note:'',href:'지구과학/행성의 역행과 순행 시뮬레이터.html'},
@@ -168,33 +185,50 @@ const SUBJECTS=[
   ]},
 ];
 const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;};
+const ICON={down:'<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2v8M3.5 6.5L7 10l3.5-3.5M2.5 12.5h9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  out:'<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M5 3H3v8h8V9M8 2.5h3.5V6M11.5 2.5L6.5 7.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'};
+/* ── 단원마다 작은 그림(48×48). 선은 글자색, 강조만 개념 색 ── */
+const NS='http://www.w3.org/2000/svg',V=n=>'var(--'+n+')';
+const SV=(tag,a,p)=>{const e=document.createElementNS(NS,tag);for(const k in a)e.setAttribute(k,a[k]);p.appendChild(e);return e;};
+const L=(g,d,col,w)=>SV('path',{d,fill:'none',stroke:col?V(col):'currentColor','stroke-width':w||2.4,'stroke-linecap':'round','stroke-linejoin':'round'},g);
+const DOT=(g,x,y,r,col)=>SV('circle',{cx:x,cy:y,r,fill:col?V(col):'currentColor'},g);
+const ICO={
+  _(g){SV('circle',{cx:24,cy:24,r:16,fill:'none',stroke:V('sea'),'stroke-width':2.6},g);L(g,'M8 24h32M24 8c-9 9-9 23 0 32M24 8c9 9 9 23 0 32','sea',1.8);},   // 그림을 정하지 않은 자료
+  'I.06environment'(g){L(g,'M8 38h32M12 38V22h9v16M27 38V14h9v24');[[16,12,2.2],[22,8,1.5],[40,9,2],[42,20,1.4],[8,16,1.4]].forEach(([x,y,r])=>DOT(g,x,y,r,'warm'));},   // 학교 주변의 미세 먼지
+  'II.1.3climate'(g){DOT(g,11,11,5,'warm');L(g,'M5 40a22 22 0 0 1 38 0','sea',2.8);L(g,'M16 16l8 13m0 0l-5.5-1.5M24 29l.5-5.5','warm');L(g,'M31 30l7-13m0 0l-5 2.5M38 17l.5 5.5','hot');},   // 태양 복사가 들어오고 지구 복사가 나감
+  'II.1.3change'(g){L(g,'M9 8v31h31');L(g,'M12 34c8-1 15-5 19-12s5-9 8-13','hot',2.8);L(g,'M39 9l-6 1m6-1l1 6','hot',2.8);},   // 오르는 기온
+  '역행'(g){L(g,'M6 30C14 20 26 12 32 17c4 4-3 9-7 5c-4-5 5-10 17-8','hot');DOT(g,42,14,3.2,'hot');[[9,10],[38,34],[18,38]].forEach(([x,y])=>DOT(g,x,y,1.3));},   // 순행 → 역행 → 순행
+  '밀란코비치'(g){SV('ellipse',{cx:24,cy:25,rx:19,ry:11,fill:'none',stroke:'currentColor','stroke-width':2.2},g);DOT(g,17,25,4.5,'warm');DOT(g,43,25,3.6,'sea');L(g,'M40.6 17.5l4.8 15','',1.8);},   // 타원 궤도와 기울어진 자전축
+  'II.04surge'(g){L(g,'M4 30c7 0 9-14 20-14c8 0 11 6 9 10c-2-3-7-3-8 1c-1 4 5 7 12 5','sea',2.8);L(g,'M4 39h28l12-9');},   // 해안으로 밀려와 높아지는 물결
+  'II.05tide'(g){DOT(g,36,11,6,'warm');DOT(g,39,9,5,'surface');L(g,'M5 30c5-8 9-8 13 0s8 8 13 0s8-8 12 0','sea',2.8);L(g,'M5 40h38','',1.8);},   // 달과 조석 곡선
+  'III.01-02atmosphere'(g){L(g,'M6 41a20 20 0 0 1 36 0','sea',2.8);L(g,'M3 33a25 25 0 0 1 42 0','violet',2);L(g,'M15 7v17m0 0l-4-4m4 4l4-4','warm');L(g,'M33 24V7m0 0l-4 4m4-4l4 4','hot');},   // 대기를 지나는 열 출입
+  'III.03stability'(g){L(g,'M14 26a7 7 0 0 1 1-13.8a9 9 0 0 1 17 1.3a6.5 6.5 0 0 1 1 12.5z','sea',2.6);L(g,'M17 32l-2 5M24 32l-2 5M31 32l-2 5','sea');L(g,'M41 40V28m0 0l-3.5 3.5M41 28l3.5 3.5','hot');},   // 상승하는 공기와 구름·비
+  'III.04-05wind'(g){L(g,'M6 13c10-4 18 4 36 0M6 35c10-4 18 4 36 0','',1.8);L(g,'M8 24h30m0 0l-6-5m6 5l-6 5','sim',2.8);},   // 등압선과 나란한 바람
+};
 const list=document.getElementById('list');
 SUBJECTS.forEach(s=>{
   const sec=el('section'),h=el('h2',null,s.name);h.appendChild(el('span',null,s.grade));sec.appendChild(h);
-  const grid=el('div','grid');
+  const ul=el('ul','rows');
   s.items.forEach(it=>{
-    const card=el('div','card');
-    const top=el('div','top');
-    if(it.unit)top.appendChild(el('span','unit',it.unit+'.'));
-    top.appendChild(el('span','tag'+(it.type==='시뮬레이터'?' sim':''),it.type));
-    if(it.dev)top.appendChild(el('span','tag dev','개발중'));
-    card.appendChild(top);
-    const tt=el('div','tt'),a=el('a','main',it.title);a.href=encodeURI(it.href);tt.appendChild(a);card.appendChild(tt);
-    if(it.note)card.appendChild(el('div','note',it.note));
-    const acts=el('div','acts');acts.appendChild(el('span','go','열기 →'));
-    if(it.pdf){const p=el('a','pdf','학생용 PDF ↓');p.href=encodeURI(it.pdf);p.setAttribute('download','');acts.appendChild(p);}
-    card.appendChild(acts);
-    grid.appendChild(card);
+    const li=el('li','row'),sim=it.type==='시뮬레이터',body=el('div'),ico=el('div','ico');
+    {const sv=document.createElementNS(NS,'svg');sv.setAttribute('viewBox','0 0 48 48');sv.setAttribute('aria-hidden','true');const k=Object.keys(ICO).find(k=>it.href.includes(k));(ICO[k]||ICO._)(sv);ico.appendChild(sv);li.appendChild(ico);}
+    body.appendChild(el('div','unit'+(sim?' simu':''),it.unit||it.type));
+    const tt=el('div','tt'),a=el('a','main',it.title);a.href=encodeURI(it.href);tt.appendChild(a);body.appendChild(tt);
+    if(it.note)body.appendChild(el('div','note',it.note));li.appendChild(body);
+    const side=el('div','side');
+    if(it.dev)side.appendChild(el('span','dev','개발중'));
+    if(it.pdf){const p=el('a','pdf');p.innerHTML=ICON.down;p.append('학생용 PDF');p.href=encodeURI(it.pdf);p.setAttribute('download','');side.appendChild(p);}
+    li.appendChild(side);ul.appendChild(li);
   });
-  sec.appendChild(grid);
-  (s.links||[]).forEach(L=>{   // 바깥 자료실(노션 등): 구분선 아래 늘 펼친 상자
-    const w=el('div','ext'),hd=el('div','hd');
-    hd.appendChild(el('span','tag',L.type));hd.appendChild(el('span',null,L.title));
-    const out=el('a',null,'새 탭으로 열기 ↗');out.href=L.href;out.target='_blank';out.rel='noopener';hd.appendChild(out);w.appendChild(hd);
-    if(L.embed){const box=el('div','box'),f=el('iframe');f.src=L.embed;f.title=L.title;f.loading='lazy';box.appendChild(f);w.appendChild(box);}
-    sec.appendChild(w);
-  });
+  sec.appendChild(ul);
   list.appendChild(sec);
+  (s.links||[]).forEach(K=>{   // 바깥 자료실(노션 등): 과목 상자 바로 아래에 따로 놓는 넓은 상자
+    const w=el('section','ext wide'),hd=el('div','hd');
+    hd.appendChild(el('span',null,K.title));hd.appendChild(el('span','kind',s.name+' · '+K.type));
+    const out=el('a','out');out.append('새 탭으로 열기');out.insertAdjacentHTML('beforeend',ICON.out);out.href=K.href;out.target='_blank';out.rel='noopener';hd.appendChild(out);w.appendChild(hd);
+    if(K.embed){const box=el('div','box'),f=el('iframe');f.src=K.embed;f.title=K.title;f.loading='lazy';box.appendChild(f);w.appendChild(box);}
+    list.appendChild(w);
+  });
 });
 /* 오늘 방문자 수 — Firebase Firestore의 visits/날짜(한국 시간) 문서에 n을 셉니다.
    같은 브라우저는 하루 한 번만 1을 더합니다. 실패하면 숫자 칸을 숨긴 채 둡니다.
@@ -246,6 +280,115 @@ SUBJECTS.forEach(s=>{
   $('vx').onclick=()=>{open(false);btn.focus();};
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden){open(false);btn.focus();}});
   document.addEventListener('click',e=>{if(!panel.hidden&&!$('visit').contains(e.target))open(false);});
+})();
+
+/* ── 배경 장면: 세로 4화면 높이의 지구 단면(0 우주 · 1 높은 하늘 · 2 해수면 · 3.5 해저)을 스크롤에 맞춰 내려다봄 ── */
+(()=>{
+  const cv=document.getElementById('scene'),c=cv.getContext('2d'),STILL=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  let W=0,H=0,cam=0,pal={},t=0,last=0;
+  const KEYS=['sp0','sp1','sk0','sk1','sk2','se0','se1','se2','se3','star','moon','sun','cloud','wave1','wave2','ray','bed1','bed2','bed3','bed4','magma','isle','rock','coral','paper'];
+  const readPal=()=>{const cs=getComputedStyle(document.documentElement);KEYS.forEach(k=>pal[k]=cs.getPropertyValue('--s-'+k).trim());
+    if(SUN.day)[['sp0','d0'],['sp1','d1'],['sk0','d2']].forEach(([a,b])=>pal[a]=cs.getPropertyValue('--s-'+b).trim());   /* 낮에는 맨 위도 낮 하늘 */};
+  let sd=5;const rnd=()=>(sd=(sd*16807)%2147483647)/2147483647;
+  const stars=Array.from({length:170},()=>({x:rnd(),y:rnd()*1.25,r:.5+rnd()*1.5,ph:rnd()*6.3}));
+  const clouds=Array.from({length:7},(_,i)=>({x:rnd(),y:1.32+i*.085+rnd()*.03,s:.7+rnd()*.8,v:.004+rnd()*.008,rain:i===4}));
+  const bubbles=Array.from({length:46},()=>({x:rnd(),y:rnd(),r:1.5+rnd()*4,v:.02+rnd()*.035,ph:rnd()*6.3}));
+  const smoke=Array.from({length:16},()=>({ph:rnd(),dx:rnd()-.5}));
+  const FONT=getComputedStyle(document.body).fontFamily;
+  /* 달의 이각(0 삭 · 90 상현 · 180 망 · 270 하현): 평균 이각에 큰 섭동 항만 더함(오차 1° 안팎) */
+  const MOON=(()=>{const d=Date.now()/864e5+2440587.5-2451545,R=Math.PI/180,D=(297.8502+12.19074912*d)*R,M=(357.5291+.98560028*d)*R,m=(134.9634+13.06499295*d)*R;
+    const e=(((297.8502+12.19074912*d)+6.289*Math.sin(m)+1.274*Math.sin(2*D-m)+.658*Math.sin(2*D)-2.101*Math.sin(M))%360+360)%360;
+    const name=e<12||e>348?'삭':e<78?'초승달':e<102?'상현달':e<168?'차는 달':e<192?'보름달':e<258?'기우는 달':e<282?'하현달':'그믐달';return {e,name};})();
+  /* 원주(북위 37.34°·동경 127.92°)의 해: 적위와 균시차를 날짜로 어림해 지금 고도와 남중 고도를 구함. 고도가 0°보다 높으면 낮 */
+  const SUN=(()=>{const now=new Date(),R=Math.PI/180,lat=37.34,lon=127.92;
+    const n=(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate())-Date.UTC(now.getUTCFullYear(),0,0))/864e5,B=2*Math.PI*(n-81)/364;
+    const dec=-23.44*Math.cos(2*Math.PI*(n+10)/365),eot=9.87*Math.sin(2*B)-7.53*Math.cos(B)-1.5*Math.sin(B);
+    const ut=now.getUTCHours()+now.getUTCMinutes()/60,ha=(ut+lon/15+eot/60-12)*15*R;
+    const alt=Math.asin(Math.sin(lat*R)*Math.sin(dec*R)+Math.cos(lat*R)*Math.cos(dec*R)*Math.cos(ha))/R;
+    /* 낮달: 달의 황경 = 해의 황경 + 이각, 적위는 황도 위에 있다고 보고 어림(오차 5° 안팎). 고도 8° 이상이고 너무 가늘지 않을 때만 */
+    const e=MOON.e,lm=(280.46+.9856474*(Date.now()/864e5+2440587.5-2451545)+e)*R,dm=23.44*Math.sin(lm),hm=ha-e*R;
+    const altM=Math.asin(Math.sin(lat*R)*Math.sin(dm*R)+Math.cos(lat*R)*Math.cos(dm*R)*Math.cos(hm))/R;
+    return {day:alt>-.83,noon:Math.round(90-lat+dec),moonUp:altM>8&&e>30&&e<330};})();
+  const wisps=Array.from({length:7},(_,i)=>({x:rnd(),y:.08+i*.13+rnd()*.05,s:.9+rnd()*1.1,v:.0015+rnd()*.003}));
+  const Y=w=>(w-cam)*H;
+  const resize=()=>{const d=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=W*d;cv.height=H*d;c.setTransform(d,0,0,d,0,0);};
+  const scroll=()=>{const max=document.documentElement.scrollHeight-innerHeight;cam=max>0?Math.min(1,scrollY/max)*3:0;};
+  const cloud=(x,y,s)=>{c.beginPath();[[0,0,26],[30,-14,30],[62,-4,24],[86,6,18],[-22,8,16]].forEach(([dx,dy,r])=>{c.moveTo(x+(dx+r)*s,y+dy*s);c.arc(x+dx*s,y+dy*s,r*s,0,6.3);});c.rect(x-22*s,y+2*s,108*s,22*s);c.fill();};
+  const surf=(x,k)=>Y(2)+ (6+k*3)*Math.sin(x/(90+k*40)+t*(.9-k*.2)+k*2)+k*16;      // 물결 k번째 겹
+  const bed=x=>3.52-.2*Math.exp(-((((x/W)-.72)/.1)**2))+.035*Math.sin(x/W*7);       // 해저 지형(화면 높이 단위), 오른쪽에 해산
+  function draw(){
+    c.clearRect(0,0,W,H);
+    /* 하늘: 우주 → 대기 */
+    let g=c.createLinearGradient(0,Y(0),0,Y(2));[[0,'sp0'],[.42,'sp1'],[.58,'sk0'],[.8,'sk1'],[1,'sk2']].forEach(([o,k])=>g.addColorStop(o,pal[k]));c.fillStyle=g;c.fillRect(0,0,W,H);
+    if(Y(1.3)>0){   /* 별·달·행성 */
+      if(!SUN.day){c.fillStyle=pal.star;stars.forEach(s=>{const y=Y(s.y);if(y<-4||y>H)return;c.globalAlpha=Math.max(0,1-s.y/1.25)*(.55+.45*Math.sin(t*1.3+s.ph));c.beginPath();c.arc(s.x*W,y,s.r,0,6.3);c.fill();});c.globalAlpha=1;}
+      if(SUN.day){   /* 낮 하늘: 높은 곳의 새털구름(권운)과, 떠 있는 날에는 낮달 */
+        c.strokeStyle=pal.cloud;c.lineCap='round';
+        wisps.forEach(w=>{const x=((w.x+t*w.v)%1.3-.2)*W,y=Y(w.y),k=w.s*Math.max(.7,Math.min(1.4,W/1100));if(y<-60||y>H+60)return;
+          for(let j=0;j<4;j++){const q=k*(1-j*.13);c.globalAlpha=.3-j*.05;c.lineWidth=1.8-j*.25;c.beginPath();c.moveTo(x+j*22*k,y+j*9*k);c.quadraticCurveTo(x+j*22*k+60*q,y+j*9*k-22*q,x+j*22*k+130*q,y+j*9*k-27*q);c.quadraticCurveTo(x+j*22*k+148*q,y+j*9*k-29*q,x+j*22*k+152*q,y+j*9*k-19*q);c.stroke();}});
+        c.globalAlpha=1;
+        if(SUN.moonUp){const dx=W*(W<700?.2:.52),dy=Y(W<700?.2:.16),dr=Math.min(W,H)*.03,de=MOON.e*Math.PI/180;
+          c.save();c.translate(dx,dy);if(MOON.e>=180)c.scale(-1,1);c.fillStyle=pal.cloud;c.globalAlpha=.7;c.beginPath();c.arc(0,0,dr,-Math.PI/2,Math.PI/2);c.ellipse(0,0,dr*Math.abs(Math.cos(de)),dr,0,Math.PI/2,-Math.PI/2,Math.cos(de)>0);c.fill();c.restore();
+          c.fillStyle=pal.cloud;c.globalAlpha=.85;c.font='600 14px '+FONT;c.textAlign='center';c.fillText('낮달 '+MOON.name,dx,dy+dr+22);c.globalAlpha=1;}
+      }
+      /* 오늘의 달: 달과 해의 황경 차(이각)를 날짜로 계산해 위상을 그림. 북반구에서 보는 방향(차는 달은 오른쪽이 밝음) */
+      const mx=W*(W<700?.74:.82),my=Y(W<700?.2:.3),mr=Math.min(W,H)*.055,e=MOON.e*Math.PI/180,wax=MOON.e<180;
+      if(SUN.day){   /* 낮: 해와 오늘의 남중 고도 */
+        c.strokeStyle=c.fillStyle=pal.sun;c.lineWidth=mr*.11;c.lineCap='round';for(let i=0;i<12;i++){const a=i*Math.PI/6+t*.05;c.beginPath();c.moveTo(mx+mr*1.3*Math.cos(a),my+mr*1.3*Math.sin(a));c.lineTo(mx+mr*1.62*Math.cos(a),my+mr*1.62*Math.sin(a));c.stroke();}
+        c.beginPath();c.arc(mx,my,mr,0,6.3);c.fill();
+        c.fillStyle=pal.star;c.globalAlpha=.9;c.font='600 14px '+FONT;c.textAlign='center';c.fillText('오늘 해의 남중 고도 '+SUN.noon+'°',mx,my+mr*1.62+26);c.globalAlpha=1;
+      }else{
+        c.save();c.translate(mx,my);c.fillStyle=pal.sk0;c.globalAlpha=.55;c.beginPath();c.arc(0,0,mr,0,6.3);c.fill();c.globalAlpha=1;
+      if(!wax)c.scale(-1,1);c.fillStyle=pal.moon;c.beginPath();c.arc(0,0,mr,-Math.PI/2,Math.PI/2);c.ellipse(0,0,mr*Math.abs(Math.cos(e)),mr,0,Math.PI/2,-Math.PI/2,Math.cos(e)>0);c.fill();c.restore();
+      c.fillStyle=pal.star;c.globalAlpha=.9;c.font='600 14px '+FONT;c.textAlign='center';c.fillText('오늘의 달 '+MOON.name,mx,my+mr+26);c.globalAlpha=1;
+      }
+      /* 행성이 하늘에서 그리는 길: 순행 → 역행 → 순행(지구 1 AU·화성 1.524 AU로 계산) */
+      if(!SUN.day){const px=W*.62,py=Y(.62),sc=Math.min(W*.42,560),lam=u=>{const xe=Math.cos(6.283*u),ye=Math.sin(6.283*u),a=6.283*u/1.881;return Math.atan2(1.524*Math.sin(a)-ye,1.524*Math.cos(a)-xe);};
+      const pos=u=>[px-lam(u)*sc*.62,py-Math.sin(u/.42*Math.PI)*H*.045];
+      c.strokeStyle=pal.star;c.globalAlpha=.5;c.lineWidth=1.5;c.setLineDash([2,8]);c.lineCap='round';c.beginPath();for(let u=-.42;u<=.42;u+=.006){const[q,r]=pos(u);u===-.42?c.moveTo(q,r):c.lineTo(q,r);}c.stroke();c.setLineDash([]);c.globalAlpha=1;
+      const[qx,qy]=pos(((t*.02)%.84)-.42);c.fillStyle=pal.coral;c.beginPath();c.arc(qx,qy,5,0,6.3);c.fill();}
+    }
+    /* 구름·비·바람 */
+    if(Y(1.15)<H&&Y(2)>0){
+      c.strokeStyle=pal.cloud;c.lineCap='round';
+      for(let i=0;i<5;i++){const y0=Y(1.42+i*.115),A=H*.02,L=W*.32+i*40;c.globalAlpha=.55;c.lineWidth=2.2;c.setLineDash([26,34]);c.lineDashOffset=-t*(34+i*9);c.beginPath();for(let x=-20;x<=W+20;x+=16){const y=y0+A*Math.sin(x/L*6.283+i*1.7);x<0?c.moveTo(x,y):c.lineTo(x,y);}c.stroke();}
+      c.setLineDash([]);c.globalAlpha=1;
+      clouds.forEach(k=>{const x=((k.x+t*k.v)%1.3-.15)*W,y=Y(k.y),s=k.s*Math.max(.7,Math.min(1.5,W/900));if(y<-80||y>H+80)return;
+        if(k.rain){c.strokeStyle=pal.wave2;c.lineWidth=2.4;c.globalAlpha=.8;for(let i=0;i<8;i++){const f=((t*.9+i*.37)%1),rx=x+(i*12-10)*s,ry=y+26*s+f*H*.11;c.beginPath();c.moveTo(rx,ry);c.lineTo(rx-5,ry+13);c.stroke();}c.globalAlpha=1;}
+        c.fillStyle=pal.cloud;c.globalAlpha=.96;cloud(x,y,s);c.globalAlpha=1;});
+      /* 라디오존데(관측 풍선) */
+      const bx=W*.08,by=Y(1.95-((t*.012)%.8));c.strokeStyle=pal.cloud;c.lineWidth=1.4;c.beginPath();c.moveTo(bx,by+14);c.lineTo(bx,by+46);c.stroke();c.fillStyle=pal.coral;c.beginPath();c.ellipse(bx,by,12,15,0,0,6.3);c.fill();c.fillStyle=pal.paper;c.fillRect(bx-5,by+46,10,9);
+    }
+    /* 바다 */
+    if(Y(2)<H+40){
+      /* 섬과 등대(물결보다 뒤) */
+      const ix=W*.9,iy=Y(2);c.fillStyle=pal.isle;c.beginPath();c.moveTo(ix-W*.13,iy+20);c.quadraticCurveTo(ix-W*.03,iy-H*.1,ix+W*.02,iy-H*.07);c.quadraticCurveTo(ix+W*.07,iy-H*.05,ix+W*.12,iy+20);c.fill();
+      c.fillStyle=pal.paper;c.beginPath();c.moveTo(ix-6,iy-H*.075);c.lineTo(ix-3.5,iy-H*.075-34);c.lineTo(ix+3.5,iy-H*.075-34);c.lineTo(ix+6,iy-H*.075);c.fill();c.fillStyle=pal.coral;c.fillRect(ix-5,iy-H*.075-42,10,8);
+      [['wave1',0],['wave2',1]].forEach(([k,n])=>{c.fillStyle=pal[k];c.beginPath();c.moveTo(0,H+10);for(let x=0;x<=W+12;x+=12)c.lineTo(x,surf(x,n));c.lineTo(W,H+10);c.fill();});
+      /* 관측 부표 */
+      const ux=W*.26,uy=surf(ux,0);c.save();c.translate(ux,uy);c.rotate(.08*Math.sin(t*.9));c.fillStyle=pal.coral;c.fillRect(-9,-12,18,14);c.fillStyle=pal.paper;c.fillRect(-2,-34,4,22);c.beginPath();c.arc(0,-36,4,0,6.3);c.fill();c.restore();
+      g=c.createLinearGradient(0,Y(2),0,Y(3.6));[[0,'se0'],[.3,'se1'],[.7,'se2'],[1,'se3']].forEach(([o,k])=>g.addColorStop(o,pal[k]));c.fillStyle=g;c.beginPath();c.moveTo(0,H+10);for(let x=0;x<=W+12;x+=12)c.lineTo(x,surf(x,2));c.lineTo(W,H+10);c.fill();
+      /* 물속으로 드는 빛 */
+      c.fillStyle=pal.ray;for(let i=0;i<5;i++){const x0=W*(.1+i*.2)+40*Math.sin(t*.2+i),top=Y(2)+30;c.globalAlpha=.07+.03*Math.sin(t*.5+i*2);c.beginPath();c.moveTo(x0,top);c.lineTo(x0+60,top);c.lineTo(x0-80,top+H*.9);c.lineTo(x0-220,top+H*.9);c.fill();}c.globalAlpha=1;
+      /* 해류 */
+      c.strokeStyle=pal.ray;c.lineWidth=2;for(let i=0;i<4;i++){const y0=Y(2.5+i*.2),L=W*.5;c.globalAlpha=.3;c.setLineDash([30,44]);c.lineDashOffset=(i%2?1:-1)*t*(20+i*5);c.beginPath();for(let x=-20;x<=W+20;x+=18){const y=y0+H*.018*Math.sin(x/L*6.283+i);x<0?c.moveTo(x,y):c.lineTo(x,y);}c.stroke();}c.setLineDash([]);c.globalAlpha=1;
+      /* 공기 방울 */
+      c.strokeStyle=pal.ray;c.lineWidth=1.3;bubbles.forEach(b=>{const yw=3.45-((b.y+t*b.v)%1)*1.38,y=Y(yw);if(y<-10||y>H+10)return;c.globalAlpha=.5*Math.min(1,(yw-2.06)*8);if(c.globalAlpha<=0)return;c.beginPath();c.arc(b.x*W+8*Math.sin(t+b.ph),y,b.r,0,6.3);c.stroke();});c.globalAlpha=1;
+      /* 해저: 열수 분출과 지층 */
+      if(Y(3.2)<H){
+        const vx=W*.72,vy=Y(bed(vx));smoke.forEach(s=>{const f=(s.ph+t*.07)%1;c.globalAlpha=.42*(1-f);c.fillStyle=pal.rock;c.beginPath();c.arc(vx+s.dx*70*f+10*Math.sin(t+s.ph*9),vy-f*H*.3,6+f*26,0,6.3);c.fill();});c.globalAlpha=1;
+        ['bed1','bed2','bed3','bed4'].forEach((k,n)=>{c.fillStyle=pal[k];c.beginPath();c.moveTo(0,H+10);for(let x=0;x<=W+12;x+=12)c.lineTo(x,Y(bed(x)+n*.1+(n?.012*Math.sin(x/W*9+n*2):0)));c.lineTo(W,H+10);c.fill();});
+        const mg=c.createRadialGradient(vx,Y(4.02),10,vx,Y(4.02),H*.32);mg.addColorStop(0,pal.magma);mg.addColorStop(1,'transparent');c.fillStyle=mg;c.globalAlpha=.8+.15*Math.sin(t*1.2);c.fillRect(vx-H*.4,Y(3.6),H*.8,H*.5);c.globalAlpha=1;
+        c.strokeStyle=pal.magma;c.lineWidth=3;c.lineCap='round';c.beginPath();c.moveTo(vx,Y(3.98));c.quadraticCurveTo(vx-14,Y(3.7),vx,vy+6);c.stroke();
+      }
+    }
+  }
+  const frame=ms=>{if(!last)last=ms;t+=Math.min(.05,(ms-last)/1000);last=ms;draw();requestAnimationFrame(frame);};
+  readPal();resize();scroll();
+  addEventListener('resize',()=>{resize();scroll();if(STILL)draw();});
+  addEventListener('scroll',()=>{scroll();if(STILL)draw();},{passive:true});
+  matchMedia('(prefers-color-scheme:dark)').addEventListener('change',()=>{readPal();if(STILL)draw();});
+  if(STILL){t=14;draw();}else requestAnimationFrame(frame);
 })();
 </script>
 </body>
