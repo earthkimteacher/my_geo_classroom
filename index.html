@@ -298,7 +298,10 @@ SUBJECTS.forEach(s=>{
   /* 달의 이각(0 삭 · 90 상현 · 180 망 · 270 하현): 평균 이각에 큰 섭동 항만 더함(오차 1° 안팎) */
   const MOON=(()=>{const d=Date.now()/864e5+2440587.5-2451545,R=Math.PI/180,D=(297.8502+12.19074912*d)*R,M=(357.5291+.98560028*d)*R,m=(134.9634+13.06499295*d)*R;
     const e=(((297.8502+12.19074912*d)+6.289*Math.sin(m)+1.274*Math.sin(2*D-m)+.658*Math.sin(2*D)-2.101*Math.sin(M))%360+360)%360;
-    const name=e<12||e>348?'삭':e<78?'초승달':e<102?'상현달':e<168?'차는 달':e<192?'보름달':e<258?'기우는 달':e<282?'하현달':'그믐달';return {e,name};})();
+    /* 이름: 삭·초승달(36°)·상현달·보름달·하현달·그믐달(324°) 무렵(앞뒤 12°)은 그 이름만, 그 사이는 '어느 달 → 어느 달'(지나온 달 → 다가오는 달) */
+    const name=e<12||e>348?'삭':e<24?'삭 → 초승달':e<48?'초승달':e<78?'초승달 → 상현달':e<102?'상현달':e<168?'상현달 → 보름달':e<192?'보름달':e<258?'보름달 → 하현달':e<282?'하현달':e<312?'하현달 → 그믐달':e<336?'그믐달':'그믐달 → 삭';return {e,name};})();
+  /* 달 이름표: 좁은 화면에서 '어느 달 → 어느 달'은 두 줄로(화면 끝에 닿지 않게) */
+  const moonLabel=(pre,x,y)=>{if(W<700&&MOON.name.includes('→')){c.fillText(pre,x,y);c.fillText(MOON.name,x,y+19);}else c.fillText(pre+' '+MOON.name,x,y);};
   /* 원주(북위 37.34°·동경 127.92°)의 해: 적위와 균시차를 날짜로 어림해 지금 고도와 남중 고도를 구함. 고도가 0°보다 높으면 낮 */
   const SUN=(()=>{const now=new Date(),R=Math.PI/180,lat=37.34,lon=127.92;
     const n=(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate())-Date.UTC(now.getUTCFullYear(),0,0))/864e5,B=2*Math.PI*(n-81)/364;
@@ -329,7 +332,7 @@ SUBJECTS.forEach(s=>{
         c.globalAlpha=1;
         if(SUN.moonUp){const dx=W*(W<700?.2:.52),dy=Y(W<700?.2:.16),dr=Math.min(W,H)*.03,de=MOON.e*Math.PI/180;
           c.save();c.translate(dx,dy);if(MOON.e>=180)c.scale(-1,1);c.fillStyle=pal.cloud;c.globalAlpha=.7;c.beginPath();c.arc(0,0,dr,-Math.PI/2,Math.PI/2);c.ellipse(0,0,dr*Math.abs(Math.cos(de)),dr,0,Math.PI/2,-Math.PI/2,Math.cos(de)>0);c.fill();c.restore();
-          c.fillStyle=pal.cloud;c.globalAlpha=.85;c.font='600 14px '+FONT;c.textAlign='center';c.fillText('낮달 '+MOON.name,dx,dy+dr+22);c.globalAlpha=1;}
+          c.fillStyle=pal.cloud;c.globalAlpha=.85;c.font='600 14px '+FONT;c.textAlign='center';moonLabel('낮달',dx,dy+dr+22);c.globalAlpha=1;}
       }
       /* 오늘의 달: 달과 해의 황경 차(이각)를 날짜로 계산해 위상을 그림. 북반구에서 보는 방향(차는 달은 오른쪽이 밝음) */
       const mx=W*(W<700?.74:.82),my=Y(W<700?.2:.3),mr=Math.min(W,H)*.055,e=MOON.e*Math.PI/180,wax=MOON.e<180;
@@ -340,7 +343,7 @@ SUBJECTS.forEach(s=>{
       }else{
         c.save();c.translate(mx,my);c.fillStyle=pal.sk0;c.globalAlpha=.55;c.beginPath();c.arc(0,0,mr,0,6.3);c.fill();c.globalAlpha=1;
       if(!wax)c.scale(-1,1);c.fillStyle=pal.moon;c.beginPath();c.arc(0,0,mr,-Math.PI/2,Math.PI/2);c.ellipse(0,0,mr*Math.abs(Math.cos(e)),mr,0,Math.PI/2,-Math.PI/2,Math.cos(e)>0);c.fill();c.restore();
-      c.fillStyle=pal.star;c.globalAlpha=.9;c.font='600 14px '+FONT;c.textAlign='center';c.fillText('오늘의 달 '+MOON.name,mx,my+mr+26);c.globalAlpha=1;
+      c.fillStyle=pal.star;c.globalAlpha=.9;c.font='600 14px '+FONT;c.textAlign='center';moonLabel('오늘의 달',mx,my+mr+26);c.globalAlpha=1;
       }
       /* 행성이 하늘에서 그리는 길: 순행 → 역행 → 순행(지구 1 AU·화성 1.524 AU로 계산) */
       if(!SUN.day){const px=W*.62,py=Y(.62),sc=Math.min(W*.42,560),lam=u=>{const xe=Math.cos(6.283*u),ye=Math.sin(6.283*u),a=6.283*u/1.881;return Math.atan2(1.524*Math.sin(a)-ye,1.524*Math.cos(a)-xe);};
