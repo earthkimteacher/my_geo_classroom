@@ -538,7 +538,7 @@ Deck.scene('s05',{steps:2,
   - 동기화 폴더에 `.git`이 없는 PC(다른 PC의 Claude가 'git 기록이 없다'고 한 경우)는 그 폴더를 GitHub에 연결합니다: `git init -b main` → `git remote add origin https://github.com/earthkimteacher/my_geo_classroom.git` → `git fetch` → `git reset origin/main`(파일은 그대로 두고 기록만 GitHub에 맞춤) → `git branch -u origin/main` → `git status`로 GitHub와 다른 파일 확인. `git status`에 이상한 오류가 나면 고치려 하지 말고 교사에게 알립니다. 모든 작업은 GitHub에 있으므로, 최악의 경우 새로 clone하면 됩니다.
   - 다른 PC에서 처음 작업할 때는 Git 설치(`winget install Git.Git`), `git config core.longpaths true` 확인, 첫 push 때 GitHub 로그인이 필요할 수 있습니다.
   - **동기화가 안 된 일(2026-11-03):** 학교 PC가 커널 패닉으로 멈춘 사이 다른 PC에서 작업·push했는데, 학교 PC 폴더에는 그 파일들이 들어오지 않았음(파일은 전날 작업 그대로, `.git`도 커밋 5개 뒤처짐). 그래서 시작할 때 `git fetch` 뒤 `git status -sb`로 뒤처졌는지 보고, 로컬에 커밋하지 않은 파일이 있으면 그 내용이 GitHub 쪽에 다 들어 있는지 확인한 뒤 로컬 본을 세션 임시 폴더에 백업하고 pull합니다(교사에게 알림).
-- **맥에서 작업할 때**(2026-10-28 III.01~02를 맥에서 만듦): 저장소 `~/Documents/my_geo_classroom`(GitHub에서 clone), Node는 Homebrew로 설치(`node --check` 가능), 미리보기는 `python3 -m http.server 8080` → `http://localhost:8080/과목폴더/파일.html`, `.claude/launch.json`은 `.git/info/exclude`로 저장소에 올리지 않음.
+- **맥에서 작업할 때**(2026-10-28 III.01~02를 맥에서 만듦): 저장소 `~/Documents/Claude/my_geo_classroom`(GitHub에서 clone, 2026-11-26 교사 요청으로 `~/Documents/my_geo_classroom`에서 옮김), Node는 Homebrew로 설치(`node --check` 가능), 미리보기는 `python3 -m http.server 8080` → `http://localhost:8080/과목폴더/파일.html`, `.claude/launch.json`은 `.git/info/exclude`로 저장소에 올리지 않음.
 - 저장소는 앱이 세션용으로 만든 임시 폴더에 두지 않습니다(세션을 지우면 함께 지워짐).
 
 ## 만든 수업 기록
