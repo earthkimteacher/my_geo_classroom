@@ -123,9 +123,6 @@ html.print #s01 #s01-sun,html.print #s01 #s01-stars{display:none}
 html.print #s01 #s01-earth{fill:#dbe7f1}
 html.print #s01 #s01-atmos{opacity:.45}
 html.print #s01 [stroke="#FFD60A"]{stroke:#C9A100}
-/* s02 키워드 다섯 개(점 간격 340) */
-#s02 .kw-n{width:400px;top:650px;font-size:40px}
-#s02 .kw-s{width:400px;top:712px;font-size:28px;line-height:1.4}
 /* s05 그래프 */
 #s05 #s05-graph{overflow:visible;z-index:2}
 #s05-card .ws-row{padding:12px 0}
@@ -245,35 +242,68 @@ html.print #s23-hb .dim,html.print #s24-hb .dim{filter:none}
   <div class="abs" style="right:120px;top:80px;font-size:26px;font-weight:600;color:#a1a1a6;letter-spacing:-.01em" data-in="900">2026 진광고등학교 교사 김덕영</div>
   <div class="abs t-eyebrow" style="left:160px;top:300px" data-in="900">지구시스템과학 · Ⅲ. 강수 과정과 대기의 운동</div>
   <div class="abs t-title" id="s01-title" style="left:156px;top:352px;font-size:92px;letter-spacing:-.035em;line-height:1.16" data-in="1100">01. 지구의 대기와 생명체<br>02. 지구 열수지</div>
-  <div class="abs t-lead mute" style="left:160px;top:600px" data-in="1500">선택적 흡수 · 생명 가능 지대 · 지구 열수지</div>
   <div class="abs" id="s01-legend" style="left:160px;top:704px;display:flex;gap:40px;font-size:28px;font-weight:600" data-in="1900"><span><span class="c-sun">∿</span> 태양 복사 에너지</span><span><span class="c-ir">∿</span> 지구 복사 에너지</span></div>
 </section>
 
 <!-- ═══ s02 오늘의 키워드 ═══ -->
-<section class="slide" id="s02" data-tile="parchment" data-title="오늘의 키워드" data-notes="두 단원에서 따라갈 키워드 네 개입니다. 1~2는 01. 지구의 대기와 생명체, 3~4는 02. 지구 열수지입니다. 다음 장부터 오른쪽 위에 지금 배우는 키워드가 표시됩니다.">
+<section class="slide" id="s02" data-tile="parchment" data-title="오늘의 키워드" data-notes="두 단원에서 배울 개념이 이어지는 흐름입니다. 1~2는 01. 지구의 대기와 생명체, 3~4는 02. 지구 열수지입니다. 다음 장부터 오른쪽 위에 지금 배우는 키워드 번호가 표시됩니다. 1 선택적 흡수: 지구 대기는 파장에 따라 흡수하는 정도가 다르다. 태양 복사 가운데 자외선은 대기에서 흡수되고 가시광선은 대부분 지표까지 온다. 지표가 방출하는 적외선은 대부분 대기에 흡수되지만 8~13 μm 영역(대기의 창)은 우주로 빠져나간다. 2 생명체의 존재 조건: 별에서 알맞은 거리(생명 가능 지대)에 있어 액체 상태의 물이 있고, 오존층이 자외선을 막으며, 대기의 온실 효과로 온도가 알맞게 유지된다. 1에서 본 자외선·적외선 흡수가 오존층과 온실 효과의 바탕이다. 3 열 출입: 태양 복사 에너지가 대기에 들어오면 산란·반사·흡수·굴절이 일어난다. 4 지구 열수지: 지구가 흡수하는 에너지와 방출하는 에너지를 따져 보면 복사 평형을 이룬다. 대기는 지표가 방출한 에너지를 흡수했다가 지표로 재복사한다. 그림의 색(노랑 태양 복사, 주황 지구 복사·적외선, 보라 자외선·오존층, 파랑 대기, 초록 생명 가능 지대)은 이 수업 끝까지 같은 뜻으로 쓴다. 네 번째 칸 그림은 반사를 뺀 모식 그림이다.">
+  <style>
+  #s02 .k-grp{position:absolute;top:250px;height:40px;display:flex;align-items:center;gap:16px;font-size:28px;font-weight:700;color:#5c5c61;letter-spacing:-.02em;white-space:nowrap;z-index:3}
+  #s02 .k-grp::after{content:'';flex:1;height:3px;border-radius:2px;background:#c7c7cc}
+  #s02 .k-card{position:absolute;z-index:3;top:306px;height:684px;background:#fff;border-radius:18px;padding:22px 24px 22px;display:flex;flex-direction:column}
+  #s02 .k-hd{display:flex;align-items:center;gap:12px;font-size:32px;font-weight:800;letter-spacing:-.03em;color:#1d1d1f;white-space:nowrap}
+  #s02 .k-no{flex:none;width:42px;height:42px;border-radius:50%;background:var(--act);color:#fff;font-size:26px;font-weight:800;display:grid;place-items:center;letter-spacing:0}
+  #s02 .k-fig{display:block;width:100%;margin-top:16px;flex:none}
+  #s02 .k-nm{font-size:30px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-top:10px}
+  #s02 .k-f{flex:1;display:grid;align-items:center;gap:18px;border-top:1.5px solid #e5e5ea}
+  #s02 .k-f{color:#1d1d1f}
+  #s02 .k-f b{font-size:30px;font-weight:800;letter-spacing:-.02em;white-space:nowrap}
+  #s02-c2 .k-f{grid-template-columns:96px 1fr}
+  #s02-c2 .k-f svg{width:96px;height:76px}
+  #s02-c2 .k-nm{margin-bottom:12px}
+  #s02-c3 .k-f{grid-template-columns:140px 1fr}
+  #s02-c3 .k-f svg{width:140px;height:108px}
+  #s02-c3 .k-hd + .k-f{border-top:0;margin-top:8px}
+  #s02 .k-pill{align-self:center;margin:auto 0;background:#1d1d1f;color:#fff;font-size:28px;font-weight:800;letter-spacing:-.02em;padding:6px 26px;border-radius:9999px}
+  html.print #s02 .k-card{outline:2.5px solid #c7c7cc;outline-offset:-1px}
+  </style>
   <div class="hd" data-in><div class="eb">학습 안내</div><h2>오늘의 키워드</h2></div>
   <svg class="full-svg" viewBox="0 0 1920 1080">
-    <g data-in="300" data-fx="fade">
-      <path d="M200 452V432H813V452" fill="none" stroke="#c7c7cc" stroke-width="3"/>
-      <text x="506" y="410" text-anchor="middle" font-size="30" font-weight="700" fill="#6e6e73">01. 지구의 대기와 생명체</text>
-      <path d="M1107 452V432H1720V452" fill="none" stroke="#c7c7cc" stroke-width="3"/>
-      <text x="1413" y="410" text-anchor="middle" font-size="30" font-weight="700" fill="#6e6e73">02. 지구 열수지</text>
-    </g>
-    <path d="M280 560H1640" stroke="#e8e8ed" stroke-width="12" stroke-linecap="round" fill="none"/>
-    <path d="M280 560H1640" stroke="var(--act)" stroke-width="12" stroke-linecap="round" fill="none" data-in="500" data-fx="draw" data-dur="1800"/>
-    <g data-in="500" data-fx="pop"><circle cx="280" cy="560" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="280" y="577" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">1</text></g>
-    <g data-in="1000" data-fx="pop"><circle cx="733" cy="560" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="733" y="577" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">2</text></g>
-    <g data-in="1500" data-fx="pop"><circle cx="1187" cy="560" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="1187" y="577" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">3</text></g>
-    <g data-in="2000" data-fx="pop"><circle cx="1640" cy="560" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="1640" y="577" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">4</text></g>
+    <g data-in="700" data-fx="fade"><path transform="translate(564 648)" d="M-9 -20L9 0L-9 20" fill="none" stroke="#b0b0b6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g data-in="1200" data-fx="fade"><path transform="translate(1012 648)" d="M-9 -20L9 0L-9 20" fill="none" stroke="#b0b0b6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g data-in="1700" data-fx="fade"><path transform="translate(1390 648)" d="M-9 -20L9 0L-9 20" fill="none" stroke="#b0b0b6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
   </svg>
-  <div class="abs center kw-n" style="left:80px" data-in="650">선택적 흡수</div>
-  <div class="abs center mute kw-s" style="left:80px" data-in="750">자외선 · 적외선 · 대기의 창</div>
-  <div class="abs center kw-n" style="left:533px" data-in="1150">생명체의 존재 조건</div>
-  <div class="abs center mute kw-s" style="left:533px" data-in="1250">생명 가능 지대 · 물 · 오존층</div>
-  <div class="abs center kw-n" style="left:987px" data-in="1650">열 출입</div>
-  <div class="abs center mute kw-s" style="left:987px" data-in="1750">산란 · 반사 · 흡수 · 굴절</div>
-  <div class="abs center kw-n" style="left:1440px" data-in="2150">지구 열수지</div>
-  <div class="abs center mute kw-s" style="left:1440px" data-in="2250">흡수량 = 방출량</div>
+  <div class="k-grp" style="left:120px;width:868px" data-in="150" data-fx="fade">01. 지구의 대기와 생명체</div>
+  <div class="k-grp" style="left:1036px;width:764px" data-in="1250" data-fx="fade">02. 지구 열수지</div>
+
+  <div class="k-card" id="s02-c1" style="left:120px;width:420px" data-in="250">
+    <div class="k-hd"><span class="k-no">1</span>선택적 흡수</div>
+    <svg class="k-fig" id="s02-f1" viewBox="0 0 372 566" style="height:566px"></svg>
+  </div>
+
+  <div class="k-card" id="s02-c2" style="left:588px;width:400px" data-in="750">
+    <div class="k-hd"><span class="k-no">2</span>생명체의 존재 조건</div>
+    <svg class="k-fig" id="s02-f2" viewBox="0 0 352 220" style="height:220px"></svg>
+    <div class="k-nm c-life">생명 가능 지대</div>
+    <div class="k-f"><svg id="s02-i1" viewBox="0 0 96 76"></svg><b>액체 상태의 물</b></div>
+    <div class="k-f"><svg id="s02-i2" viewBox="0 0 96 76"></svg><b class="c-uv">오존층</b></div>
+    <div class="k-f"><svg id="s02-i3" viewBox="0 0 96 76"></svg><b class="c-ir">온실 효과</b></div>
+  </div>
+
+  <div class="k-card" id="s02-c3" style="left:1036px;width:330px" data-in="1350">
+    <div class="k-hd"><span class="k-no">3</span>열 출입</div>
+    <div class="k-f"><svg id="s02-p1" viewBox="0 0 140 108"></svg><b>산란</b></div>
+    <div class="k-f"><svg id="s02-p2" viewBox="0 0 140 108"></svg><b>반사</b></div>
+    <div class="k-f"><svg id="s02-p3" viewBox="0 0 140 108"></svg><b>흡수</b></div>
+    <div class="k-f"><svg id="s02-p4" viewBox="0 0 140 108"></svg><b>굴절</b></div>
+  </div>
+
+  <div class="k-card" id="s02-c4" style="left:1414px;width:386px" data-in="1850">
+    <div class="k-hd"><span class="k-no">4</span>지구 열수지</div>
+    <svg class="k-fig" id="s02-f4" viewBox="0 0 338 490" style="height:490px"></svg>
+    <div class="k-pill">복사 평형</div>
+  </div>
+  <div class="fine">모식 그림 · 색은 이 수업 끝까지 같은 뜻 — 노랑 태양 복사 · 주황 지구 복사 · 보라 자외선 · 파랑 대기</div>
 </section>
 
 <!-- ═══ s31 들어가기 전에… — 복사(1학년 통합과학 복습, 교사 PPT 2쪽) ═══ -->
@@ -2019,6 +2049,125 @@ Deck.scene('s35',{
   enter(c){c.f=[0,0,0];c.t=0;s35draw(c);if(!PRINT)c.loop(t=>{c.t=t;s35draw(c);});},
   async go(c,k){if(k>=1&&k<=3)await c.tween(1100,p=>{c.f[k-1]=p;s35draw(c);},{ease:'inOut',delay:250});}
 });
+
+/* ═══ s02 키워드 장(2026-11-26) 시작 ═══ */
+const S02STILL=document.documentElement.classList.contains('still');
+const S02K={sun:'#FFD60A',sunL:'#9A7400',ir:'#FF6A3D',irL:'#C4391B',uv:'#BF5AF2',uvL:'#8944AB',air:'#0077B6',life:'#1E8B3E',gnd:'#d8c6a8',gndL:'#b89f78'};
+/* 물결(복사) 목록: [그림 id, x1,y1,x2,y2, 파장, 진폭, 빠르기, 색, 테 색, 굵기] — 태양 복사는 짧은 파장, 지구 복사는 긴 파장 */
+const S02W=[
+  ['s02-f1',44,52,44,236,14,6,1.5,S02K.uv,S02K.uvL,4],
+  ['s02-f1',146,52,146,468,22,7,1.2,S02K.sun,S02K.sunL,4],
+  ['s02-f1',232,486,232,286,36,8,.8,S02K.ir,S02K.irL,4],
+  ['s02-f1',318,486,318,70,36,8,.8,S02K.ir,S02K.irL,4],
+  ['s02-i2',48,2,48,34,10,4,1.5,S02K.uv,S02K.uvL,3],
+  ['s02-i3',32,62,32,30,18,4,.8,S02K.ir,S02K.irL,3]];
+function s02head(g,x,y,dir,col,line,s=9){   // 물결 끝의 화살표 머리(dir: 1 아래, -1 위)
+  U.el('polygon',{points:(x-s)+','+(y-dir*s*1.5)+' '+(x+s)+','+(y-dir*s*1.5)+' '+x+','+y,fill:col,stroke:line,'stroke-width':1.5,'stroke-linejoin':'round'},g);
+}
+function s02bd(g,x1,y1,x2,y2,w,fill,line,extra={}){return band(g,x1,y1,x2,y2,w,fill,Object.assign({stroke:line,'stroke-width':1.5,'stroke-linejoin':'round'},extra));}
+function s02seg(g,x1,y1,x2,y2,w,fill,line){   // 머리 없는 빛줄기 토막
+  U.el('line',{x1,y1,x2,y2,stroke:line,'stroke-width':w+3,'stroke-linecap':'round'},g);
+  U.el('line',{x1,y1,x2,y2,stroke:fill,'stroke-width':w,'stroke-linecap':'round'},g);
+}
+function s02cloud(g,cx,cy,s){
+  const c=U.el('g',{transform:'translate('+cx+' '+cy+') scale('+s+')'},g);
+  U.el('path',{d:'M-34 12a14 14 0 0 1 4-27a20 20 0 0 1 36-8a16 16 0 0 1 26 12a12 12 0 0 1 0 23Z',fill:'#fff',stroke:'#aab4c0','stroke-width':1.5/s},c);
+  return c;
+}
+function s02tile(sv,w,h){U.el('rect',{x:0,y:0,width:w,height:h,rx:12,fill:'#d9ebf9'},sv);}
+function s02build(root){
+  const q=id=>root.querySelector('#'+id);
+  const lab=(g,x,y,s,col,o={})=>txt(g,x,y,s,Object.assign({'font-size':24,'font-weight':800,'text-anchor':'middle',fill:col,'letter-spacing':'-.02em'},o));
+  /* ── 1 선택적 흡수: 우주 / 대기 / 지표를 지나는 빛 ── */
+  let sv=q('s02-f1');sv.innerHTML='';
+  let d=U.el('defs',{},sv);
+  let lg=U.el('linearGradient',{id:'s02-sky',x1:0,y1:0,x2:0,y2:1},d);
+  [[0,'#f1f4f9'],[.28,'#e4eef8'],[1,'#cfe5f6']].forEach(s=>U.el('stop',{offset:s[0],'stop-color':s[1]},lg));
+  let rg=U.el('radialGradient',{id:'s02-gu'},d);[[0,S02K.uv,.9],[1,S02K.uv,0]].forEach(s=>U.el('stop',{offset:s[0],'stop-color':s[1],'stop-opacity':s[2]},rg));
+  rg=U.el('radialGradient',{id:'s02-gi'},d);[[0,S02K.ir,.9],[1,S02K.ir,0]].forEach(s=>U.el('stop',{offset:s[0],'stop-color':s[1],'stop-opacity':s[2]},rg));
+  U.el('clipPath',{id:'s02-cp1'},d).appendChild(U.el('rect',{x:0,y:0,width:372,height:566,rx:14}));
+  let g=U.el('g',{'clip-path':'url(#s02-cp1)'},sv);
+  U.el('rect',{x:0,y:0,width:372,height:566,fill:'url(#s02-sky)'},g);
+  U.el('rect',{x:0,y:180,width:284,height:170,fill:'rgba(0,119,182,.2)'},g);          // 대기(대기의 창 자리는 비움)
+  U.el('rect',{x:352,y:180,width:20,height:170,fill:'rgba(0,119,182,.2)'},g);
+  U.el('path',{d:'M284 180V350M352 180V350',stroke:S02K.air,'stroke-width':2,'stroke-dasharray':'6 6',fill:'none'},g);
+  U.el('rect',{x:0,y:496,width:372,height:70,fill:S02K.gnd},g);
+  U.el('rect',{x:0,y:496,width:372,height:4,fill:S02K.gndL},g);
+  U.el('circle',{cx:44,cy:240,r:26,fill:'url(#s02-gu)','data-gl':'1'},g);
+  U.el('circle',{cx:232,cy:282,r:28,fill:'url(#s02-gi)','data-gl':'1'},g);
+  S02W.forEach((w,i)=>{if(w[0]!=='s02-f1')return;
+    U.el('path',{'data-w':i,fill:'none',stroke:w[9],'stroke-width':w[10]+3,'stroke-linecap':'round','stroke-linejoin':'round'},g);
+    U.el('path',{'data-w':i,fill:'none',stroke:w[8],'stroke-width':w[10],'stroke-linecap':'round','stroke-linejoin':'round'},g);});
+  s02head(g,146,492,1,S02K.sun,S02K.sunL);s02head(g,318,50,-1,S02K.ir,S02K.irL);
+  lab(g,44,34,'자외선',S02K.uvL);lab(g,146,34,'가시광선',S02K.sunL);lab(g,314,34,'대기의 창',S02K.irL);
+  lab(g,186,274,'대기',S02K.air);lab(g,44,542,'지표','#5c4a2c');lab(g,232,542,'적외선',S02K.irL);
+  /* ── 2 생명체의 존재 조건 ── */
+  sv=q('s02-f2');sv.innerHTML='';d=U.el('defs',{},sv);
+  U.el('clipPath',{id:'s02-cp2'},d).appendChild(U.el('rect',{x:0,y:0,width:352,height:220,rx:14}));
+  g=U.el('g',{'clip-path':'url(#s02-cp2)'},sv);
+  U.el('rect',{x:0,y:0,width:352,height:220,fill:'#f1f4f9'},g);
+  const sx=34,sy=190;
+  U.el('circle',{cx:sx,cy:sy,r:215,fill:'none',stroke:'rgba(48,209,88,.32)','stroke-width':86},g);   // 생명 가능 지대(별에서 떨어진 거리의 범위)
+  [172,258].forEach(r=>U.el('circle',{cx:sx,cy:sy,r,fill:'none',stroke:S02K.life,'stroke-width':2.5,'stroke-dasharray':'8 7'},g));
+  sunIcon(g,sx,sy,22,null,24);
+  const ea=-32*D2R,ex=sx+215*Math.cos(ea),ey=sy+215*Math.sin(ea);
+  U.el('circle',{cx:f1(ex),cy:f1(ey),r:17,fill:'#3d8fd1',stroke:'#1f5f96','stroke-width':2},g);
+  U.el('path',{d:'M'+f1(ex-9)+' '+f1(ey-6)+'q7 -7 13 -1q-2 8 -8 8q-5 2 -5 -7Z M'+f1(ex+2)+' '+f1(ey+6)+'q6 -3 8 1q-3 6 -8 -1Z',fill:'#49b96a'},g);
+  lab(g,sx+44,sy-34,'별',S02K.sunL);
+  sv=q('s02-i1');sv.innerHTML='';
+  U.el('path',{d:'M48 6C48 6 26 34 26 48a22 22 0 0 0 44 0C70 34 48 6 48 6Z',fill:'#4aa3e0',stroke:'#1f5f96','stroke-width':2},sv);
+  U.el('path',{d:'M36 48a12 12 0 0 0 8 12',fill:'none',stroke:'#fff','stroke-width':3.5,'stroke-linecap':'round',opacity:.85},sv);
+  const limb=s=>{U.el('path',{d:'M0 68Q48 54 96 68V76H0Z',fill:S02K.gnd},s);U.el('path',{d:'M0 68Q48 54 96 68',fill:'none',stroke:S02K.gndL,'stroke-width':2},s);};
+  const wv=(s,i)=>{const w=S02W[i];U.el('path',{'data-w':i,fill:'none',stroke:w[8],'stroke-width':w[10],'stroke-linecap':'round','stroke-linejoin':'round'},s);};
+  sv=q('s02-i2');sv.innerHTML='';limb(sv);
+  U.el('path',{d:'M0 50Q48 36 96 50',fill:'none',stroke:'rgba(191,90,242,.5)','stroke-width':11},sv);
+  wv(sv,4);
+  sv=q('s02-i3');sv.innerHTML='';limb(sv);
+  U.el('path',{d:'M0 32Q48 18 96 32',fill:'none',stroke:'rgba(0,119,182,.25)','stroke-width':18},sv);
+  wv(sv,5);
+  U.el('path',{d:'M32 30Q48 6 64 30',fill:'none',stroke:S02K.ir,'stroke-width':3,'stroke-linecap':'round'},sv);
+  arrow(sv,64,30,64,60,S02K.ir,3.2);
+  /* ── 3 열 출입: 태양 복사 에너지가 대기에서 겪는 네 과정 ── */
+  sv=q('s02-p1');sv.innerHTML='';s02tile(sv,140,108);
+  s02seg(sv,14,10,62,48,8,S02K.sun,S02K.sunL);
+  for(let i=0;i<6;i++){const a=(i*60+8)*D2R;if(i===3)continue;s02bd(sv,70+12*Math.cos(a),54+12*Math.sin(a),70+44*Math.cos(a),54+44*Math.sin(a),3.5,S02K.sun,S02K.sunL);}
+  U.el('circle',{cx:70,cy:54,r:7,fill:S02K.air},sv);
+  sv=q('s02-p2');sv.innerHTML='';s02tile(sv,140,108);
+  s02cloud(sv,70,84,1.05);
+  s02seg(sv,16,8,60,62,8,S02K.sun,S02K.sunL);
+  s02bd(sv,72,62,118,10,8,'#FFEFA6',S02K.sunL,{'stroke-dasharray':'5 4'});
+  sv=q('s02-p3');sv.innerHTML='';s02tile(sv,140,108);
+  d=U.el('defs',{},sv);rg=U.el('radialGradient',{id:'s02-ga'},d);[[0,'#FF8A1F',.95],[1,'#FF8A1F',0]].forEach(s=>U.el('stop',{offset:s[0],'stop-color':s[1],'stop-opacity':s[2]},rg));
+  s02cloud(sv,78,74,1.2);
+  U.el('ellipse',{cx:78,cy:74,rx:34,ry:17,fill:'url(#s02-ga)'},sv);
+  s02bd(sv,18,6,70,66,8,S02K.sun,S02K.sunL);
+  sv=q('s02-p4');sv.innerHTML='';s02tile(sv,140,108);
+  d=U.el('defs',{},sv);U.el('clipPath',{id:'s02-cp4'},d).appendChild(U.el('rect',{x:0,y:0,width:140,height:108,rx:12}));
+  U.el('rect',{x:0,y:50,width:140,height:58,fill:'rgba(0,119,182,.22)','clip-path':'url(#s02-cp4)'},sv);
+  U.el('line',{x1:60,y1:50,x2:112,y2:100,stroke:'#6e6e73','stroke-width':2.5,'stroke-dasharray':'6 5'},sv);
+  s02seg(sv,14,6,60,50,8,S02K.sun,S02K.sunL);
+  s02bd(sv,60,50,84,102,8,S02K.sun,S02K.sunL);
+  /* ── 4 지구 열수지: 들어오는 태양 복사와 나가는 지구 복사, 지표와 대기 사이의 재복사 ── */
+  sv=q('s02-f4');sv.innerHTML='';d=U.el('defs',{},sv);
+  U.el('clipPath',{id:'s02-cp5'},d).appendChild(U.el('rect',{x:0,y:0,width:338,height:490,rx:14}));
+  g=U.el('g',{'clip-path':'url(#s02-cp5)'},sv);
+  U.el('rect',{x:0,y:0,width:338,height:490,fill:'url(#s02-sky)'},g);
+  U.el('rect',{x:0,y:170,width:338,height:150,fill:'rgba(0,119,182,.2)'},g);
+  U.el('rect',{x:0,y:420,width:338,height:70,fill:S02K.gnd},g);U.el('rect',{x:0,y:420,width:338,height:4,fill:S02K.gndL},g);
+  s02bd(g,62,52,62,416,26,S02K.sun,S02K.sunL);
+  s02bd(g,168,416,168,262,20,S02K.ir,S02K.irL);
+  s02bd(g,222,262,222,416,20,S02K.ir,S02K.irL);
+  s02bd(g,284,232,284,52,26,S02K.ir,S02K.irL);
+  lab(g,66,36,'태양 복사',S02K.sunL);lab(g,274,36,'지구 복사',S02K.irL);
+  lab(g,116,254,'대기',S02K.air);lab(g,40,466,'지표','#5c4a2c');lab(g,222,466,'재복사',S02K.irL);
+}
+function s02draw(root,t){
+  root.querySelectorAll('[data-w]').forEach(p=>{const w=S02W[+p.dataset.w];p.setAttribute('d',wave(w[1],w[2],w[3],w[4],w[5],w[6],t*w[7]));});
+  root.querySelectorAll('[data-gl]').forEach(p=>p.setAttribute('opacity',f1(.75+.25*Math.sin(t*2.2))));
+}
+s02build($id('s02'));s02draw($id('s02'),2);            // 고정 모습을 원본에 넣어 목차 썸네일에도 보이게
+Deck.scene('s02',{enter(c){const r=c.$('#s02-f1').closest('.slide');s02draw(r,2);if(!S02STILL&&!PRINT)c.loop(t=>s02draw(r,2+t));}});
+/* ═══ s02 키워드 장 끝 ═══ */
 
 Deck.start();
 </script>

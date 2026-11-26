@@ -95,28 +95,153 @@ html.print #s01 .t-lead{color:#6e6e73}
 </section>
 
 <!-- ═══ s02 오늘의 키워드 ═══ -->
-<section class="slide" id="s02" data-tile="light" data-title="오늘의 키워드" data-notes="이번 시간에 따라갈 키워드 5개입니다. 다음 장부터 오른쪽 위에 지금 배우는 키워드가 표시되고, 칩을 누르면 그 키워드의 첫 장으로 이동합니다. 이번 시간의 목표는 다음 시간에 어디를 측정할지 모둠별로 정하는 것입니다.">
+<section class="slide" id="s02" data-tile="light" data-title="오늘의 키워드" data-notes="이번 시간에 배울 내용이 이어지는 흐름입니다. 다음 장부터 오른쪽 위에 지금 배우는 키워드 번호가 표시됩니다. 1 오염 물질: 우리 주변의 오염 물질을 대기 오염 물질(일산화 탄소, 이산화 탄소, 질소 산화물, 아황산 가스, 미세 먼지)과 수질 오염 물질(중금속, 페놀, 유기 화합물)로 나누어 어디서 나오고 왜 해로운지 봅니다. 2 미세 먼지: 대기 오염 물질 가운데 우리가 직접 잴 미세 먼지를 자세히 봅니다. 알갱이의 지름에 따라 PM10(미세 먼지), PM2.5(초미세 먼지), PM1.0으로 나누고(그림의 세 알갱이는 실제 비율), 작을수록 코, 기관지, 폐포, 혈관 순서로 몸 깊숙이 들어옵니다. 3 환경 기준: 잰 값을 무엇과 비교할지 봅니다. 교실 기준(PM10 75 ㎍/m³ 이하)과 공공기관 자료(에어코리아 예보 등급). 4 학교 주변: 우리 학교 주변에서 미세 먼지가 어디서(발생원과 비교할 기준이 되는 곳) 언제(시각과 날씨) 많아지는지 봅니다. 5 측정 계획: 그래서 어디를(측정 장소: 발생원 가까이, 비교할 곳과 짝 짓기) 얼마나 자주(측정 간격) 어떤 조건으로(같은 시각, 같은 높이) 잴지 정합니다. 색 약속: 파랑 대기 오염 물질, 초록 수질 오염 물질, 노랑 미세 먼지 알갱이와 측정값, 주황 환경 기준, 보라 공공기관 자료, 회색 비교할 기준. 예보 등급 막대만 예보에서 쓰는 색입니다. 이번 시간의 목표는 다음 시간에 어디를 측정할지 모둠별로 정하는 것입니다.">
+  <style>
+  #s02 .k-card{position:absolute;z-index:3;top:250px;height:620px;background:#f5f5f7;border-radius:18px;padding:20px 22px 16px;display:flex;flex-direction:column}
+  #s02 .k-hd{display:flex;align-items:center;gap:12px;font-size:32px;font-weight:800;letter-spacing:-.025em;color:#1d1d1f;white-space:nowrap}
+  #s02 .k-no{flex:none;width:42px;height:42px;border-radius:50%;background:var(--act);color:#fff;font-size:26px;font-weight:800;display:grid;place-items:center;letter-spacing:0}
+  #s02 .k-sub{font-size:26px;font-weight:600;color:#5c5c61;letter-spacing:-.015em;margin-top:6px;white-space:nowrap}
+  #s02 .k-b{flex:1 1 auto;justify-content:center;display:flex;flex-direction:column;border-top:1.5px solid #dcdce1;margin-top:12px;padding-top:12px}
+  #s02 .k-b svg{display:block;width:100%}
+  #s02 .k-n{font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1.3;color:#1d1d1f;margin-top:6px;white-space:nowrap}
+  #s02 .k-t{font-size:24px;font-weight:600;line-height:1.36;color:#48484d;letter-spacing:-.02em;word-break:keep-all}
+  #s02 .k-t b{font-weight:800}
+  #s02 .k-air{color:var(--c1)} #s02 .k-wat{color:var(--c4)} #s02 .k-pm{color:var(--c2)} #s02 .k-std{color:var(--c3)} #s02 .k-pub{color:#8E3CC0}
+  #s02 .k-pm3{display:grid;grid-template-columns:96px 1fr;column-gap:14px;align-items:center}
+  #s02 .k-pm3 svg{width:96px}
+  #s02 .k-pm3 .k-n{margin:0;line-height:1.2}
+  #s02 .k-lg{display:flex;align-items:center;gap:10px;font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.35;white-space:nowrap}
+  #s02 .k-lg i{flex:none;width:18px;height:18px;border-radius:50%}
+  #s02 .k-goal{top:900px;font-size:38px}
+  html.print #s02 .k-card{outline:2.5px solid #c7c7cc;outline-offset:-1px}
+  </style>
   <div class="hd" data-in><div class="eb">학습 안내</div><h2>오늘의 키워드</h2></div>
   <svg class="full-svg" viewBox="0 0 1920 1080">
-    <path d="M300 600H1620" stroke="#e8e8ed" stroke-width="12" stroke-linecap="round" fill="none"/>
-    <path d="M300 600H1620" stroke="var(--act)" stroke-width="12" stroke-linecap="round" fill="none" data-in="500" data-fx="draw" data-dur="2200"/>
-    <g data-in="500" data-fx="pop"><circle cx="300" cy="600" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="300" y="617" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">1</text></g>
-    <g data-in="950" data-fx="pop"><circle cx="630" cy="600" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="630" y="617" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">2</text></g>
-    <g data-in="1400" data-fx="pop"><circle cx="960" cy="600" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="960" y="617" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">3</text></g>
-    <g data-in="1850" data-fx="pop"><circle cx="1290" cy="600" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="1290" y="617" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">4</text></g>
-    <g data-in="2300" data-fx="pop"><circle cx="1620" cy="600" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="1620" y="617" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">5</text></g>
+    <g fill="none" stroke="#b4b4ba" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M455 544l14 16l-14 16" data-in="500" data-fx="fade"/><path d="M795 544l14 16l-14 16" data-in="900" data-fx="fade"/>
+      <path d="M1135 544l14 16l-14 16" data-in="1300" data-fx="fade"/><path d="M1475 544l14 16l-14 16" data-in="1700" data-fx="fade"/>
+    </g>
   </svg>
-  <div class="abs center kw-n" style="left:140px" data-in="650">오염 물질</div>
-  <div class="abs center mute kw-s" style="left:140px" data-in="750">대기 · 수질</div>
-  <div class="abs center kw-n" style="left:470px" data-in="1100">미세 먼지</div>
-  <div class="abs center mute kw-s" style="left:470px" data-in="1200">PM10 · PM2.5 · PM1.0</div>
-  <div class="abs center kw-n" style="left:800px" data-in="1550">환경 기준</div>
-  <div class="abs center mute kw-s" style="left:800px" data-in="1650">75 ㎍/m³ · 에어코리아</div>
-  <div class="abs center kw-n" style="left:1130px" data-in="2000">학교 주변</div>
-  <div class="abs center mute kw-s" style="left:1130px" data-in="2100">어디서 · 언제</div>
-  <div class="abs center kw-n" style="left:1460px" data-in="2450">측정 계획</div>
-  <div class="abs center mute kw-s" style="left:1460px" data-in="2550">장소 · 간격 · 안전</div>
-  <div class="say-line" style="top:880px;font-size:38px" data-in="2900">오늘의 목표: 다음 시간에 <span class="act">어디를 측정할지</span> 모둠별로 정하기</div>
+
+  <div class="k-card" style="left:120px;width:320px" data-in="200">
+    <div class="k-hd"><span class="k-no">1</span>오염 물질</div>
+    <div class="k-b">
+      <svg viewBox="0 0 276 96" style="height:96px">
+        <rect width="276" height="96" rx="12" fill="#e4eff7"/>
+        <path d="M0 78H276V84a12 12 0 0 1-12 12H12a12 12 0 0 1-12-12Z" fill="#c9cdd3"/>
+        <path d="M22 78V46l22 12V46l22 12V40h14v38Z" fill="#8e8e93"/><rect x="68" y="20" width="10" height="22" fill="#8e8e93"/>
+        <path d="M196 78v-10a6 6 0 0 1 6-6h8l8-12h26l8 12h4a6 6 0 0 1 6 6v10Z" fill="#8e8e93"/><circle cx="212" cy="78" r="8" fill="#48484d"/><circle cx="250" cy="78" r="8" fill="#48484d"/>
+        <g fill="#bfe3f5" stroke="#0077B6" stroke-width="2.5"><circle cx="78" cy="12" r="7"/><circle cx="98" cy="24" r="10"/><circle cx="124" cy="14" r="8"/><circle cx="150" cy="34" r="11"/><circle cx="176" cy="52" r="8"/><circle cx="170" cy="18" r="6"/></g>
+      </svg>
+      <div class="k-n k-air">대기 오염 물질</div>
+      <div class="k-t">일산화 탄소 · 이산화 탄소<br>질소 산화물 · 아황산 가스<br><b class="k-air">미세 먼지</b></div>
+    </div>
+    <div class="k-b">
+      <svg viewBox="0 0 276 96" style="height:96px">
+        <rect width="276" height="96" rx="12" fill="#eef1f3"/>
+        <path d="M0 40q17-9 34.5 0t34.5 0t34.5 0t34.5 0t34.5 0t34.5 0t34.5 0t34.5 0V84a12 12 0 0 1-12 12H12a12 12 0 0 1-12-12Z" fill="#dff0e4"/>
+        <path d="M0 16H44a8 8 0 0 1 8 8v8H36v-4H0Z" fill="#8e8e93"/>
+        <path d="M38 32h12v26q-6 8-12 0Z" fill="#9fd4ae"/>
+        <g fill="#c4e8cd" stroke="#1E8B3E" stroke-width="2.5"><circle cx="46" cy="72" r="8"/><circle cx="84" cy="62" r="10"/><circle cx="122" cy="76" r="7"/><circle cx="160" cy="64" r="9"/><circle cx="204" cy="74" r="8"/><circle cx="244" cy="62" r="6"/></g>
+      </svg>
+      <div class="k-n k-wat">수질 오염 물질</div>
+      <div class="k-t">중금속 · 페놀<br>유기 화합물</div>
+    </div>
+  </div>
+
+  <div class="k-card" style="left:484px;width:296px" data-in="600">
+    <div class="k-hd"><span class="k-no">2</span>미세 먼지</div>
+    <div class="k-sub">알갱이의 지름</div>
+    <div class="k-b" style="gap:8px">
+      <div class="k-pm3"><svg viewBox="0 0 96 96" style="height:96px"><circle cx="48" cy="48" r="46" fill="#F2C200"/></svg><div><div class="k-n k-pm">PM10</div><div class="k-t">미세 먼지<br>10 μm 이하</div></div></div>
+      <div class="k-pm3"><svg viewBox="0 0 96 64" style="height:64px"><circle cx="48" cy="32" r="11.5" fill="#F2C200"/></svg><div><div class="k-n k-pm">PM2.5</div><div class="k-t">초미세 먼지</div></div></div>
+      <div class="k-pm3"><svg viewBox="0 0 96 36" style="height:36px"><circle cx="48" cy="18" r="4.6" fill="#F2C200"/></svg><div><div class="k-n k-pm">PM1.0</div></div></div>
+    </div>
+    <div class="k-b">
+      <svg viewBox="0 0 252 112" style="height:112px">
+        <path d="M2 14H58C92 14 96 26 132 28L150 30V50L132 52C96 54 92 66 58 66H2Z" fill="#fde9da" stroke="#d9a98a" stroke-width="3"/>
+        <circle cx="170" cy="40" r="25" fill="#fde2e4" stroke="#e8a0a8" stroke-width="3"/>
+        <path d="M190 74C204 50 228 60 250 34" fill="none" stroke="#e5484d" stroke-width="9" stroke-linecap="round"/>
+        <circle id="s02-d0" cx="24" cy="40" r="10" fill="#8e8e93"/>
+        <circle id="s02-d1" cx="96" cy="40" r="6.5" fill="#E0B000"/>
+        <circle id="s02-d2" cx="170" cy="40" r="3.4" fill="#E0B000"/>
+        <circle id="s02-d3" cx="226" cy="51" r="2" fill="#fff" stroke="#E0B000" stroke-width="2"/>
+        <g font-size="24" font-weight="700" fill="#48484d" text-anchor="middle"><text x="22" y="104">코</text><text x="92" y="104">기관지</text><text x="168" y="104">폐포</text><text x="226" y="104">혈관</text></g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="k-card" style="left:824px;width:296px" data-in="1000">
+    <div class="k-hd"><span class="k-no">3</span>환경 기준</div>
+    <div class="k-sub">단위 ㎍/m³</div>
+    <div class="k-b">
+      <svg viewBox="0 0 252 84" style="height:84px">
+        <rect x="0" y="44" width="252" height="24" rx="12" fill="#e2e2e7"/>
+        <rect id="s02-bar" x="0" y="44" width="110" height="24" rx="12" fill="#F2C200"/>
+        <path d="M189 30V80" stroke="#C4391B" stroke-width="4" stroke-dasharray="7 5"/>
+        <text x="189" y="24" text-anchor="middle" font-size="26" font-weight="800" fill="#C4391B">75</text>
+      </svg>
+      <div class="k-n k-std">교실 기준</div>
+      <div class="k-t">PM10 75 ㎍/m³ 이하</div>
+    </div>
+    <div class="k-b">
+      <svg viewBox="0 0 252 60" style="height:60px">
+        <path d="M12 26H38V50H12a12 12 0 0 1 0-24Z" fill="#2f80ed"/><rect x="38" y="26" width="63" height="24" fill="#27ae60"/><rect x="101" y="26" width="88" height="24" fill="#f2994a"/><path d="M189 26H240a12 12 0 0 1 0 24H189Z" fill="#eb5757"/>
+        <path d="M53 22l-9-16h18Z" fill="#8E3CC0"/>
+      </svg>
+      <div class="k-n k-pub">공공기관 자료</div>
+      <div class="k-t">에어코리아 예보 등급</div>
+    </div>
+  </div>
+
+  <div class="k-card" style="left:1164px;width:296px" data-in="1400">
+    <div class="k-hd"><span class="k-no">4</span>학교 주변</div>
+    <div class="k-sub">어디서 · 언제</div>
+    <div class="k-b">
+      <svg viewBox="0 0 252 150" style="height:172px">
+        <rect width="252" height="150" rx="12" fill="#e9ecef"/>
+        <path d="M0 34H252V46H0Z M206 0h22V150h-22Z" fill="#fff"/>
+        <g fill="#a6a6ac"><rect x="20" y="6" width="56" height="22" rx="3"/><rect x="88" y="6" width="44" height="22" rx="3"/><rect x="144" y="6" width="52" height="22" rx="3"/><rect x="236" y="58" width="16" height="30" rx="3"/><rect x="236" y="98" width="16" height="34" rx="3"/></g>
+        <g fill="#c9d3c4"><circle cx="16" cy="70" r="14"/><circle cx="36" cy="92" r="15"/><circle cx="14" cy="112" r="14"/><circle cx="38" cy="128" r="13"/><circle cx="42" cy="62" r="11"/></g>
+        <ellipse cx="104" cy="82" rx="34" ry="20" fill="#eadfc6" stroke="#d1c29c" stroke-width="2"/>
+        <g fill="#fff" stroke="#a6a6ac" stroke-width="2.5"><rect x="74" y="114" width="64" height="24" rx="3"/><rect x="150" y="66" width="40" height="26" rx="3"/><rect x="150" y="104" width="40" height="34" rx="3"/></g>
+        <g fill="#E0B000" id="s02-src"><circle cx="217" cy="74" r="9"/><circle cx="110" cy="17" r="9"/><circle cx="104" cy="82" r="9"/><circle cx="106" cy="126" r="9"/></g>
+        <circle cx="30" cy="96" r="9" fill="#fff" stroke="#6e6e73" stroke-width="5"/>
+      </svg>
+      <div class="k-lg" style="margin-top:8px"><i style="background:#E0B000"></i>발생원</div>
+      <div class="k-lg"><i style="background:#fff;box-shadow:inset 0 0 0 5px #6e6e73"></i>비교할 기준</div>
+    </div>
+    <div class="k-b">
+      <svg viewBox="0 0 252 84" style="height:84px" id="s02-tg"></svg>
+      <div class="k-n">시각과 날씨</div>
+    </div>
+  </div>
+
+  <div class="k-card" style="left:1504px;width:296px" data-in="1800">
+    <div class="k-hd"><span class="k-no">5</span>측정 계획</div>
+    <div class="k-b">
+      <svg viewBox="0 0 252 76" style="height:76px">
+        <path d="M8 68H244" stroke="#c7c7cc" stroke-width="3" stroke-linecap="round"/>
+        <path d="M84 30H168" stroke="#8e8e93" stroke-width="3.5" stroke-dasharray="7 6"/>
+        <path d="M84 30l12-8v16Z M168 30l-12-8v16Z" fill="#8e8e93"/>
+        <path d="M52 66C36 46 28 38 28 28a24 24 0 0 1 48 0c0 10-8 18-24 38Z" fill="#E0B000"/><circle cx="52" cy="28" r="9" fill="#fff"/>
+        <path d="M200 66C184 46 176 38 176 28a24 24 0 0 1 48 0c0 10-8 18-24 38Z" fill="#6e6e73"/><circle cx="200" cy="28" r="9" fill="#fff"/>
+      </svg>
+      <div class="k-n">측정 장소</div>
+      <div class="k-t">발생원 가까이<br>비교할 곳과 짝 짓기</div>
+    </div>
+    <div class="k-b">
+      <svg viewBox="0 0 252 76" style="height:76px" id="s02-iv"></svg>
+      <div class="k-n">측정 간격</div>
+    </div>
+    <div class="k-b">
+      <div class="k-n" style="margin-top:0">조건은 같게</div>
+      <div class="k-t">같은 시각 · 같은 높이</div>
+    </div>
+  </div>
+
+  <div class="say-line k-goal" data-in="2300">오늘의 목표: 다음 시간에 <span class="act">어디를 측정할지</span> 모둠별로 정하기</div>
+  <div class="fine">모식 그림 · PM10·PM2.5·PM1.0 알갱이의 크기는 실제 비율 · 예보 등급 막대는 예보에서 쓰는 색</div>
 </section>
 
 <!-- ═══ s03 도입 ═══ -->
@@ -828,6 +953,38 @@ Deck.scene('s04b',{go(c,k){c.$$('.pc').forEach((e,i)=>e.classList.toggle('dim',k
   }
 })();
 
+/* ═══ s02 키워드 장(2026-11-26) 시작 ═══ */
+/* 2장 오늘의 키워드(개념 흐름): 1 오염 물질 → 2 미세 먼지 → 3 환경 기준 → 4 학교 주변 → 5 측정 계획 */
+const S02={Y:'#E0B000',
+  f(x){return 1-(.10+.62*gau(x,.16,.035)+.5*gau(x,.40,.03)+.86*gau(x,.60,.045)+.55*gau(x,.84,.03));},   // 하루 농도의 모식 곡선(0~1, 위가 높음)
+  stop:[[24,40],[96,40],[170,40],[226,51]]};                                                              // 코 · 기관지 · 폐포 · 혈관
+function s02static(R){
+  const q=s=>R.querySelector(s);let g=q('#s02-tg');
+  if(g&&!g.firstChild){
+    U.el('path',{d:'M6 74H246',stroke:'#c7c7cc','stroke-width':3,'stroke-linecap':'round'},g);
+    const p=[];for(let i=0;i<=120;i++){const x=i/120;p.push([8+x*236,8+S02.f(x)*62]);}
+    U.el('path',{d:pathOf(p),fill:'none',stroke:S02.Y,'stroke-width':4.5,'stroke-linejoin':'round','stroke-linecap':'round'},g);
+    U.el('circle',{id:'s02-gd',cx:8+.60*236,cy:8+S02.f(.60)*62,r:8,fill:'#fff',stroke:S02.Y,'stroke-width':4.5},g);
+  }
+  g=q('#s02-iv');
+  if(g&&!g.firstChild){
+    U.el('path',{d:'M6 70H246',stroke:'#c7c7cc','stroke-width':3,'stroke-linecap':'round'},g);
+    const y=x=>6+S02.f(x)*60;
+    for(let i=0;i<=40;i++){const x=i/40;U.el('circle',{cx:(8+x*236).toFixed(1),cy:y(x).toFixed(1),r:3.6,fill:S02.Y},g);}
+    [.02,.27,.5,.73,.96].forEach(x=>U.el('circle',{cx:(8+x*236).toFixed(1),cy:y(x).toFixed(1),r:8,fill:'none',stroke:'#6e6e73','stroke-width':3.5},g));
+  }
+}
+function s02draw(c,t){
+  const T=7;                                                    // 알갱이가 차례로 들어와 제자리에서 멈춘다
+  S02.stop.forEach(([x,y],i)=>{const e=c.$('#s02-d'+i);if(!e)return;
+    const u=Math.min(1,Math.max(0,((t%T)-i*.7)/(1.1+i*.55))),p=1-(1-u)**2;
+    e.setAttribute('cx',(6+(x-6)*p).toFixed(1));e.setAttribute('cy',(40+(y-40)*p).toFixed(1));e.setAttribute('opacity',u<=0?0:1);});
+  const b=c.$('#s02-bar');if(b)b.setAttribute('width',(110+26*Math.sin(t*.7)+10*Math.sin(t*1.9)).toFixed(1));   // 측정값은 시간에 따라 달라진다
+  const d=c.$('#s02-gd');if(d){const x=(t/9)%1;d.setAttribute('cx',(8+x*236).toFixed(1));d.setAttribute('cy',(8+S02.f(x)*62).toFixed(1));}
+}
+s02static(document);
+Deck.scene('s02',{enter(c){s02static(c.root);if(!Deck.STILL)c.loop(t=>s02draw(c,t));}});
+/* ═══ s02 키워드 장 끝 ═══ */
 Deck.start();
 </script>
 </body>

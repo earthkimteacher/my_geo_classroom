@@ -130,7 +130,6 @@ html.print .slide[data-tile="parchment"] .note-box{background:#f5f5f7}
 .scn svg{display:block;width:100%;height:100%}
 html.print .scn{background:#fff;outline:2px solid #e0e0e0}
 /* 오늘의 키워드 5개 */
-#s02 .kw-n{width:340px;top:650px;font-size:40px} #s02 .kw-s{width:340px;top:712px;font-size:28px;line-height:1.4}
 /* 조작 막대: 막대 세 개까지 들어가게 */
 .ia-panel{gap:22px;padding:0 26px}
 .ia-panel input[type=range]{width:230px}
@@ -197,31 +196,78 @@ html.print text[paint-order="stroke"]{stroke:none}   /* 글자 둘레 흰 띠(ha
   <div class="abs" style="right:120px;top:80px;font-size:26px;font-weight:600;color:#a1a1a6;letter-spacing:-.01em" data-in="900">2026 진광고등학교 교사 김덕영</div>
   <div class="abs t-eyebrow" style="left:160px;top:300px" data-in="900">지구시스템과학 · Ⅲ. 강수 과정과 대기의 운동</div>
   <div class="abs t-title" style="left:156px;top:352px;font-size:124px;letter-spacing:-.035em;line-height:1.1" data-in="1100">03. 대기 안정도와 강수</div>
-  <div class="abs t-lead mute" style="left:160px;top:536px" data-in="1500">단열 변화 · 상승 응결 고도 · 대기 안정도 · 구름과 안개 · 강수 과정</div>
 </section>
 
 <!-- ═══ s02 오늘의 키워드 ═══ -->
-<section class="slide" id="s02" data-tile="parchment" data-title="오늘의 키워드" data-notes="이 단원에서 따라갈 키워드 다섯 개입니다. 다음 장부터 오른쪽 위에 지금 배우는 키워드가 표시됩니다. 지도서 유의점: 이전 차시(열수지)에서 배운 잠열의 효과와 구름 생성 과정에서 일어나는 단열 변화를 연결해 지도합니다.">
+<section class="slide" id="s02" data-tile="parchment" data-title="오늘의 키워드" data-notes="이 단원에서 배울 개념이 이어지는 흐름입니다. 다음 장부터 오른쪽 위에 지금 배우는 키워드 번호가 표시됩니다. 1 단열 변화: 공기 덩어리가 상승하면 단열 팽창해 기온이 낮아지고, 하강하면 단열 압축되어 기온이 높아진다. 이때의 기온 변화율이 건조 단열 감률·습윤 단열 감률이고, 이슬점도 이슬점 감률로 낮아진다. 2 상승 응결 고도: 1의 세 감률을 선으로 그리면, 상승하는 공기 덩어리의 기온(건조 단열선)과 이슬점이 같아지는 높이가 상승 응결 고도이고 그 위로는 습윤 단열선을 따른다. 산을 넘는 공기에 적용한 것이 푄이다. 3 대기 안정도: 주위 공기의 기온 감률과 공기 덩어리의 단열 감률을 비교해 안정·불안정을 판단한다. 높이 올라갈수록 기온이 높아지는 역전층도 여기서 다룬다. 4 구름과 안개: 안정한 대기에서는 층운형, 불안정한 대기에서는 적운형 구름이 생기고, 지표 부근에서 응결하면 안개가 된다. 5 강수 과정: 구름 속 물방울이 빗방울로 자라는 두 과정인 병합설과 빙정설. 선과 알약의 색(주황 건조 단열 감률, 파랑 습윤 단열 감률·구름, 보라 이슬점, 초록 주위 공기의 기온)은 이 수업 끝까지 같은 뜻으로 쓴다. 지도서 유의점: 이전 차시(열수지)에서 배운 잠열의 효과와 구름 생성 과정에서 일어나는 단열 변화를 연결해 지도합니다.">
+  <style>
+  #s02 .k-card{position:absolute;z-index:3;top:250px;height:740px;background:#fff;border-radius:18px;padding:22px 22px 20px;display:flex;flex-direction:column;color:#1d1d1f}
+  #s02 .k-hd{display:flex;align-items:center;gap:10px;font-size:30px;font-weight:800;letter-spacing:-.035em;white-space:nowrap}
+  #s02 .k-no{flex:none;width:40px;height:40px;border-radius:50%;background:var(--act);color:#fff;font-size:25px;font-weight:800;display:grid;place-items:center;letter-spacing:0}
+  #s02 .k-fig{display:block;width:100%;margin-top:16px;flex:none}
+  #s02 .k-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 8px}
+  #s02 .k-chip{font-size:24px;font-weight:700;line-height:1.35;padding:1px 11px;border-radius:9999px;border:2.5px solid currentColor;white-space:nowrap;letter-spacing:-.02em;background:#fff}
+  #s02 .k-tag{font-size:24px;font-weight:800;line-height:1.35;padding:2px 14px;border-radius:9999px;color:#fff;white-space:nowrap}
+  #s02 .k-tag.st{background:var(--cold)} #s02 .k-tag.un{background:var(--warm)}
+  #s02 .k-f{flex:1;display:grid;align-items:center;gap:16px;border-top:1.5px solid #e5e5ea}
+  #s02 .k-f b,#s02 .k-nm b{font-size:30px;font-weight:800;letter-spacing:-.02em;white-space:nowrap}
+  #s02 .k-f .k-tag{justify-self:start;font-size:28px;padding:3px 18px}
+  #s02-c1 .k-chips{flex:1;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+  #s02-c2 .k-f{grid-template-columns:110px 1fr;margin-top:14px}
+  #s02-c2 .k-f svg{width:110px;height:80px}
+  #s02-c3 .k-chips{margin:10px 0 14px}
+  #s02-c3 .k-f{grid-template-columns:100px 1fr}
+  #s02-c3 .k-f svg{width:100px;height:84px}
+  #s02 .k-nm{display:flex;align-items:center;justify-content:space-between;margin-top:8px;min-height:40px}
+  #s02-c4 .k-nm b{color:var(--wet)}
+  #s02-c4 .k-blk,#s02-c5 .k-blk{flex:1;display:flex;flex-direction:column;justify-content:center}
+  #s02-c4 .k-blk + .k-blk,#s02-c5 .k-blk + .k-blk{border-top:1.5px solid #e5e5ea}
+  #s02-c4 .k-fig,#s02-c5 .k-fig{margin-top:0}
+  #s02-c5 .k-nm{justify-content:center}
+  html.print #s02 .k-card{outline:2.5px solid #c7c7cc;outline-offset:-1px}
+  </style>
   <div class="hd" data-in><div class="eb">학습 안내</div><h2>오늘의 키워드</h2></div>
   <svg class="full-svg" viewBox="0 0 1920 1080">
-    <path d="M280 560H1640" stroke="#e8e8ed" stroke-width="12" stroke-linecap="round" fill="none"/>
-    <path d="M280 560H1640" stroke="var(--act)" stroke-width="12" stroke-linecap="round" fill="none" data-in="500" data-fx="draw" data-dur="2200"/>
-    <g data-in="500" data-fx="pop"><circle cx="280" cy="560" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="280" y="577" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">1</text></g>
-    <g data-in="900" data-fx="pop"><circle cx="620" cy="560" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="620" y="577" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">2</text></g>
-    <g data-in="1300" data-fx="pop"><circle cx="960" cy="560" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="960" y="577" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">3</text></g>
-    <g data-in="1700" data-fx="pop"><circle cx="1300" cy="560" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="1300" y="577" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">4</text></g>
-    <g data-in="2100" data-fx="pop"><circle cx="1640" cy="560" r="54" fill="#fff" stroke="var(--act)" stroke-width="7"/><text x="1640" y="577" text-anchor="middle" font-size="48" font-weight="700" fill="var(--act)">5</text></g>
+    <g data-in="600" data-fx="fade"><path transform="translate(432 620)" d="M-8 -18L8 0L-8 18" fill="none" stroke="#b0b0b6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g data-in="1000" data-fx="fade"><path transform="translate(776 620)" d="M-8 -18L8 0L-8 18" fill="none" stroke="#b0b0b6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g data-in="1400" data-fx="fade"><path transform="translate(1140 620)" d="M-8 -18L8 0L-8 18" fill="none" stroke="#b0b0b6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g data-in="1800" data-fx="fade"><path transform="translate(1474 620)" d="M-8 -18L8 0L-8 18" fill="none" stroke="#b0b0b6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
   </svg>
-  <div class="abs center kw-n" style="left:110px" data-in="650">단열 변화</div>
-  <div class="abs center mute kw-s" style="left:110px" data-in="750">단열 팽창 · 단열 압축 · 감률</div>
-  <div class="abs center kw-n" style="left:450px" data-in="1050">상승 응결 고도</div>
-  <div class="abs center mute kw-s" style="left:450px" data-in="1150">구름의 생성 · 푄</div>
-  <div class="abs center kw-n" style="left:790px" data-in="1450">대기 안정도</div>
-  <div class="abs center mute kw-s" style="left:790px" data-in="1550">안정 · 불안정 · 조건부 불안정</div>
-  <div class="abs center kw-n" style="left:1130px" data-in="1850">구름과 안개</div>
-  <div class="abs center mute kw-s" style="left:1130px" data-in="1950">층운형 · 적운형 · 안개</div>
-  <div class="abs center kw-n" style="left:1470px" data-in="2250">강수 과정</div>
-  <div class="abs center mute kw-s" style="left:1470px" data-in="2350">병합설 · 빙정설</div>
+
+  <div class="k-card" id="s02-c1" style="left:120px;width:290px" data-in="200">
+    <div class="k-hd"><span class="k-no">1</span>단열 변화</div>
+    <svg class="k-fig" id="s02-f1" viewBox="0 0 246 440" style="height:440px"></svg>
+    <div class="k-chips"><span class="k-chip c-dry">건조 단열 감률</span><span class="k-chip c-wet">습윤 단열 감률</span><span class="k-chip c-dew">이슬점 감률</span></div>
+  </div>
+
+  <div class="k-card" id="s02-c2" style="left:454px;width:300px" data-in="650">
+    <div class="k-hd"><span class="k-no">2</span>상승 응결 고도</div>
+    <svg class="k-fig" id="s02-f2" viewBox="0 0 256 410" style="height:410px"></svg>
+    <div class="k-f"><svg id="s02-i1" viewBox="0 0 110 80"></svg><b>푄</b></div>
+  </div>
+
+  <div class="k-card" id="s02-c3" style="left:798px;width:320px" data-in="1050">
+    <div class="k-hd"><span class="k-no">3</span>대기 안정도</div>
+    <svg class="k-fig" id="s02-f3" viewBox="0 0 276 200" style="height:200px"></svg>
+    <div class="k-chips"><span class="k-chip c-env">기온 감률</span><span class="k-chip" style="color:#3a3a3c">단열 감률</span></div>
+    <div class="k-f"><svg id="s02-i2" viewBox="0 0 100 84"></svg><span class="k-tag st">안정</span></div>
+    <div class="k-f"><svg id="s02-i3" viewBox="0 0 100 84"></svg><span class="k-tag un">불안정</span></div>
+    <div class="k-f"><svg id="s02-i4" viewBox="0 0 100 84"></svg><b>역전층</b></div>
+  </div>
+
+  <div class="k-card" id="s02-c4" style="left:1162px;width:290px" data-in="1450">
+    <div class="k-hd"><span class="k-no">4</span>구름과 안개</div>
+    <div class="k-blk"><svg class="k-fig" id="s02-g1" viewBox="0 0 246 132" style="height:132px"></svg><div class="k-nm"><b>층운형</b><span class="k-tag st">안정</span></div></div>
+    <div class="k-blk"><svg class="k-fig" id="s02-g2" viewBox="0 0 246 132" style="height:132px"></svg><div class="k-nm"><b>적운형</b><span class="k-tag un">불안정</span></div></div>
+    <div class="k-blk"><svg class="k-fig" id="s02-g3" viewBox="0 0 246 132" style="height:132px"></svg><div class="k-nm"><b>안개</b></div></div>
+  </div>
+
+  <div class="k-card" id="s02-c5" style="left:1496px;width:304px" data-in="1850">
+    <div class="k-hd"><span class="k-no">5</span>강수 과정</div>
+    <div class="k-blk"><svg class="k-fig" id="s02-r1" viewBox="0 0 260 236" style="height:236px"></svg><div class="k-nm"><b>병합설</b></div></div>
+    <div class="k-blk"><svg class="k-fig" id="s02-r2" viewBox="0 0 260 236" style="height:236px"></svg><div class="k-nm"><b>빙정설</b></div></div>
+  </div>
+  <div class="fine">모식 그림 · 선과 알약의 색은 이 수업 끝까지 같은 뜻</div>
 </section>
 
 <!-- ═══ s04 도입 — 생활 속 단열 변화 ═══ -->
@@ -3279,6 +3325,106 @@ Deck.scene('s29',{
 /* 수식(KaTeX): data-tex의 LaTeX를 그린다. KaTeX를 못 불러오면(인터넷 없음) 안의 대체 글이 그대로 남는다 */
 function texAll(root){if(!window.katex)return;root.querySelectorAll('.tx[data-tex]').forEach(el=>{try{katex.render(el.dataset.tex,el,{throwOnError:false,strict:false});}catch(e){}});}
 texAll(document);
+
+/* ═══ s02 키워드 장(2026-11-26) 시작 ═══ */
+const S02STILL=document.documentElement.classList.contains('still');
+const S02T='#dcecf8', S02WARM='#fbd5cc', S02COLD='#cfe7fa';
+function s02mix(a,b,t){const h=s=>[1,3,5].map(i=>parseInt(s.slice(i,i+2),16)),A=h(a),B=h(b);return '#'+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0')).join('');}
+function s02lab(g,x,y,s,col,o={}){return txt(g,x,y,s,Object.assign({'font-size':24,'font-weight':800,'text-anchor':'middle',fill:col,'letter-spacing':'-.03em'},o));}
+function s02tile(sv,w,h,fill,id){   // 둥근 그림 칸 + 그 안으로 자르는 묶음
+  const d=U.el('defs',{},sv);U.el('clipPath',{id},d).appendChild(U.el('rect',{x:0,y:0,width:w,height:h,rx:12}));
+  const g=U.el('g',{'clip-path':'url(#'+id+')'},sv);U.el('rect',{x:0,y:0,width:w,height:h,fill:fill||S02T},g);return g;
+}
+function s02puff(g,list,base){   // 구름: 원 여러 개를 겹쳐 한 덩어리로(테두리 먼저, 흰 면 나중). base 아래는 평평하게 자름
+  const id='s02-pf'+(s02puff.n=(s02puff.n||0)+1),d=U.el('defs',{},g);
+  U.el('clipPath',{id},d).appendChild(U.el('rect',{x:-50,y:-50,width:500,height:base+50}));
+  const c=U.el('g',{'clip-path':'url(#'+id+')'},g);
+  list.forEach(p=>U.el('ellipse',{cx:p[0],cy:p[1],rx:p[2]+1.8,ry:(p[3]||p[2])+1.8,fill:'#9fb0c2'},c));
+  list.forEach(p=>U.el('ellipse',{cx:p[0],cy:p[1],rx:p[2],ry:p[3]||p[2],fill:'#fff'},c));
+  const xs=list.map(p=>p[0]-p[2]),xe=list.map(p=>p[0]+p[2]);
+  U.el('line',{x1:Math.min(...xs)+6,y1:base-1,x2:Math.max(...xe)-6,y2:base-1,stroke:'#9fb0c2','stroke-width':2},g);
+  return c;
+}
+function s02build(root){
+  const q=id=>root.querySelector('#'+id);s02puff.n=0;
+  let sv,g;
+  /* ── 1 단열 변화: 상승하며 팽창(기온 낮아짐) / 하강하며 압축(기온 높아짐) ── */
+  sv=q('s02-f1');sv.innerHTML='';g=s02tile(sv,246,440,'#eef3f9','s02-k1');
+  U.el('line',{x1:123,y1:16,x2:123,y2:424,stroke:'#cfd6de','stroke-width':2,'stroke-dasharray':'5 6'},g);
+  [62,184].forEach((x,i)=>{
+    U.el('circle',{cx:x,cy:80,r:42,fill:'none',stroke:'#8e8e93','stroke-width':2,'stroke-dasharray':'6 5'},g);
+    U.el('circle',{cx:x,cy:340,r:22,fill:'none',stroke:'#8e8e93','stroke-width':2,'stroke-dasharray':'6 5'},g);
+    if(i===0)arrow(g,x,304,x,138,'#3a3a3c',4);else arrow(g,x,136,x,302,'#3a3a3c',4);
+    U.el('circle',{'data-pc':i,cx:x,cy:74,r:42,stroke:'#3a3a3c','stroke-width':2.5},g);
+  });
+  s02lab(g,62,412,'단열 팽창','#1d1d1f');s02lab(g,184,412,'단열 압축','#1d1d1f');
+  /* ── 2 상승 응결 고도: 기온(건조 단열선)과 이슬점이 같아지는 높이, 그 위는 습윤 단열선 ── */
+  sv=q('s02-f2');sv.innerHTML='';g=U.el('g',{},sv);
+  const X0=30,Y0=368,PX=7,PY=150,T0=170,D0=100,H=(T0-D0)/PX/8,yl=Y0-H*PY,xl=T0-H*10*PX,yt=64,xt=xl-(yl-yt)/PY*5*PX;
+  U.el('path',{d:'M'+X0+' 44V'+Y0+'H252',fill:'none',stroke:'#3a3a3c','stroke-width':2.5,'stroke-linecap':'round'},g);
+  U.el('line',{x1:X0,y1:f1(yl),x2:254,y2:f1(yl),stroke:'#3a3a3c','stroke-width':2.5,'stroke-dasharray':'7 6'},g);
+  s02puff(g,[[150,yl-16,24,18],[182,yl-30,30,28],[214,yl-18,26,20],[182,yl-8,44,12]],yl);
+  U.el('line',{x1:D0,y1:Y0,x2:f1(xl),y2:f1(yl),stroke:C.dew,'stroke-width':4.5,'stroke-linecap':'round'},g);
+  U.el('line',{x1:T0,y1:Y0,x2:f1(xl),y2:f1(yl),stroke:C.dry,'stroke-width':4.5,'stroke-linecap':'round'},g);
+  U.el('line',{x1:f1(xl),y1:f1(yl),x2:f1(xt),y2:yt,stroke:C.wet,'stroke-width':4.5,'stroke-linecap':'round'},g);
+  U.el('circle',{cx:f1(xl),cy:f1(yl),r:6.5,fill:'#fff',stroke:'#1d1d1f','stroke-width':3},g);
+  s02lab(g,62,32,'높이','#3a3a3c');
+  s02lab(g,D0,398,'이슬점',C.dew);s02lab(g,T0+8,398,'기온',C.dry);
+  s02lab(g,256,yl+30,'상승 응결 고도','#1d1d1f',{'text-anchor':'end'});
+  sv=q('s02-i1');sv.innerHTML='';
+  U.el('path',{d:'M2 78L46 22Q55 12 64 22L108 78Z',fill:'#c9b79a',stroke:'#a8926e','stroke-width':2,'stroke-linejoin':'round'},sv);
+  arrow(sv,6,52,38,11,C.wet,3.5);arrow(sv,72,11,104,52,C.warm,3.5);
+  /* ── 3 대기 안정도: 기온 감률(주위 공기)과 단열 감률(공기 덩어리) 비교 ── */
+  sv=q('s02-f3');sv.innerHTML='';g=U.el('g',{},sv);
+  U.el('path',{d:'M30 46V186H268',fill:'none',stroke:'#3a3a3c','stroke-width':2.5,'stroke-linecap':'round'},g);
+  [[10,C.dry],[5,C.wet],[7,C.env]].forEach(l=>U.el('line',{x1:205,y1:186,x2:f1(205-130/150*l[0]*14),y2:56,stroke:l[1],'stroke-width':l[1]===C.env?5.5:4,'stroke-linecap':'round'},g));
+  s02lab(g,62,34,'높이','#3a3a3c');s02lab(g,266,174,'기온','#3a3a3c',{'text-anchor':'end'});
+  const disp=(id,up)=>{const s=q(id);s.innerHTML='';
+    U.el('line',{x1:6,y1:62,x2:94,y2:62,stroke:'#6e6e73','stroke-width':2.5,'stroke-dasharray':'6 5'},s);
+    U.el('circle',{cx:34,cy:62,r:13,fill:'none',stroke:'#8e8e93','stroke-width':2,'stroke-dasharray':'5 4'},s);
+    U.el('circle',{cx:34,cy:26,r:15,fill:up?S02WARM:S02COLD,stroke:up?C.warm:C.cold,'stroke-width':2.5},s);
+    if(up)arrow(s,68,56,68,10,C.warm,4.5);else arrow(s,68,14,68,58,C.cold,4.5);};
+  disp('s02-i2',false);disp('s02-i3',true);
+  sv=q('s02-i4');sv.innerHTML='';
+  U.el('path',{d:'M12 6V76H96',fill:'none',stroke:'#3a3a3c','stroke-width':2.5,'stroke-linecap':'round'},sv);
+  U.el('path',{d:'M36 76L72 44L46 10',fill:'none',stroke:C.env,'stroke-width':5,'stroke-linecap':'round','stroke-linejoin':'round'},sv);
+  /* ── 4 구름과 안개 ── */
+  sv=q('s02-g1');sv.innerHTML='';g=s02tile(sv,246,132,S02T,'s02-k4');
+  U.el('rect',{x:0,y:118,width:246,height:14,fill:'#b7c9a0'},g);
+  s02puff(g,[[60,62,44,13],[124,58,60,15],[190,62,46,13],[92,70,60,10],[160,70,62,10]],78);
+  sv=q('s02-g2');sv.innerHTML='';g=s02tile(sv,246,132,S02T,'s02-k5');
+  U.el('rect',{x:0,y:118,width:246,height:14,fill:'#b7c9a0'},g);
+  s02puff(g,[[92,78,26],[154,78,26],[104,54,24],[142,50,26],[122,28,22],[124,84,44,14],[123,62,24]],96);
+  sv=q('s02-g3');sv.innerHTML='';g=s02tile(sv,246,132,'#c5d8e8','s02-k6');
+  U.el('rect',{x:0,y:104,width:246,height:28,fill:'#a9bb91'},g);
+  [[52,104,1],[196,104,.85]].forEach(t=>{U.el('rect',{x:t[0]-3,y:t[1]-22*t[2],width:6,height:22*t[2],fill:'#7a6a55'},g);U.el('circle',{cx:t[0],cy:t[1]-34*t[2],r:17*t[2],fill:'#6f9463'},g);});
+  U.el('path',{d:'M108 104V78L128 62L148 78V104Z',fill:'#8c8f96'},g);
+  [[-20,88,200,22,.72],[70,72,210,20,.6],[20,104,240,20,.8],[-30,56,150,16,.4]].forEach(b=>U.el('rect',{x:b[0],y:b[1],width:b[2],height:b[3],rx:b[3]/2,fill:'#fff',opacity:b[4]},g));
+  /* ── 5 강수 과정: 병합설(크기가 다른 물방울이 충돌·병합) / 빙정설(과냉각 물방울 사이에서 빙정이 성장) ── */
+  sv=q('s02-r1');sv.innerHTML='';g=s02tile(sv,260,236,S02T,'s02-k7');
+  [[40,40,8],[78,96,5],[206,54,9],[226,128,6],[52,160,10],[190,186,7],[84,206,5],[30,104,6],[176,26,5],[218,214,5],[196,108,5],[70,30,5]].forEach(p=>U.el('circle',{cx:p[0],cy:p[1],r:p[2],fill:C.wet,opacity:.55},g));
+  [[124,70,6],[138,108,7],[126,146,8],[136,184,6]].forEach((p,i)=>U.el('circle',{'data-ds':p[1],cx:p[0],cy:p[1],r:p[2],fill:C.wet,opacity:.55},g));
+  U.el('circle',{'data-dp':1,cx:130,cy:200,r:22,fill:C.wet},g);
+  sv=q('s02-r2');sv.innerHTML='';g=s02tile(sv,260,236,'#e6f0f9','s02-k8');
+  const cx=130,cy=118;
+  for(let i=0;i<6;i++){const a=i*60*D2R,r=74,x=cx+r*Math.cos(a),y=cy+r*Math.sin(a);
+    U.el('circle',{cx:f1(x),cy:f1(y),r:i%2?8:10,fill:C.wet,opacity:.6},g);
+    arrow(g,cx+(r-16)*Math.cos(a),cy+(r-16)*Math.sin(a),cx+40*Math.cos(a),cy+40*Math.sin(a),'#8e8e93',2.2);}
+  const ic=U.el('g',{'data-ic':1,transform:'translate('+cx+' '+cy+')'},g);
+  for(let i=0;i<6;i++){const a=i*60;U.el('path',{transform:'rotate('+a+')',d:'M0 0V-30M0 -14L-8 -22M0 -14L8 -22M0 -23L-5 -28M0 -23L5 -28',fill:'none',stroke:C.ice,'stroke-width':3.5,'stroke-linecap':'round'},ic);}
+  U.el('circle',{cx:0,cy:0,r:4,fill:C.ice},ic);
+}
+function s02draw(root,t){
+  const u=(t%6)/6,mv=clamp(u/.55,0,1),e=mv*mv*(3-2*mv),op=clamp(u/.06,0,1)*clamp((1-u)/.08,0,1);
+  root.querySelectorAll('[data-pc]').forEach(p=>{const k=p.dataset.pc==='0'?e:1-e;   // k: 0 아래(작고 따뜻) → 1 위(크고 차가움)
+    p.setAttribute('cy',f1(lerp(340,80,k)));p.setAttribute('r',f1(lerp(22,42,k)));p.setAttribute('fill',s02mix(S02WARM,S02COLD,k));p.setAttribute('opacity',f1(op));});
+  const v=(t%5)/5,dy=lerp(44,204,v);
+  root.querySelectorAll('[data-dp]').forEach(p=>{p.setAttribute('cy',f1(dy));p.setAttribute('r',f1(lerp(10,22,v)));p.setAttribute('opacity',f1(clamp(v/.08,0,1)*clamp((1-v)/.08,0,1)));});
+  root.querySelectorAll('[data-ds]').forEach(p=>p.setAttribute('opacity',dy>+p.dataset.ds-12?0:.55));
+}
+s02build($id('s02'));s02draw($id('s02'),4);            // 고정 모습을 원본에 넣어 목차 썸네일에도 보이게
+Deck.scene('s02',{enter(c){const r=c.$('#s02-f1').closest('.slide');s02draw(r,4);if(!S02STILL&&!PRINT)c.loop(t=>s02draw(r,4+t));}});
+/* ═══ s02 키워드 장 끝 ═══ */
 
 Deck.start();
 </script>
