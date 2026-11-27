@@ -46,7 +46,11 @@
 html,body{overflow-x:clip}
 body{background:var(--s-sp1);color:var(--ink);font-family:var(--font);line-height:1.5;-webkit-font-smoothing:antialiased;word-break:keep-all}
 a{color:inherit;text-decoration:none}
-#scene{position:absolute;top:0;left:0;width:100%;z-index:0}   /* 페이지 길이만큼 긴 그림 — 상자와 함께 브라우저가 직접 스크롤(휴대폰에서 어긋나지 않게) */
+#sceneBox{position:fixed;top:0;left:0;width:100%;height:100vh;height:100lvh;overflow:hidden;z-index:0}   /* 화면에 고정된 창(맨 위·맨 아래에서 더 당기면 배경은 가만히, 상자만 움직임) */
+#scene{position:absolute;top:0;left:0;width:100%;will-change:transform}   /* 페이지 길이만큼 긴 그림 */
+/* 긴 그림을 스크롤만큼 올림 — 브라우저가 스크롤과 같은 박자로 직접 처리(스크롤 연동 애니메이션). 지원하지 않는 브라우저는 스크립트가 대신 */
+@supports (animation-timeline:scroll()){#scene{animation:sceneUp linear both;animation-timeline:scroll(root block)}}
+@keyframes sceneUp{from{transform:translateY(0)}to{transform:translateY(calc(-100% + 100vh));transform:translateY(calc(-100% + 100dvh))}}
 #vh{position:absolute;top:0;left:0;width:0;height:100vh;height:100lvh;visibility:hidden;pointer-events:none}   /* 주소창이 숨어도 그대로인 화면 높이를 재는 자 */
 .wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:22px 28px 72px}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:16px;font-weight:600;color:var(--on-scene)}
@@ -132,7 +136,7 @@ footer a:focus-visible{outline-color:var(--on-scene)}
 </style>
 </head>
 <body>
-<canvas id="scene" aria-hidden="true"></canvas><div id="vh" aria-hidden="true"></div>
+<div id="sceneBox" aria-hidden="true"><canvas id="scene"></canvas></div><div id="vh" aria-hidden="true"></div>
 <div class="wrap">
   <div class="bar">
     <span>진광고등학교 교사 김덕영</span>
@@ -398,6 +402,10 @@ SUBJECTS.forEach(s=>{
   /* 매 프레임: 지금 보이는 칸 + 나머지 칸 하나씩 돌아가며(보이지 않던 곳도 늘 거의 최신 모습 — 빠르게 스크롤해도 옛 모습이 비치지 않게) */
   const frame=ms=>{if(!last)last=ms;t+=Math.min(.05,(ms-last)/1000);last=ms;const n=Math.ceil(DH/H);rr=(rr+1)%n;paint(rr*H);paint(scrollY);requestAnimationFrame(frame);};
   readPal();resize();
+  /* 스크롤 연동 애니메이션을 지원하지 않는 브라우저: 그림 위치를 스크립트로 맞춤 */
+  const SDA=window.CSS&&CSS.supports('animation-timeline','scroll()');
+  const follow=()=>{if(!SDA)cv.style.transform='translateY('+(-scrollY)+'px)';};
+  addEventListener('scroll',follow,{passive:true});follow();
   const refit=()=>{if(resize())paintAll();};   /* 폭(화면 회전·폴드 펼침)이나 페이지 길이가 바뀔 때만 */
   addEventListener('resize',refit);
   if(window.ResizeObserver)new ResizeObserver(refit).observe(wrap);   /* 상자 내용·글꼴이 늦게 불려 페이지 길이가 바뀔 때 */
