@@ -19,7 +19,7 @@
   - 과목의 바깥 자료실(노션 등)은 links에 적습니다: {type,title,href,embed}. 그 과목 상자 아래에 따로 놓는 넓은 상자로
     embed(노션은 https://워크스페이스.notion.site/ebd/페이지ID)를 늘 펼쳐 보여 줍니다(제목 줄 오른쪽에 '새 탭으로 열기').
   - 단추 앞의 작은 그림은 ICO에 자료 파일 이름(href의 일부)으로 적습니다. 그림이 없는 자료는 지구 모양 기본 그림이 나옵니다.
-  - 배경은 화면에 고정된 캔버스 하나(#scene)에 그리는 지구 단면입니다: 우주·하늘 → 구름 → 바다 → 해저. 스크롤에 맞춰 내려갑니다.
+  - 배경은 페이지 길이만큼 긴 캔버스 하나(#scene)에 그리는 지구 단면입니다: 우주·하늘 → 구름 → 바다 → 해저. 상자와 함께 스크롤됩니다(2026-11-27: 휴대폰에서 배경이 상자보다 늦게 따라와 어긋나고, 주소창이 숨을 때 울컥하던 것을 고침).
     맨 위는 원주 기준으로 낮이면 해와 낮 하늘, 밤이면 그날 위상의 달과 별입니다(아래 '배경 장면' 스크립트).
   README.md의 '수업 자료' 목록도 같은 내용·같은 순서로 함께 고칩니다.
 -->
@@ -44,7 +44,12 @@
 html,body{overflow-x:clip}
 body{background:var(--s-sp1);color:var(--ink);font-family:var(--font);line-height:1.5;-webkit-font-smoothing:antialiased;word-break:keep-all}
 a{color:inherit;text-decoration:none}
-#scene{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+#sceneBox{position:fixed;top:0;left:0;width:100%;height:100vh;height:100lvh;overflow:hidden;z-index:0}   /* 화면에 고정된 창(맨 위·맨 아래에서 더 당기면 배경은 가만히, 상자만 움직임) */
+#scene{position:absolute;top:0;left:0;width:100%;will-change:transform}   /* 페이지 길이만큼 긴 그림 */
+/* 긴 그림을 스크롤만큼 올림 — 브라우저가 스크롤과 같은 박자로 직접 처리(스크롤 연동 애니메이션). 지원하지 않는 브라우저는 스크립트가 대신 */
+@supports (animation-timeline:scroll()){#scene{animation:sceneUp linear both;animation-timeline:scroll(root block)}}
+@keyframes sceneUp{from{transform:translateY(0)}to{transform:translateY(calc(-100% + 100vh));transform:translateY(calc(-100% + 100dvh))}}
+#vh{position:absolute;top:0;left:0;width:0;height:100vh;height:100lvh;visibility:hidden;pointer-events:none}   /* 주소창이 숨어도 그대로인 화면 높이를 재는 자 */
 .wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:22px 28px 72px}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:16px;font-weight:600;color:var(--on-scene)}
 .hero{min-height:min(72svh,640px);display:flex;flex-direction:column;justify-content:center;color:var(--on-scene);padding:40px 0 60px}
@@ -129,7 +134,7 @@ footer a:focus-visible{outline-color:var(--on-scene)}
 </style>
 </head>
 <body>
-<canvas id="scene" aria-hidden="true"></canvas>
+<div id="sceneBox" aria-hidden="true"><canvas id="scene"></canvas></div><div id="vh" aria-hidden="true"></div>
 <div class="wrap">
   <div class="bar">
     <span>진광고등학교 교사 김덕영</span>
@@ -284,7 +289,7 @@ SUBJECTS.forEach(s=>{
 /* ── 배경 장면: 세로 4화면 높이의 지구 단면(0 우주 · 1 높은 하늘 · 2 해수면 · 3.5 해저)을 스크롤에 맞춰 내려다봄 ── */
 (()=>{
   const cv=document.getElementById('scene'),c=cv.getContext('2d'),STILL=matchMedia('(prefers-reduced-motion:reduce)').matches;
-  let W=0,H=0,cam=0,pal={},t=0,last=0;
+  let W=0,H=0,DH=0,SC=0,top=0,rr=0,pal={},t=0,last=0;
   const KEYS=['sp0','sp1','sk0','sk1','sk2','se0','se1','se2','se3','star','moon','sun','cloud','wave1','wave2','ray','bed1','bed2','bed3','bed4','magma','isle','rock','coral','paper'];
   const readPal=()=>{const cs=getComputedStyle(document.documentElement);KEYS.forEach(k=>pal[k]=cs.getPropertyValue('--s-'+k).trim());
     if(SUN.day)[['sp0','d0'],['sp1','d1'],['sk0','d2']].forEach(([a,b])=>pal[a]=cs.getPropertyValue('--s-'+b).trim());   /* 낮에는 맨 위도 낮 하늘 */};
@@ -300,7 +305,7 @@ SUBJECTS.forEach(s=>{
     /* 이름: 삭·초승달(36°)·상현달·보름달·하현달·그믐달(324°) 무렵(앞뒤 12°)은 그 이름만, 그 사이는 '어느 달 → 어느 달'(지나온 달 → 다가오는 달) */
     const name=e<12||e>348?'삭':e<24?'삭 → 초승달':e<48?'초승달':e<78?'초승달 → 상현달':e<102?'상현달':e<168?'상현달 → 보름달':e<192?'보름달':e<258?'보름달 → 하현달':e<282?'하현달':e<312?'하현달 → 그믐달':e<336?'그믐달':'그믐달 → 삭';return {e,name};})();
   /* 달 이름표: 좁은 화면에서 '어느 달 → 어느 달'은 두 줄로(화면 끝에 닿지 않게) */
-  const moonLabel=(pre,x,y)=>{if(W<700&&MOON.name.includes('→')){c.fillText(pre,x,y);c.fillText(MOON.name,x,y+19);}else c.fillText(pre+' '+MOON.name,x,y);};
+  const moonLabel=(pre,x,y)=>{if(W<700&&MOON.name.includes('→')){c.fillText(pre+':',x,y);c.fillText(MOON.name,x,y+19);}else c.fillText(pre+': '+MOON.name,x,y);};
   /* 원주(북위 37.34°·동경 127.92°)의 해: 적위와 균시차를 날짜로 어림해 지금 고도와 남중 고도를 구함. 고도가 0°보다 높으면 낮 */
   const SUN=(()=>{const now=new Date(),R=Math.PI/180,lat=37.34,lon=127.92;
     const n=(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate())-Date.UTC(now.getUTCFullYear(),0,0))/864e5,B=2*Math.PI*(n-81)/364;
@@ -312,9 +317,16 @@ SUBJECTS.forEach(s=>{
     const altM=Math.asin(Math.sin(lat*R)*Math.sin(dm*R)+Math.cos(lat*R)*Math.cos(dm*R)*Math.cos(hm))/R;
     return {day:alt>-.83,noon:Math.round(90-lat+dec),moonUp:altM>8&&e>30&&e<330};})();
   const wisps=Array.from({length:7},(_,i)=>({x:rnd(),y:.08+i*.13+rnd()*.05,s:.9+rnd()*1.1,v:.0015+rnd()*.003}));
-  const Y=w=>(w-cam)*H;
-  const resize=()=>{const d=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=W*d;cv.height=H*d;c.setTransform(d,0,0,d,0,0);};
-  const scroll=()=>{const max=document.documentElement.scrollHeight-innerHeight;cam=max>0?Math.min(1,scrollY/max)*3:0;};
+  const Y=w=>w*SC-top;   /* 장면 좌표(0 우주 ~ 4 해저 끝) → 지금 그리는 칸 안의 위치. 장면 전체가 페이지 길이에 맞춰 늘어남 */
+  /* 그림 크기: 폭 = 화면 폭, 높이 = 페이지(.wrap) 길이. 주소창이 숨거나 나와도 H(가장 큰 화면 높이)·페이지 길이는 그대로라 다시 만들지 않음 */
+  const wrap=document.querySelector('.wrap'),vh=document.getElementById('vh');
+  const resize=()=>{const w=document.documentElement.clientWidth,h=Math.max(vh.offsetHeight||innerHeight,1),dh=Math.max(wrap.offsetHeight,h);
+    if(w===W&&h===H&&dh===DH)return false;W=w;H=h;DH=dh;SC=DH/4;
+    let d=Math.min(2,devicePixelRatio||1);while(d>1&&W*DH*d*d>16e6)d-=.05;   /* 그림 픽셀 수 1,600만 이하(휴대폰 브라우저 한도) */
+    cv.style.height=DH+'px';cv.width=Math.round(W*d);cv.height=Math.round(DH*d);cv.dataset.d=d;return true;};
+  /* 페이지의 한 칸(위 끝 y0부터 화면 높이 H만큼)을 다시 그림 */
+  const paint=y0=>{const d=+cv.dataset.d;top=Math.max(0,Math.min(DH-H,y0));c.setTransform(d,0,0,d,0,top*d);draw();};
+  const paintAll=()=>{for(let y=0;y<DH;y+=H)paint(y);};
   const cloud=(x,y,s)=>{c.beginPath();[[0,0,26],[30,-14,30],[62,-4,24],[86,6,18],[-22,8,16]].forEach(([dx,dy,r])=>{c.moveTo(x+(dx+r)*s,y+dy*s);c.arc(x+dx*s,y+dy*s,r*s,0,6.3);});c.rect(x-22*s,y+2*s,108*s,22*s);c.fill();};
   const surf=(x,k)=>Y(2)+ (6+k*3)*Math.sin(x/(90+k*40)+t*(.9-k*.2)+k*2)+k*16;      // 물결 k번째 겹
   const bed=x=>3.52-.16*Math.exp(-((((x/W)-.72)/Math.max(.15,150/W))**2))+.035*Math.sin(x/W*7);       // 해저 지형(화면 높이 단위), 오른쪽에 완만한 해산(좁은 화면에서도 뾰족하지 않게 폭을 150px 이상으로)
@@ -385,12 +397,18 @@ SUBJECTS.forEach(s=>{
       }
     }
   }
-  const frame=ms=>{if(!last)last=ms;t+=Math.min(.05,(ms-last)/1000);last=ms;draw();requestAnimationFrame(frame);};
-  readPal();resize();scroll();
-  addEventListener('resize',()=>{resize();scroll();if(STILL)draw();});
-  addEventListener('scroll',()=>{scroll();if(STILL)draw();},{passive:true});
-  matchMedia('(prefers-color-scheme:dark)').addEventListener('change',()=>{readPal();if(STILL)draw();});
-  if(STILL){t=14;draw();}else requestAnimationFrame(frame);
+  /* 매 프레임: 지금 보이는 칸 + 나머지 칸 하나씩 돌아가며(보이지 않던 곳도 늘 거의 최신 모습 — 빠르게 스크롤해도 옛 모습이 비치지 않게) */
+  const frame=ms=>{if(!last)last=ms;t+=Math.min(.05,(ms-last)/1000);last=ms;const n=Math.ceil(DH/H);rr=(rr+1)%n;paint(rr*H);paint(scrollY);requestAnimationFrame(frame);};
+  readPal();resize();
+  /* 스크롤 연동 애니메이션을 지원하지 않는 브라우저: 그림 위치를 스크립트로 맞춤 */
+  const SDA=window.CSS&&CSS.supports('animation-timeline','scroll()');
+  const follow=()=>{if(!SDA)cv.style.transform='translateY('+(-scrollY)+'px)';};
+  addEventListener('scroll',follow,{passive:true});follow();
+  const refit=()=>{if(resize())paintAll();};   /* 폭(화면 회전·폴드 펼침)이나 페이지 길이가 바뀔 때만 */
+  addEventListener('resize',refit);
+  if(window.ResizeObserver)new ResizeObserver(refit).observe(wrap);   /* 상자 내용·글꼴이 늦게 불려 페이지 길이가 바뀔 때 */
+  matchMedia('(prefers-color-scheme:dark)').addEventListener('change',()=>{readPal();if(STILL)paintAll();});
+  if(STILL){t=14;paintAll();}else{paintAll();requestAnimationFrame(frame);}
 })();
 </script>
 </body>
